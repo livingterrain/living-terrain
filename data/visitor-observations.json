@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "observations": [
+    {
+      "id": "vo-seed-1",
+      "slug": "structure-before-interpretation",
+      "title": "Structure before interpretation",
+      "body": "Walking the path between Freedom and Embodiment, I noticed how often I reach for a story before I feel the constraint. The terrain here asks something quieter: what was already holding the shape?",
+      "themeIds": ["th-freedom", "th-embodiment"],
+      "terrainLocation": "Between Freedom and Embodiment",
+      "createdAt": "2026-06-20T14:30:00.000Z",
+      "anonymous": true,
+      "contributorName": null
+    },
+    {
+      "id": "vo-seed-2",
+      "slug": "time-as-return",
+      "title": null,
+      "body": "Returned to the same question three times today — each time through a different essay. Not repetition. More like orbit.",
+      "themeIds": ["th-time", "th-meaning"],
+      "terrainLocation": "The reading room",
+      "createdAt": "2026-06-22T09:15:00.000Z",
+      "anonymous": true,
+      "contributorName": null
+    },
+    {
+      "id": "vo-seed-3",
+      "slug": "perception-at-the-threshold",
+      "title": "Perception at the threshold",
+      "body": "What organizes seeing before interpretation — I wrote that down before I understood it. Still don't. But the question has a weight now.",
+      "themeIds": ["th-consciousness", "th-perception"],
+      "terrainLocation": "What lies beneath perception",
+      "createdAt": "2026-06-25T18:45:00.000Z",
+      "anonymous": false,
+      "contributorName": "A reader in the field"
+    }
+  ]
+}

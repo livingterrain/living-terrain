@@ -1,0 +1,890 @@
+@import "tailwindcss";
+
+/*
+ * Living Terrain — visual language
+ * Environmental design: paper, charcoal, forest as attention.
+ */
+
+@theme {
+  --color-ivory: #e9e0d0;
+  --color-ivory-deep: #dfd5c4;
+  --color-ivory-shadow: #d5cbb8;
+  --color-charcoal: #38352f;
+  --color-charcoal-muted: #5e5a54;
+  --color-charcoal-faint: #8a847a;
+  --color-rule: #c4b8a6;
+  --color-rule-light: #d2c8b8;
+  --color-forest: #3f5e4f;
+  --color-forest-muted: #4f6e5f;
+  --color-forest-faint: #6b8478;
+  --color-void: #2e2c28;
+
+  --color-cream: var(--color-ivory);
+  --color-cream-dark: var(--color-ivory-deep);
+  --color-cream-darker: var(--color-ivory-shadow);
+  --color-ink: var(--color-charcoal);
+  --color-ink-muted: var(--color-charcoal-muted);
+  --color-ink-faint: var(--color-charcoal-faint);
+  --color-accent: var(--color-forest);
+  --color-accent-light: var(--color-forest-muted);
+  --color-border: var(--color-rule);
+
+  --font-heading: var(--font-source-serif);
+  --font-body: var(--font-inter);
+
+  --ease-breath: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  --ease-inhale: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-threshold: cubic-bezier(0.38, 0.02, 0.42, 1);
+  --tempo-inhale: 1.18;
+
+  /* Circadian — set by CircadianRoot, transition slowly between visits */
+  --circadian-star-mul: 1;
+  --circadian-fog-mul: 1;
+  --circadian-clarity-mul: 1;
+  --circadian-particle-mul: 1;
+  --circadian-mist: 0;
+  --circadian-warmth: 0;
+  --circadian-shadow-depth: 0.2;
+  --circadian-ambient-top: #141a22;
+  --circadian-star-color: #d8dce4;
+  --circadian-void-base: #040506;
+  --circadian-ivory-tint: #e9e0d0;
+  --circadian-ivory-mix: 0;
+  --circadian-light-pool: 0.75;
+  --circadian-field-opacity: 1;
+  --circadian-fog-warmth: 0.2;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-rule);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #06080c;
+    overflow-x: hidden;
+  }
+
+  html.circadian-active {
+    transition:
+      background-color 300s var(--ease-breath),
+      color 300s var(--ease-breath);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-ivory text-charcoal font-body antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 180px 180px;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-forest) 18%, var(--color-ivory));
+    color: var(--color-charcoal);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-normal text-charcoal;
+    font-feature-settings: "kern" 1, "liga" 1, "lnum" 1;
+  }
+
+  a {
+    transition: color 0.6s var(--ease-breath),
+      text-decoration-color 0.6s var(--ease-breath);
+  }
+
+  :focus-visible {
+    @apply outline-1 outline-offset-3 outline-forest;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  .type-display {
+    @apply font-heading text-4xl leading-[1.1] tracking-tight sm:text-5xl lg:text-[4rem] lg:leading-[1.06];
+  }
+
+  .type-room {
+    @apply font-heading text-2xl leading-snug tracking-tight sm:text-3xl lg:text-4xl;
+  }
+
+  .type-entry {
+    @apply font-heading text-xl leading-snug sm:text-2xl;
+  }
+
+  .type-lead {
+    @apply font-heading text-lg leading-relaxed italic text-charcoal-muted sm:text-xl;
+  }
+
+  .type-body {
+    @apply font-body text-base leading-[1.88] text-charcoal-muted sm:text-[1.0625rem];
+  }
+
+  .type-meta {
+    @apply font-body text-[0.8125rem] leading-normal text-charcoal-faint;
+  }
+
+  .type-folio {
+    @apply font-body text-[0.75rem] tabular-nums tracking-[0.12em] text-forest-faint;
+  }
+
+  .type-chamber {
+    @apply font-body text-[0.6875rem] uppercase tracking-[0.2em] text-charcoal-faint;
+  }
+
+  .reading-measure { max-width: 36rem; }
+  .content-measure { max-width: 68rem; }
+
+  .hairline { height: 1px; background: var(--color-rule); }
+
+  .hairline-fade {
+    height: 1px;
+    background: var(--color-rule);
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+
+  .environment-vignette {
+    box-shadow: inset 0 0 120px 40px color-mix(in srgb, var(--color-void) 8%, transparent);
+  }
+
+  .room-vignette-pathways {
+    box-shadow: inset 0 0 100px 30px color-mix(in srgb, var(--color-forest) 6%, transparent);
+  }
+
+  .room-vignette-reading {
+    box-shadow: inset 0 0 80px 20px color-mix(in srgb, var(--color-ivory-deep) 40%, transparent);
+  }
+
+  .room-vignette-notebook {
+    box-shadow: inset 0 0 60px 20px color-mix(in srgb, var(--color-charcoal) 5%, transparent);
+  }
+
+  .room-vignette-archive {
+    box-shadow: inset 80px 0 80px -40px color-mix(in srgb, var(--color-void) 10%, transparent),
+      inset -80px 0 80px -40px color-mix(in srgb, var(--color-void) 10%, transparent);
+  }
+
+  .room-vignette-observatory {
+    box-shadow: inset 0 0 140px 50px color-mix(in srgb, var(--color-void) 14%, transparent);
+  }
+
+  .room-vignette-chamber {
+    box-shadow: inset 0 0 160px 60px color-mix(in srgb, var(--color-void) 18%, transparent);
+  }
+
+  .home-drawer {
+    box-shadow:
+      1px 0 0 0 color-mix(in srgb, var(--color-rule) 60%, transparent),
+      0 1px 0 0 color-mix(in srgb, var(--color-ivory-shadow) 80%, transparent);
+  }
+
+  .home-drawer:hover {
+    box-shadow:
+      1px 0 0 0 color-mix(in srgb, var(--color-forest) 15%, transparent),
+      0 2px 0 0 color-mix(in srgb, var(--color-ivory-shadow) 90%, transparent);
+  }
+
+  .light-pool {
+    background: color-mix(in srgb, var(--color-ivory) 88%, white);
+    filter: blur(72px);
+    opacity: var(--circadian-light-pool);
+    transition: opacity 300s var(--ease-breath);
+  }
+
+  /* ── Circadian room wash ── */
+
+  .circadian-room-wash {
+    z-index: 0;
+    opacity: 1;
+    transition:
+      opacity 300s var(--ease-breath),
+      background 300s var(--ease-breath);
+    background: transparent;
+  }
+
+  html[data-circadian="morning"] .circadian-room-wash {
+    background: linear-gradient(
+      165deg,
+      color-mix(in srgb, #d4b878 14%, transparent) 0%,
+      color-mix(in srgb, #c8b890 calc(var(--circadian-mist) * 18%), transparent) 38%,
+      transparent 72%
+    );
+  }
+
+  html[data-circadian="afternoon"] .circadian-room-wash {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, white calc(var(--circadian-clarity-mul) * 4%), transparent) 0%,
+      transparent 35%
+    );
+  }
+
+  html[data-circadian="evening"] .circadian-room-wash {
+    background: linear-gradient(
+      195deg,
+      color-mix(in srgb, #283868 calc(var(--circadian-mist) * 22%), transparent) 0%,
+      color-mix(in srgb, #1a2038 calc(var(--circadian-shadow-depth) * 12%), transparent) 55%,
+      transparent 85%
+    );
+  }
+
+  html[data-circadian="night"] .circadian-room-wash {
+    background: radial-gradient(
+      ellipse 90% 70% at 50% 0%,
+      color-mix(in srgb, #1a1840 8%, transparent) 0%,
+      transparent 55%
+    );
+    opacity: calc(0.65 + var(--circadian-star-mul) * 0.08);
+  }
+
+  .circadian-field-layer {
+    opacity: var(--circadian-field-opacity);
+    transition: opacity 300s var(--ease-breath);
+  }
+
+  /* Persistent terrain atmosphere — continuous across routes */
+  @keyframes terrain-star-drift {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(-0.35%, 0.2%) scale(1.01);
+    }
+  }
+
+  @keyframes terrain-mote-drift {
+    0%,
+    100% {
+      opacity: 0.15;
+      transform: translate(0, 0);
+    }
+    50% {
+      opacity: 0.55;
+      transform: translate(12px, -18px);
+    }
+  }
+
+  .terrain-atmosphere-stars {
+    animation: terrain-star-drift var(--star-drift, 100s) var(--ease-breath) infinite;
+  }
+
+  .terrain-atmosphere-mote {
+    animation: terrain-mote-drift var(--particle-drift, 70s) var(--ease-breath) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terrain-atmosphere-stars,
+    .terrain-atmosphere-mote {
+      animation: none;
+    }
+  }
+
+  .circadian-shadow-vignette {
+    opacity: var(--circadian-shadow-depth);
+    transition: opacity 300s var(--ease-breath);
+  }
+
+  /* ── Discovery layer ── */
+
+  .discovery-cursor-glow {
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-forest) 9%, transparent) 0%,
+      color-mix(in srgb, var(--color-forest) 3%, transparent) 38%,
+      transparent 72%
+    );
+    opacity: 0.65;
+  }
+
+  .discovery-cursor-core {
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-forest) 14%, transparent) 0%,
+      transparent 65%
+    );
+    opacity: 0.45;
+  }
+
+  .discovery-node.discovery-active {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-forest) 18%, transparent),
+      0 0 40px -8px color-mix(in srgb, var(--color-forest) 12%, transparent);
+  }
+
+  .discovery-node.discovery-peer {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-forest) 8%, transparent),
+      0 0 24px -12px color-mix(in srgb, var(--color-forest) 6%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .discovery-cursor-glow,
+    .discovery-cursor-core,
+    .cursor-light-threshold,
+    .cursor-light-core-threshold,
+    .cursor-light-room,
+    .cursor-light-core-room {
+      display: none;
+    }
+  }
+
+  /* ── Constellation graph — sharp information layer ── */
+
+  .constellation-graph {
+    image-rendering: auto;
+  }
+
+  .constellation-graph text {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    paint-order: stroke fill;
+    stroke: rgba(4, 5, 6, 0.65);
+    stroke-width: 0.35em;
+    stroke-linejoin: round;
+  }
+
+  /* Imperceptible suspension — whole map breathes in place */
+  @keyframes constellation-drift {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    33% {
+      transform: translate(2px, -1.5px);
+    }
+    66% {
+      transform: translate(-1.5px, 2px);
+    }
+  }
+
+  .constellation-drift {
+    animation: constellation-drift calc(52s * var(--tempo-inhale)) var(--ease-breath) infinite;
+  }
+
+  /* Barely perceptible rotation — noticed only after minutes */
+  @keyframes constellation-slow-rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(1.15deg);
+    }
+  }
+
+  .constellation-slow-rotate {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: constellation-slow-rotate calc(1200s * var(--tempo-inhale)) linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .constellation-slow-rotate {
+      animation: none;
+    }
+  }
+
+  /* Observatory dust — warm, horizontal, interior */
+  @keyframes observatory-dust {
+    0%,
+    100% {
+      opacity: 0.04;
+      transform: translate(0, 0);
+    }
+    50% {
+      opacity: 0.14;
+      transform: translate(14px, -3px);
+    }
+  }
+
+  .observatory-dust {
+    animation: observatory-dust calc(86s * var(--tempo-inhale)) var(--ease-breath) infinite;
+  }
+
+  @keyframes star-twinkle {
+    0%,
+    88%,
+    100% {
+      opacity: var(--star-base, 0.2);
+      transform: scale(1);
+    }
+    92% {
+      opacity: calc(var(--star-base, 0.2) + 0.55);
+      transform: scale(1.35);
+    }
+    96% {
+      opacity: calc(var(--star-base, 0.2) + 0.25);
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes star-bud {
+    0%,
+    70%,
+    100% {
+      opacity: 0.08;
+      transform: scale(0.85);
+    }
+    85% {
+      opacity: 0.42;
+      transform: scale(1.2);
+      box-shadow: 0 0 6px rgba(200, 210, 196, 0.35);
+    }
+  }
+
+  .star-twinkle {
+    animation: star-twinkle calc(11s * var(--tempo-inhale)) ease-in-out infinite;
+  }
+
+  .star-bud {
+    animation: star-bud calc(28s * var(--tempo-inhale)) ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .star-twinkle,
+    .star-bud {
+      animation: none;
+    }
+  }
+
+  @keyframes constellation-particle-drift {
+    0%,
+    100% {
+      opacity: 0.08;
+      transform: translate(0, 0);
+    }
+    50% {
+      opacity: 0.22;
+      transform: translate(6px, -10px);
+    }
+  }
+
+  .constellation-particle {
+    animation: constellation-particle-drift
+      calc(38s * var(--tempo-inhale) * var(--circadian-particle-mul)) var(--ease-breath)
+      infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .constellation-particle {
+      animation: none;
+      opacity: 0.12;
+    }
+  }
+
+  /* ── Cursor light (threshold + rooms) ── */
+
+  .cursor-light-threshold {
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #d8dce4 11%, transparent) 0%,
+      color-mix(in srgb, #8fa88a 4%, transparent) 42%,
+      transparent 72%
+    );
+    mix-blend-mode: screen;
+    opacity: 0.55;
+  }
+
+  .cursor-light-core-threshold {
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #e4e0d8 16%, transparent) 0%,
+      transparent 70%
+    );
+    mix-blend-mode: screen;
+    opacity: 0.35;
+  }
+
+  .cursor-light-room {
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-forest) 7%, transparent) 0%,
+      transparent 70%
+    );
+    opacity: 0.5;
+  }
+
+  .cursor-light-core-room {
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-ivory) 40%, transparent) 0%,
+      transparent 65%
+    );
+    opacity: 0.25;
+  }
+
+  /* ── Scroll depth ── */
+
+  .scroll-depth-vignette {
+    background: radial-gradient(
+      ellipse 85% 70% at 50% 45%,
+      transparent 40%,
+      color-mix(in srgb, var(--color-void) 55%, transparent) 100%
+    );
+  }
+
+  .scroll-depth-warmth {
+    background: radial-gradient(
+      ellipse 60% 45% at 50% 20%,
+      color-mix(in srgb, var(--color-ivory-shadow) 35%, transparent),
+      transparent 70%
+    );
+  }
+
+  .scroll-depth-grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+  }
+
+  /* ── Ambient breath ── */
+
+  .atmosphere-breathe-slow {
+    animation: atmosphere-breathe calc(16.5s * var(--tempo-inhale)) var(--ease-breath) infinite;
+  }
+
+  .atmosphere-breathe-fog {
+    animation: atmosphere-breathe-fog calc(21s * var(--tempo-inhale)) var(--ease-breath) infinite;
+  }
+
+  @keyframes atmosphere-breathe {
+    0%, 100% { opacity: 0.88; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.012); }
+  }
+
+  @keyframes atmosphere-breathe-fog {
+    0%, 100% { opacity: 0.92; }
+    50% { opacity: 1; }
+  }
+
+  /* ── Threshold atmosphere ── */
+
+  .threshold-fog {
+    background: radial-gradient(
+      ellipse 55% 40% at 30% 60%,
+      color-mix(
+        in srgb,
+        color-mix(in srgb, #c8c0b4 calc((1 - var(--circadian-fog-warmth)) * 100%), #d8c8a0 calc(var(--circadian-fog-warmth) * 100%)) calc(12% * var(--circadian-fog-mul)),
+        transparent
+      ),
+      transparent 70%
+    );
+    transition: background 300s var(--ease-breath);
+  }
+
+  .threshold-fog-a {
+    animation: threshold-fog-drift-a 140s linear infinite;
+  }
+
+  .threshold-fog-b {
+    background: radial-gradient(
+      ellipse 45% 35% at 70% 40%,
+      color-mix(
+        in srgb,
+        color-mix(in srgb, #a8a098 calc((1 - var(--circadian-fog-warmth)) * 100%), #b8a888 calc(var(--circadian-fog-warmth) * 100%)) calc(10% * var(--circadian-fog-mul)),
+        transparent
+      ),
+      transparent 72%
+    );
+    animation: threshold-fog-drift-b 180s linear infinite;
+    transition: background 300s var(--ease-breath);
+  }
+
+  @keyframes threshold-fog-drift-a {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(3%, -1.5%); }
+    100% { transform: translate(0, 0); }
+  }
+
+  @keyframes threshold-fog-drift-b {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-2.5%, 2%); }
+    100% { transform: translate(0, 0); }
+  }
+
+  .threshold-cross-breathe {
+    animation: threshold-cross-breathe 9s ease-in-out infinite;
+  }
+
+  @keyframes threshold-cross-breathe {
+    0%, 100% {
+      opacity: 0.82;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.008);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .threshold-fog-a,
+    .threshold-fog-b,
+    .atmosphere-breathe-slow,
+    .atmosphere-breathe-fog {
+      animation: none;
+    }
+
+    .threshold-cross-breathe {
+      animation: none;
+    }
+
+    .atmosphere-dust-mote {
+      animation: none;
+      opacity: 0.08;
+    }
+
+    .habitat-concept-fragment {
+      transition: none;
+    }
+  }
+
+  /* ── Constellation habitat — ambient life in the margins ── */
+
+  .habitat-concept-fragment:hover {
+    color: color-mix(in srgb, var(--color-ivory) 55%, transparent);
+    text-shadow: 0 0 24px color-mix(in srgb, #b8d4b0 35%, transparent);
+  }
+
+  .habitat-handwritten {
+    font-family: var(--font-source-serif), ui-serif, Georgia, serif;
+  }
+
+  /* ── Homepage atmosphere ── */
+
+  .atmosphere-paper-fiber {
+    opacity: 0.035;
+    background-image: repeating-linear-gradient(
+      93deg,
+      transparent,
+      transparent 3px,
+      color-mix(in srgb, var(--color-charcoal) 4%, transparent) 3px,
+      color-mix(in srgb, var(--color-charcoal) 4%, transparent) 4px
+    );
+  }
+
+  .atmosphere-paper-shadow {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in srgb, var(--color-ivory-deep) 30%, transparent), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, color-mix(in srgb, var(--color-void) 6%, transparent), transparent 60%);
+  }
+
+  .atmosphere-grain {
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+  }
+
+  .atmosphere-light-threshold {
+    background: radial-gradient(
+      ellipse at 40% 30%,
+      color-mix(in srgb, white 55%, var(--color-ivory)) 0%,
+      color-mix(in srgb, var(--color-ivory) 70%, transparent) 45%,
+      transparent 72%
+    );
+    filter: blur(80px);
+  }
+
+  .atmosphere-light-deep {
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-ivory-deep) 50%, white) 0%,
+      color-mix(in srgb, var(--color-ivory) 30%, transparent) 50%,
+      transparent 75%
+    );
+    filter: blur(96px);
+  }
+
+  .atmosphere-light-warm {
+    background: color-mix(in srgb, var(--color-ivory-deep) 60%, white);
+    filter: blur(64px);
+  }
+
+  .atmosphere-ceiling-shadow {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-void) 8%, transparent),
+      transparent
+    );
+  }
+
+  @keyframes realm-particle-drift {
+    0%,
+    100% {
+      transform: translate(0, 0);
+      opacity: 0.06;
+    }
+    50% {
+      transform: translate(12px, -8px);
+      opacity: 0.18;
+    }
+  }
+
+  .realm-particle {
+    animation: realm-particle-drift linear infinite;
+  }
+
+  @keyframes realm-flow-down {
+    0%, 100% { transform: translate(0, 0); opacity: 0.05; }
+    50% { transform: translate(0, 14px); opacity: 0.16; }
+  }
+  @keyframes realm-weave {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(6px, -4px); }
+    66% { transform: translate(-5px, 3px); }
+  }
+  @keyframes realm-twinkle {
+    0%, 100% { opacity: 0.04; }
+    50% { opacity: 0.2; }
+  }
+  @keyframes realm-inward {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(calc((50% - var(--x, 50%)) * 0.02), calc((50% - var(--y, 50%)) * 0.02)) scale(0.92); }
+  }
+  @keyframes realm-rise {
+    0%, 100% { transform: translateY(0); opacity: 0.06; }
+    50% { transform: translateY(-10px); opacity: 0.15; }
+  }
+  @keyframes realm-still {
+    0%, 100% { opacity: 0.05; }
+    50% { opacity: 0.09; }
+  }
+  @keyframes realm-expand-out {
+    0%, 100% { transform: translate(0, 0); opacity: 0.05; }
+    50% { transform: translate(10px, 0); opacity: 0.14; }
+  }
+  @keyframes realm-ripple-out {
+    0%, 100% { transform: scale(1); opacity: 0.06; }
+    50% { transform: scale(1.15); opacity: 0.12; }
+  }
+
+  .realm-drift-flow { animation-name: realm-flow-down; }
+  .realm-drift-weave { animation-name: realm-weave; }
+  .realm-drift-twinkle { animation-name: realm-twinkle; }
+  .realm-drift-inward { animation-name: realm-still; }
+  .realm-drift-rise { animation-name: realm-rise; }
+  .realm-drift-still { animation-name: realm-still; }
+  .realm-drift-expand { animation-name: realm-expand-out; }
+  .realm-drift-ripple { animation-name: realm-ripple-out; }
+
+  .atmosphere-dust-mote {
+    opacity: 0;
+    animation: dust-mote linear infinite;
+  }
+
+  .animate-drift-ultra {
+    animation: drift 52s var(--ease-breath) infinite alternate-reverse;
+  }
+
+  .animate-contour-breathe {
+    animation: contour-breathe 40s var(--ease-breath) infinite;
+  }
+
+  .animate-interference-drift {
+    animation: interference-drift 60s var(--ease-breath) infinite alternate;
+  }
+
+  .animate-threshold {
+    animation: inhale 1.8s var(--ease-inhale) both;
+  }
+
+  .animate-threshold-delay-1 { animation: inhale 1.8s var(--ease-inhale) 0.2s both; }
+  .animate-threshold-delay-2 { animation: inhale 1.8s var(--ease-inhale) 0.4s both; }
+  .animate-threshold-delay-3 { animation: inhale 1.8s var(--ease-inhale) 0.6s both; }
+
+  .animate-field-breath {
+    animation: field-breath 18s var(--ease-breath) infinite;
+  }
+
+  .animate-drift-slow {
+    animation: drift 36s var(--ease-breath) infinite alternate-reverse;
+  }
+
+  .animate-drift {
+    animation: drift 24s var(--ease-breath) infinite alternate;
+  }
+
+  .animate-pulse-breath {
+    animation: pulse-breath 4s var(--ease-breath) infinite;
+  }
+
+  @keyframes inhale {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes field-breath {
+    0%, 100% { opacity: 0.75; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes drift {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(0, -18px, 0); }
+  }
+
+  @keyframes pulse-breath {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes dust-mote {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+    }
+    15% {
+      opacity: 0.18;
+    }
+    50% {
+      opacity: 0.12;
+      transform: translate3d(6px, -28px, 0);
+    }
+    85% {
+      opacity: 0.06;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(-4px, -52px, 0);
+    }
+  }
+
+  @keyframes contour-breathe {
+    0%, 100% { opacity: 0.92; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes interference-drift {
+    from { transform: translate3d(0, 0, 0) rotate(0deg); }
+    to { transform: translate3d(0, -12px, 0) rotate(0.3deg); }
+  }
+
+  .text-attention { @apply text-forest; }
+}
