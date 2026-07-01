@@ -16,7 +16,10 @@ export function Container({
   return (
     <Tag
       className={cn(
-        "mx-auto w-full px-7 sm:px-12 lg:px-14",
+        "mx-auto w-full max-w-full",
+        "pl-[max(1.25rem,env(safe-area-inset-left,0px))]",
+        "pr-[max(1.25rem,env(safe-area-inset-right,0px))]",
+        "sm:pl-12 sm:pr-12 lg:pl-14 lg:pr-14",
         narrow ? "max-w-[40rem]" : "max-w-6xl",
         className,
       )}

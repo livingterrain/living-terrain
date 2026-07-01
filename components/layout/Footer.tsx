@@ -1,68 +1,42 @@
 import Link from "next/link";
+import { PathwayLink } from "@/components/design-system/threshold";
 import { Container } from "@/components/layout/Container";
-import { Hairline } from "@/components/design-system";
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-rule bg-ivory-deep/50">
-      <Container className="py-20 sm:py-24">
-        <div className="grid gap-16 sm:grid-cols-2 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <p className="font-heading text-lg text-charcoal">Living Terrain</p>
-            <p className="type-body mt-4 max-w-sm text-[0.9375rem]">
-              A place for inquiry — between museum, library, field notebook, and
-              reading room.
-            </p>
-          </div>
+    <footer className="world-edge mt-auto">
+      <Container className="py-28 sm:py-32">
+        <p className="mx-auto max-w-md text-center font-heading text-lg italic leading-[1.75] text-charcoal-muted/75">
+          You are still walking. The place does not end here.
+        </p>
 
-          <div className="lg:col-span-3 lg:col-start-7">
-            <p className="type-folio">Explore</p>
-            <nav className="mt-5 flex flex-col gap-3">
-              <FooterLink href="/questions">Questions</FooterLink>
-              <FooterLink href="/essays">Essays</FooterLink>
-              <FooterLink href="/library">Library</FooterLink>
-              <FooterLink href="/field-notes">Field Notes</FooterLink>
-            </nav>
-          </div>
+        <nav
+          className="mx-auto mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-4"
+          aria-label="Horizons"
+        >
+          <PathwayLink href="/questions" className="min-h-11 justify-center py-2 text-sm">
+            Where paths branch
+          </PathwayLink>
+          <PathwayLink href="/observatory" className="min-h-11 justify-center py-2 text-sm">
+            Inward
+          </PathwayLink>
+          <PathwayLink href="/" className="min-h-11 justify-center py-2 text-sm">
+            Outward
+          </PathwayLink>
+        </nav>
 
-          <div className="lg:col-span-3">
-            <p className="type-folio">Further</p>
-            <nav className="mt-5 flex flex-col gap-3">
-              <FooterLink href="/structure-beneath-reality">
-                The Structure Beneath Reality
-              </FooterLink>
-              <FooterLink href="/observatory">Observatory</FooterLink>
-              <FooterLink href="/about">About</FooterLink>
-            </nav>
-          </div>
-        </div>
+        <div className="threshold-carved threshold-carved--edge mx-auto mt-16 max-w-xs opacity-60" />
 
-        <Hairline fade className="my-16" />
-
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-          <p className="type-meta">
-            © {new Date().getFullYear()} Living Terrain
-          </p>
-          <p className="type-meta">livingterrain.com</p>
-        </div>
+        <p className="mt-12 text-center type-meta text-charcoal-faint/80">
+          © {new Date().getFullYear()} ·{" "}
+          <Link
+            href="/welcome"
+            className="inline-flex min-h-11 items-center justify-center px-2 transition-colors duration-[2000ms] hover:text-charcoal-muted active:text-charcoal-muted"
+          >
+            The threshold
+          </Link>
+        </p>
       </Container>
     </footer>
-  );
-}
-
-function FooterLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className="font-body text-sm text-charcoal-muted transition-colors duration-500 hover:text-charcoal"
-    >
-      {children}
-    </Link>
   );
 }

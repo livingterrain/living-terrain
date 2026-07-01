@@ -1,96 +1,53 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TextLink } from "@/components/design-system";
+import { Container } from "@/components/layout/Container";
+import { Room, RoomThreshold } from "@/components/environment";
 import { concepts } from "@/lib/concepts";
 
 export const metadata: Metadata = {
-  title: "Homepage Concepts",
+  title: "Instrument Wing",
   description:
-    "Five radical prototypes for Living Terrain — explorations of curiosity, discovery, and relationship.",
-};
-
-const conceptColors: Record<string, string> = {
-  constellation: "from-[#1a2332] to-[#08090c]",
-  drawers: "from-[#2a2218] to-[#1a1510]",
-  notebook: "from-[#f4f0e6] to-[#e8e0d0]",
-  mycelium: "from-[#1a2e22] to-[#0a120e]",
-  field: "from-[#e8e2d6] to-[#d4ccc0]",
-};
-
-const conceptText: Record<string, string> = {
-  constellation: "text-ivory",
-  drawers: "text-[#e8dcc8]",
-  notebook: "text-[#2a2824]",
-  mycelium: "text-[#e8f0e8]",
-  field: "text-[#2a2824]",
+    "Prototypes and lenses in the observatory — ways of seeing the same intellectual sky.",
 };
 
 export default function ConceptsPage() {
   return (
-    <div className="min-h-screen bg-[#08090c] text-ivory">
-      <div className="mx-auto max-w-4xl px-6 py-16 sm:py-24">
-        <Link
-          href="/"
-          className="text-[0.6875rem] uppercase tracking-[0.2em] text-ivory/40 hover:text-ivory/70"
-        >
-          ← Current homepage (unchanged)
-        </Link>
+    <Room kind="observatory">
+      <RoomThreshold kind="observatory" align="center" />
 
-        <h1 className="mt-10 font-heading text-4xl sm:text-5xl">
-          Five doors into Living Terrain
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-ivory/55">
-          Not refinements — radical prototypes. Each one tries to answer: how does
-          a visitor know, in the first three seconds, that they have entered a
-          living intellectual world?
-        </p>
-        <p className="mt-4 text-sm text-ivory/35">
-          The constellation concept is now the live homepage at{" "}
-          <Link href="/" className="text-forest-light hover:underline">
-            /
-          </Link>
-          . The other four remain prototypes to revisit later.
-        </p>
+      <section className="pb-24 pt-4 sm:pb-32">
+        <Container narrow>
+          <p className="type-body text-center text-[0.9375rem]">
+            The constellation concept is the live map at{" "}
+            <TextLink href="/">The Threshold</TextLink>.
+            The other four remain prototypes to revisit.
+          </p>
 
-        <ol className="mt-16 space-y-8">
-          {concepts.map((concept, index) => (
-            <li key={concept.slug}>
-              <Link
-                href={`/concepts/${concept.slug}`}
-                className="group block overflow-hidden border border-white/10 transition-colors hover:border-white/25"
-              >
-                <div
-                  className={`bg-gradient-to-br ${conceptColors[concept.slug]} p-8 sm:p-10`}
-                >
-                  <p
-                    className={`text-[0.625rem] uppercase tracking-[0.25em] opacity-50 ${conceptText[concept.slug]}`}
-                  >
-                    Concept {String(index + 1).padStart(2, "0")}
+          <ol className="threshold-carved-list mt-16">
+            {concepts.map((concept, index) => (
+              <li key={concept.slug}>
+                <Link href={`/concepts/${concept.slug}`} className="group block">
+                  <p className="type-folio">
+                    Instrument {String(index + 1).padStart(2, "0")}
                   </p>
-                  <h2
-                    className={`mt-3 font-heading text-2xl sm:text-3xl ${conceptText[concept.slug]}`}
-                  >
+                  <h2 className="type-entry mt-3 text-charcoal transition-colors duration-[1200ms] group-hover:text-forest">
                     {concept.title}
                   </h2>
-                  <p
-                    className={`mt-2 text-lg opacity-80 ${conceptText[concept.slug]}`}
-                  >
-                    {concept.tagline}
-                  </p>
-                </div>
-                <div className="border-t border-white/10 bg-[#0d1014] p-6 sm:p-8">
-                  <p className="text-sm text-ivory/50">{concept.philosophy}</p>
-                  <p className="mt-3 text-[0.8125rem] text-forest-light">
+                  <p className="type-lead mt-2 text-base">{concept.tagline}</p>
+                  <p className="type-body mt-5 text-[0.9375rem]">{concept.philosophy}</p>
+                  <p className="mt-4 text-[0.8125rem] text-forest-faint">
                     {concept.interaction}
                   </p>
-                  <span className="mt-6 inline-block text-[0.6875rem] uppercase tracking-[0.15em] text-ivory/40 group-hover:text-ivory/70">
-                    Enter prototype →
+                  <span className="mt-6 inline-block text-[0.6875rem] uppercase tracking-[0.15em] text-charcoal-faint transition-colors duration-[1200ms] group-hover:text-forest">
+                    Enter the prototype →
                   </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </div>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+    </Room>
   );
 }

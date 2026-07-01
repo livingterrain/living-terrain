@@ -6,3 +6,4 @@ export { StructuralGrid } from "./StructuralGrid";
 export { FieldTexture } from "./FieldTexture";
 export { TopoMotif } from "./TopoMotif";
 export { HeroAtmosphere } from "./HeroAtmosphere";
+export { CarvedSurface, PathwayLink, ThresholdChamber } from "./threshold";

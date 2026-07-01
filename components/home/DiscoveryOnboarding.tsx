@@ -1,28 +1,38 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-
-const ease = [0.45, 0.05, 0.55, 0.95] as const;
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { NAVIGATION } from "@/lib/atmosphere/tempo";
 
 interface DiscoveryOnboardingProps {
   visible: boolean;
 }
 
 export function DiscoveryOnboarding({ visible }: DiscoveryOnboardingProps) {
+  const reducedMotion = useReducedMotion();
+
   return (
-    <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center">
+    <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-6">
       <AnimatePresence>
         {visible && (
-          <motion.p
+          <motion.div
             key="intro"
-            initial={{ opacity: 0, y: 8 }}
+            initial={reducedMotion ? false : { opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 2, ease }}
-            className="max-w-md px-6 text-center font-heading text-lg leading-relaxed text-ivory/80 sm:px-8 sm:text-xl sm:text-ivory/75 md:text-2xl"
+            exit={reducedMotion ? undefined : { opacity: 0, y: -4 }}
+            transition={{
+              duration: reducedMotion ? 0.01 : 2.6,
+              ease: NAVIGATION.ease,
+            }}
+            className="max-w-md text-center"
           >
-            Every inquiry begins with a question.
-          </motion.p>
+            <p className="font-heading text-lg leading-relaxed text-ivory/78 sm:text-xl">
+              Begin at the radiant center — or choose a realm.
+            </p>
+            <p className="mt-5 text-[0.8125rem] leading-relaxed text-ivory/38 sm:text-sm">
+              Large bodies hold the architecture. Smaller stars await closer
+              wandering.
+            </p>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

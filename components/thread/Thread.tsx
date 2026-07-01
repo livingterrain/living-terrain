@@ -9,6 +9,7 @@ interface ThreadProps {
   returnHref: string;
   returnLabel?: string;
   className?: string;
+  variant?: "light" | "observatory";
 }
 
 /**
@@ -20,16 +21,30 @@ export function Thread({
   returnHref,
   returnLabel,
   className,
+  variant = "light",
 }: ThreadProps) {
   const view = resolveThread(nodeRef);
   if (!view || view.followLinks.length === 0) return null;
 
+  const dark = variant === "observatory";
+
   return (
     <aside
-      className={cn("mt-12 border-t border-rule/40 pt-10", className)}
+      className={cn(
+        "mt-12 border-t pt-10",
+        dark ? "border-[var(--obs-border)]" : "border-rule/40",
+        className,
+      )}
       aria-label="Follow the thread"
     >
-      <h2 className="type-folio text-charcoal-faint">Follow the Thread</h2>
+      <h2
+        className={cn(
+          "type-folio",
+          dark ? "text-[var(--obs-amber-dim)]" : "text-charcoal-faint",
+        )}
+      >
+        Follow the Thread
+      </h2>
 
       <ol className="mt-8 space-y-7">
         {view.followLinks.map((link) => (
@@ -40,6 +55,7 @@ export function Thread({
               title={link.node.title}
               rationale={link.rationale}
               quote={link.quote}
+              dark={dark}
             />
           </li>
         ))}
@@ -60,25 +76,46 @@ function ThreadLink({
   title,
   rationale,
   quote,
+  dark = false,
 }: {
   href: string;
   external?: boolean;
   title: string;
   rationale: string;
   quote?: string;
+  dark?: boolean;
 }) {
   const classes = "group block transition-colors duration-700";
 
   const content = (
     <>
-      <span className="font-heading text-lg text-charcoal transition-colors duration-700 group-hover:text-forest sm:text-xl">
+      <span
+        className={cn(
+          "font-heading text-lg transition-colors duration-700 sm:text-xl",
+          dark
+            ? "text-[var(--obs-ivory)] group-hover:text-[var(--obs-amber)]"
+            : "text-charcoal group-hover:text-forest",
+        )}
+      >
         {title}
       </span>
-      <span className="type-body mt-2 block text-[0.875rem] leading-relaxed text-charcoal-faint">
+      <span
+        className={cn(
+          "type-body mt-2 block text-[0.875rem] leading-relaxed",
+          dark ? "text-[var(--obs-muted)]" : "text-charcoal-faint",
+        )}
+      >
         ↳ {rationale}
       </span>
       {quote && (
-        <span className="type-body mt-3 block border-l border-rule/50 pl-4 text-[0.8125rem] italic text-charcoal-faint/90">
+        <span
+          className={cn(
+            "type-body mt-3 block border-l pl-4 text-[0.8125rem] italic",
+            dark
+              ? "border-[var(--obs-border)] text-[var(--obs-faint)]"
+              : "border-rule/50 text-charcoal-faint/90",
+          )}
+        >
           {quote}
         </span>
       )}

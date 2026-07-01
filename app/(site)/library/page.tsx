@@ -15,10 +15,7 @@ export default function LibraryPage() {
 
   return (
     <Room kind="archive">
-      <RoomThreshold
-        kind="archive"
-        description="Not a storefront — an archive. Each volume rests here as part of a longer inquiry, connected to questions and discoveries across the terrain."
-      />
+      <RoomThreshold kind="archive" />
 
       <section className="pb-24 pt-8 sm:pb-32">
         <Container narrow>

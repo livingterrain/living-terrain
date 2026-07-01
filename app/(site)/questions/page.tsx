@@ -16,10 +16,7 @@ export default function QuestionsPage() {
 
   return (
     <Room kind="pathways">
-      <RoomThreshold
-        kind="pathways"
-        description="Rather than categories, this terrain is organized around living inquiries — hubs where essays, volumes, and observations converge."
-      />
+      <RoomThreshold kind="pathways" />
 
       <section className="pb-24 pt-8 sm:pb-32">
         <Container>

@@ -66,9 +66,9 @@ function QuestionHubPlate({
       )}
     >
       <DiscoveryNode id={question.id} peers={peerIds} as="article">
-        <Link href={`/questions/${question.slug}`} className="group block">
-          <div className="relative border border-rule/70 bg-ivory/45 px-8 py-10 transition-colors duration-700 group-hover:border-forest/20 group-hover:bg-ivory/65 sm:px-10 sm:py-12">
-            <span className="type-folio absolute -top-3 left-8 bg-ivory px-2">
+        <Link href={`/questions/${question.slug}`} className="terrain-list-link group block">
+          <div className="relative border border-rule/70 bg-ivory/45 px-6 py-8 transition-colors duration-700 group-hover:border-forest/20 group-hover:bg-ivory/65 sm:px-10 sm:py-12">
+            <span className="type-folio absolute -top-3 left-6 bg-ivory px-2 sm:left-8">
               Hub {String(index + 1).padStart(2, "0")}
             </span>
 

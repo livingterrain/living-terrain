@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 const roomTints: Record<RoomKind, string> = {
   pathways: "text-forest",
   reading: "text-forest/90",
+  library: "text-forest/85",
+  guide: "text-forest/80",
   notebook: "text-charcoal",
   archive: "text-charcoal-muted",
   observatory: "text-forest",

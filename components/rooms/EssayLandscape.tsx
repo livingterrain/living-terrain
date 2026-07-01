@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import { DiscoveryNode } from "@/components/discovery";
 import { TextLink } from "@/components/design-system";
 import { EssayRelationHints } from "@/components/reading/EssayRelations";
@@ -17,6 +18,7 @@ interface EssayLandscapeProps {
 export function EssayLandscape({ clusters }: EssayLandscapeProps) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-5% 0px" });
+  const { isMobile } = useBreakpoint();
 
   if (clusters.length === 0) {
     return (
@@ -45,7 +47,7 @@ export function EssayLandscape({ clusters }: EssayLandscapeProps) {
               ease: [0.45, 0.05, 0.55, 0.95],
             }}
           >
-            <div className="border-t border-rule/50 pt-10">
+            <div className="threshold-carved threshold-carved--edge pt-10">
               {cluster.question ? (
                 <Link
                   href={`/questions/${cluster.question.slug}`}
@@ -69,11 +71,11 @@ export function EssayLandscape({ clusters }: EssayLandscapeProps) {
                 {cluster.essays.map((essay, essayIndex) => (
                   <motion.li
                     key={essay.id}
-                    initial={{ opacity: 0, x: essayIndex % 2 === 0 ? -6 : 6 }}
+                    initial={{ opacity: 0, x: isMobile ? 0 : essayIndex % 2 === 0 ? -6 : 6 }}
                     animate={
                       inView
                         ? { opacity: 1, x: 0 }
-                        : { opacity: 0, x: essayIndex % 2 === 0 ? -6 : 6 }
+                        : { opacity: 0, x: isMobile ? 0 : essayIndex % 2 === 0 ? -6 : 6 }
                     }
                     transition={{
                       duration: 1.1,
@@ -85,11 +87,11 @@ export function EssayLandscape({ clusters }: EssayLandscapeProps) {
                       id={essay.id}
                       peers={getEssayPeerIds(essay)}
                       as="article"
-                      className="border border-rule/45 bg-ivory/35 px-7 py-8 sm:px-9 sm:py-10"
+                      className="threshold-carved threshold-carved--edge px-0 py-8 sm:py-10"
                     >
                       <div className="flex flex-col gap-5 sm:flex-row sm:justify-between">
                         <div className="sm:max-w-lg">
-                          <Link href={`/essays/${essay.slug}`} className="group block">
+                          <Link href={`/essays/${essay.slug}`} className="terrain-list-link group block">
                             <h3 className="type-entry text-charcoal transition-colors duration-700 group-hover:text-forest">
                               {essay.title}
                             </h3>

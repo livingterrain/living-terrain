@@ -46,7 +46,7 @@ export const NAVIGATION = {
     softDurationMs: breathe(520),
   },
   /** Persistent atmosphere crossfade on zone change */
-  zoneCrossfadeMs: breathe(820),
+  zoneCrossfadeMs: 3200,
 } as const;
 
 /** Quiet discovery while reading — earned, never advertised */

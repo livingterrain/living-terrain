@@ -5,6 +5,7 @@ export { SiteTransition } from "./SiteTransition";
 export { CircadianRoot } from "./CircadianRoot";
 export { CircadianRoomWash } from "./CircadianRoomWash";
 export { PersistentTerrainAtmosphere } from "./PersistentTerrainAtmosphere";
+export { ObservatoryLandscapeBackdrop } from "./ObservatoryLandscapeBackdrop";
 export { TerrainContentShell } from "./TerrainContentShell";
 export {
   classifyTransition,

@@ -13,8 +13,12 @@ import { ChoosePathPanel } from "./ChoosePathPanel";
 import { ConstellationCanvas } from "./ConstellationCanvas";
 import { ConstellationHabitat } from "./ConstellationHabitat";
 import { DiscoveryOnboarding } from "./DiscoveryOnboarding";
+import { HeadingBloom } from "./HeadingBloom";
 import { MapWhisper } from "./MapWhisper";
 import { MobileTerrainGuide } from "./MobileTerrainGuide";
+import { TerrainPulse } from "./TerrainPulse";
+import { StoneMapVeil } from "@/components/world";
+import { ThresholdHeroLandscape } from "./ThresholdHeroLandscape";
 import { ThresholdAtmosphere } from "./ThresholdAtmosphere";
 import { ThresholdChoices } from "./ThresholdChoices";
 import { computeDiscoveryDepth } from "@/lib/concepts/constellation-discovery";
@@ -27,14 +31,13 @@ import {
   saveConstellationSession,
   clearConstellationSession,
 } from "@/lib/constellation/session";
-import { cn } from "@/lib/utils";
 import { THRESHOLD, NAVIGATION } from "@/lib/atmosphere/tempo";
 import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import { usePrefersReducedMotion } from "@/lib/atmosphere/use-prefers-reduced-motion";
 
 type Phase = "threshold" | "crossing" | "within";
 
-const fade = { duration: 2.6, ease: [0.45, 0.05, 0.55, 0.95] as const };
+const fade = { duration: 2.8, ease: NAVIGATION.ease };
 
 export function ThresholdWorld() {
   const router = useRouter();
@@ -249,11 +252,11 @@ export function ThresholdWorld() {
 
   return (
     <div
-      className="fixed inset-0 flex flex-col overflow-hidden text-ivory transition-[background-color] duration-[300s] supports-[height:100dvh]:min-h-[100dvh] min-h-screen"
+      className="threshold-page-breathe fixed inset-0 flex flex-col overflow-hidden text-ivory transition-[background-color] duration-[300s] supports-[height:100dvh]:min-h-[100dvh] min-h-screen"
       style={{ backgroundColor: circadian.voidBase }}
     >
       <ThresholdAtmosphere
-        starBrightness={starBrightness}
+        starBrightness={entered || crossing ? starBrightness : 0}
         fogDensity={fogDensity}
         clarity={entered}
         revealProgress={entered ? revealProgress : 0}
@@ -280,43 +283,49 @@ export function ThresholdWorld() {
             exit={{ opacity: 0 }}
             transition={{ duration: crossing ? fadeDuration * 0.9 : 0.6, ease: fade.ease }}
           >
-            <div
-              className={cn(
-                "absolute inset-0 transition-[background-color,backdrop-filter] duration-[2.8s]",
-                crossing
-                  ? "bg-[#040506]/75 backdrop-blur-[3px]"
-                  : "bg-[#040506]/88 backdrop-blur-[1px]",
-              )}
-            />
+            <ThresholdHeroLandscape crossing={crossing} reducedMotion={reducedMotion} />
 
-            <div className="relative z-10 mx-auto my-auto w-full max-w-2xl px-5 py-8 text-center sm:px-8 sm:py-10">
+            <div
+              className="hero-foreground relative z-10 mx-auto my-auto w-full max-w-2xl py-8 text-center sm:py-10"
+              style={{
+                paddingLeft: "max(1.25rem, env(safe-area-inset-left, 0px))",
+                paddingRight: "max(1.25rem, env(safe-area-inset-right, 0px))",
+              }}
+            >
               <motion.p
-                className="type-chamber text-ivory/35 sm:text-ivory/25"
-                initial={{ opacity: 0.4 }}
+                className="type-chamber text-ivory/38 sm:text-ivory/32"
+                initial={{ opacity: 0 }}
                 animate={{ opacity: crossing ? 0 : 1 }}
-                transition={{ duration: 1.2, delay: 0.15, ease: fade.ease }}
+                transition={{ duration: 1.6, delay: 0.1, ease: fade.ease }}
               >
                 Threshold
               </motion.p>
 
               <motion.h1
-                className="mt-4 font-heading text-[1.75rem] leading-tight text-ivory sm:mt-6 sm:text-3xl sm:leading-tight md:text-4xl"
-                initial={{ opacity: 0.4 }}
-                animate={{ opacity: crossing ? 0 : 1 }}
-                transition={{ duration: 1.4, delay: 0.25, ease: fade.ease }}
+                className="mt-5 font-heading text-[1.75rem] leading-[1.12] text-ivory sm:mt-7 sm:text-3xl md:text-[2.25rem]"
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: crossing ? 0 : 1, y: crossing ? -4 : 0 }}
+                transition={{ duration: 1.9, delay: 0.22, ease: fade.ease }}
               >
-                Living Terrain
+                <HeadingBloom bloomClassName="hero-heading-bloom inset-[-2.5rem_-3.5rem] sm:inset-[-3rem_-4.5rem]">
+                  Living Terrain
+                </HeadingBloom>
               </motion.h1>
 
-              <motion.p
-                className="mx-auto mt-5 max-w-md text-[0.9375rem] leading-relaxed text-ivory/55 sm:mt-8 sm:max-w-none sm:text-base sm:text-ivory/50 md:text-lg"
-                initial={{ opacity: 0.35 }}
-                animate={{ opacity: crossing ? 0 : 1 }}
-                transition={{ duration: 1.5, delay: 0.45, ease: fade.ease }}
+              <motion.div
+                className="mx-auto mt-8 max-w-md space-y-5 text-left text-[0.9375rem] leading-[1.92] text-ivory/52 sm:mt-10 sm:max-w-lg sm:text-center sm:text-base sm:leading-[1.96]"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: crossing ? 0 : 1, y: crossing ? -3 : 0 }}
+                transition={{ duration: 2, delay: 0.38, ease: fade.ease }}
               >
-                An observatory for questions, ideas, and connections — enter
-                as you prefer: by wandering the map, or by reading.
-              </motion.p>
+                <p className="font-heading text-lg italic leading-[1.65] text-ivory/62 sm:text-xl">
+                  Something vast and quiet lies ahead.
+                </p>
+                <p>You need not understand it yet.</p>
+                <p className="text-ivory/44">
+                  Step forward when something pulls you.
+                </p>
+              </motion.div>
 
               {!crossing && (
                 <ThresholdChoices onExplore={handleCross} exploring={crossing} />
@@ -340,7 +349,9 @@ export function ThresholdWorld() {
               className="flex min-h-11 min-w-11 items-center font-heading text-[0.9375rem] text-ivory/80 sm:text-sm sm:text-ivory/75 md:text-base"
               onClick={returnToThreshold}
             >
-              Living Terrain
+              <HeadingBloom bloomClassName="inset-[-1.25rem_-2rem] opacity-80">
+                Living Terrain
+              </HeadingBloom>
             </Link>
             <div className="flex items-center gap-1 sm:gap-5">
               <TerrainLink
@@ -367,7 +378,7 @@ export function ThresholdWorld() {
         className="relative z-10 min-h-0 flex-1 isolation-isolate"
         initial={{ opacity: arriving ? 0.2 : 0 }}
         animate={{
-          opacity: entered ? 1 : crossing ? 0.35 : 0.18,
+          opacity: entered ? 1 : crossing ? 0.35 : 0,
         }}
         transition={{
           duration: crossing
@@ -385,7 +396,8 @@ export function ThresholdWorld() {
           </div>
         )}
 
-        <div className="hidden h-full md:block">
+        <div className="relative hidden h-full md:block">
+          <StoneMapVeil active={entered && discoveryAwake} />
           <ConstellationCanvas
             nodes={nodes}
             edges={edges}
@@ -435,6 +447,13 @@ export function ThresholdWorld() {
             paused={!discoveryAwake || !!hoveredId || introVisible}
             className="z-[25]"
           />
+
+          {entered && discoveryAwake && !introVisible && !hoveredId && (
+            <TerrainPulse
+              variant="map"
+              className="pointer-events-none fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-5 z-20"
+            />
+          )}
 
           <ChoosePathPanel visible={showPathPanel} onPathSelect={markExplored} />
         </div>

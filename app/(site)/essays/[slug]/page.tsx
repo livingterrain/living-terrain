@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Container } from "@/components/layout/Container";
-import { Room, RoomThreshold } from "@/components/environment";
-import { Thread } from "@/components/thread";
-import { QuietDiscovery } from "@/components/reading/QuietDiscovery";
-import { TerrainConnectionInvite } from "@/components/reading/TerrainConnectionInvite";
+import { LanternReadingShell } from "@/components/world/LanternReadingShell";
 import { TextLink } from "@/components/design-system";
-import { FadeIn } from "@/components/motion/FadeIn";
 import {
   getAllEssays,
   getEssayBySlug,
   getEssayReadUrl,
 } from "@/lib/content";
 import { refFromEssay } from "@/lib/relationships";
-import { pickDiscoveryCue } from "@/lib/reading/discovery-cue";
 import { formatDate } from "@/lib/utils";
 
 interface PageProps {
@@ -41,55 +35,36 @@ export default async function EssayPage({ params }: PageProps) {
   if (!essay) notFound();
 
   const nodeRef = refFromEssay(essay);
-  const discoveryCue = pickDiscoveryCue(nodeRef);
 
   return (
-    <Room kind="reading">
-      <RoomThreshold kind="reading" title={essay.title}>
-        {essay.subtitle && (
-          <p className="type-lead mt-4 text-base sm:text-lg">{essay.subtitle}</p>
-        )}
-        <p className="type-meta mt-6">{formatDate(essay.publishedAt)}</p>
-        {essay.topics.length > 0 && (
-          <p className="type-meta mt-3 text-forest-faint">
-            {essay.topics.join(" · ")}
-          </p>
-        )}
-      </RoomThreshold>
-
-      <section className="pb-32 pt-10 sm:pb-40">
-        <Container narrow>
-          <FadeIn>
-            <p className="type-body sm:text-lg">{essay.excerpt}</p>
-
-            <p className="type-body mt-8 text-[0.9375rem]">
-              The full essay is published on Medium. Living Terrain links to it
-              here as part of a curated map of the work.
-            </p>
-
-            <TextLink href={getEssayReadUrl(essay)} external className="mt-8 inline-block">
-              Read on Medium
-            </TextLink>
-
-            <TerrainConnectionInvite nodeRef={nodeRef} className="mt-12" />
-
-            <Thread
-              nodeRef={nodeRef}
-              returnHref={`/essays/${essay.slug}`}
-            />
-          </FadeIn>
-
-          {discoveryCue && (
-            <QuietDiscovery nodeRef={nodeRef} cue={discoveryCue} />
+    <LanternReadingShell
+      collection="Essay"
+      title={essay.title}
+      subtitle={essay.subtitle}
+      meta={
+        <>
+          {formatDate(essay.publishedAt)}
+          {essay.topics.length > 0 && (
+            <span className="mt-1 block">{essay.topics.join(" · ")}</span>
           )}
-
-          <div className="mt-16 border-t border-rule/50 pt-8">
-            <TextLink href="/essays" className="type-body text-sm">
-              ← Back to the reading room
-            </TextLink>
-          </div>
-        </Container>
-      </section>
-    </Room>
+        </>
+      }
+      nodeRef={nodeRef}
+      returnHref="/essays"
+      variant="library"
+    >
+      <p>{essay.excerpt}</p>
+      <p className="mt-8 text-[0.9375rem] text-charcoal-muted">
+        The full essay is published on Medium. Living Terrain holds it here as
+        part of a connected investigation.
+      </p>
+      <TextLink
+        href={getEssayReadUrl(essay)}
+        external
+        className="mt-8 inline-block"
+      >
+        Read on Medium
+      </TextLink>
+    </LanternReadingShell>
   );
 }

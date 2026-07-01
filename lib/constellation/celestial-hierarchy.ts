@@ -76,12 +76,12 @@ export interface CelestialBodyStyle {
 const STYLES: Record<CelestialTier, CelestialBodyStyle> = {
   origin: {
     tier: "origin",
-    sizeFloor: 0.014,
-    sizeBoost: 1.75,
-    haloMul: 4.2,
-    glowRest: 0.62,
-    glowHover: 1.75,
-    glowExplored: 0.95,
+    sizeFloor: 0.016,
+    sizeBoost: 1.85,
+    haloMul: 4.6,
+    glowRest: 0.72,
+    glowHover: 1.85,
+    glowExplored: 1.05,
     hoverScale: 1.04,
     restingOpacity: 1,
     exploredOpacity: 1,
@@ -101,16 +101,16 @@ const STYLES: Record<CelestialTier, CelestialBodyStyle> = {
   },
   constellation: {
     tier: "constellation",
-    sizeFloor: 0.0085,
-    sizeBoost: 1.35,
-    haloMul: 2.85,
-    glowRest: 0.38,
-    glowHover: 1.15,
-    glowExplored: 0.72,
+    sizeFloor: 0.0115,
+    sizeBoost: 1.58,
+    haloMul: 3.35,
+    glowRest: 0.58,
+    glowHover: 1.32,
+    glowExplored: 0.86,
     hoverScale: 1.06,
-    restingOpacity: 0.94,
+    restingOpacity: 0.98,
     exploredOpacity: 1,
-    minorOpacity: 0.88,
+    minorOpacity: 0.92,
     pulseSec: 12.5,
     pulseOpacity: "0.1;0.24;0.1",
     breathe: true,
@@ -126,16 +126,16 @@ const STYLES: Record<CelestialTier, CelestialBodyStyle> = {
   },
   supporting: {
     tier: "supporting",
-    sizeFloor: 0.0048,
-    sizeBoost: 1.1,
-    haloMul: 1.65,
-    glowRest: 0.14,
-    glowHover: 0.55,
-    glowExplored: 0.38,
-    hoverScale: 1.08,
-    restingOpacity: 0.55,
-    exploredOpacity: 0.88,
-    minorOpacity: 0.48,
+    sizeFloor: 0.0034,
+    sizeBoost: 0.92,
+    haloMul: 1.28,
+    glowRest: 0.08,
+    glowHover: 0.38,
+    glowExplored: 0.28,
+    hoverScale: 1.06,
+    restingOpacity: 0.42,
+    exploredOpacity: 0.72,
+    minorOpacity: 0.32,
     pulseSec: 14,
     pulseOpacity: "0.03;0.09;0.03",
     breathe: true,
@@ -151,16 +151,16 @@ const STYLES: Record<CelestialTier, CelestialBodyStyle> = {
   },
   observation: {
     tier: "observation",
-    sizeFloor: 0.0024,
-    sizeBoost: 0.95,
-    haloMul: 1.15,
-    glowRest: 0.06,
-    glowHover: 0.28,
-    glowExplored: 0.18,
+    sizeFloor: 0.0016,
+    sizeBoost: 0.82,
+    haloMul: 0.95,
+    glowRest: 0.04,
+    glowHover: 0.2,
+    glowExplored: 0.12,
     hoverScale: 1.14,
-    restingOpacity: 0.28,
-    exploredOpacity: 0.62,
-    minorOpacity: 0.22,
+    restingOpacity: 0.2,
+    exploredOpacity: 0.5,
+    minorOpacity: 0.14,
     pulseSec: 16,
     pulseOpacity: "0.02;0.06;0.02",
     breathe: true,
@@ -187,14 +187,24 @@ export function celestialStyleFor(node: GraphNode): CelestialBodyStyle {
 /** Body radius in viewBox units — scale communicates rank before any label is read */
 export function celestialRadius(node: GraphNode, viewBoxW: number): number {
   const style = celestialStyleFor(node);
-  const scaled = node.size * (viewBoxW / 1500) * style.sizeBoost;
+  const kindMul =
+    node.kind === "essay"
+      ? 0.86
+      : node.kind === "book"
+        ? 1.04
+        : node.kind === "field-note" || node.kind === "observation"
+          ? 0.78
+          : node.kind === "question" || node.kind === "quotation"
+            ? 0.72
+            : 1;
+  const scaled = node.size * (viewBoxW / 1500) * style.sizeBoost * kindMul;
   const floor = viewBoxW * style.sizeFloor;
   return Math.max(scaled, floor);
 }
 
 export function celestialLabelSize(node: GraphNode, viewBoxW: number): number {
   const style = celestialStyleFor(node);
-  const mins = { origin: 18, constellation: 14, supporting: 10, observation: 8 } as const;
+  const mins = { origin: 20, constellation: 16, supporting: 9, observation: 7 } as const;
   return Math.max(mins[style.tier], viewBoxW * style.fontScale);
 }
 

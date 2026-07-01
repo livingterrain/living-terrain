@@ -56,7 +56,7 @@ export function SearchDialog() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="type-meta text-charcoal-muted transition-colors duration-500 hover:text-forest"
+        className="type-meta text-charcoal-muted transition-colors duration-500 hover:text-forest active:text-forest/80"
         aria-label="Search catalog"
       >
         Search
@@ -78,7 +78,10 @@ export function SearchDialog() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6, ease: [0.45, 0.05, 0.55, 0.95] }}
-              className="fixed top-[12%] left-1/2 z-50 w-[calc(100%-3rem)] max-w-lg -translate-x-1/2"
+              className="fixed z-50 w-[calc(100%-2rem)] max-w-lg left-1/2 -translate-x-1/2"
+              style={{
+                top: "max(1.25rem, env(safe-area-inset-top))",
+              }}
             >
               <div className="border border-rule bg-ivory">
                 <div className="border-b border-rule px-5">
@@ -100,8 +103,8 @@ export function SearchDialog() {
                       key={result.id}
                       onClick={() => go(result.href)}
                       className={cn(
-                        "w-full border-b border-rule/60 px-5 py-5 text-left",
-                        "transition-colors duration-[600ms] hover:bg-ivory-deep/40",
+                        "w-full border-b border-rule/60 px-5 py-4 text-left touch-manipulation min-h-[3.25rem]",
+                        "transition-colors duration-[600ms] hover:bg-ivory-deep/40 active:bg-ivory-deep/50",
                       )}
                     >
                       <p className="type-folio">{typeLabels[result.type]}</p>

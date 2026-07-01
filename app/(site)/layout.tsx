@@ -11,7 +11,7 @@ export default function SiteLayout({
   return (
     <ThreadProvider>
       <SoundNavigationBridge />
-      <div className="relative z-10 flex min-h-screen flex-col bg-ivory/0">
+      <div className="relative z-10 flex min-h-screen flex-col">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

@@ -35,7 +35,7 @@ export function Chamber({
       id={id}
       ref={ref}
       className={cn(
-        "relative border-b border-rule/50",
+        "threshold-chamber relative",
         tone && tones[tone],
         className,
       )}
@@ -44,7 +44,7 @@ export function Chamber({
         <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.45, 0.05, 0.55, 0.95] }}
+          transition={{ duration: 2.4, ease: [0.45, 0.05, 0.55, 0.95] }}
           className="type-chamber absolute left-6 top-8 z-10 sm:left-10"
         >
           {name}
@@ -53,7 +53,7 @@ export function Chamber({
       <motion.div
         initial={{ opacity: 0 }}
         animate={inView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 1.6, ease: [0.45, 0.05, 0.55, 0.95] }}
+        transition={{ duration: 2.8, ease: [0.45, 0.05, 0.55, 0.95] }}
         className="relative z-10"
       >
         {children}

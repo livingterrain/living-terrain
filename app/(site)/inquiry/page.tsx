@@ -20,12 +20,10 @@ export default function InquiryPage() {
   const fieldNotes = getAllFieldNotes();
 
   return (
-    <Room kind="reading" discovery={false}>
+    <Room kind="library">
       <RoomThreshold
-        kind="reading"
-        title="Read the Inquiry"
-        whisper="A quiet room for reading."
-        description="Essays, volumes, and field observations — gathered here for reading at your own pace. Connections to the wider terrain are always nearby, never required."
+        kind="library"
+        whisper="Essays, volumes, and field observations — resting in the quiet."
         align="center"
       />
 

@@ -23,12 +23,12 @@ export function InquiryHub({ essays, books, fieldNotes }: InquiryHubProps) {
           <h2 id="inquiry-essays" className="type-folio text-charcoal-faint">
             Essays
           </h2>
-          <ul className="mt-8 divide-y divide-rule/40">
+          <ul className="threshold-carved-list mt-8">
             {essays.map((essay) => (
-              <li key={essay.id} className="py-8 first:pt-0">
+              <li key={essay.id}>
                 <Link
                   href={`/essays/${essay.slug}`}
-                  className="group block"
+                  className="terrain-list-link group"
                 >
                   <p className="type-meta text-forest-faint">
                     {formatDate(essay.publishedAt)}
@@ -60,10 +60,10 @@ export function InquiryHub({ essays, books, fieldNotes }: InquiryHubProps) {
           <h2 id="inquiry-volumes" className="type-folio text-charcoal-faint">
             Volumes
           </h2>
-          <ul className="mt-8 divide-y divide-rule/40">
+          <ul className="threshold-carved-list mt-8">
             {books.map((book) => (
-              <li key={book.id} className="py-8 first:pt-0">
-                <Link href={`/library/${book.slug}`} className="group block">
+              <li key={book.id}>
+                <Link href={`/library/${book.slug}`} className="terrain-list-link group">
                   {book.publishedYear && (
                     <p className="type-meta text-forest-faint">
                       {book.publishedYear}
@@ -96,12 +96,12 @@ export function InquiryHub({ essays, books, fieldNotes }: InquiryHubProps) {
           <h2 id="inquiry-notes" className="type-folio text-charcoal-faint">
             Field notes
           </h2>
-          <ul className="mt-8 divide-y divide-rule/40">
+          <ul className="threshold-carved-list mt-8">
             {fieldNotes.map((note) => (
-              <li key={note.id} className="py-8 first:pt-0">
+              <li key={note.id}>
                 <Link
                   href={`/field-notes/${note.slug}`}
-                  className="group block"
+                  className="terrain-list-link group"
                 >
                   <p className="type-meta text-forest-faint">
                     {formatDate(note.publishedAt)}
@@ -124,11 +124,11 @@ export function InquiryHub({ essays, books, fieldNotes }: InquiryHubProps) {
         </section>
       )}
 
-      <footer className="border-t border-rule/50 pt-12 text-center">
+      <footer className="threshold-carved threshold-carved--edge pt-12 text-center">
         <p className="type-body text-sm text-charcoal-muted">
           Prefer to wander visually?
         </p>
-        <TextLink href="/" className="mt-3 inline-block text-sm">
+        <TextLink href="/" className="mt-3 inline-flex min-h-11 items-center text-sm">
           Explore the Living Terrain →
         </TextLink>
       </footer>

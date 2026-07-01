@@ -11,6 +11,7 @@ import {
   whisperForNode,
 } from "@/lib/concepts/constellation-discovery";
 import { cn } from "@/lib/utils";
+import { TerrainPulse } from "./TerrainPulse";
 
 interface MobileTerrainGuideProps {
   nodes: GraphNode[];
@@ -58,12 +59,18 @@ export function MobileTerrainGuide({
       }}
       aria-label="Guided paths across the terrain"
     >
-      <div className="mx-auto w-full max-w-lg px-5 pb-6 pt-2">
+      <div
+        className="mx-auto w-full max-w-lg pb-6 pt-2"
+        style={{
+          paddingLeft: "max(1.25rem, env(safe-area-inset-left, 0px))",
+          paddingRight: "max(1.25rem, env(safe-area-inset-right, 0px))",
+        }}
+      >
         <motion.p
           {...motionProps}
           className="type-chamber text-center text-[0.625rem] text-ivory/40"
         >
-          Six paths radiate outward
+          Begin at the center — or choose a realm
         </motion.p>
 
         {chamber && discoveryAwake && (
@@ -149,10 +156,14 @@ export function MobileTerrainGuide({
           </div>
         )}
 
-        <p className="mt-10 text-center text-[0.8125rem] leading-relaxed text-ivory/35">
-          On a larger screen, the full constellation opens — draggable, zoomable,
+        <p className="mt-10 text-center text-[0.8125rem] leading-relaxed text-ivory/32">
+          On a larger screen, the full constellation opens — draggable, quiet,
           alive with connections.
         </p>
+
+        <div className="mx-auto mt-10 max-w-xs border-t border-ivory/[0.04]">
+          <TerrainPulse variant="threshold" className="!mt-7" />
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import { locationForPath, placeForPath } from "@/lib/world/location-for-path";
 import { CircadianRoomWash } from "@/components/atmosphere/CircadianRoomWash";
 import { LingerWhisper, ScrollDepth } from "@/components/atmosphere";
 import { cn } from "@/lib/utils";
@@ -12,6 +14,7 @@ import {
   DiscoveryProvider,
 } from "@/components/discovery";
 import { RoomAtmosphere } from "./RoomAtmosphere";
+import { CuriosityContinuation } from "@/components/world/CuriosityContinuation";
 
 interface RoomProps {
   kind: RoomKind;
@@ -27,7 +30,10 @@ export function Room({
   className,
   discovery = false,
 }: RoomProps) {
+  const pathname = usePathname();
   const profile = rooms[kind];
+  const worldLoc = locationForPath(pathname);
+  const place = placeForPath(pathname);
 
   return (
     <DiscoveryProvider enabled={discovery}>
@@ -37,6 +43,8 @@ export function Room({
           profile.surface,
           className,
         )}
+        data-world-location={worldLoc}
+        data-world-place={place}
       >
         {discovery && <ScrollDepth kind={kind} />}
         {discovery && <DiscoveryField kind={kind} />}
@@ -47,7 +55,10 @@ export function Room({
           aria-hidden
         />
         {discovery && <DiscoveryCursor />}
-        <div className={cn("relative z-10", profile.vignette)}>{children}</div>
+        <div className={cn("relative z-10", profile.vignette)}>
+          {children}
+          <CuriosityContinuation />
+        </div>
         {discovery && <LingerWhisper variant="room" delay={28000} />}
       </div>
     </DiscoveryProvider>

@@ -2,7 +2,10 @@
 
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { Container } from "@/components/layout/Container";
+import { THRESHOLD_MOTION } from "@/lib/design-system/threshold";
+import { placeForPath } from "@/lib/world/location-for-path";
 import { cn } from "@/lib/utils";
 import type { RoomKind } from "@/lib/rooms";
 import { rooms } from "@/lib/rooms";
@@ -17,6 +20,9 @@ interface RoomThresholdProps {
   className?: string;
 }
 
+/**
+ * Arrival at a place — whisper first, title secondary, no page header chrome.
+ */
 export function RoomThreshold({
   kind,
   title,
@@ -26,13 +32,15 @@ export function RoomThreshold({
   children,
   className,
 }: RoomThresholdProps) {
+  const pathname = usePathname();
   const profile = rooms[kind];
   const cue = whisper ?? profile.whisper;
+  const place = placeForPath(pathname);
 
   return (
     <header
       className={cn(
-        "border-b border-rule/40 py-20 sm:py-28",
+        "world-arrival py-16 sm:py-24 md:py-32",
         align === "center" && "text-center",
         className,
       )}
@@ -41,10 +49,26 @@ export function RoomThreshold({
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.6, ease: [0.45, 0.05, 0.55, 0.95] }}
+          transition={{
+            duration: THRESHOLD_MOTION.chamberRevealMs / 1000,
+            ease: THRESHOLD_MOTION.ease,
+          }}
+          className="type-chamber text-charcoal-faint/90"
+        >
+          {place}
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: THRESHOLD_MOTION.chamberRevealMs / 1000 + 0.3,
+            delay: 0.15,
+            ease: THRESHOLD_MOTION.ease,
+          }}
           className={cn(
-            "type-lead text-base sm:text-lg",
-            align === "center" && "mx-auto max-w-md",
+            "world-arrival__whisper mt-5 font-heading text-lg italic leading-[1.55] text-charcoal-muted sm:mt-6 sm:text-xl sm:leading-[1.55] md:text-2xl md:leading-[1.5]",
+            align === "center" && "mx-auto max-w-xl",
           )}
         >
           {cue}
@@ -55,12 +79,12 @@ export function RoomThreshold({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
-              duration: 1.8,
-              delay: 0.15,
-              ease: [0.45, 0.05, 0.55, 0.95],
+              duration: THRESHOLD_MOTION.chamberRevealMs / 1000,
+              delay: 0.45,
+              ease: THRESHOLD_MOTION.ease,
             }}
             className={cn(
-              "type-room mt-8 text-balance",
+              "type-room mt-10 text-balance text-charcoal/90",
               align === "center" && "mx-auto max-w-2xl",
             )}
           >
@@ -73,12 +97,12 @@ export function RoomThreshold({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
-              duration: 1.6,
-              delay: 0.3,
-              ease: [0.45, 0.05, 0.55, 0.95],
+              duration: THRESHOLD_MOTION.chamberRevealMs / 1000,
+              delay: 0.6,
+              ease: THRESHOLD_MOTION.ease,
             }}
             className={cn(
-              "type-body mt-6 max-w-2xl",
+              "type-body mt-5 max-w-xl text-charcoal-muted/85",
               align === "center" && "mx-auto",
             )}
           >
@@ -91,11 +115,11 @@ export function RoomThreshold({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
-              duration: 1.6,
-              delay: 0.45,
-              ease: [0.45, 0.05, 0.55, 0.95],
+              duration: THRESHOLD_MOTION.chamberRevealMs / 1000,
+              delay: 0.75,
+              ease: THRESHOLD_MOTION.ease,
             }}
-            className={align === "center" ? "mt-8" : "mt-6"}
+            className={align === "center" ? "mt-10" : "mt-8"}
           >
             {children}
           </motion.div>

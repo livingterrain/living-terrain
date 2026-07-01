@@ -18,10 +18,7 @@ export default function FieldNotesPage() {
 
   return (
     <Room kind="notebook">
-      <RoomThreshold
-        kind="notebook"
-        description="Brief entries — impressions, fragments, things noticed in passing. The notebook beside the longer work."
-      />
+      <RoomThreshold kind="notebook" />
 
       <section className="pb-24 pt-8 sm:pb-32">
         <Container narrow>

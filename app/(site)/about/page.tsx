@@ -14,12 +14,11 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <Room kind="reading">
+    <Room kind="guide">
       <RoomThreshold
-        kind="reading"
+        kind="guide"
         title={siteConfig.author}
-        whisper="A guide, not the subject."
-        description="Living Terrain is an ongoing investigation — not a portfolio, not a brand, but a place to think slowly about what holds the world together."
+        whisper="The one who built this place — not the subject of it."
       />
 
       <section className="pb-24 pt-8 sm:pb-32">

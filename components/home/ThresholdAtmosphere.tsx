@@ -3,6 +3,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import { DistantConstellations } from "./DistantConstellations";
+import { useAmbientScroll } from "@/lib/atmosphere/use-ambient-scroll";
 import { useCircadian } from "@/lib/atmosphere/useCircadian";
 import { cn } from "@/lib/utils";
 
@@ -24,17 +25,28 @@ export function ThresholdAtmosphere({
   revealProgress = 0,
 }: ThresholdAtmosphereProps) {
   const circadian = useCircadian();
+  const scrollOffset = useAmbientScroll();
   const containerRef = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
+  const scrollY = useMotionValue(0);
   const px = useSpring(mx, { stiffness: 20, damping: 40, mass: 1.5 });
   const py = useSpring(my, { stiffness: 20, damping: 40, mass: 1.5 });
+  const scrollSpring = useSpring(scrollY, { stiffness: 40, damping: 30, mass: 0.8 });
   const starX = useTransform(px, (v) => v * 6);
   const starY = useTransform(py, (v) => v * 5);
   const depthX = useTransform(px, (v) => v * 10);
   const depthY = useTransform(py, (v) => v * 8);
   const fogX = useTransform(px, (v) => v * 4);
   const fogY = useTransform(py, (v) => v * 3);
+  const fogScrollA = useTransform(scrollSpring, (s) => s * -0.018);
+  const fogScrollB = useTransform(scrollSpring, (s) => s * -0.032);
+  const fogScrollC = useTransform(scrollSpring, (s) => s * -0.012);
+  const dustScroll = useTransform(scrollSpring, (s) => s * -0.008);
+
+  useEffect(() => {
+    scrollY.set(scrollOffset);
+  }, [scrollOffset, scrollY]);
 
   useEffect(() => {
     const reduced = window.matchMedia(
@@ -80,15 +92,20 @@ export function ThresholdAtmosphere({
   const effectiveStarBrightness =
     starBrightness * circadian.starMul * (0.28 + reveal * 0.72);
   const fogOpacityA =
-    (clarity ? 0.018 * fogDensity : 0.045 * fogDensity) *
+    (clarity ? 0.038 * fogDensity : 0.058 * fogDensity) *
     circadian.fogMul *
     clarityBoost *
     (1 - reveal * 0.35);
   const fogOpacityB =
-    (clarity ? 0.014 * fogDensity : 0.035 * fogDensity) *
+    (clarity ? 0.03 * fogDensity : 0.048 * fogDensity) *
     circadian.fogMul *
     clarityBoost *
     (1 - reveal * 0.3);
+  const fogOpacityC =
+    (clarity ? 0.024 * fogDensity : 0.04 * fogDensity) *
+    circadian.fogMul *
+    clarityBoost *
+    (1 - reveal * 0.25);
   const dustScale =
     (clarity ? 0.35 + reveal * 0.65 : 0.15 + reveal * 0.85) *
     (circadian.phase === "night" ? 0.72 : circadian.phase === "afternoon" ? 1.05 : 1);
@@ -154,45 +171,65 @@ export function ThresholdAtmosphere({
         }}
       />
 
-      {/* Volumetric fog — two layers drifting */}
+      {/* Ethereal mist — far layer */}
       <motion.div
-        className="absolute inset-[-20%] transition-opacity duration-[2.5s]"
+        className="absolute inset-[-22%] will-change-transform transition-opacity duration-[2.5s]"
         style={{
           x: fogX,
           y: fogY,
+          translateY: fogScrollA,
           opacity: fogOpacityA,
         }}
       >
         <div className="threshold-fog threshold-fog-a absolute inset-0 atmosphere-breathe-fog" />
       </motion.div>
+
+      {/* Ethereal mist — mid layer */}
       <motion.div
-        className="absolute inset-[-25%] transition-opacity duration-[2.5s]"
+        className="absolute inset-[-28%] will-change-transform transition-opacity duration-[2.5s]"
         style={{
           x: fogX,
           y: fogY,
+          translateY: fogScrollB,
           opacity: fogOpacityB,
         }}
       >
         <div className="threshold-fog threshold-fog-b absolute inset-0" />
       </motion.div>
 
-      {/* Dust — far */}
-      <DustLayer particles={dustFar} parallax={px} parallaxY={py} factor={0.3} opacityScale={dustScale} particleMul={circadian.particleMul} />
-      {/* Dust — mid */}
-      <DustLayer particles={dustMid} parallax={px} parallaxY={py} factor={0.55} opacityScale={dustScale} particleMul={circadian.particleMul} />
-      {/* Dust — near */}
-      <DustLayer particles={dustNear} parallax={px} parallaxY={py} factor={0.85} opacityScale={dustScale} particleMul={circadian.particleMul} />
+      {/* Low-lying fog — nearest depth, feathered into void */}
+      <motion.div
+        className="absolute inset-[-18%] will-change-transform transition-opacity duration-[2.5s]"
+        style={{
+          x: fogX,
+          y: fogY,
+          translateY: fogScrollC,
+          opacity: fogOpacityC,
+        }}
+      >
+        <div className="threshold-fog threshold-fog-c absolute inset-0 atmosphere-breathe-fog-slow" />
+      </motion.div>
 
-      {/* Ultra-slow drifting motes — visible as the universe assembles */}
+      {/* Dust — far */}
+      <DustLayer particles={dustFar} parallax={px} parallaxY={py} scrollY={dustScroll} factor={0.3} opacityScale={dustScale} particleMul={circadian.particleMul} />
+      {/* Dust — mid */}
+      <DustLayer particles={dustMid} parallax={px} parallaxY={py} scrollY={dustScroll} factor={0.55} opacityScale={dustScale} particleMul={circadian.particleMul} />
+      {/* Dust — near */}
+      <DustLayer particles={dustNear} parallax={px} parallaxY={py} scrollY={dustScroll} factor={0.85} opacityScale={dustScale} particleMul={circadian.particleMul} />
+
+      {/* Ultra-slow drifting motes — occasional light catch */}
       {(clarity || reveal > 0.12) && (
-        <div
+        <motion.div
           className="absolute inset-0 transition-opacity duration-[2.5s]"
-          style={{ opacity: reveal > 0 ? reveal : 1 }}
+          style={{ opacity: reveal > 0 ? reveal : 1, y: dustScroll }}
         >
           {driftingMotes.map((m) => (
             <span
               key={m.id}
-              className="atmosphere-dust-mote absolute rounded-full bg-[#b8b0a4]"
+              className={cn(
+                "atmosphere-dust-mote absolute rounded-full bg-[#b8b0a4]",
+                m.glint && "atmosphere-dust-glint",
+              )}
               style={{
                 left: `${m.left}%`,
                 top: `${m.top}%`,
@@ -203,8 +240,11 @@ export function ThresholdAtmosphere({
               }}
             />
           ))}
-        </div>
+        </motion.div>
       )}
+
+      {/* Ambient vignette — dawn observatory edges */}
+      <div className="threshold-ambient-vignette absolute inset-0" aria-hidden />
     </div>
   );
 }
@@ -215,8 +255,9 @@ function genDriftingMotes(count: number, particleMul = 1) {
     left: ((i * 53 + 11) % 94) + 3,
     top: ((i * 71 + 17) % 90) + 5,
     size: i % 4 === 0 ? 1.25 : 0.85,
-    duration: (48 + (i % 5) * 14) * particleMul,
-    delay: i * 3.2,
+    duration: (62 + (i % 5) * 18) * particleMul,
+    delay: i * 4.1,
+    glint: i % 5 === 0 || i % 7 === 2,
   }));
 }
 
@@ -226,11 +267,12 @@ function genDust(count: number, depth: number) {
     left: ((i * 47 + depth * 13) % 90) + 5,
     top: ((i * 61 + depth * 29) % 85) + 8,
     size: depth === 1 ? 1.5 : depth === 2 ? 1 : 0.75,
-    opacity: depth === 1 ? 0.14 : depth === 2 ? 0.09 : 0.05,
-    duration: 80 + depth * 25 + i * 8,
-    delay: i * 4,
-    driftX: (i % 2 === 0 ? 1 : -1) * (8 + depth * 4),
-    driftY: 4 + depth * 2,
+    opacity: depth === 1 ? 0.1 : depth === 2 ? 0.065 : 0.038,
+    duration: 110 + depth * 35 + i * 12,
+    delay: i * 5.5,
+    driftX: (i % 2 === 0 ? 1 : -1) * (6 + depth * 3),
+    driftY: 3 + depth * 2,
+    glint: depth === 1 && i % 3 === 0,
   }));
 }
 
@@ -238,6 +280,7 @@ function DustLayer({
   particles,
   parallax,
   parallaxY,
+  scrollY,
   factor,
   opacityScale = 1,
   particleMul = 1,
@@ -245,6 +288,7 @@ function DustLayer({
   particles: ReturnType<typeof genDust>;
   parallax: ReturnType<typeof useSpring>;
   parallaxY: ReturnType<typeof useSpring>;
+  scrollY: ReturnType<typeof useSpring>;
   factor: number;
   opacityScale?: number;
   particleMul?: number;
@@ -253,27 +297,24 @@ function DustLayer({
   const y = useTransform(parallaxY, (v) => v * factor * 1.5);
 
   return (
-    <motion.div className="absolute inset-0" style={{ x, y }}>
+    <motion.div className="absolute inset-0" style={{ x, y, translateY: scrollY }}>
       {particles.map((p) => (
-        <motion.span
+        <span
           key={p.id}
-          className="absolute rounded-full bg-[#c8c0b4]"
+          className={cn(
+            "atmosphere-dust-particle absolute rounded-full bg-[#c8c0b4] will-change-transform",
+            p.glint && "atmosphere-dust-glint",
+          )}
           style={{
             left: `${p.left}%`,
             top: `${p.top}%`,
             width: p.size,
             height: p.size,
             opacity: p.opacity * opacityScale,
-          }}
-          animate={{
-            x: [0, p.driftX, 0],
-            y: [0, p.driftY, 0],
-          }}
-          transition={{
-            duration: p.duration * particleMul,
-            delay: p.delay,
-            repeat: Infinity,
-            ease: "linear",
+            ["--dust-drift-x" as string]: `${p.driftX}px`,
+            ["--dust-drift-y" as string]: `${p.driftY}px`,
+            ["--dust-duration" as string]: `${p.duration * particleMul}s`,
+            animationDelay: `${p.delay}s`,
           }}
         />
       ))}

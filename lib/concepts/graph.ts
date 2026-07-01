@@ -74,10 +74,10 @@ export const NODE_SHAPE: Record<GraphNodeKind, NodeShape> = {
 
 /** Base size multiplier by celestial tier — dramatic spread for at-a-glance hierarchy */
 export const LEVEL_SIZE: Record<GraphLevel, number> = {
-  1: 5.8,
-  2: 2.95,
-  3: 0.95,
-  4: 0.28,
+  1: 6.2,
+  2: 3.45,
+  3: 0.78,
+  4: 0.2,
 };
 
 export interface GraphNode {

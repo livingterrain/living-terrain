@@ -1,6 +1,9 @@
 export { ObservatoryPassage } from "./ObservatoryPassage";
 export { ObservatoryProvider } from "./ObservatoryProvider";
 export { ObservatoryReflectionWhisper } from "./ObservatoryReflectionWhisper";
+export { ObservatoryShell, ObservatoryThreshold, ObservatoryCollectionDivider } from "./ObservatoryShell";
+export { ObservatoryHub } from "./ObservatoryHub";
+export { ObservatoryReadingShell } from "./ObservatoryReadingShell";
 export { WaitlistForm } from "./WaitlistForm";
 export { RecordObservationForm } from "./RecordObservationForm";
 export { ObservationCard } from "./ObservationCard";

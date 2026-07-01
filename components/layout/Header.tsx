@@ -1,217 +1,196 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { PathwayLink } from "@/components/design-system/threshold";
 import { Container } from "@/components/layout/Container";
-import { TerrainLink, isTerrainInternal } from "@/components/navigation";
+import { TerrainLink } from "@/components/navigation";
 import { SearchDialog } from "@/components/search/SearchDialog";
+import { placeForPath, locationForPath, whisperForPath } from "@/lib/world/location-for-path";
+import { PATHWAYS, PATHWAY_DEEPER } from "@/lib/world/pathways";
 import { cn } from "@/lib/utils";
 import { roomForPath } from "@/lib/rooms";
 
-const primaryNav = [
-  { href: "/", label: "Explore" },
-  { href: "/inquiry", label: "Read" },
-  { href: "/questions", label: "Questions" },
-  { href: "/essays", label: "Essays" },
-  { href: "/library", label: "Library" },
-  { href: "/field-notes", label: "Field Notes" },
-];
-
-const secondaryNav = [
-  { href: "/structure-beneath-reality", label: "The Structure Beneath Reality" },
-  { href: "/observatory", label: "Observatory" },
-  { href: "/about", label: "About" },
-];
-
 export function Header() {
   const pathname = usePathname();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const isHome = pathname === "/";
   const room = roomForPath(pathname);
-  const immersive = isHome || room !== null;
+  const inWorld = isHome || room !== null;
+  const place = placeForPath(pathname);
+  const whisper = whisperForPath(pathname);
+  const location = locationForPath(pathname);
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [mobileOpen]);
+  }, [open]);
 
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 60);
+      setScrolled(window.scrollY > 64);
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const ethereal = immersive && !scrolled && !mobileOpen;
+  const present = inWorld && (scrolled || open || !isHome);
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 transition-[background-color,border-color] duration-700",
-        ethereal
-          ? "border-b border-transparent bg-ivory/0"
-          : "border-b border-rule bg-ivory/95",
+        "world-presence sticky top-0 z-40 transition-all duration-[3200ms]",
+        present
+          ? "world-presence--awake border-b border-rule/10 bg-[color-mix(in_srgb,var(--color-ivory)_55%,transparent)] backdrop-blur-[4px]"
+          : "border-b border-transparent bg-transparent",
       )}
+      data-world-location={location}
+      data-world-place={place}
     >
       <Container>
-        <div className="flex h-[4.5rem] items-center justify-between sm:h-20">
+        <div
+          className={cn(
+            "flex items-center justify-between transition-[height,padding] duration-[2400ms]",
+            present ? "h-16 sm:h-[4.25rem]" : "h-14 sm:h-16",
+          )}
+        >
           <TerrainLink
             href="/"
             className={cn(
-              "font-heading text-[1.125rem] tracking-tight transition-colors duration-[600ms]",
-              pathname === "/"
-                ? "text-forest"
-                : "text-charcoal hover:text-forest",
-              "sm:text-xl",
+              "touch-zone relative flex min-h-11 items-center font-heading tracking-tight transition-all duration-[2000ms]",
+              present
+                ? "text-[0.9375rem] text-charcoal/75 sm:text-base"
+                : "text-[1rem] text-charcoal/50 sm:text-lg",
+              pathname === "/" && present && "text-forest/80",
             )}
           >
             Living Terrain
           </TerrainLink>
 
-          <nav className="hidden items-center gap-10 md:flex" aria-label="Primary">
-            {primaryNav.map((item) => (
-              <NavLink
-                key={item.href}
-                href={item.href}
-                active={
-                  item.href === "/"
-                    ? pathname === "/"
-                    : pathname === item.href ||
-                      pathname.startsWith(`${item.href}/`)
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+          {present && !isHome && (
+            <p className="world-presence__place pointer-events-none absolute left-1/2 hidden max-w-[9rem] -translate-x-1/2 truncate font-heading text-[0.75rem] italic text-charcoal-muted/70 min-[420px]:block sm:max-w-[12rem] sm:text-[0.8125rem] lg:max-w-xs">
+              {place}
+            </p>
+          )}
 
-          <div className="flex items-center gap-5">
-            <SearchDialog />
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="flex min-h-11 min-w-11 items-center justify-center type-meta text-charcoal-muted transition-colors duration-[600ms] hover:text-charcoal active:text-charcoal md:hidden"
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              aria-expanded={mobileOpen}
+          <div className="flex items-center gap-4 sm:gap-6">
+            <nav
+              className={cn(
+                "hidden items-center gap-8 transition-opacity duration-[2000ms] lg:flex",
+                present ? "opacity-100" : "opacity-0 pointer-events-none",
+              )}
+              aria-label="Directions"
             >
-              {mobileOpen ? "Close" : "Menu"}
+              {PATHWAYS.slice(0, 3).map((p) => (
+                <PathwayLink
+                  key={p.href}
+                  href={p.href}
+                  active={
+                    pathname === p.href || pathname.startsWith(`${p.href}/`)
+                  }
+                  className="text-[0.8125rem]"
+                >
+                  {p.label}
+                </PathwayLink>
+              ))}
+            </nav>
+
+            <div
+              className={cn(
+                "transition-opacity duration-[2000ms] [&_button]:relative [&_button]:flex [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:items-center [&_button]:justify-center [&_button]:touch-manipulation",
+                present ? "opacity-80" : "opacity-40",
+              )}
+            >
+              <SearchDialog />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setOpen(!open)}
+              className={cn(
+                "world-presence__further touch-zone relative flex min-h-11 min-w-11 items-center justify-center font-heading text-lg text-charcoal-muted/60 transition-all duration-[2000ms] hover:text-charcoal/80 active:text-charcoal/90 lg:hidden",
+                present && "opacity-100",
+              )}
+              aria-label={open ? "Close" : "Further directions"}
+              aria-expanded={open}
+            >
+              {open ? "×" : "…"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setOpen(!open)}
+              className={cn(
+                "world-presence__further hidden min-h-10 items-center font-heading text-[0.8125rem] italic text-charcoal-muted/55 transition-all duration-[2000ms] hover:text-charcoal/75 lg:flex",
+                present ? "opacity-100" : "opacity-0 pointer-events-none",
+              )}
+              aria-expanded={open}
+            >
+              {open ? "Close" : "Further…"}
             </button>
           </div>
         </div>
       </Container>
 
-      {mobileOpen && (
+      {open && (
         <div
-          className="fixed inset-0 top-[4.5rem] z-50 bg-ivory md:hidden"
+          className="world-presence__horizon fixed inset-x-0 bottom-0 z-50"
           role="dialog"
-          aria-label="Navigation"
+          aria-label="Directions through the terrain"
         >
-          <Container className="flex h-full flex-col py-12">
-            <nav className="flex flex-col gap-8" aria-label="Primary">
-              {primaryNav.map((item) => (
-                <MobileLink
-                  key={item.href}
-                  href={item.href}
+          <Container className="flex min-h-full flex-col justify-center py-12 sm:py-20">
+            {!isHome && (
+              <p className="mx-auto max-w-md text-center font-heading text-lg italic leading-relaxed text-charcoal-muted">
+                {whisper}
+              </p>
+            )}
+
+            <nav
+              className="mx-auto mt-10 flex w-full max-w-sm flex-col gap-8 sm:mt-14 sm:gap-10"
+              aria-label="Pathways"
+            >
+              {PATHWAYS.map((p) => (
+                <PathwayLink
+                  key={p.href}
+                  href={p.href}
                   active={
-                    item.href === "/"
-                      ? pathname === "/"
-                      : pathname === item.href ||
-                        pathname.startsWith(`${item.href}/`)
+                    pathname === p.href || pathname.startsWith(`${p.href}/`)
                   }
-                  onNavigate={() => setMobileOpen(false)}
+                  onClick={() => setOpen(false)}
+                  rich
                 >
-                  {item.label}
-                </MobileLink>
+                  <span>{p.label}</span>
+                  <span className="world-pathway-rich__hint">{p.hint}</span>
+                </PathwayLink>
               ))}
             </nav>
 
-            <div className="hairline-fade my-12" />
+            <div className="threshold-carved threshold-carved--edge mx-auto my-12 w-full max-w-sm" />
 
-            <nav className="flex flex-col gap-6" aria-label="Secondary">
-              {secondaryNav.map((item) => {
-                const active =
-                  pathname === item.href ||
-                  pathname.startsWith(`${item.href}/`);
-                return (
-                  <TerrainLink
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(
-                      "font-body text-sm transition-colors duration-[600ms]",
-                      active
-                        ? "text-forest"
-                        : "text-charcoal-muted hover:text-charcoal",
-                    )}
-                  >
-                    {item.label}
-                  </TerrainLink>
-                );
-              })}
+            <nav className="mx-auto flex w-full max-w-sm flex-col gap-8">
+              {PATHWAY_DEEPER.map((p) => (
+                <PathwayLink
+                  key={p.href}
+                  href={p.href}
+                  active={
+                    pathname === p.href || pathname.startsWith(`${p.href}/`)
+                  }
+                  onClick={() => setOpen(false)}
+                  rich
+                  className="text-sm"
+                >
+                  <span>{p.label}</span>
+                  <span className="world-pathway-rich__hint">{p.hint}</span>
+                </PathwayLink>
+              ))}
             </nav>
           </Container>
         </div>
       )}
     </header>
-  );
-}
-
-function NavLink({
-  href,
-  children,
-  active,
-}: {
-  href: string;
-  children: React.ReactNode;
-  active: boolean;
-}) {
-  const LinkComponent = isTerrainInternal(href) ? TerrainLink : Link;
-  return (
-    <LinkComponent
-      href={href}
-      className={cn(
-        "font-body text-sm transition-colors duration-[600ms]",
-        active
-          ? "text-forest"
-          : "text-charcoal-muted hover:text-forest",
-      )}
-    >
-      {children}
-    </LinkComponent>
-  );
-}
-
-function MobileLink({
-  href,
-  children,
-  active,
-  onNavigate,
-}: {
-  href: string;
-  children: React.ReactNode;
-  active: boolean;
-  onNavigate: () => void;
-}) {
-  const LinkComponent = isTerrainInternal(href) ? TerrainLink : Link;
-  return (
-    <LinkComponent
-      href={href}
-      onClick={onNavigate}
-      className={cn(
-        "font-heading text-2xl transition-colors duration-[600ms]",
-        active ? "text-forest" : "text-charcoal-muted hover:text-charcoal",
-      )}
-    >
-      {children}
-    </LinkComponent>
   );
 }

@@ -1,6 +1,11 @@
+import { locationForPath } from "@/lib/world/location-for-path";
+import { WORLD_LOCATIONS } from "@/lib/world/locations";
+
 export type RoomKind =
   | "pathways"
   | "reading"
+  | "library"
+  | "guide"
   | "notebook"
   | "archive"
   | "observatory"
@@ -8,7 +13,6 @@ export type RoomKind =
 
 export interface RoomProfile {
   kind: RoomKind;
-  /** Atmospheric cue — not a section label */
   whisper: string;
   surface: string;
   vignette: string;
@@ -17,51 +21,61 @@ export interface RoomProfile {
 export const rooms: Record<RoomKind, RoomProfile> = {
   pathways: {
     kind: "pathways",
-    whisper: "Paths diverge ahead.",
-    surface: "bg-ivory",
+    whisper: "Questions branch ahead. Any direction is valid.",
+    surface: "threshold-room threshold-room--pathways",
     vignette: "room-vignette-pathways",
   },
   reading: {
     kind: "reading",
-    whisper: "Something waits to be found.",
-    surface: "bg-ivory-deep/30",
+    whisper: "One lantern. One text. The world outside recedes.",
+    surface: "threshold-room threshold-room--reading",
     vignette: "room-vignette-reading",
+  },
+  library: {
+    kind: "library",
+    whisper: "Volumes rest in the quiet. Nothing is arranged by date.",
+    surface: "threshold-room threshold-room--library",
+    vignette: "room-vignette-library",
+  },
+  guide: {
+    kind: "guide",
+    whisper: "The one who built this place — not the subject of it.",
+    surface: "threshold-room threshold-room--guide",
+    vignette: "room-vignette-guide",
   },
   notebook: {
     kind: "notebook",
-    whisper: "Pages worn at the edges.",
-    surface: "bg-[#e4d9c8]",
+    whisper: "Observations taken at the edge of understanding.",
+    surface: "threshold-room threshold-room--notebook",
     vignette: "room-vignette-notebook",
   },
   archive: {
     kind: "archive",
-    whisper: "Manuscripts rest in the dim.",
-    surface: "bg-ivory-shadow/20",
+    whisper: "Manuscripts sleep in the dim. Handle them slowly.",
+    surface: "threshold-room threshold-room--archive",
     vignette: "room-vignette-archive",
   },
   observatory: {
     kind: "observatory",
-    whisper: "Signals gather here.",
-    surface: "bg-void/5",
+    whisper: "Signals gather. Ideas mature in the amber dark.",
+    surface: "threshold-room threshold-room--observatory",
     vignette: "room-vignette-observatory",
   },
   chamber: {
     kind: "chamber",
-    whisper: "The deepest room.",
-    surface: "bg-ivory-shadow/40",
+    whisper: "The deepest room. Structure beneath all structure.",
+    surface: "threshold-room threshold-room--chamber",
     vignette: "room-vignette-chamber",
   },
 };
 
-/** Map route prefixes to room atmosphere */
+/** Map routes to the physical room they occupy */
 export function roomForPath(pathname: string): RoomKind | null {
-  if (pathname === "/") return null;
-  if (pathname.startsWith("/inquiry")) return "reading";
-  if (pathname.startsWith("/questions")) return "pathways";
-  if (pathname.startsWith("/essays")) return "reading";
-  if (pathname.startsWith("/field-notes")) return "notebook";
-  if (pathname.startsWith("/library")) return "archive";
-  if (pathname.startsWith("/observatory")) return "observatory";
-  if (pathname.startsWith("/structure-beneath-reality")) return "chamber";
-  return null;
+  if (pathname === "/" || pathname === "/welcome") return null;
+  const loc = WORLD_LOCATIONS[locationForPath(pathname)];
+  return loc.roomKind;
+}
+
+export function roomKindForPath(pathname: string): RoomKind {
+  return roomForPath(pathname) ?? "reading";
 }
