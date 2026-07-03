@@ -1488,6 +1488,86 @@
     transform-origin: center center;
   }
 
+  /* Chrome compositor — opacity fades on shells, not on blur/transform layers */
+  .threshold-world-root {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .threshold-entrance-shell {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    isolation: isolate;
+    transition: opacity 0.9s var(--ease-threshold);
+    pointer-events: none;
+  }
+
+  .threshold-entrance-shell--atmosphere {
+    contain: layout style paint;
+  }
+
+  .threshold-entrance-shell--visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .threshold-entrance-shell--exiting {
+    opacity: 0;
+    pointer-events: none;
+    transition-duration: 0.45s;
+  }
+
+  .threshold-entrance-shell--atmosphere {
+    pointer-events: none;
+  }
+
+  .threshold-entrance-shell--atmosphere.threshold-entrance-shell--visible {
+    pointer-events: none;
+  }
+
+  /* Pause blur/filter animations until compositor has painted stable layers */
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-page-atmosphere,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape *,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-fog,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .atmosphere-breathe-slow,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .atmosphere-breathe-fog,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .atmosphere-breathe-fog-slow,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-heading-bloom,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-heading-bloom {
+    animation-play-state: paused !important;
+  }
+
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-fog,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__horizon-glow,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__mist-shelf,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__ground-fog,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__fog-veil--ambient,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__light-shaft,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-heading-bloom,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-heading-bloom,
+  .threshold-world-root:not(.threshold-world-root--entrance-ready) .atmosphere-dust-particle {
+    will-change: auto !important;
+  }
+
+  .threshold-world-root--entrance-ready .threshold-fog,
+  .threshold-world-root--entrance-ready .hero-landscape__horizon-glow,
+  .threshold-world-root--entrance-ready .hero-landscape__mist-shelf,
+  .threshold-world-root--entrance-ready .hero-landscape__ground-fog,
+  .threshold-world-root--entrance-ready .atmosphere-dust-particle {
+    will-change: transform;
+  }
+
+  .threshold-world-root--entrance-ready .hero-landscape__horizon-glow,
+  .threshold-world-root--entrance-ready .threshold-heading-bloom {
+    will-change: transform, opacity;
+  }
+
   .threshold-page-atmosphere--deep {
     animation: none;
   }
@@ -1880,12 +1960,14 @@
 
   .hero-landscape {
     background: #06080c;
-    transition: opacity 2.8s var(--ease-threshold), filter 2.8s var(--ease-threshold);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transition: opacity 2.8s var(--ease-threshold);
   }
 
   .hero-landscape--crossing {
     opacity: 0;
-    filter: blur(6px);
   }
 
   .hero-landscape__sky {
@@ -2314,6 +2396,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .threshold-entrance-shell {
+      transition-duration: 0.01ms !important;
+    }
+
     .threshold-fog-a,
     .threshold-fog-b,
     .threshold-fog-c,

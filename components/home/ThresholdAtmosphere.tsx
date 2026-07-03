@@ -285,7 +285,7 @@ export function ThresholdAtmosphere({
         <>
           {/* Ethereal mist — far layer */}
           <motion.div
-            className="absolute inset-[-22%] will-change-transform transition-opacity duration-[2.5s]"
+            className="absolute inset-[-22%] transition-opacity duration-[2.5s]"
             style={{
               x: fogX,
               y: fogY,
@@ -298,7 +298,7 @@ export function ThresholdAtmosphere({
 
           {/* Ethereal mist — mid layer */}
           <motion.div
-            className="absolute inset-[-28%] will-change-transform transition-opacity duration-[2.5s]"
+            className="absolute inset-[-28%] transition-opacity duration-[2.5s]"
             style={{
               x: fogX,
               y: fogY,
@@ -311,7 +311,7 @@ export function ThresholdAtmosphere({
 
           {/* Low-lying fog — nearest depth, feathered into void */}
           <motion.div
-            className="absolute inset-[-18%] will-change-transform transition-opacity duration-[2.5s]"
+            className="absolute inset-[-18%] transition-opacity duration-[2.5s]"
             style={{
               x: fogX,
               y: fogY,
@@ -439,7 +439,7 @@ function DustLayer({
         <span
           key={p.id}
           className={cn(
-            "atmosphere-dust-particle absolute rounded-full bg-[#c8c0b4] will-change-transform",
+            "atmosphere-dust-particle absolute rounded-full bg-[#c8c0b4]",
             p.glint && "atmosphere-dust-glint",
           )}
           style={{
