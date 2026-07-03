@@ -89,12 +89,12 @@ export function ConstellationHabitat({
           animate={{ opacity: 1 }}
           transition={{ duration: 3.5, delay: 2, ease: [0.45, 0.05, 0.55, 0.95] }}
         >
-          <p className="type-chamber text-[0.5625rem] text-ivory/18">
+          <p className="type-chamber text-[0.5625rem] text-ivory/14">
             An open question
           </p>
           <Link
             href={`/questions/${questionOfDay.slug}`}
-            className="pointer-events-auto mt-2 block font-heading text-[0.8125rem] leading-snug text-ivory/28 transition-colors duration-[1.4s] hover:text-ivory/55"
+            className="pointer-events-auto mt-2 block font-heading text-[0.75rem] leading-snug text-ivory/22 transition-colors duration-[1.4s] hover:text-ivory/45"
           >
             {questionOfDay.title}
           </Link>
@@ -109,14 +109,14 @@ export function ConstellationHabitat({
           animate={{ opacity: 1 }}
           transition={{ duration: 3.2, delay: 3.5, ease: [0.45, 0.05, 0.55, 0.95] }}
         >
-          <p className="type-chamber text-[0.5625rem] text-ivory/16">
+          <p className="type-chamber text-[0.5625rem] text-ivory/12">
             Recent signal
           </p>
           <Link
             href={latestSignal.href}
-            className="pointer-events-auto mt-2 block text-[0.6875rem] leading-relaxed text-ivory/26 transition-colors duration-[1.4s] hover:text-ivory/52"
+            className="pointer-events-auto mt-2 block text-[0.625rem] leading-relaxed text-ivory/20 transition-colors duration-[1.4s] hover:text-ivory/42"
           >
-            <span className="text-ivory/18">
+            <span className="text-ivory/14">
               {latestSignal.kind === "essay" ? "Essay · " : "Note · "}
             </span>
             {latestSignal.title}
@@ -124,44 +124,16 @@ export function ConstellationHabitat({
         </motion.div>
       )}
 
-      {/* Floating conceptual fragments */}
-      {CONCEPT_FRAGMENTS.map((fragment, i) => (
-        <motion.div
-          key={fragment.slug}
-          className="absolute"
-          style={{ left: fragment.x, top: fragment.y }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: quiet ? 0.08 : 0.16, y: [0, -3, 0] }}
-          transition={{
-            opacity: { duration: 2.8, delay: 1.5 + i * 0.35 },
-            y: {
-              duration: fragment.drift,
-              repeat: Infinity,
-              ease: "easeInOut",
-            },
-          }}
-        >
-          <Link
-            href={`/themes/${fragment.slug}`}
-            className={cn(
-              "habitat-concept-fragment pointer-events-auto",
-              "type-chamber text-[0.5625rem] text-ivory/20",
-              "transition-all duration-[1.6s]",
-            )}
-          >
-            {fragment.label}
-          </Link>
-        </motion.div>
-      ))}
+      {/* Floating conceptual fragments — hidden; the map ring already carries these names */}
 
       {/* Handwritten field notes — occasional whispers at the periphery */}
       <AnimatePresence>
         {!quiet && fieldNoteVisible && activeFieldNote && (
           <motion.blockquote
             key={`${activeFieldNote.id}-${fieldNoteIndex}`}
-            className="habitat-handwritten absolute bottom-[22%] left-[12%] max-w-[11rem] sm:max-w-[14rem]"
+            className="habitat-handwritten absolute bottom-[18%] right-[max(1.25rem,4%)] max-w-[10rem] text-right sm:max-w-[12rem]"
             initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 0.2, y: 0 }}
+            animate={{ opacity: 0.14, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 4.5, ease: [0.45, 0.05, 0.55, 0.95] }}
           >

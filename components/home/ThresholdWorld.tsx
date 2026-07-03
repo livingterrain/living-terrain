@@ -12,19 +12,18 @@ import { SearchDialog } from "@/components/search/SearchDialog";
 import { ChoosePathPanel } from "./ChoosePathPanel";
 import { ConstellationCanvas } from "./ConstellationCanvas";
 import { ConstellationHabitat } from "./ConstellationHabitat";
-import { DiscoveryOnboarding } from "./DiscoveryOnboarding";
 import { HeadingBloom } from "./HeadingBloom";
+import { MapRevealVeil } from "./MapRevealVeil";
 import { MapWhisper } from "./MapWhisper";
 import { MobileTerrainGuide } from "./MobileTerrainGuide";
 import { TerrainPulse } from "./TerrainPulse";
-import { StoneMapVeil } from "@/components/world";
 import { ThresholdHeroLandscape } from "./ThresholdHeroLandscape";
 import { ThresholdAtmosphere } from "./ThresholdAtmosphere";
 import { ThresholdChoices } from "./ThresholdChoices";
 import { computeDiscoveryDepth } from "@/lib/concepts/constellation-discovery";
+import { cn } from "@/lib/utils";
 import type { GraphNode } from "@/lib/concepts/graph";
 import { buildTerrainGraph } from "@/lib/concepts/graph";
-import { cinematicEase } from "@/lib/concepts/universe-viewport";
 import type { ViewBox } from "@/lib/concepts/universe-viewport";
 import {
   loadConstellationSession,
@@ -34,6 +33,7 @@ import {
 import { THRESHOLD, NAVIGATION } from "@/lib/atmosphere/tempo";
 import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import { usePrefersReducedMotion } from "@/lib/atmosphere/use-prefers-reduced-motion";
+import { useWonderArrival } from "@/lib/wonder/use-wonder-arrival";
 
 type Phase = "threshold" | "crossing" | "within";
 
@@ -53,34 +53,62 @@ export function ThresholdWorld() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [exploredIds, setExploredIds] = useState<Set<string>>(() => new Set());
   const [discoveryAwake, setDiscoveryAwake] = useState(false);
-  const [introVisible, setIntroVisible] = useState(false);
-  const [revealProgress, setRevealProgress] = useState(0);
-  const [revealRunning, setRevealRunning] = useState(false);
+  const [mapLayoutReady, setMapLayoutReady] = useState(false);
+  const [wonderAbbreviated, setWonderAbbreviated] = useState(false);
   const [zoom, setZoom] = useState(0.38);
   const [restoredViewBox, setRestoredViewBox] = useState<ViewBox | null>(null);
   const viewBoxRef = useRef<ViewBox | null>(null);
-  const revealFrameRef = useRef<number | null>(null);
   const autoExploreRef = useRef(false);
+  const wonderEngageRef = useRef<() => void>(() => {});
+  const crossingTimerRef = useRef<number | null>(null);
+  const crossingMsRef = useRef(500);
 
   const entered = phase === "within";
   const crossing = phase === "crossing";
 
-  const crossingMs = reducedMotion ? 400 : isMobile ? 1500 : THRESHOLD.crossingMs;
-  const introHoldMs = reducedMotion ? 150 : isMobile ? 0 : THRESHOLD.introHoldMs;
-  const revealMs = reducedMotion ? 250 : isMobile ? 0 : THRESHOLD.revealMs;
-  const fadeDuration = reducedMotion ? 0.01 : isMobile ? 1.2 : 2.6;
+  const crossingMs = reducedMotion ? 300 : isMobile ? 900 : 500;
+  crossingMsRef.current = crossingMs;
+  const fadeDuration = reducedMotion ? 0.01 : 0.5;
+
+  const mapInteractive = entered && mapLayoutReady;
+  const wonder = useWonderArrival({
+    active: entered,
+    abbreviated: wonderAbbreviated || isMobile,
+    reducedMotion,
+  });
+  wonderEngageRef.current = wonder.engage;
+
+  const mapSettled = entered && mapLayoutReady && wonder.awakening >= 0.55;
+  const constellationAwake = mapLayoutReady;
 
   const discoveryDepth = useMemo(
-    () => computeDiscoveryDepth(discoveryAwake, exploredIds.size, zoom),
-    [discoveryAwake, exploredIds.size, zoom],
+    () => computeDiscoveryDepth(constellationAwake, exploredIds.size, zoom),
+    [constellationAwake, exploredIds.size, zoom],
   );
 
   const hoveredNode = nodes.find((n) => n.id === hoveredId);
 
   const starBrightness =
-    phase === "crossing" ? 0.78 : phase === "within" ? 0.5 : 0.32;
+    phase === "crossing" ? 0.78 : phase === "within" ? 0.46 : 0.32;
   const fogDensity =
-    phase === "crossing" ? 1.7 : phase === "within" ? 0.85 : 1;
+    phase === "crossing" ? 1.7 : phase === "within" ? 0.35 : 1;
+
+  const enterMap = useCallback(() => {
+    setPhase((current) => {
+      if (current === "within") return current;
+      return "within";
+    });
+    setMapLayoutReady(false);
+    setDiscoveryAwake(false);
+  }, []);
+
+  const scheduleEnterMap = useCallback(() => {
+    if (crossingTimerRef.current) window.clearTimeout(crossingTimerRef.current);
+    crossingTimerRef.current = window.setTimeout(() => {
+      crossingTimerRef.current = null;
+      enterMap();
+    }, crossingMsRef.current);
+  }, [enterMap]);
 
   const handleCross = useCallback(() => {
     if (phase !== "threshold") return;
@@ -88,60 +116,33 @@ export function ThresholdWorld() {
     if (saved) {
       setExploredIds(new Set(saved.exploredIds));
       setRestoredViewBox(saved.viewBox);
+      setWonderAbbreviated(true);
+    } else {
+      setWonderAbbreviated(false);
     }
     sound?.activate();
     setPhase("crossing");
-    window.setTimeout(() => setPhase("within"), crossingMs);
-  }, [phase, sound, crossingMs]);
+    scheduleEnterMap();
+  }, [phase, sound, scheduleEnterMap]);
 
-  const startReveal = useCallback(() => {
-    if (isMobile || revealMs <= 0) {
-      setIntroVisible(false);
-      setRevealRunning(false);
-      setRevealProgress(1);
-      setDiscoveryAwake(true);
-      return;
-    }
-
-    setIntroVisible(false);
-    setRevealRunning(true);
-    setRevealProgress(0);
-
-    const t0 = performance.now();
-    const step = (now: number) => {
-      const t = Math.min(1, (now - t0) / revealMs);
-      setRevealProgress(cinematicEase(t));
-      if (t < 1) {
-        revealFrameRef.current = requestAnimationFrame(step);
-      } else {
-        setRevealRunning(false);
-        setDiscoveryAwake(true);
-      }
-    };
-    revealFrameRef.current = requestAnimationFrame(step);
-  }, [isMobile, revealMs]);
-
-  useEffect(() => {
-    if (phase !== "within" || discoveryAwake || revealRunning) return;
-
-    if (isMobile) {
-      setDiscoveryAwake(true);
-      setRevealProgress(1);
-      setIntroVisible(false);
-      return;
-    }
-
-    setIntroVisible(true);
-    const timer = window.setTimeout(startReveal, introHoldMs);
-    return () => window.clearTimeout(timer);
-  }, [phase, discoveryAwake, revealRunning, startReveal, isMobile, introHoldMs]);
+  const handleMapLayoutReady = useCallback(() => {
+    setMapLayoutReady(true);
+    setDiscoveryAwake(true);
+  }, []);
 
   useEffect(
     () => () => {
-      if (revealFrameRef.current) cancelAnimationFrame(revealFrameRef.current);
+      if (crossingTimerRef.current) window.clearTimeout(crossingTimerRef.current);
     },
     [],
   );
+
+  useEffect(() => {
+    if (phase !== "within" || !isMobile) return;
+    setMapLayoutReady(true);
+    setDiscoveryAwake(true);
+    setWonderAbbreviated(true);
+  }, [phase, isMobile]);
 
   useEffect(() => {
     if (!focusId || autoExploreRef.current || phase !== "threshold") return;
@@ -150,11 +151,12 @@ export function ThresholdWorld() {
     if (saved) {
       setExploredIds(new Set(saved.exploredIds));
       setRestoredViewBox(saved.viewBox);
+      setWonderAbbreviated(true);
     }
     sound?.activate();
     setPhase("crossing");
-    window.setTimeout(() => setPhase("within"), crossingMs);
-  }, [focusId, phase, sound, crossingMs]);
+    scheduleEnterMap();
+  }, [focusId, phase, sound, scheduleEnterMap]);
 
   const markExplored = useCallback((id: string) => {
     setExploredIds((prev) => {
@@ -172,31 +174,31 @@ export function ThresholdWorld() {
     if (phase !== "threshold") return;
 
     sound?.activate();
+    setWonderAbbreviated(true);
     setPhase("within");
+    setMapLayoutReady(true);
     setDiscoveryAwake(true);
-    setIntroVisible(false);
-    setRevealProgress(0.65);
-    setRevealRunning(false);
   }, [arrivalIntent, phase, sound]);
 
   const handleNodeClick = useCallback(
     (node: GraphNode) => {
-      if (!discoveryAwake) return;
+      wonderEngageRef.current();
+      if (!mapLayoutReady) return;
       markExplored(node.id);
       if (viewBoxRef.current) {
         saveConstellationSession(viewBoxRef.current, exploredIds);
       }
       navigate(node.href);
     },
-    [discoveryAwake, markExplored, navigate, exploredIds],
+    [mapLayoutReady, markExplored, navigate, exploredIds],
   );
 
   const handleViewBoxPersist = useCallback((vb: ViewBox) => {
     viewBoxRef.current = vb;
-    if (entered && discoveryAwake) {
+    if (entered && mapLayoutReady) {
       saveConstellationSession(vb, exploredIds);
     }
-  }, [entered, discoveryAwake, exploredIds]);
+  }, [entered, mapLayoutReady, exploredIds]);
 
   useEffect(() => {
     if (!sound?.activated) return;
@@ -206,68 +208,68 @@ export function ThresholdWorld() {
 
   const handleNodeHover = useCallback(
     (id: string | null) => {
+      if (id) wonderEngageRef.current();
       if (id && entered) sound?.playHover(id);
-      if (!discoveryAwake) return;
+      if (!mapLayoutReady) return;
       setHoveredId(id);
       if (id) markExplored(id);
     },
-    [discoveryAwake, entered, markExplored, sound],
+    [mapLayoutReady, entered, markExplored, sound],
   );
 
   const returnToThreshold = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    if (revealFrameRef.current) cancelAnimationFrame(revealFrameRef.current);
+    if (crossingTimerRef.current) window.clearTimeout(crossingTimerRef.current);
+    crossingTimerRef.current = null;
     autoExploreRef.current = false;
     setPhase("threshold");
     setHoveredId(null);
     setExploredIds(new Set());
     setDiscoveryAwake(false);
-    setIntroVisible(false);
-    setRevealProgress(0);
-    setRevealRunning(false);
+    setMapLayoutReady(false);
+    setWonderAbbreviated(false);
     setRestoredViewBox(null);
     clearConstellationSession();
     router.replace("/", { scroll: false });
   }, [router]);
 
-  const [pathPanelReady, setPathPanelReady] = useState(false);
-
-  useEffect(() => {
-    if (!entered || !discoveryAwake) return;
-    if (exploredIds.size >= 2) {
-      setPathPanelReady(true);
-      return;
-    }
-    const timer = window.setTimeout(() => setPathPanelReady(true), 48000);
-    return () => window.clearTimeout(timer);
-  }, [entered, discoveryAwake, exploredIds.size]);
-
   const showPathPanel =
-    pathPanelReady &&
-    entered &&
-    discoveryAwake &&
-    !introVisible &&
-    !revealRunning &&
-    !hoveredId;
+    wonder.chromeVisible && mapInteractive && !hoveredId;
 
   return (
     <div
-      className="threshold-page-breathe fixed inset-0 flex flex-col overflow-hidden text-ivory transition-[background-color] duration-[300s] supports-[height:100dvh]:min-h-[100dvh] min-h-screen"
-      style={{ backgroundColor: circadian.voidBase }}
+      className="fixed inset-0 flex flex-col overflow-hidden text-ivory supports-[height:100dvh]:min-h-[100dvh] min-h-screen"
+      style={{ backgroundColor: entered ? "#020408" : circadian.voidBase }}
     >
-      <ThresholdAtmosphere
-        starBrightness={entered || crossing ? starBrightness : 0}
-        fogDensity={fogDensity}
-        clarity={entered}
-        revealProgress={entered ? revealProgress : 0}
-      />
-      <ObservatoryRings
-        visible={entered || crossing}
-        crossing={crossing}
-        revealProgress={entered ? revealProgress : 0}
-      />
+      <div
+        className={cn(
+          "threshold-page-atmosphere pointer-events-none absolute inset-0 z-0",
+          entered && "threshold-page-atmosphere--deep",
+        )}
+        aria-hidden
+      >
+        <ThresholdAtmosphere
+          starBrightness={entered || crossing ? starBrightness : 0}
+          fogDensity={fogDensity}
+          clarity={entered}
+          revealProgress={entered ? wonder.awakening : 0}
+          awakeningProgress={entered ? wonder.awakening : 0}
+          atmosphereRefinement={entered ? wonder.atmosphere : 0}
+          elapsedMs={entered ? wonder.elapsedMs : 0}
+          attention={wonder.attention}
+        />
+        <ObservatoryRings
+          visible={entered || crossing}
+          crossing={crossing}
+          awakening={wonder.awakening}
+        />
+      </div>
 
-      <SoundMuteControl className="text-ivory/40 hover:text-ivory/60" />
+      <SoundMuteControl
+        className="text-ivory/40 hover:text-ivory/60 transition-opacity duration-[2.8s]"
+        iconOnly={!wonder.chromeVisible}
+        style={{ opacity: wonder.chromeVisible ? wonder.chromeOpacity : 0.35 }}
+      />
 
       <AnimatePresence>
         {(phase === "threshold" || crossing) && (
@@ -336,36 +338,37 @@ export function ThresholdWorld() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {entered && discoveryAwake && !introVisible && (
+        {wonder.chromeVisible && mapInteractive && (
           <motion.header
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: reducedMotion ? 0.01 : isMobile ? 0.8 : 2.4, delay: isMobile ? 0.1 : 0.4, ease: fade.ease }}
-            className="relative z-20 flex shrink-0 items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-5 sm:py-4 md:px-8"
+            animate={{ opacity: wonder.chromeOpacity }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2.8, ease: fade.ease }}
+            className="threshold-map-chrome relative z-50 flex shrink-0 items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-5 sm:py-4 md:px-8"
             style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}
           >
             <Link
               href="/"
-              className="flex min-h-11 min-w-11 items-center font-heading text-[0.9375rem] text-ivory/80 sm:text-sm sm:text-ivory/75 md:text-base"
+              className="threshold-map-nav-link flex min-h-11 min-w-11 items-center font-heading text-[0.9375rem] md:text-base"
               onClick={returnToThreshold}
             >
-              <HeadingBloom bloomClassName="inset-[-1.25rem_-2rem] opacity-80">
+              <HeadingBloom bloomClassName="inset-[-1.25rem_-2rem] opacity-60">
                 Living Terrain
               </HeadingBloom>
             </Link>
             <div className="flex items-center gap-1 sm:gap-5">
               <TerrainLink
                 href="/inquiry"
-                className="flex min-h-11 min-w-11 items-center justify-center px-2 text-[0.8125rem] tracking-[0.04em] text-ivory/45 transition-colors duration-500 active:text-ivory/70 sm:px-0 sm:text-[0.6875rem] sm:tracking-[0.06em] sm:text-ivory/30 sm:hover:text-ivory/55"
+                className="threshold-map-nav-link flex min-h-11 min-w-11 items-center justify-center px-2 text-[0.8125rem] tracking-[0.04em] sm:px-0 sm:text-[0.75rem] sm:tracking-[0.06em]"
               >
                 Read
               </TerrainLink>
-              <div className="flex min-h-11 min-w-11 items-center justify-center [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:text-ivory/45 [&_button]:active:text-ivory/70 sm:[&_button]:text-ivory/30 sm:[&_button:hover]:text-ivory/55">
+              <div className="flex min-h-11 min-w-11 items-center justify-center [&_button]:threshold-map-nav-link [&_button]:flex [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:items-center [&_button]:justify-center">
                 <SearchDialog />
               </div>
               <Link
                 href="/about"
-                className="flex min-h-11 min-w-11 items-center justify-center px-2 text-[0.8125rem] tracking-[0.04em] text-ivory/45 transition-colors duration-500 active:text-ivory/70 sm:px-0 sm:text-[0.6875rem] sm:tracking-[0.06em] sm:text-ivory/30 sm:hover:text-ivory/55"
+                className="threshold-map-nav-link flex min-h-11 min-w-11 items-center justify-center px-2 text-[0.8125rem] tracking-[0.04em] sm:px-0 sm:text-[0.75rem] sm:tracking-[0.06em]"
               >
                 About
               </Link>
@@ -378,34 +381,30 @@ export function ThresholdWorld() {
         className="relative z-10 min-h-0 flex-1 isolation-isolate"
         initial={{ opacity: arriving ? 0.2 : 0 }}
         animate={{
-          opacity: entered ? 1 : crossing ? 0.35 : 0,
+          opacity: entered ? 1 : 0,
         }}
         transition={{
-          duration: crossing
-            ? crossingMs / 1000
-            : arriving
-              ? NAVIGATION.readingToMap.enter / 1000
-              : 0,
-          delay: crossing ? (isMobile ? 0.2 : 0.6) : arriving ? 0.25 : 0,
+          duration: crossing ? 0.45 : arriving ? NAVIGATION.readingToMap.enter / 1000 : 0,
+          delay: crossing ? 0 : arriving ? 0.12 : 0,
           ease: fade.ease,
         }}
       >
-        {entered && introVisible && (
-          <div className="hidden md:block">
-            <DiscoveryOnboarding visible />
-          </div>
-        )}
-
         <div className="relative hidden h-full md:block">
-          <StoneMapVeil active={entered && discoveryAwake} />
           <ConstellationCanvas
             nodes={nodes}
             edges={edges}
             sessionActive={entered}
-            enabled={discoveryAwake}
-            discoveryAwake={discoveryAwake}
+            enabled={mapInteractive}
+            discoveryAwake={constellationAwake}
             discoveryDepth={discoveryDepth}
-            revealProgress={revealProgress}
+            revealProgress={1}
+            stableLayout
+            awakeningProgress={wonder.awakening}
+            chamberLabelPresence={wonder.chamberLabel}
+            wonderEngaged={wonder.engaged}
+            showChrome={wonder.chromeVisible}
+            onVisitorEngage={wonder.engage}
+            onAttention={wonder.setAttention}
             focusNodeId={focusId}
             exploredIds={exploredIds}
             hoveredId={hoveredId}
@@ -416,14 +415,16 @@ export function ThresholdWorld() {
             restoredViewBox={restoredViewBox}
             onViewBoxPersist={handleViewBoxPersist}
             comfortableMode={isTablet}
+            onLayoutReady={handleMapLayoutReady}
           />
+          <MapRevealVeil opacity={wonder.veil} />
         </div>
 
-        {entered && (
+        {entered && (isMobile ? mapLayoutReady : mapSettled) && (
           <div className="md:hidden">
             <MobileTerrainGuide
               nodes={nodes}
-              discoveryAwake={discoveryAwake}
+              discoveryAwake={mapLayoutReady}
               onPathSelect={markExplored}
               reducedMotion={reducedMotion}
             />
@@ -432,26 +433,27 @@ export function ThresholdWorld() {
 
         <div className="hidden md:contents">
           <MapWhisper
-            active={entered && discoveryAwake}
-            paused={!!hoveredId || introVisible || revealRunning}
+            active={wonder.chromeVisible && mapInteractive}
+            paused={!!hoveredId}
           />
 
           <ConstellationHabitat
-            active={entered && discoveryAwake}
-            quiet={!!hoveredId || introVisible || revealRunning}
+            active={wonder.chromeVisible && mapInteractive}
+            quiet={!!hoveredId}
           />
 
           <LingerWhisper
             variant="threshold"
             delay={22000}
-            paused={!discoveryAwake || !!hoveredId || introVisible}
-            className="z-[25]"
+            paused={!wonder.chromeVisible || !mapInteractive || !!hoveredId}
+            className="z-[12]"
           />
 
-          {entered && discoveryAwake && !introVisible && !hoveredId && (
+          {wonder.chromeVisible && mapInteractive && !hoveredId && (
             <TerrainPulse
               variant="map"
-              className="pointer-events-none fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-5 z-20"
+              className="pointer-events-none fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-20 hidden max-w-[11rem] lg:block"
+              style={{ opacity: wonder.chromeOpacity }}
             />
           )}
 
@@ -465,16 +467,16 @@ export function ThresholdWorld() {
 function ObservatoryRings({
   visible,
   crossing,
-  revealProgress,
+  awakening,
 }: {
   visible: boolean;
   crossing: boolean;
-  revealProgress: number;
+  awakening: number;
 }) {
   const opacity =
-    (visible ? 0.035 : 0) +
-    (crossing ? 0.015 : 0) +
-    revealProgress * 0.04;
+    (visible ? 0.012 : 0) +
+    (crossing ? 0.006 : 0) +
+    awakening * 0.02;
 
   return (
     <svg
@@ -483,9 +485,9 @@ function ObservatoryRings({
       viewBox="0 0 100 100"
       aria-hidden
     >
-      <circle cx="50" cy="50" r="48" fill="none" stroke="#8fa88a" strokeWidth="0.12" />
-      <circle cx="50" cy="50" r="36" fill="none" stroke="#8fa88a" strokeWidth="0.08" opacity="0.6" />
-      <circle cx="50" cy="50" r="24" fill="none" stroke="#8fa88a" strokeWidth="0.06" opacity="0.4" />
+      <circle cx="50" cy="50" r="48" fill="none" stroke="#788898" strokeWidth="0.12" />
+      <circle cx="50" cy="50" r="36" fill="none" stroke="#788898" strokeWidth="0.08" opacity="0.6" />
+      <circle cx="50" cy="50" r="24" fill="none" stroke="#788898" strokeWidth="0.06" opacity="0.4" />
     </svg>
   );
 }

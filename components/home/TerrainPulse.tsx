@@ -9,11 +9,13 @@ import { cn } from "@/lib/utils";
 interface TerrainPulseProps {
   className?: string;
   variant?: "threshold" | "map";
+  style?: React.CSSProperties;
 }
 
 export function TerrainPulse({
   className,
   variant = "threshold",
+  style,
 }: TerrainPulseProps) {
   const reducedMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
@@ -35,11 +37,12 @@ export function TerrainPulse({
         variant === "threshold" ? "mt-14 text-center" : "text-left",
         className,
       )}
+      style={style}
       aria-label="Field note"
     >
       <p
         className={cn(
-          "type-chamber text-ivory/28",
+          "type-chamber text-ivory/22",
           variant === "threshold" ? "text-[0.5625rem]" : "text-[0.5rem]",
         )}
       >
@@ -56,7 +59,7 @@ export function TerrainPulse({
             ease: NAVIGATION.ease,
           }}
           className={cn(
-            "mt-3 font-heading italic leading-relaxed text-ivory/40",
+            "mt-3 font-heading italic leading-relaxed text-ivory/32",
             variant === "threshold"
               ? "mx-auto max-w-xs text-[0.875rem] sm:max-w-sm sm:text-[0.9375rem]"
               : "max-w-[13rem] text-[0.75rem] sm:max-w-[14rem] sm:text-[0.8125rem]",

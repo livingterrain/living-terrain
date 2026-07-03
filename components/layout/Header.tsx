@@ -61,11 +61,11 @@ export function Header() {
           <TerrainLink
             href="/"
             className={cn(
-              "touch-zone relative flex min-h-11 items-center font-heading tracking-tight transition-all duration-[2000ms]",
+              "touch-zone relative flex min-h-11 items-center font-heading tracking-tight transition-colors duration-[1200ms]",
               present
-                ? "text-[0.9375rem] text-charcoal/75 sm:text-base"
-                : "text-[1rem] text-charcoal/50 sm:text-lg",
-              pathname === "/" && present && "text-forest/80",
+                ? "text-[0.9375rem] text-charcoal/85 sm:text-base"
+                : "text-[1rem] text-charcoal/70 sm:text-lg",
+              pathname === "/" && present && "text-forest/90",
             )}
           >
             Living Terrain
@@ -80,7 +80,7 @@ export function Header() {
           <div className="flex items-center gap-4 sm:gap-6">
             <nav
               className={cn(
-                "hidden items-center gap-8 transition-opacity duration-[2000ms] lg:flex",
+                "hidden items-center gap-8 lg:flex",
                 present ? "opacity-100" : "opacity-0 pointer-events-none",
               )}
               aria-label="Directions"
@@ -101,8 +101,8 @@ export function Header() {
 
             <div
               className={cn(
-                "transition-opacity duration-[2000ms] [&_button]:relative [&_button]:flex [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:items-center [&_button]:justify-center [&_button]:touch-manipulation",
-                present ? "opacity-80" : "opacity-40",
+                "[&_button]:relative [&_button]:flex [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:items-center [&_button]:justify-center [&_button]:touch-manipulation",
+                present ? "opacity-100" : "opacity-75",
               )}
             >
               <SearchDialog />
@@ -112,7 +112,7 @@ export function Header() {
               type="button"
               onClick={() => setOpen(!open)}
               className={cn(
-                "world-presence__further touch-zone relative flex min-h-11 min-w-11 items-center justify-center font-heading text-lg text-charcoal-muted/60 transition-all duration-[2000ms] hover:text-charcoal/80 active:text-charcoal/90 lg:hidden",
+                "world-presence__further touch-zone relative flex min-h-11 min-w-11 items-center justify-center font-heading text-lg text-charcoal-muted/75 transition-colors duration-[1200ms] hover:text-charcoal/90 active:text-charcoal lg:hidden",
                 present && "opacity-100",
               )}
               aria-label={open ? "Close" : "Further directions"}
@@ -125,8 +125,8 @@ export function Header() {
               type="button"
               onClick={() => setOpen(!open)}
               className={cn(
-                "world-presence__further hidden min-h-10 items-center font-heading text-[0.8125rem] italic text-charcoal-muted/55 transition-all duration-[2000ms] hover:text-charcoal/75 lg:flex",
-                present ? "opacity-100" : "opacity-0 pointer-events-none",
+                "world-presence__further hidden min-h-10 items-center font-heading text-[0.8125rem] italic text-charcoal-muted/70 transition-colors duration-[1200ms] hover:text-charcoal/90 lg:flex",
+                present ? "opacity-100" : "opacity-70",
               )}
               aria-expanded={open}
             >
@@ -138,7 +138,7 @@ export function Header() {
 
       {open && (
         <div
-          className="world-presence__horizon fixed inset-x-0 bottom-0 z-50"
+          className="world-presence__horizon fixed inset-x-0 bottom-0 z-[60]"
           role="dialog"
           aria-label="Directions through the terrain"
         >

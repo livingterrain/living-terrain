@@ -949,6 +949,9 @@
   /* Environmental presence — not chrome */
   .world-presence {
     pointer-events: none;
+    position: relative;
+    z-index: 40;
+    isolation: isolate;
   }
 
   .world-presence > * {
@@ -956,6 +959,7 @@
   }
 
   .world-presence__horizon {
+    z-index: 60;
     background:
       linear-gradient(
         180deg,
@@ -1245,6 +1249,31 @@
     animation: constellation-drift calc(52s * var(--tempo-inhale)) var(--ease-breath) infinite;
   }
 
+  .constellation-drift--cursor {
+    animation: none;
+    will-change: transform;
+  }
+
+  @keyframes map-particle-twinkle {
+    0%,
+    88%,
+    100% {
+      opacity: 0.04;
+    }
+    92% {
+      opacity: 0.17;
+    }
+    96% {
+      opacity: 0.09;
+    }
+  }
+
+  .map-particle-twinkle {
+    animation:
+      observatory-dust calc(86s * var(--tempo-inhale)) var(--ease-breath) infinite,
+      map-particle-twinkle calc(22s * var(--tempo-inhale)) ease-in-out infinite;
+  }
+
   /* Barely perceptible rotation — noticed only after minutes */
   @keyframes constellation-slow-rotate {
     from {
@@ -1323,9 +1352,28 @@
     animation: star-bud calc(28s * var(--tempo-inhale)) ease-in-out infinite;
   }
 
+  @keyframes atmosphere-star-drift {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    33% {
+      transform: translate(5px, -3px);
+    }
+    66% {
+      transform: translate(-4px, 4px);
+    }
+  }
+
+  .atmosphere-star-drift {
+    animation: atmosphere-star-drift calc(200s * var(--tempo-inhale)) var(--ease-breath) infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .star-twinkle,
-    .star-bud {
+    .star-bud,
+    .atmosphere-star-drift,
+    .map-particle-twinkle {
       animation: none;
     }
   }
@@ -1428,28 +1476,63 @@
 
   @keyframes atmosphere-root-breathe {
     0%, 100% {
-      opacity: 1;
       transform: scale(1);
     }
     50% {
-      opacity: 0.988;
-      transform: scale(1.003);
+      transform: scale(1.002);
     }
+  }
+
+  .threshold-page-atmosphere {
+    animation: threshold-page-breathe calc(42s * var(--tempo-inhale)) var(--ease-breath) infinite;
+    transform-origin: center center;
+  }
+
+  .threshold-page-atmosphere--deep {
+    animation: none;
+  }
+
+  .threshold-ambient-vignette--deep {
+    background: radial-gradient(
+      ellipse 98% 94% at 50% 48%,
+      transparent 42%,
+      color-mix(in srgb, #000208 82%, transparent) 100%
+    );
+    opacity: 0.78;
+  }
+
+  .threshold-nebula-field {
+    background:
+      radial-gradient(
+        ellipse 42% 28% at 68% 32%,
+        color-mix(in srgb, #281828 3.5%, transparent),
+        transparent 72%
+      ),
+      radial-gradient(
+        ellipse 36% 24% at 22% 68%,
+        color-mix(in srgb, #182038 3%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 28% 18% at 52% 18%,
+        color-mix(in srgb, #302018 2.5%, transparent),
+        transparent 68%
+      );
+    opacity: 0.55;
+    pointer-events: none;
   }
 
   .threshold-page-breathe {
     animation: threshold-page-breathe calc(38s * var(--tempo-inhale)) var(--ease-breath) infinite;
-    will-change: transform, opacity;
+    will-change: transform;
   }
 
   @keyframes threshold-page-breathe {
     0%, 100% {
-      opacity: 1;
       transform: scale(1);
     }
     50% {
-      opacity: 0.994;
-      transform: scale(1.0015);
+      transform: scale(1.0012);
     }
   }
 
@@ -1821,7 +1904,6 @@
         #b89868 96%,
         #ccb878 100%
       );
-    will-change: transform;
   }
 
   .hero-landscape__zenith-haze {
@@ -2131,9 +2213,59 @@
   }
 
   .hero-foreground {
+    isolation: isolate;
     text-shadow:
       0 1px 28px color-mix(in srgb, #040608 70%, transparent),
       0 0 64px color-mix(in srgb, #080c12 50%, transparent);
+  }
+
+  /* Homepage map chrome — always above atmosphere, always readable */
+  .threshold-map-chrome {
+    position: relative;
+    z-index: 50;
+    isolation: isolate;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, #06080c 88%, transparent) 0%,
+      color-mix(in srgb, #06080c 62%, transparent) 72%,
+      transparent 100%
+    );
+    backdrop-filter: blur(6px);
+  }
+
+  .threshold-map-nav-link {
+    color: color-mix(in srgb, #e8dcc8 72%, transparent);
+    text-shadow: 0 1px 12px color-mix(in srgb, #040608 65%, transparent);
+    transition: color 1.1s var(--ease-breath);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .threshold-map-nav-link:hover,
+  .threshold-map-nav-link:focus-visible,
+  .threshold-map-nav-link:active {
+    color: color-mix(in srgb, #e8dcc8 96%, transparent);
+  }
+
+  .threshold-hero-choice {
+    color: color-mix(in srgb, #e8dcc8 86%, transparent);
+    transition: color 0.9s var(--ease-breath), border-color 0.9s var(--ease-breath);
+  }
+
+  .threshold-hero-choice:hover,
+  .threshold-hero-choice:focus-visible,
+  .threshold-hero-choice:active {
+    color: color-mix(in srgb, #e8dcc8 98%, transparent);
+  }
+
+  .threshold-hero-choice__hint {
+    color: color-mix(in srgb, #e8dcc8 42%, transparent);
+    transition: color 0.9s var(--ease-breath);
+  }
+
+  .group:hover .threshold-hero-choice__hint,
+  .group:focus-visible .threshold-hero-choice__hint {
+    color: color-mix(in srgb, #e8dcc8 58%, transparent);
   }
 
   .hero-foreground .type-chamber {
@@ -2201,6 +2333,8 @@
     .atmosphere-breathe-fog-slow,
     .atmosphere-breathe-root,
     .threshold-page-breathe,
+    .threshold-page-atmosphere,
+    .threshold-page-atmosphere--deep,
     .threshold-heading-bloom {
       animation: none;
     }

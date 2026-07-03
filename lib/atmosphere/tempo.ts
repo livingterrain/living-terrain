@@ -11,6 +11,10 @@ export const THRESHOLD = {
   revealMs: breathe(2800),
   introHoldMs: breathe(2400),
   crossingMs: breathe(3200),
+  /** Threshold copy fully gone before dissolve hold */
+  thresholdFadeMs: breathe(1200),
+  /** Dark atmosphere between threshold exit and map reveal */
+  dissolveHoldMs: breathe(900),
 } as const;
 
 export const THREAD = {

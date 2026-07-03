@@ -5,13 +5,16 @@ import { useTerrainSoundOptional } from "./TerrainSoundProvider";
 
 interface SoundMuteControlProps {
   className?: string;
-  /** Only show after threshold activation */
+  style?: React.CSSProperties;
   requireActivation?: boolean;
+  iconOnly?: boolean;
 }
 
 export function SoundMuteControl({
   className,
+  style,
   requireActivation = true,
+  iconOnly = false,
 }: SoundMuteControlProps) {
   const sound = useTerrainSoundOptional();
   if (!sound) return null;
@@ -31,11 +34,18 @@ export function SoundMuteControl({
         bottom: "max(1.25rem, env(safe-area-inset-bottom))",
         right: "max(1.25rem, env(safe-area-inset-right))",
         opacity: sound.muted ? 0.55 : 0.72,
+        ...style,
       }}
       aria-pressed={!sound.muted}
       aria-label={sound.muted ? "Restore ambience" : "Silence the room"}
     >
-      {sound.muted ? "Ambience" : "Silence"}
+      {iconOnly ? (
+        <span className="block h-2 w-2 rounded-full bg-current opacity-70" aria-hidden />
+      ) : sound.muted ? (
+        "Ambience"
+      ) : (
+        "Silence"
+      )}
     </button>
   );
 }

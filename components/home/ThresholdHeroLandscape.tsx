@@ -41,9 +41,9 @@ export function ThresholdHeroLandscape({
   const scrollOffset = useAmbientScroll();
   const [loaded, setLoaded] = useState(false);
   const scrollY = useMotionValue(0);
-  const scrollSpring = useSpring(scrollY, { stiffness: 36, damping: 34, mass: 0.9 });
+  const scrollSpring = useSpring(scrollY, { stiffness: 22, damping: 42, mass: 1.1 });
   const mx = useMotionValue(0);
-  const px = useSpring(mx, { stiffness: 14, damping: 42, mass: 1.6 });
+  const px = useSpring(mx, { stiffness: 10, damping: 48, mass: 1.8 });
 
   const skyY = useTransform(scrollSpring, (s) => s * DEPTH.sky);
   const vanishY = useTransform(scrollSpring, (s) => s * DEPTH.vanish);

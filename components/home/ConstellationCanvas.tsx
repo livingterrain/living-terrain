@@ -35,6 +35,13 @@ import {
 } from "@/lib/constellation/hover-ripple";
 import { cn } from "@/lib/utils";
 import { MOTION } from "@/lib/atmosphere/tempo";
+import { useConstellationCursorDrift } from "@/lib/constellation/use-constellation-cursor-drift";
+import {
+  chamberPresence,
+  conceptPresence,
+  edgePresence,
+  WONDER_ARRIVAL,
+} from "@/lib/wonder/arrival";
 import {
   CELESTIAL_KIND_LABEL,
   celestialFocusSpan,
@@ -49,14 +56,26 @@ import {
 } from "@/lib/constellation/celestial-hierarchy";
 
 const kindColors: Record<GraphNodeKind, string> = {
-  chamber: "#f0ece4",
-  concept: "#b8d4b0",
-  essay: "#7a9a72",
-  book: "#c4b494",
-  question: "#a0b0a8",
-  "field-note": "#6a8494",
-  quotation: "#889898",
-  observation: "#7a8a94",
+  chamber: "#faf6ee",
+  concept: "#f0ece4",
+  essay: "#e4e0d8",
+  book: "#e8dcc8",
+  question: "#d8dce4",
+  "field-note": "#ccd4dc",
+  quotation: "#c8d0d8",
+  observation: "#d0d8e4",
+};
+
+/** Warm accent tint — barely perceptible, for halos only */
+const kindWarmAccent: Record<GraphNodeKind, string> = {
+  chamber: "#f0e0c8",
+  concept: "#e8dcc8",
+  essay: "#ddd4c4",
+  book: "#e0d0b0",
+  question: "#d0d4dc",
+  "field-note": "#c8d0d8",
+  quotation: "#c4ccd4",
+  observation: "#c8d4e4",
 };
 
 const kindRealm: Record<GraphNodeKind, string> = {
@@ -71,6 +90,13 @@ const kindRealm: Record<GraphNodeKind, string> = {
 };
 
 const fade = { duration: MOTION.fade / 1000, ease: [0.45, 0.05, 0.55, 0.95] as const };
+const HOVER_TRANSITION =
+  "transform 0.22s cubic-bezier(0.45, 0.05, 0.55, 0.95), opacity 0.22s cubic-bezier(0.45, 0.05, 0.55, 0.95)";
+const LABEL_TRANSITION =
+  "opacity 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95)";
+const ARRIVAL_TRANSITION =
+  "opacity 1.1s cubic-bezier(0.45, 0.05, 0.55, 0.95)";
+const EDGE_HOVER_TRANSITION = "opacity 0.22s cubic-bezier(0.45, 0.05, 0.55, 0.95)";
 
 function pulseOffset(seed: string): { durScale: number; delay: number } {
   let h = 0;
@@ -88,9 +114,9 @@ const EDGE_TIER: Record<
   EdgeTier,
   { widthMul: number; baseOpacity: number; color: string; dash?: string }
 > = {
-  primary: { widthMul: 2.5, baseOpacity: 0.62, color: "#a8c4a0" },
-  secondary: { widthMul: 1.4, baseOpacity: 0.36, color: "#90a890" },
-  emerging: { widthMul: 0.8, baseOpacity: 0.2, color: "#788878", dash: "5 8" },
+  primary: { widthMul: 2.2, baseOpacity: 0.09, color: "#8898a8" },
+  secondary: { widthMul: 1.2, baseOpacity: 0.05, color: "#687888" },
+  emerging: { widthMul: 0.7, baseOpacity: 0.03, color: "#485868", dash: "5 8" },
 };
 
 function nodeRadius(node: GraphNode, viewBoxW: number): number {
@@ -116,6 +142,16 @@ interface ConstellationCanvasProps {
   onViewBoxPersist?: (viewBox: ViewBox) => void;
   /** Tablet: fewer nodes, calmer density */
   comfortableMode?: boolean;
+  /** Skip camera motion and per-node reveal — full layout at once */
+  stableLayout?: boolean;
+  onLayoutReady?: () => void;
+  /** Wonder arrival — 0–1 master clock */
+  awakeningProgress?: number;
+  chamberLabelPresence?: number;
+  wonderEngaged?: boolean;
+  showChrome?: boolean;
+  onVisitorEngage?: () => void;
+  onAttention?: (x: number, y: number) => void;
 }
 
 export function ConstellationCanvas({
@@ -136,14 +172,26 @@ export function ConstellationCanvas({
   restoredViewBox,
   onViewBoxPersist,
   comfortableMode = false,
+  stableLayout = false,
+  onLayoutReady,
+  awakeningProgress = 1,
+  chamberLabelPresence = 1,
+  wonderEngaged = true,
+  showChrome = true,
+  onVisitorEngage,
+  onAttention,
 }: ConstellationCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const driftGroupRef = useRef<SVGGElement>(null);
+  const pointerTravelRef = useRef(0);
+  const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
   const viewBoxRef = useRef<ViewBox>(CHAMBER_INTRO_VIEW);
   const animRef = useRef<number | null>(null);
   const dragRef = useRef<{ x: number; y: number; moved: boolean } | null>(null);
   const velocityRef = useRef({ vx: 0, vy: 0 });
   const inertiaRef = useRef<number | null>(null);
   const enteredSessionRef = useRef(false);
+  const layoutNotifiedRef = useRef(false);
   const navigatingRef = useRef(false);
   const restoredViewRef = useRef(false);
   const zoomVelocityRef = useRef(0);
@@ -186,8 +234,11 @@ export function ConstellationCanvas({
     return new Map(concepts.map((n, i) => [n.id, i]));
   }, [primaryNodes]);
 
-  const reveal = Math.max(0, Math.min(1, revealProgress));
-  const inReveal = reveal < 1;
+  const reveal = stableLayout ? 1 : Math.max(0, Math.min(1, revealProgress));
+  const inReveal = stableLayout ? false : reveal < 1;
+
+  const layoutReady =
+    containerSize.w >= 96 && containerSize.h >= 96;
 
   const effectiveDiscoveryDepth = comfortableMode
     ? Math.min(discoveryDepth, 2)
@@ -228,22 +279,54 @@ export function ConstellationCanvas({
     if (!sessionActive) {
       enteredSessionRef.current = false;
       restoredViewRef.current = false;
+      layoutNotifiedRef.current = false;
       return;
     }
+
+    if (stableLayout) {
+      if (!layoutReady) return;
+      const target = restoredViewBox ?? primaryViewBox;
+      applyViewBox(target);
+      enteredSessionRef.current = true;
+      if (!layoutNotifiedRef.current) {
+        layoutNotifiedRef.current = true;
+        onLayoutReady?.();
+      }
+      return;
+    }
+
     if (enteredSessionRef.current) return;
+
     enteredSessionRef.current = true;
     if (restoredViewBox && !restoredViewRef.current) {
       restoredViewRef.current = true;
       applyViewBox(restoredViewBox);
+      onLayoutReady?.();
       return;
     }
+
     applyViewBox(CHAMBER_INTRO_VIEW);
-  }, [sessionActive, applyViewBox, restoredViewBox]);
+  }, [
+    sessionActive,
+    stableLayout,
+    layoutReady,
+    applyViewBox,
+    restoredViewBox,
+    primaryViewBox,
+    onLayoutReady,
+  ]);
 
   useEffect(() => {
-    if (!sessionActive || reveal >= 1) return;
+    if (stableLayout || !sessionActive || reveal >= 1) return;
     applyViewBox(mixViewBox(CHAMBER_INTRO_VIEW, primaryViewBox, reveal));
-  }, [reveal, primaryViewBox, sessionActive, applyViewBox]);
+  }, [reveal, primaryViewBox, sessionActive, applyViewBox, stableLayout]);
+
+  useEffect(() => {
+    if (stableLayout || !sessionActive || reveal < 1 || restoredViewRef.current) {
+      return;
+    }
+    applyViewBox(primaryViewBox);
+  }, [sessionActive, reveal, primaryViewBox, applyViewBox, stableLayout]);
 
   const discoveryGraph = useMemo(
     () =>
@@ -366,6 +449,7 @@ export function ConstellationCanvas({
     (e: WheelEvent) => {
       if (!enabled) return;
       e.preventDefault();
+      onVisitorEngage?.();
       stopInertia();
       if (zoomInertiaRef.current) cancelAnimationFrame(zoomInertiaRef.current);
 
@@ -394,7 +478,7 @@ export function ConstellationCanvas({
       };
       zoomInertiaRef.current = requestAnimationFrame(step);
     },
-    [enabled, applyViewBox, stopInertia],
+    [enabled, applyViewBox, stopInertia, onVisitorEngage],
   );
 
   useEffect(() => {
@@ -404,27 +488,55 @@ export function ConstellationCanvas({
     return () => el.removeEventListener("wheel", handleWheel);
   }, [enabled, handleWheel]);
 
+  const trackPointer = useCallback(
+    (clientX: number, clientY: number) => {
+      const el = containerRef.current;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        onAttention?.(
+          (clientX - rect.left) / rect.width,
+          (clientY - rect.top) / rect.height,
+        );
+      }
+      const last = lastPointerRef.current;
+      if (last) {
+        pointerTravelRef.current += Math.hypot(clientX - last.x, clientY - last.y);
+        if (pointerTravelRef.current >= WONDER_ARRIVAL.pointerEngagePx) {
+          onVisitorEngage?.();
+        }
+      }
+      lastPointerRef.current = { x: clientX, y: clientY };
+    },
+    [onAttention, onVisitorEngage],
+  );
+
   const handlePointerDown = useCallback(
     (e: React.PointerEvent) => {
       if (!enabled || e.button !== 0) return;
       if ((e.target as Element).closest('[role="button"]')) return;
 
+      trackPointer(e.clientX, e.clientY);
       stopInertia();
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
       dragRef.current = { x: e.clientX, y: e.clientY, moved: false };
       velocityRef.current = { vx: 0, vy: 0 };
       setIsDragging(true);
     },
-    [enabled, stopInertia],
+    [enabled, stopInertia, trackPointer],
   );
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent) => {
-      if (!enabled || !dragRef.current) return;
+      if (!enabled) return;
+      trackPointer(e.clientX, e.clientY);
+      if (!dragRef.current) return;
 
       const dx = e.clientX - dragRef.current.x;
       const dy = e.clientY - dragRef.current.y;
-      if (Math.hypot(dx, dy) > 4) dragRef.current.moved = true;
+      if (Math.hypot(dx, dy) > 4) {
+        dragRef.current.moved = true;
+        onVisitorEngage?.();
+      }
 
       if (!dragRef.current.moved) return;
 
@@ -443,7 +555,7 @@ export function ConstellationCanvas({
       dragRef.current.x = e.clientX;
       dragRef.current.y = e.clientY;
     },
-    [enabled, applyViewBox],
+    [enabled, applyViewBox, trackPointer, onVisitorEngage],
   );
 
   const handlePointerUp = useCallback(() => {
@@ -453,10 +565,17 @@ export function ConstellationCanvas({
     if (moved) startInertia();
   }, [startInertia]);
 
-  const dormantMul = discoveryAwake ? 1 : 0.22 + reveal * 0.78;
-  const ringOpacity = 0.04 + reveal * 0.12;
+  const dormantMul = discoveryAwake ? 1 : stableLayout ? 1 : 0.22 + reveal * 0.78;
+  const edgeAwaken = edgePresence(awakeningProgress);
+  const ringOpacity = (stableLayout ? 0.05 : 0.02 + reveal * 0.06) * edgeAwaken;
   const interactionEnabled = enabled && !inReveal;
   const hoveredPos = hoveredId ? nodeMap.get(hoveredId) : null;
+
+  useConstellationCursorDrift(
+    interactionEnabled && discoveryAwake && !isDragging,
+    containerRef,
+    driftGroupRef,
+  );
 
   const activateNode = useCallback(
     (node: GraphNode) => {
@@ -477,7 +596,12 @@ export function ConstellationCanvas({
         ref={containerRef}
         className={cn(
           "absolute inset-0 touch-none select-none",
-          interactionEnabled && (isDragging ? "cursor-grabbing" : "cursor-grab"),
+          interactionEnabled &&
+            (isDragging
+              ? "cursor-grabbing"
+              : wonderEngaged
+                ? "cursor-grab"
+                : "cursor-default"),
         )}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
@@ -493,29 +617,43 @@ export function ConstellationCanvas({
           textRendering="optimizeLegibility"
         >
           <defs>
-            <filter id="halo-origin" x="-120%" y="-120%" width="340%" height="340%">
-              <feGaussianBlur stdDeviation="2.8" result="blur" />
+            <radialGradient id="celestial-halo-warm" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#fffaf2" stopOpacity="0.42" />
+              <stop offset="38%" stopColor="#f0e8dc" stopOpacity="0.14" />
+              <stop offset="72%" stopColor="#c8d0e0" stopOpacity="0.04" />
+              <stop offset="100%" stopColor="#8090a8" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="celestial-halo-cool" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#f8f6f2" stopOpacity="0.36" />
+              <stop offset="45%" stopColor="#e0e4ec" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#687888" stopOpacity="0" />
+            </radialGradient>
+            <filter id="halo-origin" x="-150%" y="-150%" width="400%" height="400%">
+              <feGaussianBlur stdDeviation="4.8" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            <filter id="halo-constellation" x="-100%" y="-100%" width="300%" height="300%">
-              <feGaussianBlur stdDeviation="1.4" result="blur" />
+            <filter id="halo-constellation" x="-120%" y="-120%" width="340%" height="340%">
+              <feGaussianBlur stdDeviation="2.6" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            <filter id="halo-supporting" x="-80%" y="-80%" width="260%" height="260%">
-              <feGaussianBlur stdDeviation="0.55" result="blur" />
+            <filter id="halo-supporting" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="1.1" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            <filter id="halo-observation" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="0.25" result="blur" />
+            <filter id="halo-observation" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="0.45" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+              </feMerge>
+            </filter>
+            <filter id="core-glow" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="1.2" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
@@ -532,20 +670,20 @@ export function ConstellationCanvas({
               dur="1416s"
               repeatCount="indefinite"
             />
-          <g className="constellation-drift">
+          <g ref={driftGroupRef} className="constellation-drift constellation-drift--cursor">
           <ConstellationDriftParticles
             viewBoxW={viewBox.w}
             awake={discoveryAwake}
           />
 
           {/* Concept ring — architecture visible as the universe assembles */}
-          {(zoom < 0.75 || reveal > 0) && (
+          {(stableLayout || zoom < 0.75 || reveal > 0) && (
             <circle
               cx={UNIVERSE_CENTER}
               cy={UNIVERSE_CENTER}
               r={780}
               fill="none"
-              stroke="#a8c0a0"
+              stroke="#788898"
               strokeWidth={viewBox.w / 14000}
               opacity={ringOpacity}
             />
@@ -571,32 +709,32 @@ export function ConstellationCanvas({
               edge.tier === "primary" &&
               (from.kind === "chamber" || to.kind === "chamber");
 
-            let opacity = tier.baseOpacity * dormantMul;
+            let opacity = tier.baseOpacity * dormantMul * edgeAwaken;
             const ripple = rippleBoost(
               edgeHopRef.current.get(edgeKey(edge)),
               rippleElapsed,
             );
             if (isHighlighted) {
               opacity = Math.min(
-                0.62,
-                opacity + (isConnected ? 0.24 : 0.12),
+                0.72,
+                opacity + (isConnected ? 0.28 : 0.14),
               );
             }
             if (ripple > 0) {
               opacity = Math.min(0.68, opacity + ripple);
             }
 
-            const edgeReveal = inReveal && isPrimaryRing
-              ? Math.max(
-                  0,
-                  Math.min(
-                    1,
-                    (reveal - edgeIndex * 0.045) / 0.55,
-                  ),
-                )
-              : inReveal
-                ? reveal * 0.85
-                : 1;
+            const edgeReveal = inReveal
+              ? isPrimaryRing
+                ? Math.max(
+                    0,
+                    Math.min(
+                      1,
+                      (reveal - edgeIndex * 0.045) / 0.55,
+                    ),
+                  )
+                : reveal * 0.85
+              : 1;
 
             if (inReveal && edgeReveal <= 0) return null;
 
@@ -607,11 +745,12 @@ export function ConstellationCanvas({
                 y1={from.y}
                 x2={to.x}
                 y2={to.y}
-                stroke={isHighlighted || ripple > 0.08 ? "#c4dcc0" : tier.color}
+                stroke={isHighlighted || ripple > 0.08 ? "#c8d4dc" : tier.color}
                 strokeWidth={isHighlighted || ripple > 0.08 ? sw * 1.15 : sw}
                 strokeDasharray={tier.dash}
                 opacity={opacity * edgeReveal}
                 reveal={edgeReveal}
+                hoverTransition={EDGE_HOVER_TRANSITION}
               />
             );
           })}
@@ -620,7 +759,7 @@ export function ConstellationCanvas({
             edges={visibleEdges}
             nodeMap={nodeMap}
             viewBoxW={viewBox.w}
-            enabled={interactionEnabled && discoveryAwake && !hoveredId}
+            enabled={interactionEnabled && discoveryAwake && !hoveredId && awakeningProgress > 0.48}
           />
 
           {visibleNodes.map((node) => (
@@ -631,6 +770,9 @@ export function ConstellationCanvas({
               viewBoxW={viewBox.w}
               discoveryAwake={discoveryAwake}
               revealProgress={reveal}
+              awakeningProgress={awakeningProgress}
+              chamberLabelPresence={chamberLabelPresence}
+              wonderEngaged={wonderEngaged}
               conceptIndex={conceptOrder.get(node.id) ?? 0}
               conceptCount={conceptOrder.size}
               isHovered={hoveredId === node.id}
@@ -646,7 +788,7 @@ export function ConstellationCanvas({
       </div>
 
       {/* Minimap */}
-      {sessionActive && discoveryAwake && (
+      {sessionActive && discoveryAwake && showChrome && (
         <ConstellationMinimap
           nodes={discoveryGraph.nodes}
           viewBox={viewBox}
@@ -654,7 +796,7 @@ export function ConstellationCanvas({
         />
       )}
 
-      {interactionEnabled && discoveryAwake && (
+      {interactionEnabled && discoveryAwake && showChrome && showUniverseBtn && (
         <motion.button
           type="button"
           initial={{ opacity: 0 }}
@@ -676,9 +818,9 @@ export function ConstellationCanvas({
         </motion.button>
       )}
 
-      {/* Poetic hover — one sentence preview */}
+      {/* Poetic hover — earned after chrome emerges */}
       <AnimatePresence>
-        {interactionEnabled && hoveredNode && (
+        {interactionEnabled && hoveredNode && showChrome && wonderEngaged && (
           <motion.div
             key={hoveredNode.id}
             initial={{ opacity: 0, y: 6 }}
@@ -714,6 +856,7 @@ function CinematicEdge({
   strokeDasharray,
   opacity,
   reveal,
+  hoverTransition,
 }: {
   x1: number;
   y1: number;
@@ -724,8 +867,10 @@ function CinematicEdge({
   strokeDasharray?: string;
   opacity: number;
   reveal: number;
+  hoverTransition?: string;
 }) {
   const length = Math.hypot(x2 - x1, y2 - y1);
+  const transitionStyle = hoverTransition ? { transition: hoverTransition } : undefined;
 
   if (strokeDasharray) {
     return (
@@ -739,6 +884,7 @@ function CinematicEdge({
         strokeLinecap="round"
         strokeDasharray={strokeDasharray}
         opacity={opacity}
+        style={transitionStyle}
       />
     );
   }
@@ -755,6 +901,7 @@ function CinematicEdge({
       strokeDasharray={length}
       strokeDashoffset={length * (1 - reveal)}
       opacity={opacity}
+      style={transitionStyle}
     />
   );
 }
@@ -765,6 +912,9 @@ function ConstellationNode({
   viewBoxW,
   discoveryAwake,
   revealProgress,
+  awakeningProgress,
+  chamberLabelPresence,
+  wonderEngaged,
   conceptIndex,
   conceptCount,
   isHovered,
@@ -778,6 +928,9 @@ function ConstellationNode({
   viewBoxW: number;
   discoveryAwake: boolean;
   revealProgress: number;
+  awakeningProgress: number;
+  chamberLabelPresence: number;
+  wonderEngaged: boolean;
   conceptIndex: number;
   conceptCount: number;
   isHovered: boolean;
@@ -802,59 +955,73 @@ function ConstellationNode({
           ),
         )
       : isConcept
-        ? 1
-        : 0;
+        ? conceptPresence(awakeningProgress, conceptIndex, conceptCount)
+        : 1;
+
+  const presenceMul = isChamber
+    ? chamberPresence(awakeningProgress)
+    : isConcept
+      ? conceptReveal
+      : Math.min(1, awakeningProgress * 1.15);
 
   const r = nodeRadius(node, viewBoxW);
-  const effectiveR = r * (isHovered ? body.hoverScale : 1);
+  const hoverScale = isHovered && wonderEngaged ? body.hoverScale : 1;
   const strokeW = viewBoxW / 4800;
 
-  const groupOpacity = celestialGroupOpacity({
-    level: node.level,
-    discoveryAwake,
-    isHovered,
-    isExplored,
-    conceptReveal: isConcept ? conceptReveal : undefined,
-    isChamber,
-    isConcept,
-    inReveal,
-  });
+  const groupOpacity =
+    celestialGroupOpacity({
+      level: node.level,
+      discoveryAwake,
+      isHovered,
+      isExplored,
+      conceptReveal: isConcept ? conceptReveal : undefined,
+      isChamber,
+      isConcept,
+      inReveal,
+    }) * presenceMul;
 
-  const showLabel = shouldShowCelestialLabel({
-    level: node.level,
-    discoveryAwake,
-    isHovered,
-    isExplored,
-    conceptReveal: isConcept ? conceptReveal : undefined,
-    isConcept,
-  });
+  const showLabel = isChamber
+    ? chamberLabelPresence > 0.08 && (isHovered || chamberLabelPresence > 0.55)
+    : shouldShowCelestialLabel({
+        level: node.level,
+        discoveryAwake,
+        isHovered,
+        isExplored,
+        conceptReveal: isConcept ? conceptReveal : undefined,
+        isConcept,
+      });
 
   const labelOp = isHovered
-    ? 0.96
+    ? 0.82
     : node.level <= 2
-      ? 0.82
+      ? 0.52 * chamberLabelPresence
       : isExplored
-        ? 0.72
-        : 0.55;
+        ? 0.48
+        : 0.36;
 
   const fontSize = celestialLabelSize(node, viewBoxW);
   const color = kindColors[node.kind];
-  const labelOffset = celestialLabelOffset(effectiveR, node.level);
-  const haloOpacity = celestialGlowOpacity(body, isHovered, isExplored);
+  const warmAccent = kindWarmAccent[node.kind];
+  const labelOffset = celestialLabelOffset(r, node.level);
 
-  if (isConcept && inReveal && conceptReveal <= 0) return null;
+  if (isConcept && presenceMul <= 0.02) return null;
+  if (isChamber && presenceMul <= 0.02) return null;
+
+  const haloBoost = isHovered ? 1.28 : 1;
+  const haloOpacity = celestialGlowOpacity(body, isHovered, isExplored) * haloBoost;
 
   return (
     <g
       role="button"
       tabIndex={enabled ? 0 : -1}
       aria-label={`${node.label}${node.sublabel ? ` — ${node.sublabel}` : ""}`}
+      transform={`translate(${node.x} ${node.y})`}
       style={{
         opacity: groupOpacity,
         outline: "none",
         pointerEvents: enabled ? "auto" : "none",
-        cursor: enabled ? "pointer" : "default",
-        transition: "opacity 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95)",
+        cursor: enabled ? (wonderEngaged ? "pointer" : "default") : "default",
+        transition: ARRIVAL_TRANSITION,
       }}
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
@@ -871,86 +1038,93 @@ function ConstellationNode({
         }
       }}
     >
-      {isChamber && (
-        <>
-          <circle
-            cx={node.x}
-            cy={node.y}
-            r={effectiveR * 5.2}
-            fill={color}
-            opacity={haloOpacity * 0.12}
-            filter={`url(#${body.filterId})`}
-          />
-          <circle
-            cx={node.x}
-            cy={node.y}
-            r={effectiveR * 3.6}
-            fill="none"
-            stroke={color}
-            strokeWidth={strokeW * 0.6}
-            opacity={0.22}
-          />
-        </>
-      )}
+      <g
+        style={{
+          transform: `scale(${hoverScale})`,
+          transformBox: "fill-box",
+          transformOrigin: "center",
+          transition: HOVER_TRANSITION,
+        }}
+      >
+        {isChamber && (
+          <>
+            <circle
+              cx={0}
+              cy={0}
+              r={r * 6.4}
+              fill="url(#celestial-halo-warm)"
+              opacity={haloOpacity * 0.28}
+              filter="url(#halo-origin)"
+              style={{ transition: HOVER_TRANSITION }}
+            >
+              {!isHovered && (
+                <animate
+                  attributeName="opacity"
+                  values={`${haloOpacity * 0.2};${haloOpacity * 0.34};${haloOpacity * 0.2}`}
+                  dur="24s"
+                  repeatCount="indefinite"
+                />
+              )}
+            </circle>
+            <circle
+              cx={0}
+              cy={0}
+              r={r * 3.8}
+              fill="none"
+              stroke="#e8e0d4"
+              strokeWidth={strokeW * 0.45}
+              opacity={isHovered ? 0.18 : 0.1}
+              style={{ transition: HOVER_TRANSITION }}
+            />
+          </>
+        )}
 
-      <circle
-        cx={node.x}
-        cy={node.y}
-        r={effectiveR * body.haloMul}
-        fill={color}
-        opacity={haloOpacity * (isChamber ? 0.55 : 0.42)}
-        filter={`url(#${body.filterId})`}
-      />
+        <circle
+          cx={0}
+          cy={0}
+          r={r * body.haloMul}
+          fill={isChamber ? "url(#celestial-halo-warm)" : "url(#celestial-halo-cool)"}
+          opacity={haloOpacity * (isChamber ? 0.38 : 0.24)}
+          filter={`url(#${body.filterId})`}
+          style={{ transition: HOVER_TRANSITION }}
+        />
 
-      <NodeShapeGlyph
-        shape={node.shape}
-        x={node.x}
-        y={node.y}
-        r={effectiveR}
-        color={color}
-        strokeW={strokeW}
-        isFocus={isHovered}
-        level={node.level}
-        pulseId={node.id}
-        body={body}
-        breathe={body.breathe}
-      />
+        <NodeShapeGlyph
+          shape={node.shape}
+          x={0}
+          y={0}
+          r={r}
+          color={color}
+          warmAccent={warmAccent}
+          strokeW={strokeW}
+          isFocus={isHovered}
+          level={node.level}
+          pulseId={node.id}
+          body={body}
+          breathe={isChamber}
+        />
 
-      {isChamber && discoveryAwake && !isHovered && (
-        <text
-          x={node.x}
-          y={node.y + labelOffset + fontSize * 1.1}
-          textAnchor="middle"
-          fill="#b8d4b0"
-          opacity={0.42}
-          style={{
-            fontSize: Math.max(9, viewBoxW * 0.0028),
-            letterSpacing: "0.14em",
-          }}
-        >
-          begin here
-        </text>
-      )}
-
-      {showLabel && (
-        <text
-          x={node.x}
-          y={node.y + labelOffset}
-          textAnchor="middle"
-          fill={node.level <= 2 ? "#f4f2ec" : "#e4e2dc"}
-          opacity={labelOp}
-          stroke={body.labelStroke ? "#0a0c0f" : "none"}
-          strokeWidth={body.labelStroke ? viewBoxW / 7500 : 0}
-          paintOrder="stroke fill"
-          style={{
-            fontSize,
-            fontWeight: body.fontWeight,
-            letterSpacing: body.letterSpacing,
-          }}
-        >
-          {node.label.length > 48 ? `${node.label.slice(0, 46)}…` : node.label}
-        </text>
-      )}
+        {showLabel && (
+          <text
+            x={0}
+            y={labelOffset}
+            textAnchor="middle"
+            fill={node.level <= 2 ? "#e8e4dc" : "#c8ccd4"}
+            opacity={labelOp}
+            stroke={body.labelStroke ? "#0a0c0f" : "none"}
+            strokeWidth={body.labelStroke ? viewBoxW / 7500 : 0}
+            paintOrder="stroke fill"
+            style={{
+              fontSize,
+              fontWeight: body.fontWeight,
+              letterSpacing: body.letterSpacing,
+              transition: LABEL_TRANSITION,
+            }}
+          >
+            {node.label.length > 48 ? `${node.label.slice(0, 46)}…` : node.label}
+          </text>
+        )}
+      </g>
     </g>
   );
 }
@@ -960,7 +1134,8 @@ function NodeShapeGlyph({
   x,
   y,
   r,
-  color,
+  color: _color,
+  warmAccent,
   strokeW,
   isFocus,
   level,
@@ -973,6 +1148,7 @@ function NodeShapeGlyph({
   y: number;
   r: number;
   color: string;
+  warmAccent: string;
   strokeW: number;
   isFocus: boolean;
   level: 1 | 2 | 3 | 4;
@@ -980,15 +1156,16 @@ function NodeShapeGlyph({
   body: CelestialBodyStyle;
   breathe?: boolean;
 }) {
-  const coreR = r * (level === 1 ? 0.3 : level === 2 ? 0.36 : level === 3 ? 0.4 : 0.5);
-  const coreOpacity = isFocus ? 1 : level <= 2 ? 0.9 : 0.75;
+  const coreR =
+    r *
+    (level === 1 ? 0.24 : level === 2 ? 0.28 : level === 3 ? 0.34 : 0.4);
   const { durScale, delay } = pulseOffset(pulseId);
   const breatheDur = `${(body.pulseSec * durScale).toFixed(1)}s`;
-  const breatheHalo = r * body.haloMul * 0.42;
+  const breatheHalo = r * body.haloMul * 0.38;
 
   const breatheRing =
     breathe ? (
-      <circle cx={x} cy={y} r={breatheHalo} fill={color} opacity={0}>
+      <circle cx={x} cy={y} r={breatheHalo} fill="url(#celestial-halo-warm)" opacity={0}>
         <animate
           attributeName="r"
           values={`${breatheHalo * 0.94};${breatheHalo * 1.05};${breatheHalo * 0.94}`}
@@ -1006,16 +1183,29 @@ function NodeShapeGlyph({
       </circle>
     ) : null;
 
+  const core = (
+    <StellarCore
+      x={x}
+      y={y}
+      coreR={coreR}
+      isFocus={isFocus}
+      level={level}
+      warmAccent={warmAccent}
+    />
+  );
+
   if (body.renderAsStar) {
     return (
       <>
         {breatheRing}
         <polygon
-          points={starPoints(x, y, r * 1.35, r * 0.45)}
-          fill={color}
-          opacity={isFocus ? 0.95 : 0.72}
+          points={starPoints(x, y, r * 1.1, r * 0.38)}
+          fill="none"
+          stroke="#c8d0dc"
+          strokeWidth={strokeW * 0.6}
+          opacity={isFocus ? 0.28 : 0.14}
         />
-        <circle cx={x} cy={y} r={r * 0.22} fill="#f0ece6" opacity={coreOpacity} />
+        {core}
       </>
     );
   }
@@ -1029,28 +1219,27 @@ function NodeShapeGlyph({
           return (
             <line
               key={i}
-              x1={x + Math.cos(a) * r * 1.15}
-              y1={y + Math.sin(a) * r * 1.15}
-              x2={x + Math.cos(a) * r * 2.4}
-              y2={y + Math.sin(a) * r * 2.4}
-              stroke={color}
-              strokeWidth={strokeW * 0.9}
+              x1={x + Math.cos(a) * r * 1.05}
+              y1={y + Math.sin(a) * r * 1.05}
+              x2={x + Math.cos(a) * r * 2.1}
+              y2={y + Math.sin(a) * r * 2.1}
+              stroke="#e8e0d4"
+              strokeWidth={strokeW * 0.65}
               strokeLinecap="round"
-              opacity={0.55}
+              opacity={isFocus ? 0.32 : 0.18}
             />
           );
         })}
         <circle
           cx={x}
           cy={y}
-          r={r * 2.35}
+          r={r * 2.1}
           fill="none"
-          stroke={color}
-          strokeWidth={strokeW * 1.4}
-          opacity={0.5}
+          stroke="#d8dce4"
+          strokeWidth={strokeW * 0.9}
+          opacity={0.14}
         />
-        <circle cx={x} cy={y} r={r} fill={color} opacity={0.96} />
-        <circle cx={x} cy={y} r={coreR} fill="#faf8f2" opacity={coreOpacity} />
+        {core}
       </>
     );
   }
@@ -1060,21 +1249,20 @@ function NodeShapeGlyph({
       <>
         {breatheRing}
         <polygon
-          points={hexPoints(x, y, r * 1.08)}
+          points={hexPoints(x, y, r * 1.05)}
           fill="none"
-          stroke={color}
-          strokeWidth={strokeW * 1.1}
-          opacity={0.45}
+          stroke="#b8c0c8"
+          strokeWidth={strokeW * 0.75}
+          opacity={isFocus ? 0.22 : 0.1}
         />
-        <polygon points={hexPoints(x, y, r)} fill={color} opacity={0.95} />
-        <circle cx={x} cy={y} r={coreR} fill="#f4f2ec" opacity={coreOpacity} />
+        {core}
       </>
     );
   }
 
   if (shape === "book") {
-    const w = r * 2.1;
-    const h = r * 1.45;
+    const w = r * 1.65;
+    const h = r * 1.15;
     return (
       <>
         {breatheRing}
@@ -1083,20 +1271,13 @@ function NodeShapeGlyph({
           y={y - h / 2}
           width={w}
           height={h}
-          rx={r * 0.12}
-          fill={color}
-          opacity={0.95}
-        />
-        <line
-          x1={x - w * 0.08}
-          y1={y - h / 2 + r * 0.1}
-          x2={x - w * 0.08}
-          y2={y + h / 2 - r * 0.1}
-          stroke="#faf8f2"
+          rx={r * 0.1}
+          fill="none"
+          stroke="#b8c0c8"
           strokeWidth={strokeW * 0.7}
-          opacity={0.5}
+          opacity={isFocus ? 0.24 : 0.12}
         />
-        <circle cx={x + w * 0.15} cy={y} r={coreR * 0.7} fill="#f4f2ec" opacity={coreOpacity} />
+        {core}
       </>
     );
   }
@@ -1105,8 +1286,14 @@ function NodeShapeGlyph({
     return (
       <>
         {breatheRing}
-        <polygon points={diamondPoints(x, y, r)} fill={color} opacity={0.94} />
-        <circle cx={x} cy={y} r={coreR * 0.65} fill="#f4f2ec" opacity={coreOpacity} />
+        <polygon
+          points={diamondPoints(x, y, r * 0.92)}
+          fill="none"
+          stroke="#b8c0c8"
+          strokeWidth={strokeW * 0.65}
+          opacity={isFocus ? 0.22 : 0.11}
+        />
+        {core}
       </>
     );
   }
@@ -1115,14 +1302,20 @@ function NodeShapeGlyph({
     return (
       <>
         {breatheRing}
-        <polygon points={trianglePoints(x, y, r)} fill={color} opacity={0.92} />
-        <circle cx={x} cy={y + r * 0.12} r={coreR * 0.55} fill="#f4f2ec" opacity={coreOpacity} />
+        <polygon
+          points={trianglePoints(x, y, r * 0.92)}
+          fill="none"
+          stroke="#b8c0c8"
+          strokeWidth={strokeW * 0.65}
+          opacity={isFocus ? 0.22 : 0.11}
+        />
+        {core}
       </>
     );
   }
 
   if (shape === "square") {
-    const s = r * 1.55;
+    const s = r * 1.25;
     return (
       <>
         {breatheRing}
@@ -1131,21 +1324,98 @@ function NodeShapeGlyph({
           y={y - s / 2}
           width={s}
           height={s}
-          rx={r * 0.08}
-          fill={color}
-          opacity={0.9}
+          rx={r * 0.06}
+          fill="none"
+          stroke="#b8c0c8"
+          strokeWidth={strokeW * 0.65}
+          opacity={isFocus ? 0.22 : 0.11}
         />
-        <circle cx={x} cy={y} r={coreR * 0.55} fill="#f4f2ec" opacity={coreOpacity} />
+        {core}
       </>
     );
   }
 
-  /* circle — essays */
   return (
     <>
       {breatheRing}
-      <circle cx={x} cy={y} r={r} fill={color} opacity={0.95} />
-      <circle cx={x} cy={y} r={coreR} fill="#f4f2ec" opacity={coreOpacity} />
+      <circle
+        cx={x}
+        cy={y}
+        r={r * 0.88}
+        fill="none"
+        stroke="#b8c0c8"
+        strokeWidth={strokeW * 0.6}
+        opacity={isFocus ? 0.2 : 0.1}
+      />
+      {core}
+    </>
+  );
+}
+
+function StellarCore({
+  x,
+  y,
+  coreR,
+  isFocus,
+  level,
+  warmAccent,
+}: {
+  x: number;
+  y: number;
+  coreR: number;
+  isFocus: boolean;
+  level: 1 | 2 | 3 | 4;
+  warmAccent: string;
+}) {
+  const bloom = level <= 2 ? 2.8 : level === 3 ? 2.2 : 1.8;
+  const midBloom = level <= 2 ? 1.35 : 1.15;
+  const haloFilter =
+    level === 1
+      ? "halo-origin"
+      : level === 2
+        ? "halo-constellation"
+        : level === 3
+          ? "halo-supporting"
+          : "halo-observation";
+
+  return (
+    <>
+      <circle
+        cx={x}
+        cy={y}
+        r={coreR * bloom}
+        fill="url(#celestial-halo-cool)"
+        opacity={isFocus ? 0.32 : 0.1}
+        filter={`url(#${haloFilter})`}
+        style={{ transition: "opacity 1.8s cubic-bezier(0.45, 0.05, 0.55, 0.95)" }}
+      />
+      <circle
+        cx={x}
+        cy={y}
+        r={coreR * midBloom}
+        fill="#faf6ee"
+        opacity={isFocus ? 0.38 : 0.14}
+        filter="url(#core-glow)"
+        style={{ transition: "opacity 1.8s cubic-bezier(0.45, 0.05, 0.55, 0.95)" }}
+      />
+      <circle
+        cx={x}
+        cy={y}
+        r={coreR * 0.72}
+        fill={warmAccent}
+        opacity={isFocus ? 0.26 : 0.08}
+        filter="url(#core-glow)"
+        style={{ transition: "opacity 1.8s cubic-bezier(0.45, 0.05, 0.55, 0.95)" }}
+      />
+      <circle
+        cx={x}
+        cy={y}
+        r={coreR}
+        fill="#ffffff"
+        opacity={isFocus ? 1 : 0.88}
+        filter="url(#core-glow)"
+        style={{ transition: "opacity 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95)" }}
+      />
     </>
   );
 }
@@ -1262,7 +1532,7 @@ function ConstellationMinimap({
           width={Math.max(vw, 3)}
           height={Math.max(vh, 3)}
           fill="none"
-          stroke="#8fa88a"
+          stroke="#788898"
           strokeWidth={1}
           opacity={0.75}
         />
@@ -1287,6 +1557,7 @@ function ConstellationDriftParticles({
       y: number;
       delay: number;
       size: number;
+      twinkle: boolean;
     }> = [];
     for (let i = 0; i < 26; i++) {
       const angle = (i * 2.399963) % (Math.PI * 2);
@@ -1297,6 +1568,7 @@ function ConstellationDriftParticles({
         y: UNIVERSE_CENTER + Math.sin(angle) * dist,
         delay: i * 1.6,
         size: 0.9 + (i % 4) * 0.45,
+        twinkle: i % 9 === 0,
       });
     }
     return items;
@@ -1314,8 +1586,8 @@ function ConstellationDriftParticles({
           cx={p.x}
           cy={p.y}
           r={scale * p.size}
-          fill="#b8b0a4"
-          className="observatory-dust"
+          fill="#c8d0dc"
+          className={p.twinkle ? "observatory-dust map-particle-twinkle" : "observatory-dust"}
           style={{ animationDelay: `${p.delay}s` }}
         />
       ))}
@@ -1344,7 +1616,7 @@ function AmbientEdgePulses({
   const r = viewBoxW / 7000;
 
   return (
-    <g aria-hidden opacity={0.28}>
+    <g aria-hidden opacity={0.16}>
       {pulseEdges.map((edge, i) => {
         const from = nodeMap.get(edge.from);
         const to = nodeMap.get(edge.to);
@@ -1355,7 +1627,7 @@ function AmbientEdgePulses({
 
         return (
           <g key={`pulse-${edge.from}-${edge.to}`}>
-            <circle r={r} fill="#b8d4b0" opacity={0}>
+            <circle r={r} fill="#c8d4dc" opacity={0}>
               <animateMotion
                 dur={`${dur}s`}
                 repeatCount="indefinite"

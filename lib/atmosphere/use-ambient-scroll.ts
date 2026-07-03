@@ -3,31 +3,28 @@
 import { useEffect, useState } from "react";
 
 /**
- * Tracks scroll offset from any scrollable region inside the homepage.
- * Capture-phase listener keeps parallax in sync on mobile guide / threshold scroll.
+ * Window scroll offset for parallax — ignores nested scroll containers
+ * (threshold copy, mobile guide, nav drawers) so UI scroll does not jank backgrounds.
  */
 export function useAmbientScroll(): number {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
     let frame = 0;
-    let latest = 0;
 
     const flush = () => {
       frame = 0;
-      setOffset(latest);
+      setOffset(window.scrollY);
     };
 
-    const onScroll = (e: Event) => {
-      const target = e.target;
-      if (!(target instanceof HTMLElement)) return;
-      latest = target.scrollTop;
+    const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(flush);
     };
 
-    document.addEventListener("scroll", onScroll, { capture: true, passive: true });
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      document.removeEventListener("scroll", onScroll, { capture: true });
+      window.removeEventListener("scroll", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);

@@ -28,10 +28,10 @@ export function ThresholdChoices({ onExplore, exploring }: ThresholdChoicesProps
           transition={{ duration, delay: reducedMotion ? 0 : 0.65, ease }}
           className="group touch-manipulation border-t border-ivory/[0.07] py-7 text-left transition-[border-color] duration-[900ms] disabled:pointer-events-none sm:hover:border-forest-light/22"
         >
-          <p className="font-heading text-[1.0625rem] tracking-[0.012em] text-ivory/86 transition-colors duration-[900ms] sm:text-lg sm:group-hover:text-ivory">
+          <p className="threshold-hero-choice font-heading text-[1.0625rem] tracking-[0.012em] sm:text-lg">
             Step onto the terrain
           </p>
-          <p className="mt-2.5 font-heading text-[0.8125rem] italic leading-relaxed text-ivory/38 transition-colors duration-[900ms] sm:group-hover:text-ivory/48">
+          <p className="threshold-hero-choice__hint mt-2.5 font-heading text-[0.8125rem] italic leading-relaxed">
             The map is carved in stone beyond this ridge.
           </p>
         </motion.button>
@@ -45,10 +45,10 @@ export function ThresholdChoices({ onExplore, exploring }: ThresholdChoicesProps
             href="/observatory"
             className="group block touch-manipulation border-t border-ivory/[0.07] py-7 text-left transition-[border-color] duration-[900ms] sm:hover:border-ivory/18"
           >
-            <p className="font-heading text-[1.0625rem] tracking-[0.012em] text-ivory/86 transition-colors duration-[900ms] sm:text-lg sm:group-hover:text-ivory">
+            <p className="threshold-hero-choice font-heading text-[1.0625rem] tracking-[0.012em] sm:text-lg">
               Follow the amber light
             </p>
-            <p className="mt-2.5 font-heading text-[0.8125rem] italic leading-relaxed text-ivory/38 transition-colors duration-[900ms] sm:group-hover:text-ivory/48">
+            <p className="threshold-hero-choice__hint mt-2.5 font-heading text-[0.8125rem] italic leading-relaxed">
               Something is still forming in the dark.
             </p>
           </TerrainLink>
