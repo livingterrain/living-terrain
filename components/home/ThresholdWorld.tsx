@@ -48,7 +48,8 @@ export function ThresholdWorld() {
   const { isMobile, isTablet } = useBreakpoint();
   const reducedMotion = usePrefersReducedMotion();
   const thresholdReady = useLayoutSettled();
-  const { staticHold, atmosphereActive } = useThresholdStaticEntrance(reducedMotion);
+  const { staticHold, atmosphereActive, backgroundMotionActive } =
+    useThresholdStaticEntrance(reducedMotion);
   const searchParams = useSearchParams();
   const focusId = searchParams.get("focus");
   const sound = useTerrainSoundOptional();
@@ -241,7 +242,8 @@ export function ThresholdWorld() {
 
   const entranceReady = thresholdReady || entered;
   const atmosphereLive = atmosphereActive || entered || crossing;
-  const staticFrame = staticHold && phase === "threshold" && !entered;
+  const staticFrame =
+    !backgroundMotionActive && phase === "threshold" && !entered;
   const heroShellVisible = staticHold || (entranceReady && !crossing);
   const atmoShellVisible = staticHold || entranceReady || crossing;
 
@@ -251,6 +253,7 @@ export function ThresholdWorld() {
         "threshold-world-root fixed inset-0 flex flex-col overflow-hidden text-ivory supports-[height:100dvh]:min-h-[100dvh] min-h-screen",
         staticHold && "threshold-world-root--static-hold",
         atmosphereActive && "threshold-world-root--atmosphere-active",
+        backgroundMotionActive && "threshold-world-root--background-motion",
         entranceReady && "threshold-world-root--entrance-ready",
       )}
       style={{ backgroundColor: entered ? "#020408" : THRESHOLD_VOID }}
@@ -270,6 +273,7 @@ export function ThresholdWorld() {
         >
           <ThresholdAtmosphere
             atmosphereLive={atmosphereLive}
+            backgroundMotionActive={backgroundMotionActive || entered || crossing}
             starBrightness={entered || crossing ? starBrightness : 0}
             fogDensity={fogDensity}
             clarity={entered}

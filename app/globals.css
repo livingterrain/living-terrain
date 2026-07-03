@@ -1564,7 +1564,34 @@
   .threshold-world-root--atmosphere-active .hero-landscape__stars {
     opacity: 1;
     visibility: visible;
-    transition: opacity 1.1s var(--ease-threshold);
+    transition: none !important;
+  }
+
+  /* Motion/parallax/fog drift — only after Chrome first paint settles */
+  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-page-atmosphere,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-atmosphere-live,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-atmosphere-live *,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__atmosphere-live,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__atmosphere-live *,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__stars,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__star,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-fog,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-breathe-slow,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-breathe-fog,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-breathe-fog-slow,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-dust-particle,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-dust-mote {
+    animation-play-state: paused !important;
+  }
+
+  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-fog,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__horizon-glow,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__mist-shelf,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__ground-fog,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__light-shaft,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-heading-bloom,
+  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-heading-bloom {
+    will-change: auto !important;
   }
 
   .hero-landscape--static-frame .hero-landscape__light-shaft,

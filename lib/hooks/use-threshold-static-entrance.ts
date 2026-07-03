@@ -12,14 +12,16 @@ export function isChromiumBrowser(): boolean {
   );
 }
 
-/** Hold static Threshold frame before atmosphere magic (Chrome compositor) */
-export const CHROME_ATMOSPHERE_DELAY_MS = 650;
+/** Chrome — static first paint, then live background layers */
+export const CHROME_BACKGROUND_DELAY_MS = 1000;
 
 export interface ThresholdStaticEntrance {
   /** Chrome static hold — no blur/fog/star motion */
   staticHold: boolean;
-  /** Live atmosphere layers may render and animate */
+  /** Live atmosphere layers mounted (opacity 1, animations paused) */
   atmosphereActive: boolean;
+  /** Parallax, fog drift, particles, breathe animations enabled */
+  backgroundMotionActive: boolean;
 }
 
 export function useThresholdStaticEntrance(
@@ -27,22 +29,23 @@ export function useThresholdStaticEntrance(
 ): ThresholdStaticEntrance {
   const [staticHold, setStaticHold] = useState(true);
   const [atmosphereActive, setAtmosphereActive] = useState(false);
+  const [backgroundMotionActive, setBackgroundMotionActive] = useState(false);
 
   useEffect(() => {
     if (reducedMotion) {
       setStaticHold(false);
       setAtmosphereActive(true);
+      setBackgroundMotionActive(true);
       return;
     }
 
-    const isChrome = isChromiumBrowser();
-
-    if (!isChrome) {
+    if (!isChromiumBrowser()) {
       let raf2 = 0;
       const raf1 = requestAnimationFrame(() => {
         raf2 = requestAnimationFrame(() => {
           setStaticHold(false);
           setAtmosphereActive(true);
+          setBackgroundMotionActive(true);
         });
       });
       return () => {
@@ -51,15 +54,24 @@ export function useThresholdStaticEntrance(
       };
     }
 
+    let raf1 = 0;
+    let raf2 = 0;
     const timer = window.setTimeout(() => {
       setAtmosphereActive(true);
-      requestAnimationFrame(() => {
-        setStaticHold(false);
+      raf1 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(() => {
+          setStaticHold(false);
+          setBackgroundMotionActive(true);
+        });
       });
-    }, CHROME_ATMOSPHERE_DELAY_MS);
+    }, CHROME_BACKGROUND_DELAY_MS);
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
   }, [reducedMotion]);
 
-  return { staticHold, atmosphereActive };
+  return { staticHold, atmosphereActive, backgroundMotionActive };
 }

@@ -29,6 +29,8 @@ interface ThresholdAtmosphereProps {
   attention?: { x: number; y: number } | null;
   /** False during Chrome static hold — only void base renders */
   atmosphereLive?: boolean;
+  /** Gates parallax / fog motion until Chrome first paint settles */
+  backgroundMotionActive?: boolean;
 }
 
 export function ThresholdAtmosphere({
@@ -41,6 +43,7 @@ export function ThresholdAtmosphere({
   elapsedMs = 0,
   attention = null,
   atmosphereLive = true,
+  backgroundMotionActive = true,
 }: ThresholdAtmosphereProps) {
   const liveCircadian = useCircadian();
   const layoutSettled = useLayoutSettled();
@@ -71,7 +74,7 @@ export function ThresholdAtmosphere({
   }, [scrollOffset, scrollY]);
 
   useEffect(() => {
-    if (!atmosphereLive) return;
+    if (!atmosphereLive || !backgroundMotionActive) return;
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -86,7 +89,7 @@ export function ThresholdAtmosphere({
 
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, my, atmosphereLive]);
+  }, [mx, my, atmosphereLive, backgroundMotionActive]);
 
   const deepSpace = clarity;
   const reveal = Math.max(0, Math.min(1, revealProgress));
