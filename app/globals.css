@@ -37,22 +37,22 @@
   --ease-threshold: cubic-bezier(0.38, 0.02, 0.42, 1);
   --tempo-inhale: 1.18;
 
-  /* Circadian — set by CircadianRoot, transition slowly between visits */
-  --circadian-star-mul: 1;
-  --circadian-fog-mul: 1;
-  --circadian-clarity-mul: 1;
-  --circadian-particle-mul: 1;
-  --circadian-mist: 0;
-  --circadian-warmth: 0;
-  --circadian-shadow-depth: 0.2;
-  --circadian-ambient-top: #141a22;
-  --circadian-star-color: #d8dce4;
-  --circadian-void-base: #040506;
-  --circadian-ivory-tint: #e9e0d0;
-  --circadian-ivory-mix: 0;
-  --circadian-light-pool: 0.75;
-  --circadian-field-opacity: 1;
-  --circadian-fog-warmth: 0.2;
+  /* Circadian — defaults match CIRCADIAN_SSR_SNAPSHOT until CircadianRoot syncs */
+  --circadian-star-mul: 1.02;
+  --circadian-fog-mul: 1.08;
+  --circadian-clarity-mul: 0.9;
+  --circadian-particle-mul: 1.32;
+  --circadian-mist: 0.38;
+  --circadian-warmth: 0.04;
+  --circadian-shadow-depth: 0.48;
+  --circadian-ambient-top: #12182c;
+  --circadian-star-color: #b8c4e0;
+  --circadian-void-base: #06080c;
+  --circadian-ivory-tint: #e0dcd4;
+  --circadian-ivory-mix: 0.04;
+  --circadian-light-pool: 0.62;
+  --circadian-field-opacity: 0.82;
+  --circadian-fog-warmth: 0.15;
 }
 
 @layer base {
@@ -1916,23 +1916,12 @@
   }
 
   .hero-landscape__stars {
-    opacity: 0;
-    transition: opacity 1.4s ease-out;
-  }
-
-  .hero-landscape--loaded .hero-landscape__stars {
-    opacity: 1;
-    animation: hero-stars-dawn 18s var(--ease-breath) forwards;
+    opacity: 0.22;
   }
 
   .hero-landscape--reduced .hero-landscape__stars {
     animation: none;
     opacity: 0.32;
-  }
-
-  @keyframes hero-stars-dawn {
-    0% { opacity: 1; }
-    100% { opacity: 0.22; }
   }
 
   .hero-landscape__star {
@@ -2299,7 +2288,7 @@
       animation: none !important;
     }
 
-    .hero-landscape--loaded .hero-landscape__stars {
+    .hero-landscape__stars {
       animation: none;
       opacity: 0.28;
     }

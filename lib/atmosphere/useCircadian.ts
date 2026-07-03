@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import {
+  getCircadianServerSnapshot,
   getCircadianSnapshot,
   subscribeCircadian,
 } from "@/lib/atmosphere/circadian-store";
@@ -12,6 +13,6 @@ export function useCircadian(): CircadianTokens {
   return useSyncExternalStore(
     subscribeCircadian,
     getCircadianSnapshot,
-    getCircadianSnapshot,
+    getCircadianServerSnapshot,
   );
 }

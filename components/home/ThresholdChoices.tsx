@@ -23,9 +23,9 @@ export function ThresholdChoices({ onExplore, exploring }: ThresholdChoicesProps
           type="button"
           onClick={onExplore}
           disabled={exploring}
-          initial={reducedMotion ? false : { opacity: 0, y: 5 }}
+          initial={false}
           animate={{ opacity: exploring ? 0.45 : 1, y: 0 }}
-          transition={{ duration, delay: reducedMotion ? 0 : 0.65, ease }}
+          transition={{ duration, ease }}
           className="group touch-manipulation border-t border-ivory/[0.07] py-7 text-left transition-[border-color] duration-[900ms] disabled:pointer-events-none sm:hover:border-forest-light/22"
         >
           <p className="threshold-hero-choice font-heading text-[1.0625rem] tracking-[0.012em] sm:text-lg">
@@ -37,9 +37,9 @@ export function ThresholdChoices({ onExplore, exploring }: ThresholdChoicesProps
         </motion.button>
 
         <motion.div
-          initial={reducedMotion ? false : { opacity: 0, y: 5 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration, delay: reducedMotion ? 0 : 0.82, ease }}
+          transition={{ duration, ease }}
         >
           <TerrainLink
             href="/observatory"

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useAmbientScroll } from "@/lib/atmosphere/use-ambient-scroll";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +39,6 @@ export function ThresholdHeroLandscape({
   reducedMotion = false,
 }: ThresholdHeroLandscapeProps) {
   const scrollOffset = useAmbientScroll();
-  const [loaded, setLoaded] = useState(false);
   const scrollY = useMotionValue(0);
   const scrollSpring = useSpring(scrollY, { stiffness: 22, damping: 42, mass: 1.1 });
   const mx = useMotionValue(0);
@@ -78,18 +77,12 @@ export function ThresholdHeroLandscape({
     return () => window.removeEventListener("mousemove", onMove);
   }, [mx, reducedMotion]);
 
-  useEffect(() => {
-    const t = window.setTimeout(() => setLoaded(true), 80);
-    return () => window.clearTimeout(t);
-  }, []);
-
   const stars = useMemo(() => STARS, []);
 
   return (
     <div
       className={cn(
         "hero-landscape pointer-events-none absolute inset-0 overflow-hidden",
-        loaded && "hero-landscape--loaded",
         crossing && "hero-landscape--crossing",
         reducedMotion && "hero-landscape--reduced",
       )}

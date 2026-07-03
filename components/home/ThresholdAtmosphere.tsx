@@ -4,7 +4,9 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import { DistantConstellations } from "./DistantConstellations";
 import { useAmbientScroll } from "@/lib/atmosphere/use-ambient-scroll";
+import { CIRCADIAN_SSR_SNAPSHOT } from "@/lib/atmosphere/circadian";
 import { useCircadian } from "@/lib/atmosphere/useCircadian";
+import { useLayoutSettled } from "@/lib/hooks/use-mounted";
 import { cn } from "@/lib/utils";
 import { attentionGlow, starFieldStrength } from "@/lib/wonder/arrival";
 
@@ -37,7 +39,9 @@ export function ThresholdAtmosphere({
   elapsedMs = 0,
   attention = null,
 }: ThresholdAtmosphereProps) {
-  const circadian = useCircadian();
+  const liveCircadian = useCircadian();
+  const layoutSettled = useLayoutSettled();
+  const circadian = layoutSettled ? liveCircadian : CIRCADIAN_SSR_SNAPSHOT;
   const scrollOffset = useAmbientScroll();
   const containerRef = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(0);
@@ -86,7 +90,7 @@ export function ThresholdAtmosphere({
   const starAwaken = starFieldStrength(awakening, elapsedMs);
   const atmosphereTail = Math.max(0, Math.min(1, atmosphereRefine));
   const clarityBoost = circadian.clarityMul;
-  const voidColor = deepSpace ? "#020408" : circadian.voidBase;
+  const voidColor = deepSpace ? "#020408" : "#06080c";
   const starFill = deepSpace ? "#dce4f4" : circadian.starColor;
 
   const distantStars = useMemo(

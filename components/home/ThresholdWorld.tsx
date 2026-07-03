@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTerrainSoundOptional, SoundMuteControl } from "@/components/sound";
 import { useTerrainNavigation, TerrainLink } from "@/components/navigation";
-import { useCircadian } from "@/lib/atmosphere/useCircadian";
 import { LingerWhisper } from "@/components/atmosphere/LingerWhisper";
 import { SearchDialog } from "@/components/search/SearchDialog";
 import { ChoosePathPanel } from "./ChoosePathPanel";
@@ -34,17 +33,20 @@ import { THRESHOLD, NAVIGATION } from "@/lib/atmosphere/tempo";
 import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import { usePrefersReducedMotion } from "@/lib/atmosphere/use-prefers-reduced-motion";
 import { useWonderArrival } from "@/lib/wonder/use-wonder-arrival";
+import { useLayoutSettled } from "@/lib/hooks/use-mounted";
 
 type Phase = "threshold" | "crossing" | "within";
+
+const THRESHOLD_VOID = "#06080c";
 
 const fade = { duration: 2.8, ease: NAVIGATION.ease };
 
 export function ThresholdWorld() {
   const router = useRouter();
   const { navigate, arriving, arrivalIntent } = useTerrainNavigation();
-  const circadian = useCircadian();
   const { isMobile, isTablet } = useBreakpoint();
   const reducedMotion = usePrefersReducedMotion();
+  const thresholdReady = useLayoutSettled();
   const searchParams = useSearchParams();
   const focusId = searchParams.get("focus");
   const sound = useTerrainSoundOptional();
@@ -239,14 +241,22 @@ export function ThresholdWorld() {
   return (
     <div
       className="fixed inset-0 flex flex-col overflow-hidden text-ivory supports-[height:100dvh]:min-h-[100dvh] min-h-screen"
-      style={{ backgroundColor: entered ? "#020408" : circadian.voidBase }}
+      style={{ backgroundColor: entered ? "#020408" : THRESHOLD_VOID }}
     >
-      <div
+      <motion.div
         className={cn(
           "threshold-page-atmosphere pointer-events-none absolute inset-0 z-0",
           entered && "threshold-page-atmosphere--deep",
         )}
         aria-hidden
+        initial={false}
+        animate={{
+          opacity: entered || crossing ? 1 : thresholdReady ? 1 : 0,
+        }}
+        transition={{
+          duration: entered || crossing ? 0 : thresholdReady ? 0.9 : 0,
+          ease: fade.ease,
+        }}
       >
         <ThresholdAtmosphere
           starBrightness={entered || crossing ? starBrightness : 0}
@@ -263,7 +273,7 @@ export function ThresholdWorld() {
           crossing={crossing}
           awakening={wonder.awakening}
         />
-      </div>
+      </motion.div>
 
       <SoundMuteControl
         className="text-ivory/40 hover:text-ivory/60 transition-opacity duration-[2.8s]"
@@ -280,10 +290,15 @@ export function ThresholdWorld() {
               paddingTop: "max(1.5rem, env(safe-area-inset-top))",
               paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))",
             }}
-            initial={{ opacity: 1 }}
-            animate={{ opacity: crossing ? 0 : 1 }}
+            initial={false}
+            animate={{
+              opacity: crossing ? 0 : thresholdReady ? 1 : 0,
+            }}
             exit={{ opacity: 0 }}
-            transition={{ duration: crossing ? fadeDuration * 0.9 : 0.6, ease: fade.ease }}
+            transition={{
+              duration: crossing ? fadeDuration * 0.9 : thresholdReady ? 0.9 : 0,
+              ease: fade.ease,
+            }}
           >
             <ThresholdHeroLandscape crossing={crossing} reducedMotion={reducedMotion} />
 
@@ -294,32 +309,17 @@ export function ThresholdWorld() {
                 paddingRight: "max(1.25rem, env(safe-area-inset-right, 0px))",
               }}
             >
-              <motion.p
-                className="type-chamber text-ivory/38 sm:text-ivory/32"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: crossing ? 0 : 1 }}
-                transition={{ duration: 1.6, delay: 0.1, ease: fade.ease }}
-              >
+              <p className="type-chamber text-ivory/38 sm:text-ivory/32">
                 Threshold
-              </motion.p>
+              </p>
 
-              <motion.h1
-                className="mt-5 font-heading text-[1.75rem] leading-[1.12] text-ivory sm:mt-7 sm:text-3xl md:text-[2.25rem]"
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: crossing ? 0 : 1, y: crossing ? -4 : 0 }}
-                transition={{ duration: 1.9, delay: 0.22, ease: fade.ease }}
-              >
+              <h1 className="mt-5 font-heading text-[1.75rem] leading-[1.12] text-ivory sm:mt-7 sm:text-3xl md:text-[2.25rem]">
                 <HeadingBloom bloomClassName="hero-heading-bloom inset-[-2.5rem_-3.5rem] sm:inset-[-3rem_-4.5rem]">
                   Living Terrain
                 </HeadingBloom>
-              </motion.h1>
+              </h1>
 
-              <motion.div
-                className="mx-auto mt-8 max-w-md space-y-5 text-left text-[0.9375rem] leading-[1.92] text-ivory/52 sm:mt-10 sm:max-w-lg sm:text-center sm:text-base sm:leading-[1.96]"
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: crossing ? 0 : 1, y: crossing ? -3 : 0 }}
-                transition={{ duration: 2, delay: 0.38, ease: fade.ease }}
-              >
+              <div className="mx-auto mt-8 max-w-md space-y-5 text-left text-[0.9375rem] leading-[1.92] text-ivory/52 sm:mt-10 sm:max-w-lg sm:text-center sm:text-base sm:leading-[1.96]">
                 <p className="font-heading text-lg italic leading-[1.65] text-ivory/62 sm:text-xl">
                   Something vast and quiet lies ahead.
                 </p>
@@ -327,7 +327,7 @@ export function ThresholdWorld() {
                 <p className="text-ivory/44">
                   Step forward when something pulls you.
                 </p>
-              </motion.div>
+              </div>
 
               {!crossing && (
                 <ThresholdChoices onExplore={handleCross} exploring={crossing} />

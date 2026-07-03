@@ -8,12 +8,14 @@ import {
   atmosphereMorphForPath,
   themeBackgroundForPath,
 } from "@/lib/atmosphere/atmosphere-profile";
+import { CIRCADIAN_SSR_SNAPSHOT } from "@/lib/atmosphere/circadian";
 import {
   depthForPath,
   locationForPath,
   placeForPath,
 } from "@/lib/atmosphere/observatory-depth";
 import { useCircadian } from "@/lib/atmosphere/useCircadian";
+import { useLayoutSettled, useMounted } from "@/lib/hooks/use-mounted";
 import { THRESHOLD_MOTION } from "@/lib/design-system/threshold";
 import { isMapPath } from "@/lib/atmosphere/navigation";
 import { ObservatoryLandscapeBackdrop } from "./ObservatoryLandscapeBackdrop";
@@ -42,7 +44,10 @@ const crossfade = THRESHOLD_MOTION.zoneCrossfadeMs / 1000;
 export function PersistentTerrainAtmosphere() {
   const pathname = usePathname();
   const reduced = useReducedMotion();
-  const circadian = useCircadian();
+  const mounted = useMounted();
+  const layoutSettled = useLayoutSettled();
+  const liveCircadian = useCircadian();
+  const circadian = layoutSettled ? liveCircadian : CIRCADIAN_SSR_SNAPSHOT;
 
   const depth = depthForPath(pathname);
   const worldLocation = locationForPath(pathname);
@@ -79,6 +84,7 @@ export function PersistentTerrainAtmosphere() {
     >
       <motion.div
         className="absolute inset-0"
+        initial={false}
         animate={{
           backgroundColor: morph.voidColor,
           opacity: morph.voidOpacity,
@@ -93,7 +99,7 @@ export function PersistentTerrainAtmosphere() {
           key={themeBg}
           className="absolute inset-0"
           style={{ background: themeBg }}
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: morph.themeOpacity }}
           transition={{ duration, ease }}
         />
@@ -104,6 +110,7 @@ export function PersistentTerrainAtmosphere() {
         style={{
           background: `radial-gradient(ellipse 88% 72% at 50% ${42 - depth * 8}%, ${morph.glowColor} 0%, transparent 64%)`,
         }}
+        initial={false}
         animate={{ opacity: morph.glowOpacity }}
         transition={{ duration, ease }}
       />
@@ -118,6 +125,7 @@ export function PersistentTerrainAtmosphere() {
         }
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid slice"
+        initial={false}
         animate={{ opacity: morph.starOpacity }}
         transition={{ duration, ease }}
       >
@@ -129,12 +137,14 @@ export function PersistentTerrainAtmosphere() {
         style={{
           background: `radial-gradient(ellipse 94% 86% at 50% 36%, ${morph.paperColor} 0%, transparent 58%)`,
         }}
+        initial={false}
         animate={{ opacity: morph.paperOpacity }}
         transition={{ duration, ease }}
       />
 
       <motion.div
         className="absolute inset-0"
+        initial={false}
         animate={{ opacity: morph.fieldOpacity }}
         transition={{ duration, ease }}
       >
@@ -147,13 +157,16 @@ export function PersistentTerrainAtmosphere() {
           background: `radial-gradient(ellipse 130% 95% at 50% 100%, color-mix(in srgb, #1a1814 ${Math.round(morph.fogWarmth * 100)}%, #0a1428) 0%, transparent 60%)`,
           mixBlendMode: "multiply",
         }}
+        initial={false}
         animate={{ opacity: morph.fogOpacity }}
         transition={{ duration, ease }}
       />
 
+      {mounted && (
       <motion.div
         className="terrain-atmosphere-particles absolute inset-0"
         style={{ "--particle-drift": `${morph.particleDriftSec}s` } as React.CSSProperties}
+        initial={false}
         animate={{ opacity: morph.particleOpacity }}
         transition={{ duration, ease }}
       >
@@ -171,6 +184,7 @@ export function PersistentTerrainAtmosphere() {
           />
         ))}
       </motion.div>
+      )}
 
       <div className="observatory-landscape__vignette absolute inset-0" />
     </div>

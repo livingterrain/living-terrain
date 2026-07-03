@@ -51,7 +51,9 @@ export function TerrainPulse({
       <AnimatePresence mode="wait">
         <motion.p
           key={text}
-          initial={reducedMotion ? false : { opacity: 0, y: 3 }}
+          initial={
+            reducedMotion || variant === "threshold" ? false : { opacity: 0, y: 3 }
+          }
           animate={{ opacity: 1, y: 0 }}
           exit={reducedMotion ? undefined : { opacity: 0, y: -2 }}
           transition={{

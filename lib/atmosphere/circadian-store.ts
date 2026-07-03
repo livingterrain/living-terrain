@@ -1,18 +1,20 @@
 import {
   applyCircadianTokens,
+  CIRCADIAN_SSR_SNAPSHOT,
   getCircadianTokens,
   type CircadianTokens,
 } from "./circadian";
 
-let snapshot: CircadianTokens = getCircadianTokens();
+let snapshot: CircadianTokens = CIRCADIAN_SSR_SNAPSHOT;
 const subscribers = new Set<() => void>();
 
 export function getCircadianSnapshot(): CircadianTokens {
   return snapshot;
 }
 
-/** Stable SSR snapshot — must return the same reference until syncCircadian updates it */
-export const getCircadianServerSnapshot = getCircadianSnapshot;
+export function getCircadianServerSnapshot(): CircadianTokens {
+  return CIRCADIAN_SSR_SNAPSHOT;
+}
 
 export function subscribeCircadian(listener: () => void): () => void {
   subscribers.add(listener);

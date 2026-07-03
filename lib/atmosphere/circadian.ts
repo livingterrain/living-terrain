@@ -117,6 +117,13 @@ export function getCircadianTokens(date = new Date()): CircadianTokens {
   return { phase, ...TOKENS[phase] };
 }
 
+/** Stable SSR / first-paint tokens — matches threshold void (#06080c) atmosphere */
+export const CIRCADIAN_SSR_SNAPSHOT: CircadianTokens = {
+  phase: "evening",
+  ...TOKENS.evening,
+  voidBase: "#06080c",
+};
+
 const CSS_MAP: Record<keyof Omit<CircadianTokens, "phase">, string> = {
   starMul: "--circadian-star-mul",
   fogMul: "--circadian-fog-mul",
