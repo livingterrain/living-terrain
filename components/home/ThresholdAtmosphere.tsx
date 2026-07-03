@@ -27,6 +27,8 @@ interface ThresholdAtmosphereProps {
   elapsedMs?: number;
   /** Normalized viewport attention for curiosity response */
   attention?: { x: number; y: number } | null;
+  /** False during Chrome static hold — only void base renders */
+  atmosphereLive?: boolean;
 }
 
 export function ThresholdAtmosphere({
@@ -38,6 +40,7 @@ export function ThresholdAtmosphere({
   atmosphereRefinement: atmosphereRefine = 0,
   elapsedMs = 0,
   attention = null,
+  atmosphereLive = true,
 }: ThresholdAtmosphereProps) {
   const liveCircadian = useCircadian();
   const layoutSettled = useLayoutSettled();
@@ -68,6 +71,7 @@ export function ThresholdAtmosphere({
   }, [scrollOffset, scrollY]);
 
   useEffect(() => {
+    if (!atmosphereLive) return;
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -82,7 +86,7 @@ export function ThresholdAtmosphere({
 
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, my]);
+  }, [mx, my, atmosphereLive]);
 
   const deepSpace = clarity;
   const reveal = Math.max(0, Math.min(1, revealProgress));
@@ -172,9 +176,12 @@ export function ThresholdAtmosphere({
         style={{ backgroundColor: voidColor }}
       />
 
-      {deepSpace && <div className="threshold-nebula-field absolute inset-0" aria-hidden />}
+      {deepSpace && atmosphereLive && (
+        <div className="threshold-nebula-field absolute inset-0" aria-hidden />
+      )}
 
-      {/* Distant star field — deepest layer */}
+      {atmosphereLive && (
+      <div className="threshold-atmosphere-live absolute inset-0">
       <motion.div
         className="absolute inset-[-3%]"
         style={{ x: starX, y: starY }}
@@ -374,7 +381,11 @@ export function ThresholdAtmosphere({
         </motion.div>
       )}
 
+      </div>
+      )}
+
       {/* Edge falloff — deep space reads as infinite, not enclosed */}
+      {atmosphereLive && (
       <div
         className={cn(
           "threshold-ambient-vignette absolute inset-0",
@@ -382,6 +393,7 @@ export function ThresholdAtmosphere({
         )}
         aria-hidden
       />
+      )}
     </div>
   );
 }

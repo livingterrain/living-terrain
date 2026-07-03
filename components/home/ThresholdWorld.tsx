@@ -34,6 +34,7 @@ import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import { usePrefersReducedMotion } from "@/lib/atmosphere/use-prefers-reduced-motion";
 import { useWonderArrival } from "@/lib/wonder/use-wonder-arrival";
 import { useLayoutSettled } from "@/lib/hooks/use-mounted";
+import { useThresholdStaticEntrance } from "@/lib/hooks/use-threshold-static-entrance";
 
 type Phase = "threshold" | "crossing" | "within";
 
@@ -47,6 +48,7 @@ export function ThresholdWorld() {
   const { isMobile, isTablet } = useBreakpoint();
   const reducedMotion = usePrefersReducedMotion();
   const thresholdReady = useLayoutSettled();
+  const { staticHold, atmosphereActive } = useThresholdStaticEntrance(reducedMotion);
   const searchParams = useSearchParams();
   const focusId = searchParams.get("focus");
   const sound = useTerrainSoundOptional();
@@ -238,11 +240,17 @@ export function ThresholdWorld() {
     wonder.chromeVisible && mapInteractive && !hoveredId;
 
   const entranceReady = thresholdReady || entered;
+  const atmosphereLive = atmosphereActive || entered || crossing;
+  const staticFrame = staticHold && phase === "threshold" && !entered;
+  const heroShellVisible = staticHold || (entranceReady && !crossing);
+  const atmoShellVisible = staticHold || entranceReady || crossing;
 
   return (
     <div
       className={cn(
         "threshold-world-root fixed inset-0 flex flex-col overflow-hidden text-ivory supports-[height:100dvh]:min-h-[100dvh] min-h-screen",
+        staticHold && "threshold-world-root--static-hold",
+        atmosphereActive && "threshold-world-root--atmosphere-active",
         entranceReady && "threshold-world-root--entrance-ready",
       )}
       style={{ backgroundColor: entered ? "#020408" : THRESHOLD_VOID }}
@@ -250,7 +258,7 @@ export function ThresholdWorld() {
       <div
         className={cn(
           "threshold-entrance-shell threshold-entrance-shell--atmosphere absolute inset-0 z-0",
-          (entranceReady || crossing) && "threshold-entrance-shell--visible",
+          atmoShellVisible && "threshold-entrance-shell--visible",
         )}
         aria-hidden
       >
@@ -261,6 +269,7 @@ export function ThresholdWorld() {
           )}
         >
           <ThresholdAtmosphere
+            atmosphereLive={atmosphereLive}
             starBrightness={entered || crossing ? starBrightness : 0}
             fogDensity={fogDensity}
             clarity={entered}
@@ -290,7 +299,7 @@ export function ThresholdWorld() {
             key="threshold-layer"
             className={cn(
               "threshold-entrance-shell threshold-entrance-shell--hero absolute inset-0 z-30 flex items-center justify-center overflow-y-auto overscroll-contain",
-              entranceReady && !crossing && "threshold-entrance-shell--visible",
+              heroShellVisible && "threshold-entrance-shell--visible",
               crossing && "threshold-entrance-shell--exiting",
             )}
             style={{
@@ -298,7 +307,11 @@ export function ThresholdWorld() {
               paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))",
             }}
           >
-            <ThresholdHeroLandscape crossing={crossing} reducedMotion={reducedMotion} />
+            <ThresholdHeroLandscape
+              crossing={crossing}
+              reducedMotion={reducedMotion}
+              staticFrame={staticFrame}
+            />
 
             <div
               className="hero-foreground relative z-10 mx-auto my-auto w-full max-w-2xl py-8 text-center sm:py-10"
@@ -313,9 +326,13 @@ export function ThresholdWorld() {
               </p>
 
               <h1 className="mt-5 font-heading text-[1.75rem] leading-[1.12] text-ivory sm:mt-7 sm:text-3xl md:text-[2.25rem]">
-                <HeadingBloom bloomClassName="hero-heading-bloom inset-[-2.5rem_-3.5rem] sm:inset-[-3rem_-4.5rem]">
-                  Living Terrain
-                </HeadingBloom>
+                {atmosphereLive ? (
+                  <HeadingBloom bloomClassName="hero-heading-bloom inset-[-2.5rem_-3.5rem] sm:inset-[-3rem_-4.5rem]">
+                    Living Terrain
+                  </HeadingBloom>
+                ) : (
+                  "Living Terrain"
+                )}
               </h1>
 
               <div className="mx-auto mt-8 max-w-md space-y-5 text-left text-[0.9375rem] leading-[1.92] text-ivory/52 sm:mt-10 sm:max-w-lg sm:text-center sm:text-base sm:leading-[1.96]">

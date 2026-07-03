@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 interface ThresholdHeroLandscapeProps {
   crossing?: boolean;
   reducedMotion?: boolean;
+  /** Chrome static hold — sky + terrain only, no blur/stars/motion */
+  staticFrame?: boolean;
 }
 
 const STARS = Array.from({ length: 48 }, (_, i) => ({
@@ -37,6 +39,7 @@ const DEPTH = {
 export function ThresholdHeroLandscape({
   crossing = false,
   reducedMotion = false,
+  staticFrame = false,
 }: ThresholdHeroLandscapeProps) {
   const scrollOffset = useAmbientScroll();
   const scrollY = useMotionValue(0);
@@ -69,13 +72,13 @@ export function ThresholdHeroLandscape({
   }, [scrollOffset, scrollY]);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || staticFrame) return;
     const onMove = (e: MouseEvent) => {
       mx.set((e.clientX / window.innerWidth - 0.5) * 0.08);
     };
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, reducedMotion]);
+  }, [mx, reducedMotion, staticFrame]);
 
   const stars = useMemo(() => STARS, []);
 
@@ -83,15 +86,21 @@ export function ThresholdHeroLandscape({
     <div
       className={cn(
         "hero-landscape pointer-events-none absolute inset-0 overflow-hidden",
+        staticFrame && "hero-landscape--static-frame",
         crossing && "hero-landscape--crossing",
         reducedMotion && "hero-landscape--reduced",
       )}
       aria-hidden
     >
-      <motion.div className="hero-landscape__sky absolute inset-0" style={{ y: skyY }} />
+      {staticFrame ? (
+        <div className="hero-landscape__sky absolute inset-0" />
+      ) : (
+        <motion.div className="hero-landscape__sky absolute inset-0" style={{ y: skyY }} />
+      )}
       <div className="hero-landscape__zenith-haze absolute inset-0" />
 
-      <div className="hero-landscape__stars absolute inset-0">
+      {!staticFrame && (
+      <div className="hero-landscape__stars hero-landscape__atmosphere-live absolute inset-0">
         {stars.map((s) => (
           <span
             key={s.id}
@@ -106,53 +115,94 @@ export function ThresholdHeroLandscape({
           />
         ))}
       </div>
+      )}
 
-      <div className="hero-landscape__light-shaft hero-landscape__light-shaft--a absolute inset-0" />
-      <div className="hero-landscape__light-shaft hero-landscape__light-shaft--b absolute inset-0" />
+      {!staticFrame && (
+      <div className="hero-landscape__atmosphere-live pointer-events-none absolute inset-0" aria-hidden>
+        <div className="hero-landscape__light-shaft hero-landscape__light-shaft--a absolute inset-0" />
+        <div className="hero-landscape__light-shaft hero-landscape__light-shaft--b absolute inset-0" />
+        <motion.div className="hero-landscape__horizon-glow absolute inset-0" style={{ y: glowY }} />
+        <motion.div className="hero-landscape__observatory-rim absolute inset-x-0" style={{ y: glowY }} />
+      </div>
+      )}
 
-      <motion.div className="hero-landscape__horizon-glow absolute inset-0" style={{ y: glowY }} />
-      <motion.div className="hero-landscape__observatory-rim absolute inset-x-0" style={{ y: glowY }} />
+      {staticFrame ? (
+        <>
+          <StaticTerrain className="hero-landscape__terrain hero-landscape__terrain--vanish">
+            <TopoVanish />
+          </StaticTerrain>
+          <StaticTerrain className="hero-landscape__terrain hero-landscape__terrain--far">
+            <TopoFar />
+          </StaticTerrain>
+          <StaticTerrain className="hero-landscape__terrain hero-landscape__terrain--mid-far">
+            <TopoMidFar />
+          </StaticTerrain>
+          <StaticTerrain className="hero-landscape__terrain hero-landscape__terrain--mid">
+            <TopoMid />
+          </StaticTerrain>
+          <StaticTerrain className="hero-landscape__terrain hero-landscape__terrain--near">
+            <TopoNear />
+          </StaticTerrain>
+          <StaticTerrain className="hero-landscape__terrain hero-landscape__terrain--fore">
+            <TopoFore />
+          </StaticTerrain>
+        </>
+      ) : (
+        <>
+          <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--vanish" y={vanishY} x={vanishX}>
+            <TopoVanish />
+          </TerrainLayer>
+          <MistShelf y={mistAY} variant="a" />
+          <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--far" y={farY} x={farX}>
+            <TopoFar />
+          </TerrainLayer>
+          <MistShelf y={mistBY} variant="b" />
+          <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--mid-far" y={midFarY} x={midFarX}>
+            <TopoMidFar />
+          </TerrainLayer>
+          <MistShelf y={mistCY} variant="c" />
+          <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--mid" y={midY} x={midX}>
+            <TopoMid />
+          </TerrainLayer>
+          <MistShelf y={mistDY} variant="d" />
+          <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--near" y={nearY} x={nearX}>
+            <TopoNear />
+          </TerrainLayer>
+          <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--fore" y={foreY} x={foreX}>
+            <TopoFore />
+          </TerrainLayer>
+        </>
+      )}
 
-      <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--vanish" y={vanishY} x={vanishX}>
-        <TopoVanish />
-      </TerrainLayer>
+      {!staticFrame && (
+      <div className="hero-landscape__atmosphere-live pointer-events-none absolute inset-0" aria-hidden>
+        <div className="hero-landscape__valley absolute inset-x-0 bottom-0" />
+        <div className="hero-landscape__ground-fog absolute inset-x-0 bottom-0" />
+        <div className="hero-landscape__fog-veil hero-landscape__fog-veil--ambient absolute inset-0" />
+        <motion.div className="hero-landscape__horizon-line absolute inset-x-0" style={{ y: glowY }} />
+        <div className="hero-landscape__text-lift absolute inset-0" />
+      </div>
+      )}
 
-      <MistShelf y={mistAY} variant="a" />
-
-      <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--far" y={farY} x={farX}>
-        <TopoFar />
-      </TerrainLayer>
-
-      <MistShelf y={mistBY} variant="b" />
-
-      <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--mid-far" y={midFarY} x={midFarX}>
-        <TopoMidFar />
-      </TerrainLayer>
-
-      <MistShelf y={mistCY} variant="c" />
-
-      <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--mid" y={midY} x={midX}>
-        <TopoMid />
-      </TerrainLayer>
-
-      <MistShelf y={mistDY} variant="d" />
-
-      <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--near" y={nearY} x={nearX}>
-        <TopoNear />
-      </TerrainLayer>
-
-      <TerrainLayer className="hero-landscape__terrain hero-landscape__terrain--fore" y={foreY} x={foreX}>
-        <TopoFore />
-      </TerrainLayer>
-
-      <div className="hero-landscape__valley absolute inset-x-0 bottom-0" />
-      <div className="hero-landscape__ground-fog absolute inset-x-0 bottom-0" />
-      <div className="hero-landscape__fog-veil hero-landscape__fog-veil--ambient absolute inset-0" />
-
-      <motion.div className="hero-landscape__horizon-line absolute inset-x-0" style={{ y: glowY }} />
+      {staticFrame && (
+        <div className="hero-landscape__valley absolute inset-x-0 bottom-0" />
+      )}
 
       <div className="hero-landscape__vignette absolute inset-0" />
-      <div className="hero-landscape__text-lift absolute inset-0" />
+    </div>
+  );
+}
+
+function StaticTerrain({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("absolute inset-x-0 bottom-0", className)}>
+      {children}
     </div>
   );
 }

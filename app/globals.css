@@ -1530,6 +1530,51 @@
     pointer-events: none;
   }
 
+  /* Chrome static hold — visible immediately, no opacity transition */
+  .threshold-world-root--static-hold .threshold-entrance-shell {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: none !important;
+    pointer-events: auto;
+  }
+
+  .threshold-world-root--static-hold .threshold-entrance-shell--atmosphere,
+  .threshold-world-root--static-hold .threshold-entrance-shell--atmosphere.threshold-entrance-shell--visible {
+    pointer-events: none;
+  }
+
+  .threshold-world-root--static-hold .threshold-page-atmosphere {
+    animation: none !important;
+  }
+
+  /* Hide live atmosphere / blur layers until activation */
+  .threshold-world-root:not(.threshold-world-root--atmosphere-active) .threshold-atmosphere-live,
+  .threshold-world-root:not(.threshold-world-root--atmosphere-active) .hero-landscape__atmosphere-live,
+  .hero-landscape--static-frame .hero-landscape__atmosphere-live,
+  .hero-landscape--static-frame .hero-landscape__stars {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    filter: none !important;
+    animation: none !important;
+    pointer-events: none !important;
+  }
+
+  .threshold-world-root--atmosphere-active .threshold-atmosphere-live,
+  .threshold-world-root--atmosphere-active .hero-landscape__atmosphere-live,
+  .threshold-world-root--atmosphere-active .hero-landscape__stars {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 1.1s var(--ease-threshold);
+  }
+
+  .hero-landscape--static-frame .hero-landscape__light-shaft,
+  .hero-landscape--static-frame .hero-landscape__horizon-glow,
+  .hero-landscape--static-frame .hero-landscape__ground-fog,
+  .hero-landscape--static-frame .hero-landscape__fog-veil--ambient,
+  .hero-landscape--static-frame .hero-landscape__mist-shelf {
+    filter: none !important;
+  }
+
   /* Pause blur/filter animations until compositor has painted stable layers */
   .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-page-atmosphere,
   .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape,
