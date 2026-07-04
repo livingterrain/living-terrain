@@ -6,12 +6,11 @@ import { CIRCADIAN_POLL_MS } from "@/lib/atmosphere/circadian";
 import { syncCircadian } from "@/lib/atmosphere/circadian-store";
 import { isMapPath } from "@/lib/atmosphere/navigation";
 
-/** Homepage threshold fade — defer live circadian until entrance settles */
+/** Homepage threshold — defer live circadian until entrance settles */
 const THRESHOLD_CIRCADIAN_DELAY_MS = 1100;
 
 /**
  * Installs circadian tokens on <html> — the terrain breathes with local time.
- * No labels. No notifications. Only atmosphere.
  */
 export function CircadianRoot() {
   const pathname = usePathname();

@@ -10,6 +10,8 @@ interface ThresholdHeroLandscapeProps {
   reducedMotion?: boolean;
   /** Chrome static hold — sky + terrain only, no blur/stars/motion */
   staticFrame?: boolean;
+  /** Chrome — no parallax on threshold hero */
+  disableParallax?: boolean;
 }
 
 const STARS = Array.from({ length: 48 }, (_, i) => ({
@@ -40,6 +42,7 @@ export function ThresholdHeroLandscape({
   crossing = false,
   reducedMotion = false,
   staticFrame = false,
+  disableParallax = false,
 }: ThresholdHeroLandscapeProps) {
   const scrollOffset = useAmbientScroll();
   const scrollY = useMotionValue(0);
@@ -72,34 +75,36 @@ export function ThresholdHeroLandscape({
   }, [scrollOffset, scrollY]);
 
   useEffect(() => {
-    if (reducedMotion || staticFrame) return;
+    if (reducedMotion || staticFrame || disableParallax) return;
     const onMove = (e: MouseEvent) => {
       mx.set((e.clientX / window.innerWidth - 0.5) * 0.08);
     };
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, reducedMotion, staticFrame]);
+  }, [mx, reducedMotion, staticFrame, disableParallax]);
 
   const stars = useMemo(() => STARS, []);
+  const hideLiveAtmosphere = staticFrame;
+  const noParallax = staticFrame || disableParallax;
 
   return (
     <div
       className={cn(
         "hero-landscape pointer-events-none absolute inset-0 overflow-hidden",
-        staticFrame && "hero-landscape--static-frame",
+        hideLiveAtmosphere && "hero-landscape--static-frame",
         crossing && "hero-landscape--crossing",
         reducedMotion && "hero-landscape--reduced",
       )}
       aria-hidden
     >
-      {staticFrame ? (
+      {noParallax ? (
         <div className="hero-landscape__sky absolute inset-0" />
       ) : (
         <motion.div className="hero-landscape__sky absolute inset-0" style={{ y: skyY }} />
       )}
       <div className="hero-landscape__zenith-haze absolute inset-0" />
 
-      {!staticFrame && (
+      {!hideLiveAtmosphere && (
       <div className="hero-landscape__stars hero-landscape__atmosphere-live absolute inset-0">
         {stars.map((s) => (
           <span
@@ -117,7 +122,7 @@ export function ThresholdHeroLandscape({
       </div>
       )}
 
-      {!staticFrame && (
+      {!hideLiveAtmosphere && (
       <div className="hero-landscape__atmosphere-live pointer-events-none absolute inset-0" aria-hidden>
         <div className="hero-landscape__light-shaft hero-landscape__light-shaft--a absolute inset-0" />
         <div className="hero-landscape__light-shaft hero-landscape__light-shaft--b absolute inset-0" />
@@ -126,7 +131,7 @@ export function ThresholdHeroLandscape({
       </div>
       )}
 
-      {staticFrame ? (
+      {noParallax ? (
         <>
           <StaticTerrain className="hero-landscape__terrain hero-landscape__terrain--vanish">
             <TopoVanish />
@@ -174,7 +179,7 @@ export function ThresholdHeroLandscape({
         </>
       )}
 
-      {!staticFrame && (
+      {!hideLiveAtmosphere && (
       <div className="hero-landscape__atmosphere-live pointer-events-none absolute inset-0" aria-hidden>
         <div className="hero-landscape__valley absolute inset-x-0 bottom-0" />
         <div className="hero-landscape__ground-fog absolute inset-x-0 bottom-0" />
@@ -184,7 +189,7 @@ export function ThresholdHeroLandscape({
       </div>
       )}
 
-      {staticFrame && (
+      {hideLiveAtmosphere && (
         <div className="hero-landscape__valley absolute inset-x-0 bottom-0" />
       )}
 

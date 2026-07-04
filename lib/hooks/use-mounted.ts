@@ -14,8 +14,8 @@ export function useMounted(): boolean {
 }
 
 /**
- * True after layout + compositor are stable.
- * Chrome needs extra frames and font metrics before opacity fades on blur layers.
+ * True after layout + compositor are stable (3× rAF + font metrics).
+ * Gates lightweight hero content reveal — not atmosphere visibility.
  */
 export function useLayoutSettled(): boolean {
   const [settled, setSettled] = useState(false);

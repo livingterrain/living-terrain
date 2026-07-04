@@ -33,8 +33,8 @@ import { THRESHOLD, NAVIGATION } from "@/lib/atmosphere/tempo";
 import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import { usePrefersReducedMotion } from "@/lib/atmosphere/use-prefers-reduced-motion";
 import { useWonderArrival } from "@/lib/wonder/use-wonder-arrival";
+import { useAmbientActive } from "@/lib/hooks/use-ambient-active";
 import { useLayoutSettled } from "@/lib/hooks/use-mounted";
-import { useThresholdStaticEntrance } from "@/lib/hooks/use-threshold-static-entrance";
 
 type Phase = "threshold" | "crossing" | "within";
 
@@ -47,9 +47,6 @@ export function ThresholdWorld() {
   const { navigate, arriving, arrivalIntent } = useTerrainNavigation();
   const { isMobile, isTablet } = useBreakpoint();
   const reducedMotion = usePrefersReducedMotion();
-  const thresholdReady = useLayoutSettled();
-  const { staticHold, atmosphereActive, backgroundMotionActive } =
-    useThresholdStaticEntrance(reducedMotion);
   const searchParams = useSearchParams();
   const focusId = searchParams.get("focus");
   const sound = useTerrainSoundOptional();
@@ -70,6 +67,9 @@ export function ThresholdWorld() {
 
   const entered = phase === "within";
   const crossing = phase === "crossing";
+
+  const thresholdReady = useLayoutSettled();
+  const ambientActive = useAmbientActive(thresholdReady || entered || reducedMotion);
 
   const crossingMs = reducedMotion ? 300 : isMobile ? 900 : 500;
   crossingMsRef.current = crossingMs;
@@ -240,31 +240,20 @@ export function ThresholdWorld() {
   const showPathPanel =
     wonder.chromeVisible && mapInteractive && !hoveredId;
 
-  const entranceReady = thresholdReady || entered;
-  const atmosphereLive = atmosphereActive || entered || crossing;
-  const staticFrame =
-    !backgroundMotionActive && phase === "threshold" && !entered;
-  const heroShellVisible = staticHold || (entranceReady && !crossing);
-  const atmoShellVisible = staticHold || entranceReady || crossing;
+  const contentVisible = thresholdReady || entered || reducedMotion;
+  const motionActive = ambientActive || entered || reducedMotion;
 
   return (
     <div
       className={cn(
         "threshold-world-root fixed inset-0 flex flex-col overflow-hidden text-ivory supports-[height:100dvh]:min-h-[100dvh] min-h-screen",
-        staticHold && "threshold-world-root--static-hold",
-        atmosphereActive && "threshold-world-root--atmosphere-active",
-        backgroundMotionActive && "threshold-world-root--background-motion",
-        entranceReady && "threshold-world-root--entrance-ready",
+        "threshold-world-root--atmosphere-active",
+        contentVisible && "threshold-world-root--hero-content-visible",
+        motionActive && "threshold-world-root--ambient-active",
       )}
       style={{ backgroundColor: entered ? "#020408" : THRESHOLD_VOID }}
     >
-      <div
-        className={cn(
-          "threshold-entrance-shell threshold-entrance-shell--atmosphere absolute inset-0 z-0",
-          atmoShellVisible && "threshold-entrance-shell--visible",
-        )}
-        aria-hidden
-      >
+      <div className="threshold-atmosphere-stack pointer-events-none absolute inset-0 z-[1]">
         <div
           className={cn(
             "threshold-page-atmosphere pointer-events-none absolute inset-0",
@@ -272,8 +261,8 @@ export function ThresholdWorld() {
           )}
         >
           <ThresholdAtmosphere
-            atmosphereLive={atmosphereLive}
-            backgroundMotionActive={backgroundMotionActive || entered || crossing}
+            atmosphereLive
+            backgroundMotionActive={motionActive}
             starBrightness={entered || crossing ? starBrightness : 0}
             fogDensity={fogDensity}
             clarity={entered}
@@ -289,6 +278,13 @@ export function ThresholdWorld() {
             awakening={wonder.awakening}
           />
         </div>
+
+        {(phase === "threshold" || crossing) && (
+          <ThresholdHeroLandscape
+            crossing={crossing}
+            reducedMotion={reducedMotion}
+          />
+        )}
       </div>
 
       <SoundMuteControl
@@ -301,24 +297,18 @@ export function ThresholdWorld() {
         {(phase === "threshold" || crossing) && (
           <div
             key="threshold-layer"
-            className={cn(
-              "threshold-entrance-shell threshold-entrance-shell--hero absolute inset-0 z-30 flex items-center justify-center overflow-y-auto overscroll-contain",
-              heroShellVisible && "threshold-entrance-shell--visible",
-              crossing && "threshold-entrance-shell--exiting",
-            )}
+            className="threshold-hero-layer absolute inset-0 z-30 flex items-center justify-center overflow-y-auto overscroll-contain"
             style={{
               paddingTop: "max(1.5rem, env(safe-area-inset-top))",
               paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))",
             }}
           >
-            <ThresholdHeroLandscape
-              crossing={crossing}
-              reducedMotion={reducedMotion}
-              staticFrame={staticFrame}
-            />
-
             <div
-              className="hero-foreground relative z-10 mx-auto my-auto w-full max-w-2xl py-8 text-center sm:py-10"
+              className={cn(
+                "hero-foreground relative z-10 mx-auto my-auto w-full max-w-2xl py-8 text-center sm:py-10",
+                contentVisible && "hero-foreground--visible",
+                crossing && "hero-foreground--exiting",
+              )}
               style={{
                 paddingLeft: "max(1.25rem, env(safe-area-inset-left, 0px))",
                 paddingRight: "max(1.25rem, env(safe-area-inset-right, 0px))",
@@ -330,13 +320,9 @@ export function ThresholdWorld() {
               </p>
 
               <h1 className="mt-5 font-heading text-[1.75rem] leading-[1.12] text-ivory sm:mt-7 sm:text-3xl md:text-[2.25rem]">
-                {atmosphereLive ? (
-                  <HeadingBloom bloomClassName="hero-heading-bloom inset-[-2.5rem_-3.5rem] sm:inset-[-3rem_-4.5rem]">
-                    Living Terrain
-                  </HeadingBloom>
-                ) : (
-                  "Living Terrain"
-                )}
+                <HeadingBloom bloomClassName="hero-heading-bloom inset-[-2.5rem_-3.5rem] sm:inset-[-3rem_-4.5rem]">
+                  Living Terrain
+                </HeadingBloom>
               </h1>
 
               <div className="mx-auto mt-8 max-w-md space-y-5 text-left text-[0.9375rem] leading-[1.92] text-ivory/52 sm:mt-10 sm:max-w-lg sm:text-center sm:text-base sm:leading-[1.96]">

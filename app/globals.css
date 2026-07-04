@@ -1488,73 +1488,46 @@
     transform-origin: center center;
   }
 
-  /* Chrome compositor — opacity fades on shells, not on blur/transform layers */
+  /* Threshold entrance — atmosphere visible immediately; never fade blur parents */
   .threshold-world-root {
     transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
 
-  .threshold-entrance-shell {
+  .threshold-atmosphere-stack {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .threshold-hero-layer {
+    pointer-events: auto;
+  }
+
+  .hero-foreground {
     opacity: 0;
-    visibility: hidden;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    isolation: isolate;
     transition: opacity 0.9s var(--ease-threshold);
     pointer-events: none;
   }
 
-  .threshold-entrance-shell--atmosphere {
-    contain: layout style paint;
-  }
-
-  .threshold-entrance-shell--visible {
+  .hero-foreground--visible {
     opacity: 1;
-    visibility: visible;
     pointer-events: auto;
   }
 
-  .threshold-entrance-shell--exiting {
+  .hero-foreground--exiting {
     opacity: 0;
     pointer-events: none;
     transition-duration: 0.45s;
   }
 
-  .threshold-entrance-shell--atmosphere {
-    pointer-events: none;
-  }
-
-  .threshold-entrance-shell--atmosphere.threshold-entrance-shell--visible {
-    pointer-events: none;
-  }
-
-  /* Chrome static hold — visible immediately, no opacity transition */
-  .threshold-world-root--static-hold .threshold-entrance-shell {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transition: none !important;
-    pointer-events: auto;
-  }
-
-  .threshold-world-root--static-hold .threshold-entrance-shell--atmosphere,
-  .threshold-world-root--static-hold .threshold-entrance-shell--atmosphere.threshold-entrance-shell--visible {
-    pointer-events: none;
-  }
-
-  .threshold-world-root--static-hold .threshold-page-atmosphere {
-    animation: none !important;
-  }
-
-  /* Hide live atmosphere / blur layers until activation */
+  /* Live atmosphere layers — visible once composited, no parent opacity fade */
   .threshold-world-root:not(.threshold-world-root--atmosphere-active) .threshold-atmosphere-live,
   .threshold-world-root:not(.threshold-world-root--atmosphere-active) .hero-landscape__atmosphere-live,
   .hero-landscape--static-frame .hero-landscape__atmosphere-live,
   .hero-landscape--static-frame .hero-landscape__stars {
     opacity: 0 !important;
     visibility: hidden !important;
-    filter: none !important;
     animation: none !important;
     pointer-events: none !important;
   }
@@ -1567,31 +1540,23 @@
     transition: none !important;
   }
 
-  /* Motion/parallax/fog drift — only after Chrome first paint settles */
-  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-page-atmosphere,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-atmosphere-live,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-atmosphere-live *,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__atmosphere-live,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__atmosphere-live *,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__stars,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__star,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-fog,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-breathe-slow,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-breathe-fog,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-breathe-fog-slow,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-dust-particle,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .atmosphere-dust-mote {
+  /* Ambient motion — one frame after content reveal, never co-triggered with opacity */
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .threshold-page-atmosphere,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .hero-landscape,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .hero-landscape *,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .threshold-atmosphere-live,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .threshold-atmosphere-live *,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .hero-landscape__atmosphere-live,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .hero-landscape__atmosphere-live *,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .hero-landscape__stars,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .hero-landscape__star,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .threshold-fog,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-breathe-slow,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-breathe-fog,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-breathe-fog-slow,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-dust-particle,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-dust-mote {
     animation-play-state: paused !important;
-  }
-
-  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-fog,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__horizon-glow,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__mist-shelf,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__ground-fog,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-landscape__light-shaft,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .hero-heading-bloom,
-  .threshold-world-root:not(.threshold-world-root--background-motion) .threshold-heading-bloom {
-    will-change: auto !important;
   }
 
   .hero-landscape--static-frame .hero-landscape__light-shaft,
@@ -1600,44 +1565,6 @@
   .hero-landscape--static-frame .hero-landscape__fog-veil--ambient,
   .hero-landscape--static-frame .hero-landscape__mist-shelf {
     filter: none !important;
-  }
-
-  /* Pause blur/filter animations until compositor has painted stable layers */
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-page-atmosphere,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape *,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-fog,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .atmosphere-breathe-slow,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .atmosphere-breathe-fog,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .atmosphere-breathe-fog-slow,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-heading-bloom,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-heading-bloom {
-    animation-play-state: paused !important;
-  }
-
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-fog,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__horizon-glow,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__mist-shelf,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__ground-fog,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__fog-veil--ambient,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-landscape__light-shaft,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .threshold-heading-bloom,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .hero-heading-bloom,
-  .threshold-world-root:not(.threshold-world-root--entrance-ready) .atmosphere-dust-particle {
-    will-change: auto !important;
-  }
-
-  .threshold-world-root--entrance-ready .threshold-fog,
-  .threshold-world-root--entrance-ready .hero-landscape__horizon-glow,
-  .threshold-world-root--entrance-ready .hero-landscape__mist-shelf,
-  .threshold-world-root--entrance-ready .hero-landscape__ground-fog,
-  .threshold-world-root--entrance-ready .atmosphere-dust-particle {
-    will-change: transform;
-  }
-
-  .threshold-world-root--entrance-ready .hero-landscape__horizon-glow,
-  .threshold-world-root--entrance-ready .threshold-heading-bloom {
-    will-change: transform, opacity;
   }
 
   .threshold-page-atmosphere--deep {
@@ -1676,7 +1603,6 @@
 
   .threshold-page-breathe {
     animation: threshold-page-breathe calc(38s * var(--tempo-inhale)) var(--ease-breath) infinite;
-    will-change: transform;
   }
 
   @keyframes threshold-page-breathe {
@@ -1734,7 +1660,6 @@
       );
     filter: blur(36px);
     transition: background 300s var(--ease-breath);
-    will-change: transform;
   }
 
   .threshold-fog-a {
@@ -1764,7 +1689,6 @@
     filter: blur(44px);
     animation: threshold-fog-drift-b 480s linear infinite;
     transition: background 300s var(--ease-breath);
-    will-change: transform;
   }
 
   .threshold-fog-c {
@@ -1790,7 +1714,6 @@
     filter: blur(52px);
     animation: threshold-fog-drift-c 540s linear infinite;
     transition: background 300s var(--ease-breath);
-    will-change: transform;
   }
 
   @keyframes threshold-fog-drift-a {
