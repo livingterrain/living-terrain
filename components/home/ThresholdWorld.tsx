@@ -32,8 +32,9 @@ import {
 import { THRESHOLD, NAVIGATION } from "@/lib/atmosphere/tempo";
 import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import { usePrefersReducedMotion } from "@/lib/atmosphere/use-prefers-reduced-motion";
+import { CIRCADIAN_POLL_MS } from "@/lib/atmosphere/circadian";
+import { syncCircadian } from "@/lib/atmosphere/circadian-store";
 import { useWonderArrival } from "@/lib/wonder/use-wonder-arrival";
-import { useAmbientActive } from "@/lib/hooks/use-ambient-active";
 import { useLayoutSettled } from "@/lib/hooks/use-mounted";
 
 type Phase = "threshold" | "crossing" | "within";
@@ -69,7 +70,6 @@ export function ThresholdWorld() {
   const crossing = phase === "crossing";
 
   const thresholdReady = useLayoutSettled();
-  const ambientActive = useAmbientActive(thresholdReady || entered || reducedMotion);
 
   const crossingMs = reducedMotion ? 300 : isMobile ? 900 : 500;
   crossingMsRef.current = crossingMs;
@@ -241,7 +241,15 @@ export function ThresholdWorld() {
     wonder.chromeVisible && mapInteractive && !hoveredId;
 
   const contentVisible = thresholdReady || entered || reducedMotion;
-  const motionActive = ambientActive || entered || reducedMotion;
+  /** Blur/filter layers stay static on threshold — motion only after entering the map */
+  const motionActive = entered || reducedMotion;
+
+  useEffect(() => {
+    if (!entered) return;
+    syncCircadian();
+    const interval = window.setInterval(syncCircadian, CIRCADIAN_POLL_MS);
+    return () => window.clearInterval(interval);
+  }, [entered]);
 
   return (
     <div

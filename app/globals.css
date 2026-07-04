@@ -1555,8 +1555,18 @@
   .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-breathe-fog,
   .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-breathe-fog-slow,
   .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-dust-particle,
-  .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-dust-mote {
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .atmosphere-dust-mote,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .threshold-heading-bloom,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .hero-heading-bloom,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .star-twinkle,
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .star-bud {
     animation-play-state: paused !important;
+    will-change: auto !important;
+  }
+
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .threshold-atmosphere-live [class*="transition-opacity"],
+  .threshold-world-root:not(.threshold-world-root--ambient-active) .threshold-fog {
+    transition: none !important;
   }
 
   .hero-landscape--static-frame .hero-landscape__light-shaft,

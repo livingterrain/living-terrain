@@ -6,18 +6,18 @@ import { CIRCADIAN_POLL_MS } from "@/lib/atmosphere/circadian";
 import { syncCircadian } from "@/lib/atmosphere/circadian-store";
 import { isMapPath } from "@/lib/atmosphere/navigation";
 
-/** Homepage threshold — defer live circadian until entrance settles */
-const THRESHOLD_CIRCADIAN_DELAY_MS = 1100;
-
 /**
  * Installs circadian tokens on <html> — the terrain breathes with local time.
+ * Homepage threshold keeps SSR circadian tokens until the map is entered
+ * (see ThresholdWorld) so fog CSS vars never shift under blur layers.
  */
 export function CircadianRoot() {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (isMapPath(pathname)) return;
+
     let interval: number | undefined;
-    let delayTimer: number | undefined;
     let cancelled = false;
 
     const start = () => {
@@ -26,22 +26,10 @@ export function CircadianRoot() {
       interval = window.setInterval(syncCircadian, CIRCADIAN_POLL_MS);
     };
 
-    const delay = isMapPath(pathname) ? THRESHOLD_CIRCADIAN_DELAY_MS : 0;
-
-    if (delay > 0) {
-      delayTimer = window.setTimeout(start, delay);
-    } else {
-      const frame = requestAnimationFrame(start);
-      return () => {
-        cancelled = true;
-        cancelAnimationFrame(frame);
-        if (interval !== undefined) window.clearInterval(interval);
-      };
-    }
-
+    const frame = requestAnimationFrame(start);
     return () => {
       cancelled = true;
-      if (delayTimer !== undefined) window.clearTimeout(delayTimer);
+      cancelAnimationFrame(frame);
       if (interval !== undefined) window.clearInterval(interval);
     };
   }, [pathname]);
