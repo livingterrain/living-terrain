@@ -22,12 +22,15 @@ export default function AtlasPage() {
         align="center"
       />
 
-      <section className="pb-28 pt-4 sm:pb-36" aria-label="Charted territories">
+      <section
+        className="pb-32 pt-8 sm:pb-44 sm:pt-12"
+        aria-label="Charted territories"
+      >
         <Container narrow>
-          <p className="type-body mx-auto mb-16 max-w-xl text-center text-[0.9375rem] text-charcoal-muted">
+          <p className="type-body mx-auto mb-20 max-w-md text-center text-[0.9375rem] leading-relaxed text-charcoal-muted sm:mb-28">
             Stand before a region. Choose which territory to enter.
           </p>
-          <ul className="grid gap-20 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-24 lg:gap-y-28">
+          <ul className="mx-auto grid max-w-4xl gap-24 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-32 lg:gap-x-20 lg:gap-y-40">
             {maps.map((map, index) => (
               <MapArtifactCard key={map.id} map={map} index={index} />
             ))}

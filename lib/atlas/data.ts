@@ -263,9 +263,9 @@ export const ATLAS_DATA: AtlasData = {
           },
           {
             id: "w3",
-            title: "Enter with the published volume",
-            description: "The full argument lives in the book. Read at your own pace.",
-            href: "https://www.amazon.com/Structure-Beneath-Reality-Chelsea-Thacker/dp/B0H3ZFPLDN/",
+            title: "Return to the map",
+            description: "Step back to the cartographic plate in The Atlas.",
+            href: "/atlas/the-structure-beneath-reality",
           },
         ],
       },

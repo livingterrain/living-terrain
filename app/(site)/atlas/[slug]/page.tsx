@@ -34,7 +34,7 @@ export default async function MapTerritoryPage({ params }: PageProps) {
 
   return (
     <Room kind="atlas">
-      <div className="border-b border-rule/30 px-6 py-16 sm:px-10 sm:py-20">
+      <div className="border-b border-rule/25 px-6 py-20 sm:px-10 sm:py-28 lg:py-32">
         <Container narrow>
           <TerritoryThreshold map={map} territory={territory} />
         </Container>

@@ -1,3 +1,4 @@
+export { ChamberFieldJournal } from "./ChamberFieldJournal";
 export { ChamberGather } from "./ChamberGather";
 export { ChamberPage } from "./ChamberPage";
 export { ChamberWhy } from "./ChamberWhy";

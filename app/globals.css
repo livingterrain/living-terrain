@@ -972,6 +972,22 @@
     --atlas-amber: #c4a06a;
   }
 
+  .map-cover__journal {
+    cursor: pointer;
+  }
+
+  .map-artifact:nth-child(odd) {
+    @media (min-width: 640px) {
+      padding-top: 0.5rem;
+    }
+  }
+
+  .map-artifact:nth-child(even) {
+    @media (min-width: 640px) {
+      padding-top: 2.5rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .world-lantern-reading__glow,
     .world-pathways-glow,

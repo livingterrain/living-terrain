@@ -8,7 +8,6 @@ import {
 import { TextLink } from "@/components/design-system";
 import { Thread } from "@/components/thread";
 import { MapCover } from "@/components/atlas/MapCover";
-import { FieldJournal } from "@/components/atlas/FieldJournal";
 import type { Book } from "@/lib/content/types";
 import type { Project } from "@/lib/content/types";
 import {
@@ -33,26 +32,33 @@ export function TerritoryThreshold({ map, territory }: TerritoryThresholdProps) 
     : [];
 
   return (
-    <div className="space-y-24 sm:space-y-32">
-      <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:gap-16 lg:text-left">
-        <MapCover map={map} scale="threshold" priority className="shrink-0" />
-        <div className="mt-12 max-w-xl lg:mt-4">
+    <div className="space-y-28 sm:space-y-36">
+      <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:gap-20 lg:text-left">
+        <div className="shrink-0 lg:pt-2">
+          <MapCover
+            map={map}
+            journalUrl={map.purchaseUrl}
+            scale="threshold"
+            priority
+          />
+        </div>
+        <div className="mt-14 max-w-xl lg:mt-2">
           <p className="type-folio text-[0.625rem] uppercase tracking-[0.18em] text-charcoal-faint">
             Charted territory
           </p>
-          <h1 className="type-display mt-4 text-balance">{map.title}</h1>
+          <h1 className="type-display mt-5 text-balance">{map.title}</h1>
           {map.subtitle && (
-            <p className="type-lead mt-4 text-lg text-charcoal-muted">
+            <p className="type-lead mt-5 text-lg leading-relaxed text-charcoal-muted">
               {map.subtitle}
             </p>
           )}
-          <p className="type-body mt-8 text-[0.9375rem] sm:text-base">
+          <p className="type-body mt-10 text-[0.9375rem] leading-relaxed sm:text-base">
             {map.description}
           </p>
           {territory && (
             <TextLink
               href={`/chambers/${territory.slug}`}
-              className="mt-10 inline-block"
+              className="mt-12 inline-block"
             >
               Enter the territory →
             </TextLink>
@@ -92,20 +98,18 @@ export function TerritoryThreshold({ map, territory }: TerritoryThresholdProps) 
         returnLabel="Return to this map"
       />
 
-      {map.purchaseUrl && <FieldJournal url={map.purchaseUrl} />}
-
-      <footer className="border-t border-rule/40 pt-10">
+      <footer className="border-t border-rule/30 pt-12">
         <TextLink href="/atlas" muted className="text-sm">
           ← Back to The Atlas
         </TextLink>
         {territory && (
           <>
-            <span className="mx-3 text-charcoal-faint" aria-hidden="true">
+            <span className="mx-3 text-charcoal-faint/60" aria-hidden="true">
               ·
             </span>
             <Link
               href={`/chambers/${territory.slug}`}
-              className="type-body text-sm text-charcoal-muted transition-colors hover:text-forest"
+              className="type-body text-sm text-charcoal-muted transition-colors duration-[1.2s] hover:text-charcoal"
             >
               Enter the territory
             </Link>

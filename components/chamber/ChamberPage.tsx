@@ -2,6 +2,7 @@ import { Container } from "@/components/layout/Container";
 import {
   ChamberBegin,
   ChamberConnections,
+  ChamberFieldJournal,
   ChamberGather,
   ChamberQuestion,
   ChamberRelatedEssays,
@@ -9,7 +10,6 @@ import {
   ChamberThemes,
   ChamberWhy,
 } from "@/components/chamber";
-import { FieldJournal } from "@/components/atlas";
 import { Room } from "@/components/environment";
 import { Thread } from "@/components/thread";
 import {
@@ -68,14 +68,23 @@ export function ChamberPage({ project, lead = "A volume chamber." }: ChamberPage
             </p>
           </div>
 
-          <p className="type-body mt-8">
-            <a
-              href={`/atlas/${project.slug}`}
-              className="text-charcoal-muted transition-colors duration-700 hover:text-forest"
-            >
-              ← Return to the map
-            </a>
-          </p>
+          <div className="mt-14 space-y-8">
+            {project.purchaseUrl && (
+              <ChamberFieldJournal url={project.purchaseUrl} />
+            )}
+            <p className="type-body text-[0.875rem] text-charcoal-muted">
+              <a
+                href={`/atlas/${project.slug}`}
+                className="transition-colors duration-[1.2s] hover:text-charcoal"
+              >
+                ← Return to the map
+              </a>
+              <span className="mx-2 text-charcoal-faint/60" aria-hidden="true">
+                ·
+              </span>
+              <span>Continue exploring below</span>
+            </p>
+          </div>
         </Container>
 
         <svg
@@ -122,10 +131,6 @@ export function ChamberPage({ project, lead = "A volume chamber." }: ChamberPage
 
             <ChamberStrata timeline={project.timeline} />
             <ChamberBegin entries={project.whereToBegin} />
-
-            {project.purchaseUrl && (
-              <FieldJournal url={project.purchaseUrl} />
-            )}
           </div>
         </Container>
       </div>

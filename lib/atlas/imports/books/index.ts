@@ -59,23 +59,23 @@ function buildChamberMeta(book: SeriesBookCatalogEntry) {
     whereToBegin: [
       {
         id: `${book.chamberId}-w1`,
-        title: "Enter with the published volume",
-        description: "The full argument lives in the book. Read at your own pace.",
-        href: book.purchaseUrl,
+        title: "Begin with the central question",
+        description:
+          "Follow the compass of this territory through connected questions and themes.",
+        href: `${chamberRoute}#chamber-gather`,
       },
       {
         id: `${book.chamberId}-w2`,
         title: "Read related essays",
         description:
-          "Shorter writing on Medium that orbits this volume — mapped here as the inquiry extends.",
+          "Scout reports from the edges — shorter writing that orbits this region.",
         href: `${chamberRoute}#chamber-essays`,
       },
       {
         id: `${book.chamberId}-w3`,
-        title: "Explore Observatory themes",
-        description:
-          "Major themes that gather around this book's central question.",
-        href: `${chamberRoute}#chamber-themes`,
+        title: "Return to the map",
+        description: "Step back to the cartographic plate in The Atlas.",
+        href: `/atlas/${book.slug}`,
       },
     ],
   };
