@@ -122,3 +122,23 @@ export function getPrimaryConstellationNodes(nodes: GraphNode[]): GraphNode[] {
 export function getPrimaryConstellationIds(nodes: GraphNode[]): Set<string> {
   return new Set(getPrimaryConstellationNodes(nodes).map((n) => n.id));
 }
+
+/** Bonded neighbors for map reveal — nearer / larger bodies first */
+export function getConstellationNeighbors(
+  nodeId: string,
+  edges: GraphEdge[],
+  nodeMap: Map<string, GraphNode>,
+  max = 4,
+): GraphNode[] {
+  const peerIds = new Set<string>();
+  for (const edge of edges) {
+    if (edge.from === nodeId) peerIds.add(edge.to);
+    if (edge.to === nodeId) peerIds.add(edge.from);
+  }
+
+  return [...peerIds]
+    .map((id) => nodeMap.get(id))
+    .filter((n): n is GraphNode => !!n)
+    .sort((a, b) => a.level - b.level || a.label.localeCompare(b.label))
+    .slice(0, max);
+}

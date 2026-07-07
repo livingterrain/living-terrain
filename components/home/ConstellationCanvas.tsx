@@ -12,6 +12,7 @@ import type { GraphEdge, GraphNode, GraphNodeKind, EdgeTier, NodeShape } from "@
 import { getVisibleGraph } from "@/lib/concepts/graph";
 import {
   filterGraphForDiscovery,
+  getConstellationNeighbors,
   getPrimaryConstellationNodes,
   whisperForNode,
 } from "@/lib/concepts/constellation-discovery";
@@ -34,6 +35,7 @@ import {
   rippleBoost,
 } from "@/lib/constellation/hover-ripple";
 import { cn } from "@/lib/utils";
+import { ConstellationBondHint } from "./ConstellationBondHint";
 import { MOTION } from "@/lib/atmosphere/tempo";
 import { useConstellationCursorDrift } from "@/lib/constellation/use-constellation-cursor-drift";
 import {
@@ -110,6 +112,44 @@ function pulseOffset(seed: string): { durScale: number; delay: number } {
 
 const EDGE_PROXIMITY = 480;
 
+/** Mobile handheld instrument — gentle parallax only, always springs home */
+const MOBILE_PARALLAX_MAX_PX = 30;
+const MOBILE_PARALLAX_DRAG = 0.16;
+const MOBILE_SPRING_MS = 540;
+
+function clampMobileParallax(px: number, py: number) {
+  const max = MOBILE_PARALLAX_MAX_PX;
+  const len = Math.hypot(px, py);
+  if (len <= max) return { px, py };
+  const scale = max / len;
+  return { px: px * scale, py: py * scale };
+}
+
+function viewBoxWithMobileParallax(
+  anchor: ViewBox,
+  parallaxPx: { px: number; py: number },
+  containerW: number,
+  containerH: number,
+): ViewBox {
+  const { px, py } = clampMobileParallax(parallaxPx.px, parallaxPx.py);
+  const dx = (px / containerW) * anchor.w;
+  const dy = (py / containerH) * anchor.h;
+  return {
+    x: anchor.x - dx,
+    y: anchor.y - dy,
+    w: anchor.w,
+    h: anchor.h,
+  };
+}
+
+function isNearMobileAnchor(current: ViewBox, anchor: ViewBox): boolean {
+  return (
+    Math.abs(current.w - anchor.w) / anchor.w < 0.04 &&
+    Math.abs(current.x - anchor.x) < anchor.w * 0.06 &&
+    Math.abs(current.y - anchor.y) < anchor.h * 0.06
+  );
+}
+
 const EDGE_TIER: Record<
   EdgeTier,
   { widthMul: number; baseOpacity: number; color: string; dash?: string }
@@ -119,8 +159,13 @@ const EDGE_TIER: Record<
   emerging: { widthMul: 0.7, baseOpacity: 0.03, color: "#485868", dash: "5 8" },
 };
 
-function nodeRadius(node: GraphNode, viewBoxW: number): number {
-  return celestialRadius(node, viewBoxW);
+function nodeRadius(
+  node: GraphNode,
+  viewBoxW: number,
+  touchMode = false,
+): number {
+  const base = celestialRadius(node, viewBoxW);
+  return touchMode ? base * 1.8 : base;
 }
 
 interface ConstellationCanvasProps {
@@ -142,6 +187,8 @@ interface ConstellationCanvasProps {
   onViewBoxPersist?: (viewBox: ViewBox) => void;
   /** Tablet: fewer nodes, calmer density */
   comfortableMode?: boolean;
+  /** Phone: tap-to-reveal, larger bodies, no inline labels */
+  touchMode?: boolean;
   /** Skip camera motion and per-node reveal — full layout at once */
   stableLayout?: boolean;
   onLayoutReady?: () => void;
@@ -172,6 +219,7 @@ export function ConstellationCanvas({
   restoredViewBox,
   onViewBoxPersist,
   comfortableMode = false,
+  touchMode = false,
   stableLayout = false,
   onLayoutReady,
   awakeningProgress = 1,
@@ -187,12 +235,19 @@ export function ConstellationCanvas({
   const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
   const viewBoxRef = useRef<ViewBox>(CHAMBER_INTRO_VIEW);
   const animRef = useRef<number | null>(null);
-  const dragRef = useRef<{ x: number; y: number; moved: boolean } | null>(null);
+  const dragRef = useRef<{
+    x: number;
+    y: number;
+    startX: number;
+    startY: number;
+    moved: boolean;
+  } | null>(null);
   const velocityRef = useRef({ vx: 0, vy: 0 });
   const inertiaRef = useRef<number | null>(null);
   const enteredSessionRef = useRef(false);
   const layoutNotifiedRef = useRef(false);
   const navigatingRef = useRef(false);
+  const skipHoverClearRef = useRef(false);
   const restoredViewRef = useRef(false);
   const zoomVelocityRef = useRef(0);
   const zoomInertiaRef = useRef<number | null>(null);
@@ -217,9 +272,9 @@ export function ConstellationCanvas({
         primaryNodes,
         containerSize.w,
         containerSize.h,
-        1.26,
+        touchMode ? 1.04 : 1.26,
       ),
-    [primaryNodes, containerSize.w, containerSize.h],
+    [primaryNodes, containerSize.w, containerSize.h, touchMode],
   );
 
   const conceptOrder = useMemo(() => {
@@ -246,15 +301,21 @@ export function ConstellationCanvas({
 
   const zoom = zoomLevel(viewBox);
 
-  const applyViewBox = useCallback((next: ViewBox) => {
-    viewBoxRef.current = next;
-    setViewBox(next);
-    onViewBoxPersist?.(next);
-    const atPrimary =
-      Math.abs(next.w - primaryViewBox.w) / primaryViewBox.w < 0.08 &&
-      Math.abs(next.x - primaryViewBox.x) < primaryViewBox.w * 0.12;
-    setShowUniverseBtn(!atPrimary && !inReveal);
-  }, [primaryViewBox, inReveal, onViewBoxPersist]);
+  const applyViewBox = useCallback(
+    (next: ViewBox, options?: { persist?: boolean }) => {
+      viewBoxRef.current = next;
+      setViewBox(next);
+      const shouldPersist =
+        options?.persist !== false &&
+        (!touchMode || isNearMobileAnchor(next, primaryViewBox));
+      if (shouldPersist) onViewBoxPersist?.(touchMode ? primaryViewBox : next);
+      const atPrimary =
+        Math.abs(next.w - primaryViewBox.w) / primaryViewBox.w < 0.08 &&
+        Math.abs(next.x - primaryViewBox.x) < primaryViewBox.w * 0.12;
+      setShowUniverseBtn(!touchMode && !atPrimary && !inReveal);
+    },
+    [primaryViewBox, inReveal, onViewBoxPersist, touchMode],
+  );
 
   useEffect(() => {
     onZoomChange?.(zoom);
@@ -285,7 +346,8 @@ export function ConstellationCanvas({
 
     if (stableLayout) {
       if (!layoutReady) return;
-      const target = restoredViewBox ?? primaryViewBox;
+      const target =
+        touchMode || !restoredViewBox ? primaryViewBox : restoredViewBox;
       applyViewBox(target);
       enteredSessionRef.current = true;
       if (!layoutNotifiedRef.current) {
@@ -315,6 +377,11 @@ export function ConstellationCanvas({
     primaryViewBox,
     onLayoutReady,
   ]);
+
+  useEffect(() => {
+    if (!touchMode || !sessionActive || !layoutReady) return;
+    applyViewBox(primaryViewBox);
+  }, [touchMode, sessionActive, layoutReady, primaryViewBox, applyViewBox]);
 
   useEffect(() => {
     if (stableLayout || !sessionActive || reveal >= 1) return;
@@ -421,6 +488,11 @@ export function ConstellationCanvas({
     animateTo(primaryViewBox, MOTION.camera - 100);
   }, [animateTo, primaryViewBox]);
 
+  const springToAnchor = useCallback(() => {
+    if (!touchMode) return;
+    animateTo(primaryViewBox, MOBILE_SPRING_MS);
+  }, [touchMode, animateTo, primaryViewBox]);
+
   const zoomToNode = useCallback(
     (node: GraphNode) => {
       const span = celestialFocusSpan(node.level);
@@ -437,9 +509,13 @@ export function ConstellationCanvas({
     const node = nodes.find((n) => n.id === focusNodeId);
     if (!node) return;
     focusHandledRef.current = focusNodeId;
+    if (touchMode) {
+      onNodeHover(node.id);
+      return;
+    }
     zoomToNode(node);
     onNodeHover(node.id);
-  }, [focusNodeId, discoveryAwake, enabled, nodes, zoomToNode, onNodeHover]);
+  }, [focusNodeId, discoveryAwake, enabled, nodes, zoomToNode, onNodeHover, touchMode]);
 
   useEffect(() => {
     if (!sessionActive) focusHandledRef.current = null;
@@ -447,7 +523,7 @@ export function ConstellationCanvas({
 
   const handleWheel = useCallback(
     (e: WheelEvent) => {
-      if (!enabled) return;
+      if (!enabled || touchMode) return;
       e.preventDefault();
       onVisitorEngage?.();
       stopInertia();
@@ -478,7 +554,7 @@ export function ConstellationCanvas({
       };
       zoomInertiaRef.current = requestAnimationFrame(step);
     },
-    [enabled, applyViewBox, stopInertia, onVisitorEngage],
+    [enabled, applyViewBox, stopInertia, onVisitorEngage, touchMode],
   );
 
   useEffect(() => {
@@ -517,8 +593,15 @@ export function ConstellationCanvas({
 
       trackPointer(e.clientX, e.clientY);
       stopInertia();
+      if (animRef.current) cancelAnimationFrame(animRef.current);
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-      dragRef.current = { x: e.clientX, y: e.clientY, moved: false };
+      dragRef.current = {
+        x: e.clientX,
+        y: e.clientY,
+        startX: e.clientX,
+        startY: e.clientY,
+        moved: false,
+      };
       velocityRef.current = { vx: 0, vy: 0 };
       setIsDragging(true);
     },
@@ -533,37 +616,70 @@ export function ConstellationCanvas({
 
       const dx = e.clientX - dragRef.current.x;
       const dy = e.clientY - dragRef.current.y;
-      if (Math.hypot(dx, dy) > 4) {
+      const totalDx = e.clientX - dragRef.current.startX;
+      const totalDy = e.clientY - dragRef.current.startY;
+      if (Math.hypot(totalDx, totalDy) > 5) {
         dragRef.current.moved = true;
         onVisitorEngage?.();
       }
 
       if (!dragRef.current.moved) return;
 
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+
+      if (touchMode) {
+        applyViewBox(
+          viewBoxWithMobileParallax(
+            primaryViewBox,
+            {
+              px: totalDx * MOBILE_PARALLAX_DRAG,
+              py: totalDy * MOBILE_PARALLAX_DRAG,
+            },
+            rect.width,
+            rect.height,
+          ),
+          { persist: false },
+        );
+        dragRef.current.x = e.clientX;
+        dragRef.current.y = e.clientY;
+        return;
+      }
+
       velocityRef.current = {
         vx: dx * 0.85,
         vy: dy * 0.85,
       };
 
-      const el = containerRef.current;
-      if (!el) return;
-
-      const rect = el.getBoundingClientRect();
       applyViewBox(
         panViewBox(viewBoxRef.current, dx, dy, rect.width, rect.height),
       );
       dragRef.current.x = e.clientX;
       dragRef.current.y = e.clientY;
     },
-    [enabled, applyViewBox, trackPointer, onVisitorEngage],
+    [enabled, applyViewBox, trackPointer, onVisitorEngage, touchMode, primaryViewBox],
   );
 
   const handlePointerUp = useCallback(() => {
     const moved = dragRef.current?.moved ?? false;
     dragRef.current = null;
     setIsDragging(false);
+    if (touchMode) {
+      if (moved) springToAnchor();
+      else if (hoveredId && !skipHoverClearRef.current) {
+        onNodeHover(null);
+        springToAnchor();
+      }
+      skipHoverClearRef.current = false;
+      return;
+    }
     if (moved) startInertia();
-  }, [startInertia]);
+    else if (hoveredId && !skipHoverClearRef.current) {
+      onNodeHover(null);
+    }
+    skipHoverClearRef.current = false;
+  }, [startInertia, touchMode, hoveredId, onNodeHover, springToAnchor]);
 
   const dormantMul = discoveryAwake ? 1 : stableLayout ? 1 : 0.22 + reveal * 0.78;
   const edgeAwaken = edgePresence(awakeningProgress);
@@ -571,8 +687,31 @@ export function ConstellationCanvas({
   const interactionEnabled = enabled && !inReveal;
   const hoveredPos = hoveredId ? nodeMap.get(hoveredId) : null;
 
+  const neighborIds = useMemo(() => {
+    if (!hoveredId) return new Set<string>();
+    const peers = new Set<string>();
+    for (const edge of discoveryGraph.edges) {
+      if (edge.from === hoveredId) peers.add(edge.to);
+      if (edge.to === hoveredId) peers.add(edge.from);
+    }
+    return peers;
+  }, [hoveredId, discoveryGraph.edges]);
+
+  const hoveredNeighbors = useMemo(
+    () =>
+      hoveredId
+        ? getConstellationNeighbors(
+            hoveredId,
+            discoveryGraph.edges,
+            nodeMap,
+            4,
+          )
+        : [],
+    [hoveredId, discoveryGraph.edges, nodeMap],
+  );
+
   useConstellationCursorDrift(
-    interactionEnabled && discoveryAwake && !isDragging,
+    interactionEnabled && discoveryAwake && !isDragging && !touchMode,
     containerRef,
     driftGroupRef,
   );
@@ -580,6 +719,12 @@ export function ConstellationCanvas({
   const activateNode = useCallback(
     (node: GraphNode) => {
       if (!interactionEnabled || navigatingRef.current) return;
+      if (touchMode) {
+        navigatingRef.current = true;
+        onNodeClick(node);
+        navigatingRef.current = false;
+        return;
+      }
       zoomToNode(node);
       navigatingRef.current = true;
       window.setTimeout(() => {
@@ -587,7 +732,21 @@ export function ConstellationCanvas({
         navigatingRef.current = false;
       }, MOTION.camera - 260);
     },
-    [interactionEnabled, onNodeClick, zoomToNode],
+    [interactionEnabled, onNodeClick, zoomToNode, touchMode],
+  );
+
+  const handleNodeActivate = useCallback(
+    (node: GraphNode) => {
+      if (!touchMode) {
+        activateNode(node);
+        return;
+      }
+      skipHoverClearRef.current = true;
+      onNodeHover(node.id);
+      onVisitorEngage?.();
+      springToAnchor();
+    },
+    [touchMode, activateNode, onNodeHover, onVisitorEngage, springToAnchor],
   );
 
   return (
@@ -776,9 +935,16 @@ export function ConstellationCanvas({
               conceptIndex={conceptOrder.get(node.id) ?? 0}
               conceptCount={conceptOrder.size}
               isHovered={hoveredId === node.id}
+              isNearFocus={
+                !!hoveredId && hoveredId !== node.id && neighborIds.has(node.id)
+              }
               isExplored={exploredIds?.has(node.id) ?? false}
-              onClick={() => activateNode(node)}
-              onHover={(hover) => onNodeHover(hover ? node.id : null)}
+              touchMode={touchMode}
+              onClick={() => handleNodeActivate(node)}
+              onHover={(hover) => {
+                if (touchMode) return;
+                onNodeHover(hover ? node.id : null);
+              }}
               dragRef={dragRef}
             />
           ))}
@@ -787,8 +953,8 @@ export function ConstellationCanvas({
         </svg>
       </div>
 
-      {/* Minimap */}
-      {sessionActive && discoveryAwake && showChrome && (
+      {/* Minimap — desktop only */}
+      {sessionActive && discoveryAwake && showChrome && !touchMode && (
         <ConstellationMinimap
           nodes={discoveryGraph.nodes}
           viewBox={viewBox}
@@ -796,7 +962,7 @@ export function ConstellationCanvas({
         />
       )}
 
-      {interactionEnabled && discoveryAwake && showChrome && showUniverseBtn && (
+      {interactionEnabled && discoveryAwake && showChrome && showUniverseBtn && !touchMode && (
         <motion.button
           type="button"
           initial={{ opacity: 0 }}
@@ -814,13 +980,17 @@ export function ConstellationCanvas({
           )}
           style={{ top: "max(1.25rem, env(safe-area-inset-top))" }}
         >
-          Return to the constellation
+          Return to the whole sky
         </motion.button>
       )}
 
-      {/* Poetic hover — earned after chrome emerges */}
+      {/* Poetic hover — desktop; mobile reveal card below */}
       <AnimatePresence>
-        {interactionEnabled && hoveredNode && showChrome && wonderEngaged && (
+        {interactionEnabled &&
+          hoveredNode &&
+          showChrome &&
+          wonderEngaged &&
+          !touchMode && (
           <motion.div
             key={hoveredNode.id}
             initial={{ opacity: 0, y: 6 }}
@@ -839,8 +1009,75 @@ export function ConstellationCanvas({
             <p className="mt-3 text-sm italic leading-relaxed text-ivory/40">
               {whisperForNode(hoveredNode)}
             </p>
+            <ConstellationBondHint
+              neighbors={hoveredNeighbors}
+              className="mt-4"
+            />
           </motion.div>
         )}
+      </AnimatePresence>
+
+      {/* Mobile reveal card — anchored above browser chrome */}
+      <AnimatePresence>
+        {touchMode && interactionEnabled && hoveredNode && showChrome && (
+          <motion.div
+            key={hoveredNode.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.55, ease: fade.ease }}
+            className="absolute inset-x-0 z-30 px-4"
+            style={{
+              bottom: "max(5.5rem, calc(env(safe-area-inset-bottom) + 4.25rem))",
+            }}
+          >
+            <div className="mx-auto max-w-sm rounded-sm border border-ivory/12 bg-[color-mix(in_srgb,#06080c_90%,transparent)] px-5 py-4 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-md">
+              <p className="font-heading text-[1.0625rem] leading-snug text-ivory/84">
+                {hoveredNode.label}
+              </p>
+              {whisperForNode(hoveredNode) && (
+                <p className="mt-2.5 text-[0.875rem] italic leading-relaxed text-ivory/44">
+                  {whisperForNode(hoveredNode)}
+                </p>
+              )}
+              <ConstellationBondHint
+                neighbors={hoveredNeighbors}
+                className="mt-3 border-t border-ivory/8 pt-3"
+              />
+              <button
+                type="button"
+                onClick={() => activateNode(hoveredNode)}
+                className="mt-4 min-h-11 w-full touch-manipulation border-b border-forest-light/35 pb-1 font-heading text-[0.8125rem] tracking-[0.04em] text-ivory/68 transition-colors duration-500 active:text-ivory/92"
+              >
+                Continue deeper
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile exploration hint */}
+      <AnimatePresence>
+        {touchMode &&
+          interactionEnabled &&
+          discoveryAwake &&
+          showChrome &&
+          wonderEngaged &&
+          !hoveredId && (
+            <motion.p
+              key="touch-hint"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.6, ease: fade.ease, delay: 1.2 }}
+              className="pointer-events-none absolute inset-x-0 z-20 px-8 text-center font-heading text-[0.8125rem] italic text-ivory/26"
+              style={{
+                bottom: "max(2.25rem, calc(env(safe-area-inset-bottom) + 1.5rem))",
+              }}
+            >
+              Touch a point of light.
+            </motion.p>
+          )}
       </AnimatePresence>
     </div>
   );
@@ -918,7 +1155,9 @@ function ConstellationNode({
   conceptIndex,
   conceptCount,
   isHovered,
+  isNearFocus = false,
   isExplored,
+  touchMode = false,
   onClick,
   onHover,
   dragRef,
@@ -934,10 +1173,18 @@ function ConstellationNode({
   conceptIndex: number;
   conceptCount: number;
   isHovered: boolean;
+  isNearFocus?: boolean;
   isExplored: boolean;
+  touchMode?: boolean;
   onClick: () => void;
   onHover: (hover: boolean) => void;
-  dragRef: React.RefObject<{ x: number; y: number; moved: boolean } | null>;
+  dragRef: React.RefObject<{
+    x: number;
+    y: number;
+    startX: number;
+    startY: number;
+    moved: boolean;
+  } | null>;
 }) {
   const isChamber = node.kind === "chamber";
   const isConcept = node.kind === "concept";
@@ -964,32 +1211,39 @@ function ConstellationNode({
       ? conceptReveal
       : Math.min(1, awakeningProgress * 1.15);
 
-  const r = nodeRadius(node, viewBoxW);
-  const hoverScale = isHovered && wonderEngaged ? body.hoverScale : 1;
+  const r = nodeRadius(node, viewBoxW, touchMode);
+  const hoverScale =
+    isHovered && (wonderEngaged || touchMode)
+      ? body.hoverScale
+      : isNearFocus
+        ? 1.06
+        : 1;
   const strokeW = viewBoxW / 4800;
 
   const groupOpacity =
     celestialGroupOpacity({
       level: node.level,
       discoveryAwake,
-      isHovered,
+      isHovered: isHovered || isNearFocus,
       isExplored,
       conceptReveal: isConcept ? conceptReveal : undefined,
       isChamber,
       isConcept,
       inReveal,
-    }) * presenceMul;
+    }) * presenceMul * (isNearFocus && !isHovered ? 1.12 : 1);
 
-  const showLabel = isChamber
-    ? chamberLabelPresence > 0.08 && (isHovered || chamberLabelPresence > 0.55)
-    : shouldShowCelestialLabel({
-        level: node.level,
-        discoveryAwake,
-        isHovered,
-        isExplored,
-        conceptReveal: isConcept ? conceptReveal : undefined,
-        isConcept,
-      });
+  const showLabel =
+    !touchMode &&
+    (isChamber
+      ? chamberLabelPresence > 0.08 && (isHovered || chamberLabelPresence > 0.55)
+      : shouldShowCelestialLabel({
+          level: node.level,
+          discoveryAwake,
+          isHovered,
+          isExplored,
+          conceptReveal: isConcept ? conceptReveal : undefined,
+          isConcept,
+        }));
 
   const labelOp = isHovered
     ? 0.82
@@ -1007,7 +1261,7 @@ function ConstellationNode({
   if (isConcept && presenceMul <= 0.02) return null;
   if (isChamber && presenceMul <= 0.02) return null;
 
-  const haloBoost = isHovered ? 1.28 : 1;
+  const haloBoost = isHovered ? 1.28 : isNearFocus ? 1.12 : 1;
   const haloOpacity = celestialGlowOpacity(body, isHovered, isExplored) * haloBoost;
 
   return (
@@ -1023,8 +1277,12 @@ function ConstellationNode({
         cursor: enabled ? (wonderEngaged ? "pointer" : "default") : "default",
         transition: ARRIVAL_TRANSITION,
       }}
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
+      onMouseEnter={() => {
+        if (!touchMode) onHover(true);
+      }}
+      onMouseLeave={() => {
+        if (!touchMode) onHover(false);
+      }}
       onClick={(e) => {
         e.stopPropagation();
         if (dragRef.current?.moved) return;
@@ -1046,6 +1304,16 @@ function ConstellationNode({
           transition: HOVER_TRANSITION,
         }}
       >
+        {touchMode && enabled && (
+          <circle
+            cx={0}
+            cy={0}
+            r={Math.max(r * 3.4, viewBoxW * 0.018)}
+            fill="transparent"
+            stroke="none"
+            pointerEvents="all"
+          />
+        )}
         {isChamber && (
           <>
             <circle
@@ -1088,6 +1356,19 @@ function ConstellationNode({
           filter={`url(#${body.filterId})`}
           style={{ transition: HOVER_TRANSITION }}
         />
+
+        {isExplored && !isHovered && (
+          <circle
+            cx={0}
+            cy={0}
+            r={r * 1.85}
+            fill="none"
+            stroke="#d4bc8a"
+            strokeWidth={strokeW * 0.35}
+            opacity={0.22}
+            style={{ transition: HOVER_TRANSITION }}
+          />
+        )}
 
         <NodeShapeGlyph
           shape={node.shape}

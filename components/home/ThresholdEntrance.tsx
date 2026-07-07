@@ -32,21 +32,27 @@ const STARS: ReadonlyArray<{ cx: number; cy: number; r: number; o: number }> = [
   { cx: 82, cy: 36, r: 0.1, o: 0.32 },
 ];
 
+/** Extra pinpricks — mobile viewport only, static */
+const MOBILE_STARS: ReadonlyArray<{ cx: number; cy: number; r: number; o: number }> = [
+  { cx: 5, cy: 6, r: 0.1, o: 0.3 },
+  { cx: 18, cy: 4, r: 0.08, o: 0.22 },
+  { cx: 42, cy: 5, r: 0.09, o: 0.26 },
+  { cx: 63, cy: 3, r: 0.07, o: 0.2 },
+  { cx: 91, cy: 6, r: 0.1, o: 0.28 },
+  { cx: 7, cy: 48, r: 0.08, o: 0.18 },
+  { cx: 94, cy: 52, r: 0.09, o: 0.2 },
+  { cx: 24, cy: 58, r: 0.07, o: 0.16 },
+  { cx: 76, cy: 56, r: 0.08, o: 0.18 },
+];
+
 function ThresholdBackdrop() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
       <div className="absolute inset-0 bg-[#06080c]" />
 
-      <div
-        className="absolute inset-0"
-        style={{
-          background: [
-            "radial-gradient(ellipse 120% 42% at 50% 100%, rgba(196, 160, 106, 0.09) 0%, transparent 58%)",
-            "radial-gradient(ellipse 70% 28% at 50% 88%, rgba(136, 152, 168, 0.06) 0%, transparent 52%)",
-            "radial-gradient(ellipse 55% 22% at 50% 92%, rgba(212, 184, 120, 0.04) 0%, transparent 48%)",
-          ].join(", "),
-        }}
-      />
+      <div className="threshold-entrance__horizon absolute inset-0" />
+
+      <div className="threshold-entrance__title-glow absolute inset-0 sm:hidden" />
 
       <svg
         className="absolute inset-0 h-full w-full"
@@ -65,13 +71,24 @@ function ThresholdBackdrop() {
         ))}
       </svg>
 
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 95% 85% at 50% 45%, transparent 32%, rgba(4, 6, 8, 0.72) 100%)",
-        }}
-      />
+      <svg
+        className="absolute inset-0 h-full w-full sm:hidden"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        {MOBILE_STARS.map((s, i) => (
+          <circle
+            key={`m-${i}`}
+            cx={s.cx}
+            cy={s.cy}
+            r={s.r}
+            fill="#d8dce4"
+            opacity={s.o}
+          />
+        ))}
+      </svg>
+
+      <div className="threshold-entrance__vignette absolute inset-0" />
     </div>
   );
 }
@@ -101,50 +118,122 @@ export function ThresholdEntrance({
       <ThresholdBackdrop />
 
       <main
-        className="relative z-10 mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-5 py-10 text-center sm:px-8"
+        className={cn(
+          "relative z-10 mx-auto flex w-full max-w-2xl flex-1 flex-col",
+          "max-sm:min-h-[calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom))] max-sm:justify-between max-sm:px-[max(1.125rem,env(safe-area-inset-left))] max-sm:py-7",
+          "sm:items-center sm:justify-center sm:px-8 sm:py-10 sm:text-center",
+        )}
         style={{
-          paddingLeft: "max(1.25rem, env(safe-area-inset-left, 0px))",
-          paddingRight: "max(1.25rem, env(safe-area-inset-right, 0px))",
+          paddingLeft: undefined,
+          paddingRight: undefined,
         }}
       >
-        <p className="type-chamber text-ivory/36">Threshold</p>
-
-        <h1 className="mt-5 font-heading text-[1.75rem] leading-[1.12] text-ivory sm:mt-7 sm:text-3xl md:text-[2.25rem]">
-          Living Terrain
-        </h1>
-
-        <div className="mx-auto mt-8 max-w-md space-y-5 text-left text-[0.9375rem] leading-[1.92] text-ivory/52 sm:mt-10 sm:max-w-lg sm:text-center sm:text-base sm:leading-[1.96]">
-          <p className="font-heading text-lg italic leading-[1.65] text-ivory/60 sm:text-xl">
-            Something vast and quiet lies ahead.
+        <header
+          className={cn(
+            "flex flex-col items-center text-center",
+            "max-sm:flex-1 max-sm:justify-center max-sm:pt-4 max-sm:pb-6",
+          )}
+        >
+          <p className="type-chamber text-ivory/36 max-sm:text-[0.625rem] max-sm:tracking-[0.24em] max-sm:text-ivory/32">
+            Threshold
           </p>
-          <p>You need not understand it yet.</p>
-          <p className="text-ivory/44">Step forward when something pulls you.</p>
-        </div>
+
+          <h1
+            className={cn(
+              "mt-5 font-heading text-ivory",
+              "max-sm:mt-4 max-sm:text-[1.5625rem] max-sm:leading-[1.14] max-sm:tracking-[-0.01em]",
+              "sm:mt-7 sm:text-3xl sm:leading-[1.12] md:text-[2.25rem]",
+            )}
+          >
+            Living Terrain
+          </h1>
+
+          <div
+            className={cn(
+              "mx-auto mt-8 space-y-5 text-ivory/52",
+              "max-sm:mt-6 max-sm:max-w-[17rem] max-sm:space-y-3.5 max-sm:text-center max-sm:text-[0.8125rem] max-sm:leading-[1.78]",
+              "sm:mt-10 sm:max-w-lg sm:text-left sm:text-base sm:leading-[1.96] sm:text-center",
+            )}
+          >
+            <p
+              className={cn(
+                "font-heading italic leading-[1.65] text-ivory/60",
+                "max-sm:text-[0.9375rem] max-sm:leading-[1.62] max-sm:text-ivory/58",
+                "sm:text-lg sm:text-xl",
+              )}
+            >
+              Something vast and quiet lies ahead.
+            </p>
+            <p className="max-sm:text-charcoal-muted">You need not understand it yet.</p>
+            <p className="max-sm:text-ivory/40 sm:text-ivory/44">
+              Step forward when something pulls you.
+            </p>
+          </div>
+        </header>
 
         {!crossing && (
-          <div className="mt-12 grid w-full gap-10 sm:mt-14 sm:grid-cols-2 sm:gap-x-16">
+          <div
+            className={cn(
+              "w-full",
+              "max-sm:space-y-3 max-sm:pb-[max(0.5rem,env(safe-area-inset-bottom))]",
+              "sm:mt-14 sm:grid sm:grid-cols-2 sm:gap-x-16 sm:gap-y-0",
+            )}
+          >
             <button
               type="button"
               onClick={onEnter}
               disabled={entering}
-              className="group touch-manipulation border-t border-ivory/[0.07] py-7 text-left transition-[border-color,opacity] duration-500 disabled:pointer-events-none disabled:opacity-45 sm:hover:border-forest-light/22"
+              className={cn(
+                "threshold-entrance__choice threshold-entrance__choice--primary",
+                "group touch-manipulation text-left transition-[border-color,opacity,box-shadow] duration-500",
+                "disabled:pointer-events-none disabled:opacity-45",
+                "sm:border-t sm:border-ivory/[0.07] sm:py-7 sm:hover:border-gold/25",
+              )}
             >
-              <p className="font-heading text-[1.0625rem] tracking-[0.012em] text-ivory/78 sm:text-lg">
+              <p
+                className={cn(
+                  "font-heading tracking-[0.012em] text-ivory/78",
+                  "max-sm:text-[0.9375rem] max-sm:text-ivory/90",
+                  "sm:text-lg",
+                )}
+              >
                 Step onto the terrain
               </p>
-              <p className="mt-2.5 font-heading text-[0.8125rem] italic leading-relaxed text-ivory/38">
+              <p
+                className={cn(
+                  "mt-2.5 font-heading italic leading-relaxed text-ivory/38",
+                  "max-sm:mt-1.5 max-sm:text-[0.75rem] max-sm:leading-[1.55] max-sm:text-charcoal-muted",
+                  "sm:text-[0.8125rem]",
+                )}
+              >
                 The map is carved in stone beyond this ridge.
               </p>
             </button>
 
             <TerrainLink
               href="/observatory"
-              className="group block touch-manipulation border-t border-ivory/[0.07] py-7 text-left transition-[border-color] duration-500 sm:hover:border-ivory/18"
+              className={cn(
+                "threshold-entrance__choice",
+                "group block touch-manipulation text-left transition-[border-color,box-shadow] duration-500",
+                "sm:border-t sm:border-ivory/[0.07] sm:py-7 sm:hover:border-ivory/18",
+              )}
             >
-              <p className="font-heading text-[1.0625rem] tracking-[0.012em] text-ivory/78 sm:text-lg">
+              <p
+                className={cn(
+                  "font-heading tracking-[0.012em] text-ivory/78",
+                  "max-sm:text-[0.9375rem] max-sm:text-ivory/88",
+                  "sm:text-lg",
+                )}
+              >
                 Follow the amber light
               </p>
-              <p className="mt-2.5 font-heading text-[0.8125rem] italic leading-relaxed text-ivory/38">
+              <p
+                className={cn(
+                  "mt-2.5 font-heading italic leading-relaxed text-ivory/38",
+                  "max-sm:mt-1.5 max-sm:text-[0.75rem] max-sm:leading-[1.55] max-sm:text-charcoal-muted",
+                  "sm:text-[0.8125rem]",
+                )}
+              >
                 Something is still forming in the dark.
               </p>
             </TerrainLink>

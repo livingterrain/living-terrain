@@ -6,14 +6,14 @@ import type { RoomKind } from "@/lib/rooms";
 import { cn } from "@/lib/utils";
 
 const roomTints: Record<RoomKind, string> = {
-  pathways: "text-forest",
-  reading: "text-forest/90",
-  library: "text-forest/85",
-  guide: "text-forest/80",
-  notebook: "text-charcoal",
-  archive: "text-charcoal-muted",
-  observatory: "text-forest",
-  chamber: "text-forest",
+  pathways: "text-gold-faint/60",
+  reading: "text-gold-faint/50",
+  library: "text-gold-faint/45",
+  guide: "text-gold-faint/40",
+  notebook: "text-charcoal-faint/70",
+  archive: "text-charcoal-faint/60",
+  observatory: "text-gold-faint/50",
+  chamber: "text-gold-faint/55",
 };
 
 interface DiscoveryFieldProps {

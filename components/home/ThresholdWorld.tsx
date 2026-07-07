@@ -5,16 +5,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTerrainSoundOptional, SoundMuteControl } from "@/components/sound";
-import { useTerrainNavigation, TerrainLink } from "@/components/navigation";
+import { useTerrainNavigation } from "@/components/navigation";
 import { LingerWhisper } from "@/components/atmosphere/LingerWhisper";
 import { SearchDialog } from "@/components/search/SearchDialog";
-import { ChoosePathPanel } from "./ChoosePathPanel";
 import { ConstellationCanvas } from "./ConstellationCanvas";
 import { ConstellationHabitat } from "./ConstellationHabitat";
 import { HeadingBloom } from "./HeadingBloom";
 import { MapRevealVeil } from "./MapRevealVeil";
 import { MapWhisper } from "./MapWhisper";
-import { MobileTerrainGuide } from "./MobileTerrainGuide";
 import { TerrainPulse } from "./TerrainPulse";
 import { ThresholdAtmosphere } from "./ThresholdAtmosphere";
 import { ThresholdEntrance } from "./ThresholdEntrance";
@@ -133,13 +131,6 @@ export function ThresholdWorld() {
   );
 
   useEffect(() => {
-    if (phase !== "within" || !isMobile) return;
-    setMapLayoutReady(true);
-    setDiscoveryAwake(true);
-    setWonderAbbreviated(true);
-  }, [phase, isMobile]);
-
-  useEffect(() => {
     if (!focusId || autoExploreRef.current || phase !== "threshold") return;
     autoExploreRef.current = true;
     const saved = loadConstellationSession();
@@ -228,9 +219,6 @@ export function ThresholdWorld() {
     router.replace("/", { scroll: false });
   }, [router]);
 
-  const showPathPanel =
-    wonder.chromeVisible && mapInteractive && !hoveredId;
-
   useEffect(() => {
     if (!entered) return;
     syncCircadian();
@@ -261,9 +249,12 @@ export function ThresholdWorld() {
       )}
 
       <SoundMuteControl
-        className="relative z-40 text-ivory/40 hover:text-ivory/60 transition-opacity duration-[2.8s]"
-        iconOnly={!wonder.chromeVisible}
-        style={{ opacity: wonder.chromeVisible ? wonder.chromeOpacity : 0.35 }}
+        hideOnHome={false}
+        className="relative z-40 text-ivory/50 transition-opacity duration-[2.8s] max-md:!bottom-auto max-md:!top-[max(4.25rem,calc(env(safe-area-inset-top)+2.75rem))] max-md:!right-3 max-md:border-ivory/16 max-md:bg-[#06080c]/60"
+        iconOnly={!wonder.chromeVisible || isMobile}
+        style={{
+          opacity: wonder.chromeVisible ? Math.max(0.72, wonder.chromeOpacity) : 0.58,
+        }}
       />
 
       {(phase === "threshold" || crossing) && (
@@ -281,34 +272,21 @@ export function ThresholdWorld() {
             animate={{ opacity: wonder.chromeOpacity }}
             exit={{ opacity: 0 }}
             transition={{ duration: 2.8, ease: fade.ease }}
-            className="threshold-map-chrome relative z-50 flex shrink-0 items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-5 sm:py-4 md:px-8"
+            className="threshold-map-chrome relative z-50 flex shrink-0 items-center justify-between gap-2 px-3 py-2.5 sm:gap-4 sm:px-5 sm:py-4 md:px-8"
             style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}
           >
             <Link
               href="/"
-              className="threshold-map-nav-link flex min-h-11 min-w-11 items-center font-heading text-[0.9375rem] md:text-base"
+              className="threshold-map-nav-link flex min-h-11 min-w-0 shrink-0 items-center font-heading text-[0.8125rem] sm:text-[0.9375rem] md:text-base"
               onClick={returnToThreshold}
+              aria-label="Return to the threshold"
             >
               <HeadingBloom bloomClassName="inset-[-1.25rem_-2rem] opacity-60">
-                Living Terrain
+                <span className="truncate">The threshold</span>
               </HeadingBloom>
             </Link>
-            <div className="flex items-center gap-1 sm:gap-5">
-              <TerrainLink
-                href="/inquiry"
-                className="threshold-map-nav-link flex min-h-11 min-w-11 items-center justify-center px-2 text-[0.8125rem] tracking-[0.04em] sm:px-0 sm:text-[0.75rem] sm:tracking-[0.06em]"
-              >
-                Read
-              </TerrainLink>
-              <div className="flex min-h-11 min-w-11 items-center justify-center [&_button]:threshold-map-nav-link [&_button]:flex [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:items-center [&_button]:justify-center">
-                <SearchDialog />
-              </div>
-              <Link
-                href="/about"
-                className="threshold-map-nav-link flex min-h-11 min-w-11 items-center justify-center px-2 text-[0.8125rem] tracking-[0.04em] sm:px-0 sm:text-[0.75rem] sm:tracking-[0.06em]"
-              >
-                About
-              </Link>
+            <div className="flex shrink-0 items-center">
+              <SearchDialog variant="map" />
             </div>
           </motion.header>
         )}
@@ -319,12 +297,12 @@ export function ThresholdWorld() {
         initial={{ opacity: arriving ? 0.2 : 0 }}
         animate={{ opacity: entered ? 1 : 0 }}
         transition={{
-          duration: crossing ? 0.45 : arriving ? NAVIGATION.readingToMap.enter / 1000 : 0,
-          delay: crossing ? 0 : arriving ? 0.12 : 0,
+          duration: crossing ? 0.65 : arriving ? NAVIGATION.readingToMap.enter / 1000 : 0,
+          delay: crossing ? 0.08 : arriving ? 0.12 : 0,
           ease: fade.ease,
         }}
       >
-        <div className="relative hidden h-full md:block">
+        <div className="relative h-full">
           <ConstellationCanvas
             nodes={nodes}
             edges={edges}
@@ -334,6 +312,7 @@ export function ThresholdWorld() {
             discoveryDepth={discoveryDepth}
             revealProgress={1}
             stableLayout
+            touchMode={isMobile}
             awakeningProgress={wonder.awakening}
             chamberLabelPresence={wonder.chamberLabel}
             wonderEngaged={wonder.engaged}
@@ -347,24 +326,13 @@ export function ThresholdWorld() {
             onNodeClick={handleNodeClick}
             onNodeHover={handleNodeHover}
             onZoomChange={setZoom}
-            restoredViewBox={restoredViewBox}
+            restoredViewBox={isMobile ? null : restoredViewBox}
             onViewBoxPersist={handleViewBoxPersist}
             comfortableMode={isTablet}
             onLayoutReady={handleMapLayoutReady}
           />
           <MapRevealVeil opacity={wonder.veil} />
         </div>
-
-        {entered && (isMobile ? mapLayoutReady : mapSettled) && (
-          <div className="md:hidden">
-            <MobileTerrainGuide
-              nodes={nodes}
-              discoveryAwake={mapLayoutReady}
-              onPathSelect={markExplored}
-              reducedMotion={reducedMotion}
-            />
-          </div>
-        )}
 
         <div className="hidden md:contents">
           <MapWhisper
@@ -392,7 +360,6 @@ export function ThresholdWorld() {
             />
           )}
 
-          <ChoosePathPanel visible={showPathPanel} onPathSelect={markExplored} />
         </div>
       </motion.div>
     </div>

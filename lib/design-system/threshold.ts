@@ -12,8 +12,8 @@ export const THRESHOLD_MOTION = {
   driftSec: 18,
   crossingSec: 24,
   dawnSec: 30,
-  /** Route atmosphere morph — still intentional, not instant */
-  zoneCrossfadeMs: 3200,
+  /** Route atmosphere morph — shorter to avoid blocking navigation feel */
+  zoneCrossfadeMs: 1200,
   /** Content emergence when entering a chamber */
   chamberRevealMs: 2400,
   chamberStaggerMs: 180,

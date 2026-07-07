@@ -16,7 +16,10 @@ export default function SiteLayout({
         <main className="flex-1">{children}</main>
         <Footer />
       </div>
-      <SoundMuteControl className="text-charcoal-faint/60 hover:text-charcoal-muted" />
+      <SoundMuteControl
+        className="text-charcoal-faint/70 hover:text-charcoal-muted max-md:!bottom-auto max-md:!top-[max(0.75rem,env(safe-area-inset-top))] max-md:!right-3"
+        iconOnly
+      />
     </ThreadProvider>
   );
 }

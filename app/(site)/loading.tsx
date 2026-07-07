@@ -6,7 +6,7 @@ export default function SiteLoading() {
       role="status"
     >
       <span className="sr-only">Arriving…</span>
-      <div className="h-1 w-1 rounded-full bg-forest/25 animate-pulse-breath" />
+      <div className="h-1 w-1 rounded-full bg-gold/35 animate-pulse-breath" />
     </div>
   );
 }

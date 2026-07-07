@@ -18,7 +18,7 @@ export function MediumPublicationLink({
         target="_blank"
         rel="noopener noreferrer"
         className={cn(
-          "inline-block border border-rule/70 bg-ivory/50 px-8 py-4 font-body text-sm text-charcoal transition-[border-color,background-color,color] duration-700 hover:border-forest/30 hover:bg-ivory/80 hover:text-forest",
+          "inline-block border border-rule/50 bg-[color-mix(in_srgb,#0c101a_78%,transparent)] px-8 py-4 font-body text-sm text-ivory/88 transition-[border-color,background-color,color] duration-700 hover:border-gold/35 hover:bg-[color-mix(in_srgb,#101620_88%,transparent)] hover:text-gold",
           className,
         )}
       >

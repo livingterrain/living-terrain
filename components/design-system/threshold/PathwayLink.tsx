@@ -29,6 +29,7 @@ export function PathwayLink({
   return (
     <LinkComponent
       href={href}
+      prefetch={false}
       onClick={onClick}
       className={cn(
         "threshold-pathway group inline-flex flex-col touch-manipulation",

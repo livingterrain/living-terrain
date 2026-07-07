@@ -2,22 +2,38 @@
 
 /*
  * Living Terrain — visual language
- * Environmental design: paper, charcoal, forest as attention.
+ * Observatory palette: deep space, soft ivory, moonlight gray, champagne gold.
  */
 
 @theme {
-  --color-ivory: #e9e0d0;
-  --color-ivory-deep: #dfd5c4;
-  --color-ivory-shadow: #d5cbb8;
-  --color-charcoal: #38352f;
-  --color-charcoal-muted: #5e5a54;
-  --color-charcoal-faint: #8a847a;
-  --color-rule: #c4b8a6;
-  --color-rule-light: #d2c8b8;
-  --color-forest: #3f5e4f;
-  --color-forest-muted: #4f6e5f;
-  --color-forest-faint: #6b8478;
-  --color-void: #2e2c28;
+  --color-space: #06080c;
+  --color-space-raised: #0a0e16;
+  --color-space-panel: #0c101a;
+
+  --color-ivory: #ebe6dc;
+  --color-ivory-deep: #d4cfc4;
+  --color-ivory-shadow: #b8b4aa;
+
+  /* Primary readable text on dark backgrounds */
+  --color-charcoal: #e6e2d8;
+  --color-charcoal-muted: #adb6c4;
+  --color-charcoal-faint: #8490a4;
+
+  --color-rule: #3a4458;
+  --color-rule-light: #4a5568;
+
+  /* Champagne gold accents */
+  --color-gold: #d4bc8a;
+  --color-gold-muted: #b8a478;
+  --color-gold-faint: #908868;
+
+  /* Legacy forest tokens → gold (preserves existing class names) */
+  --color-forest: #d4bc8a;
+  --color-forest-muted: #b8a478;
+  --color-forest-faint: #908868;
+  --color-forest-light: #c8b888;
+
+  --color-void: #04060a;
 
   --color-cream: var(--color-ivory);
   --color-cream-dark: var(--color-ivory-deep);
@@ -25,8 +41,8 @@
   --color-ink: var(--color-charcoal);
   --color-ink-muted: var(--color-charcoal-muted);
   --color-ink-faint: var(--color-charcoal-faint);
-  --color-accent: var(--color-forest);
-  --color-accent-light: var(--color-forest-muted);
+  --color-accent: var(--color-gold);
+  --color-accent-light: var(--color-gold-muted);
   --color-border: var(--color-rule);
 
   --font-heading: var(--font-source-serif);
@@ -90,7 +106,7 @@
   }
 
   body {
-    @apply bg-ivory text-charcoal font-body antialiased;
+    @apply bg-[#06080c] text-ivory font-body antialiased;
     font-feature-settings: "kern" 1, "liga" 1;
     overflow-x: clip;
   }
@@ -108,12 +124,12 @@
   }
 
   ::selection {
-    background-color: color-mix(in srgb, var(--color-forest) 18%, var(--color-ivory));
-    color: var(--color-charcoal);
+    background-color: color-mix(in srgb, var(--color-gold) 28%, #06080c);
+    color: var(--color-ivory);
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-normal text-charcoal;
+    @apply font-heading font-normal text-ivory;
     font-feature-settings: "kern" 1, "liga" 1, "lnum" 1;
   }
 
@@ -123,7 +139,7 @@
   }
 
   :focus-visible {
-    @apply outline-1 outline-offset-3 outline-forest;
+    @apply outline-1 outline-offset-3 outline-gold;
   }
 }
 
@@ -155,7 +171,7 @@
   }
 
   .type-folio {
-    @apply font-body text-[0.75rem] tabular-nums tracking-[0.12em] text-forest-faint;
+    @apply font-body text-[0.75rem] tabular-nums tracking-[0.12em] text-gold-faint;
   }
 
   .type-chamber {
@@ -165,16 +181,29 @@
   .reading-measure { max-width: 36rem; }
   .content-measure { max-width: 68rem; }
 
-  /* Observatory — dark amber research studio */
+  .prose-content {
+    color: var(--color-charcoal-muted);
+  }
+
+  .prose-content a {
+    color: var(--color-gold-muted);
+    text-decoration-color: color-mix(in srgb, var(--color-gold) 35%, transparent);
+  }
+
+  .prose-content a:hover {
+    color: var(--color-gold);
+  }
+
+  /* Observatory — deep space research studio */
   .observatory-realm {
-    --obs-amber: #c4a06a;
-    --obs-amber-dim: #8a7348;
-    --obs-ivory: #e8dcc8;
-    --obs-muted: #9a8870;
-    --obs-faint: #6a5e50;
-    --obs-surface: #0c0a08;
-    --obs-elevated: #14110e;
-    --obs-border: color-mix(in srgb, var(--obs-amber) 12%, transparent);
+    --obs-amber: #d4bc8a;
+    --obs-amber-dim: #a89468;
+    --obs-ivory: #ebe6dc;
+    --obs-muted: #9aa4b4;
+    --obs-faint: #6e788c;
+    --obs-surface: #080a10;
+    --obs-elevated: #0e121c;
+    --obs-border: color-mix(in srgb, var(--obs-amber) 14%, transparent);
     background-color: var(--obs-surface);
     color: var(--obs-ivory);
   }
@@ -188,8 +217,8 @@
     background:
       radial-gradient(
         ellipse 120% 80% at 50% 110%,
-        #1a1510 0%,
-        #0a0c12 38%,
+        #12182c 0%,
+        #0a0c14 38%,
         #040508 72%,
         #020204 100%
       );
@@ -204,7 +233,7 @@
       ),
       radial-gradient(
         ellipse 45% 35% at 78% 28%,
-        color-mix(in srgb, #4a3828 12%, transparent),
+        color-mix(in srgb, #2a3448 12%, transparent),
         transparent 65%
       );
     opacity: 0.85;
@@ -303,8 +332,8 @@
       linear-gradient(
         180deg,
         transparent,
-        color-mix(in srgb, #1a1410 40%, transparent) 45%,
-        color-mix(in srgb, #0e0c0a 85%, transparent) 100%
+        color-mix(in srgb, #12182c 35%, transparent) 45%,
+        color-mix(in srgb, #080a10 80%, transparent) 100%
       );
   }
 
@@ -748,63 +777,63 @@
   }
 
   .room-vignette-pathways {
-    box-shadow: inset 0 0 100px 30px color-mix(in srgb, var(--color-forest) 6%, transparent);
+    box-shadow: inset 0 0 100px 30px color-mix(in srgb, #2a3448 8%, transparent);
   }
 
   .room-vignette-reading {
-    box-shadow: inset 0 0 80px 20px color-mix(in srgb, var(--color-ivory-deep) 40%, transparent);
+    box-shadow: inset 0 0 80px 20px color-mix(in srgb, #0a0e16 50%, transparent);
   }
 
   .room-vignette-notebook {
-    box-shadow: inset 0 0 60px 20px color-mix(in srgb, var(--color-charcoal) 5%, transparent);
+    box-shadow: inset 0 0 60px 20px color-mix(in srgb, #04060a 12%, transparent);
   }
 
   .room-vignette-archive {
-    box-shadow: inset 80px 0 80px -40px color-mix(in srgb, var(--color-void) 10%, transparent),
-      inset -80px 0 80px -40px color-mix(in srgb, var(--color-void) 10%, transparent);
+    box-shadow: inset 80px 0 80px -40px color-mix(in srgb, var(--color-void) 14%, transparent),
+      inset -80px 0 80px -40px color-mix(in srgb, var(--color-void) 14%, transparent);
   }
 
   .room-vignette-observatory {
-    box-shadow: inset 0 0 140px 50px color-mix(in srgb, var(--color-void) 14%, transparent);
+    box-shadow: inset 0 0 140px 50px color-mix(in srgb, var(--color-void) 18%, transparent);
   }
 
   .room-vignette-chamber {
-    box-shadow: inset 0 0 160px 60px color-mix(in srgb, var(--color-void) 18%, transparent);
+    box-shadow: inset 0 0 160px 60px color-mix(in srgb, var(--color-void) 22%, transparent);
   }
 
   .room-vignette-library {
     box-shadow:
-      inset 48px 0 80px -20px color-mix(in srgb, var(--color-void) 8%, transparent),
-      inset -48px 0 80px -20px color-mix(in srgb, var(--color-void) 8%, transparent),
-      inset 0 0 100px 30px color-mix(in srgb, #c4a06a 4%, transparent);
+      inset 48px 0 80px -20px color-mix(in srgb, var(--color-void) 10%, transparent),
+      inset -48px 0 80px -20px color-mix(in srgb, var(--color-void) 10%, transparent),
+      inset 0 0 100px 30px color-mix(in srgb, #d4bc8a 3%, transparent);
   }
 
   .room-vignette-guide {
     box-shadow:
-      inset 0 0 120px 40px color-mix(in srgb, #c4a06a 5%, transparent),
-      inset 0 80px 100px -40px color-mix(in srgb, var(--color-void) 6%, transparent);
+      inset 0 0 120px 40px color-mix(in srgb, #d4bc8a 3%, transparent),
+      inset 0 80px 100px -40px color-mix(in srgb, var(--color-void) 8%, transparent);
   }
 
   /* ── World locations — one continuous environment ── */
 
   .world-lantern-reading {
-    color: var(--color-charcoal);
-    background: color-mix(in srgb, var(--color-ivory) 8%, transparent);
+    color: var(--color-ivory);
+    background: transparent;
   }
 
   .world-lantern-reading__glow {
     background:
       radial-gradient(
         ellipse 55% 45% at 18% 8%,
-        color-mix(in srgb, #d4b878 14%, transparent),
+        color-mix(in srgb, #d4bc8a 8%, transparent),
         transparent 68%
       ),
       radial-gradient(
         ellipse 40% 35% at 22% 12%,
-        color-mix(in srgb, #e8d4a8 8%, transparent),
+        color-mix(in srgb, #98a8c0 5%, transparent),
         transparent 72%
       );
-    opacity: 0.55;
+    opacity: 0.45;
     animation: hero-horizon-breathe calc(36s * var(--tempo-inhale)) var(--ease-breath) infinite;
   }
 
@@ -819,7 +848,7 @@
     background:
       radial-gradient(
         ellipse 50% 40% at 20% 10%,
-        color-mix(in srgb, #c8b898 12%, transparent),
+        color-mix(in srgb, #a8b4c8 8%, transparent),
         transparent 70%
       );
   }
@@ -828,10 +857,10 @@
     background:
       radial-gradient(
         ellipse 80% 55% at 50% 0%,
-        color-mix(in srgb, #d4b878 8%, transparent),
+        color-mix(in srgb, #d4bc8a 5%, transparent),
         transparent 65%
       );
-    opacity: 0.45;
+    opacity: 0.35;
   }
 
   .world-library-shelves {
@@ -851,10 +880,10 @@
     background:
       radial-gradient(
         ellipse 60% 50% at 50% 35%,
-        color-mix(in srgb, #c4a06a 10%, transparent),
+        color-mix(in srgb, #d4bc8a 6%, transparent),
         transparent 70%
       );
-    opacity: 0.4;
+    opacity: 0.32;
   }
 
   .world-guide-alcove {
@@ -869,20 +898,20 @@
   .world-pathways-glow {
     background: radial-gradient(
       circle,
-      color-mix(in srgb, var(--color-forest) 8%, transparent),
+      color-mix(in srgb, #4a5a78 10%, transparent),
       transparent 70%
     );
-    opacity: 0.35;
+    opacity: 0.3;
     animation: hero-horizon-breathe calc(42s * var(--tempo-inhale)) var(--ease-breath) infinite;
   }
 
   .world-observatory-amber {
     background: radial-gradient(
       ellipse 70% 50% at 50% 15%,
-      color-mix(in srgb, #c4a06a 6%, transparent),
+      color-mix(in srgb, #d4bc8a 4%, transparent),
       transparent 70%
     );
-    opacity: 0.35;
+    opacity: 0.28;
   }
 
   .world-observatory-ring {
@@ -963,12 +992,11 @@
     background:
       linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-ivory) 72%, transparent) 0%,
-        color-mix(in srgb, var(--color-ivory-deep) 94%, transparent) 38%,
-        color-mix(in srgb, var(--color-ivory) 88%, transparent) 100%
+        color-mix(in srgb, #06080c 92%, transparent) 0%,
+        color-mix(in srgb, #080a10 96%, transparent) 38%,
+        color-mix(in srgb, #06080c 90%, transparent) 100%
       );
-    backdrop-filter: blur(12px);
-    animation: world-horizon-in 2.4s var(--ease-breath) both;
+    animation: world-horizon-in 1.2s var(--ease-breath) both;
   }
 
   @keyframes world-horizon-in {
@@ -1044,7 +1072,7 @@
 
   .world-edge {
     position: relative;
-    background: color-mix(in srgb, var(--color-ivory-deep) 12%, transparent);
+    background: color-mix(in srgb, #080a10 72%, transparent);
   }
 
   .world-edge::before {
@@ -1068,8 +1096,8 @@
 
   .home-drawer:hover {
     box-shadow:
-      1px 0 0 0 color-mix(in srgb, var(--color-forest) 15%, transparent),
-      0 2px 0 0 color-mix(in srgb, var(--color-ivory-shadow) 90%, transparent);
+      1px 0 0 0 color-mix(in srgb, var(--color-gold) 18%, transparent),
+      0 2px 0 0 color-mix(in srgb, var(--color-space-raised) 90%, transparent);
   }
 
   .light-pool {
@@ -1093,8 +1121,8 @@
   html[data-circadian="morning"] .circadian-room-wash {
     background: linear-gradient(
       165deg,
-      color-mix(in srgb, #d4b878 14%, transparent) 0%,
-      color-mix(in srgb, #c8b890 calc(var(--circadian-mist) * 18%), transparent) 38%,
+      color-mix(in srgb, #d4bc8a 6%, transparent) 0%,
+      color-mix(in srgb, #8898b0 calc(var(--circadian-mist) * 10%), transparent) 38%,
       transparent 72%
     );
   }
@@ -1102,7 +1130,7 @@
   html[data-circadian="afternoon"] .circadian-room-wash {
     background: linear-gradient(
       180deg,
-      color-mix(in srgb, white calc(var(--circadian-clarity-mul) * 4%), transparent) 0%,
+      color-mix(in srgb, white calc(var(--circadian-clarity-mul) * 2%), transparent) 0%,
       transparent 35%
     );
   }
@@ -1110,8 +1138,8 @@
   html[data-circadian="evening"] .circadian-room-wash {
     background: linear-gradient(
       195deg,
-      color-mix(in srgb, #283868 calc(var(--circadian-mist) * 22%), transparent) 0%,
-      color-mix(in srgb, #1a2038 calc(var(--circadian-shadow-depth) * 12%), transparent) 55%,
+      color-mix(in srgb, #283868 calc(var(--circadian-mist) * 14%), transparent) 0%,
+      color-mix(in srgb, #1a2038 calc(var(--circadian-shadow-depth) * 8%), transparent) 55%,
       transparent 85%
     );
   }
@@ -1790,7 +1818,7 @@
   }
 
   .threshold-carved--edge {
-    border-top: 1px solid color-mix(in srgb, var(--color-rule) 35%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--color-rule) 48%, transparent);
     padding-top: 1.75rem;
   }
 
@@ -1825,7 +1853,7 @@
     top: 0;
     width: 0;
     height: 1px;
-    background: color-mix(in srgb, var(--color-forest) 55%, transparent);
+    background: color-mix(in srgb, var(--color-gold) 55%, transparent);
     transition: width 1.4s var(--ease-breath);
   }
 
@@ -1836,7 +1864,7 @@
 
   .threshold-pathway:hover,
   .threshold-pathway--active {
-    color: var(--color-forest);
+    color: var(--color-gold);
   }
 
   .threshold-chamber {
@@ -1845,8 +1873,17 @@
 
   .threshold-room {
     position: relative;
-    color: var(--color-charcoal);
+    color: var(--color-ivory);
     background: transparent;
+  }
+
+  /* Dark glass panels — replace muddy ivory washes on secondary pages */
+  .threshold-room :is([class*="bg-ivory"]) {
+    background-color: color-mix(in srgb, var(--color-space-panel) 82%, transparent) !important;
+  }
+
+  .threshold-room :is([class*="border-rule"]) {
+    border-color: color-mix(in srgb, var(--color-rule) 55%, transparent);
   }
 
   .threshold-passage__title {
@@ -1858,12 +1895,12 @@
   }
 
   .threshold-pathways-drawer {
-    background: color-mix(in srgb, var(--color-ivory) 88%, transparent);
+    background: color-mix(in srgb, var(--color-space-panel) 92%, transparent);
     backdrop-filter: blur(10px);
   }
 
   .threshold-footer {
-    background: color-mix(in srgb, var(--color-ivory-deep) 18%, transparent);
+    background: color-mix(in srgb, var(--color-space-raised) 65%, transparent);
   }
 
   .observatory-landscape__horizon {
@@ -2348,6 +2385,102 @@
     text-shadow: 0 1px 18px color-mix(in srgb, #040608 55%, transparent);
   }
 
+  /* ── Threshold entrance — mobile portal (desktop unchanged at sm+) ── */
+
+  .threshold-entrance__horizon {
+    background:
+      radial-gradient(
+        ellipse 130% 48% at 50% 100%,
+        color-mix(in srgb, #d4bc8a 9%, transparent) 0%,
+        transparent 58%
+      ),
+      radial-gradient(
+        ellipse 80% 32% at 50% 90%,
+        color-mix(in srgb, #8898b0 7%, transparent) 0%,
+        transparent 52%
+      );
+  }
+
+  .threshold-entrance__title-glow {
+    background: radial-gradient(
+      ellipse 90% 55% at 50% 28%,
+      color-mix(in srgb, #d4bc8a 7%, transparent) 0%,
+      transparent 68%
+    );
+    opacity: 0.85;
+  }
+
+  .threshold-entrance__vignette {
+    background: radial-gradient(
+      ellipse 98% 90% at 50% 42%,
+      transparent 28%,
+      color-mix(in srgb, #040608 78%, transparent) 100%
+    );
+  }
+
+  @media (max-width: 639px) {
+    .threshold-entrance__choice {
+      display: block;
+      width: 100%;
+      border-radius: 0.875rem;
+      border: 1px solid color-mix(in srgb, var(--color-gold) 18%, transparent);
+      background: linear-gradient(
+        168deg,
+        color-mix(in srgb, #101620 92%, transparent) 0%,
+        color-mix(in srgb, #080a10 98%, transparent) 100%
+      );
+      padding: 1.125rem 1.125rem 1.0625rem;
+      box-shadow:
+        inset 0 1px 0 color-mix(in srgb, var(--color-gold) 12%, transparent),
+        0 10px 36px color-mix(in srgb, #040608 75%, transparent),
+        0 0 32px color-mix(in srgb, var(--color-gold) 5%, transparent);
+    }
+
+    .threshold-entrance__choice--primary {
+      border-color: color-mix(in srgb, var(--color-gold) 34%, transparent);
+      background: linear-gradient(
+        168deg,
+        color-mix(in srgb, #141a24 94%, transparent) 0%,
+        color-mix(in srgb, #0a0e14 98%, transparent) 100%
+      );
+      box-shadow:
+        inset 0 1px 0 color-mix(in srgb, var(--color-gold) 22%, transparent),
+        0 12px 40px color-mix(in srgb, #040608 80%, transparent),
+        0 0 52px color-mix(in srgb, var(--color-gold) 11%, transparent);
+    }
+
+    .threshold-entrance__choice:active {
+      box-shadow:
+        inset 0 1px 0 color-mix(in srgb, var(--color-gold) 16%, transparent),
+        0 6px 24px color-mix(in srgb, #040608 85%, transparent),
+        0 0 28px color-mix(in srgb, var(--color-gold) 8%, transparent);
+    }
+
+    .threshold-entrance__choice--primary:active {
+      box-shadow:
+        inset 0 1px 0 color-mix(in srgb, var(--color-gold) 28%, transparent),
+        0 6px 24px color-mix(in srgb, #040608 85%, transparent),
+        0 0 36px color-mix(in srgb, var(--color-gold) 14%, transparent);
+    }
+  }
+
+  @media (min-width: 640px) {
+    .threshold-entrance__choice {
+      border-radius: 0;
+      border: none;
+      border-top: 1px solid color-mix(in srgb, #ebe6dc 7%, transparent);
+      background: transparent;
+      padding: 1.75rem 0;
+      box-shadow: none;
+    }
+
+    .threshold-entrance__choice--primary {
+      border-color: color-mix(in srgb, #ebe6dc 7%, transparent);
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+
   .hero-heading-bloom {
     background: radial-gradient(
       ellipse 85% 68% at 50% 50%,
@@ -2748,6 +2881,16 @@
   }
 
   @media (max-width: 767px) {
+    /*
+     * Next.js dev tools badge (red N) — development only, never in production.
+     * Hides the floating indicator so mobile preview stays immersive.
+     */
+    nextjs-portal,
+    #__next-build-watcher,
+    [data-nextjs-dev-tools-button] {
+      display: none !important;
+    }
+
     .threshold-pathway__label {
       padding-block: 0.375rem;
     }

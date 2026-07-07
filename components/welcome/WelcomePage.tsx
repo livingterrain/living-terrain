@@ -34,12 +34,12 @@ function WelcomeAtmosphere() {
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      <div className="absolute inset-0 bg-[#040506]" />
+      <div className="absolute inset-0 bg-[#040608]" />
       <div
         className="absolute inset-0 opacity-40"
         style={{
           background:
-            "radial-gradient(ellipse 70% 55% at 50% 38%, #1a1510 0%, transparent 68%)",
+            "radial-gradient(ellipse 70% 55% at 50% 38%, #12182c 0%, transparent 68%)",
         }}
       />
       <svg
@@ -95,7 +95,7 @@ interface EntryProps {
 function Entry({ href, title, hint, delay, reduced }: EntryProps) {
   const classes = cn(
     "group block touch-manipulation border-t border-ivory/[0.07] py-7 transition-[border-color] duration-[900ms] sm:pt-8",
-    "hover:border-forest-light/22 sm:hover:border-ivory/16",
+    "hover:border-gold/25 sm:hover:border-ivory/16",
   );
 
   const inner = (

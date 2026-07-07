@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
-import { QuestionsConstellation, IdeaStrata } from "@/components/rooms";
+import { QuestionsConstellation } from "@/components/rooms";
 import { getAllQuestionHubs, getSiteTimeline } from "@/lib/content";
+
+const IdeaStrata = dynamic(
+  () =>
+    import("@/components/rooms/IdeaStrata").then((m) => ({
+      default: m.IdeaStrata,
+    })),
+  { loading: () => null },
+);
 
 export const metadata: Metadata = {
   title: "Questions",

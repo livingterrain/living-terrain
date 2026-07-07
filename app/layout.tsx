@@ -46,7 +46,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${sourceSerif.variable} ${inter.variable}`}>
-      <body className="min-h-screen bg-[#06080c] antialiased text-charcoal">
+      <body className="min-h-screen bg-[#06080c] antialiased text-ivory">
         <TerrainSoundProvider>
           <TerrainNavigationProvider>
             <ObservatoryProvider>

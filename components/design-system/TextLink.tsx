@@ -20,8 +20,8 @@ export function TextLink({
     "font-body text-sm underline-offset-[5px]",
     "transition-[color,text-decoration-color] duration-500",
     muted
-      ? "text-charcoal-muted decoration-charcoal/15 underline hover:text-forest hover:decoration-forest/40"
-      : "text-forest decoration-forest/25 underline hover:text-forest-muted hover:decoration-forest/50",
+      ? "text-charcoal-muted decoration-charcoal-faint/40 underline hover:text-gold hover:decoration-gold/50"
+      : "text-gold-muted decoration-gold/30 underline hover:text-gold hover:decoration-gold/55",
     className,
   );
 

@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 import type { EssayCluster } from "@/lib/content/terrain";
 import type { FieldNote } from "@/lib/content/types";
@@ -12,11 +13,46 @@ import {
 } from "@/lib/observatory/universe-layout";
 import type { Theme } from "@/lib/content/types";
 import { ObservatoryDepthField } from "./ObservatoryDepthField";
-import { ObservatoryConstellationField } from "./ObservatoryConstellationField";
-import { ObservatoryPathwayField } from "./ObservatoryPathwayField";
-import { ObservatoryFieldMist } from "./ObservatoryFieldMist";
-import { ObservatoryGrowingLights } from "./ObservatoryGrowingLights";
-import { ObservatoryWitness } from "./ObservatoryWitness";
+
+const ObservatoryConstellationField = dynamic(
+  () =>
+    import("./ObservatoryConstellationField").then((m) => ({
+      default: m.ObservatoryConstellationField,
+    })),
+  { loading: () => null },
+);
+
+const ObservatoryPathwayField = dynamic(
+  () =>
+    import("./ObservatoryPathwayField").then((m) => ({
+      default: m.ObservatoryPathwayField,
+    })),
+  { loading: () => null },
+);
+
+const ObservatoryFieldMist = dynamic(
+  () =>
+    import("./ObservatoryFieldMist").then((m) => ({
+      default: m.ObservatoryFieldMist,
+    })),
+  { loading: () => null },
+);
+
+const ObservatoryGrowingLights = dynamic(
+  () =>
+    import("./ObservatoryGrowingLights").then((m) => ({
+      default: m.ObservatoryGrowingLights,
+    })),
+  { loading: () => null },
+);
+
+const ObservatoryWitness = dynamic(
+  () =>
+    import("./ObservatoryWitness").then((m) => ({
+      default: m.ObservatoryWitness,
+    })),
+  { loading: () => null },
+);
 
 interface ObservatoryUniverseProps {
   clusters: EssayCluster[];

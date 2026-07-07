@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /** Hides route/build indicators in dev — production never shows these */
+  devIndicators: false,
   images: {
     formats: ["image/avif", "image/webp"],
   },
