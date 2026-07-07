@@ -1,0 +1,18 @@
+{
+  "title": "Signals I'm Watching — June 2026",
+  "mediumUrl": "https://medium.com/@livingterrain/signals-im-watching-june-2026-21299cd7913b",
+  "subtitle": "People are returning to faith, questioning institutions, craving community, and searching for meaning. I don't know exactly what it means…",
+  "publishedAt": "2026-06-09",
+  "featuredImage": null,
+  "status": "published",
+  "style": "field-digest",
+  "source": "medium-rss",
+  "overrides": {
+    "id": "e8",
+    "themes": ["th-meaning", "th-relationship", "th-time", "th-information"],
+    "parentConcepts": ["th-meaning", "th-relationship"],
+    "topics": ["Meaning", "Culture", "Signals", "Observation", "Time"],
+    "questionIds": ["q2", "q4"],
+    "curatorNotes": "Field-digest style; may migrate to field-note later."
+  }
+}

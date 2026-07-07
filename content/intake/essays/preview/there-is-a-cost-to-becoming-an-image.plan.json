@@ -1,0 +1,311 @@
+{
+  "intake": {
+    "title": "There Is a Cost to Becoming an Image",
+    "mediumUrl": "https://medium.com/readers-digests/there-is-a-cost-to-becoming-an-image-0e174fb767cb",
+    "subtitle": "On Britney Spears, social media, and the temptation to trade personhood for visibility",
+    "publishedAt": "2026-06-23",
+    "featuredImage": null,
+    "status": "published",
+    "source": "medium-rss",
+    "overrides": {
+      "id": "e5",
+      "themes": [
+        "th-identity",
+        "th-consciousness",
+        "th-relationship",
+        "th-language"
+      ],
+      "parentConcepts": [
+        "th-identity",
+        "th-relationship"
+      ],
+      "topics": [
+        "Identity",
+        "Image",
+        "Performance",
+        "Culture",
+        "Visibility"
+      ],
+      "questionIds": [
+        "q1"
+      ],
+      "curatorNotes": "Image/performance/visibility via identity + relationship; culture as relational field."
+    }
+  },
+  "slug": "there-is-a-cost-to-becoming-an-image",
+  "id": "e5",
+  "entry": {
+    "id": "e5",
+    "slug": "there-is-a-cost-to-becoming-an-image",
+    "type": "essay",
+    "title": "There Is a Cost to Becoming an Image",
+    "description": "On Britney Spears, social media, and the temptation to trade personhood for visibility",
+    "themes": [
+      "th-identity",
+      "th-consciousness",
+      "th-relationship",
+      "th-language"
+    ],
+    "parentConcepts": [
+      "th-identity",
+      "th-relationship"
+    ],
+    "connectedItems": [],
+    "publishedAt": "2026-06-23",
+    "route": "/essays/there-is-a-cost-to-becoming-an-image",
+    "status": "published",
+    "meta": {
+      "subtitle": "On Britney Spears, social media, and the temptation to trade personhood for visibility",
+      "excerpt": "On Britney Spears, social media, and the temptation to trade personhood for visibility",
+      "topics": [
+        "Identity",
+        "Image",
+        "Performance",
+        "Culture",
+        "Visibility"
+      ],
+      "externalUrl": "https://medium.com/readers-digests/there-is-a-cost-to-becoming-an-image-0e174fb767cb",
+      "style": "essay"
+    }
+  },
+  "connections": [
+    {
+      "id": "e5→p1:chamber",
+      "from": "e5",
+      "to": "p1",
+      "kind": "chamber",
+      "source": "inferred",
+      "weight": 9,
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "e5→b1:volume",
+      "from": "e5",
+      "to": "b1",
+      "kind": "volume",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "e5→th-identity:theme",
+      "from": "e5",
+      "to": "th-identity",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches identity — the self as ongoing inquiry."
+    },
+    {
+      "id": "e5→th-consciousness:theme",
+      "from": "e5",
+      "to": "th-consciousness",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "e5→th-relationship:theme",
+      "from": "e5",
+      "to": "th-relationship",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches relationship — nothing exists alone."
+    },
+    {
+      "id": "e5→th-language:theme",
+      "from": "e5",
+      "to": "th-language",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches language — what can be carried in words — and what cannot."
+    },
+    {
+      "id": "e5→q1:pathway",
+      "from": "e5",
+      "to": "q1",
+      "kind": "pathway",
+      "source": "inferred",
+      "weight": 8,
+      "rationale": "asks the same living question from a different angle: What lies beneath perception."
+    },
+    {
+      "id": "e5→e1:echo",
+      "from": "e5",
+      "to": "e1",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+    },
+    {
+      "id": "e5→e2:echo",
+      "from": "e5",
+      "to": "e2",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — You Have to Go Far Enough to Make a Loop."
+    },
+    {
+      "id": "e5→e3:echo",
+      "from": "e5",
+      "to": "e3",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+    }
+  ],
+  "chamber": {
+    "route": "/structure-beneath-reality",
+    "label": "The Structure Beneath Reality",
+    "lanternRoute": "/essays/there-is-a-cost-to-becoming-an-image"
+  },
+  "constellation": {
+    "majorConceptId": "th-identity",
+    "majorConceptTitle": "Identity",
+    "orbitLevel": 3,
+    "focusUrl": "/?focus=e5",
+    "placementNote": "Orbits Identity at supporting-idea depth (level 3)."
+  },
+  "touches": [
+    {
+      "id": "p1",
+      "title": "The Structure Beneath Reality",
+      "kind": "chamber",
+      "route": "/structure-beneath-reality",
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "b1",
+      "title": "The Structure Beneath Reality",
+      "kind": "volume",
+      "route": "/library/the-structure-beneath-reality",
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "th-identity",
+      "title": "Identity",
+      "kind": "theme",
+      "route": "/themes/identity",
+      "rationale": "this inquiry also touches identity — the self as ongoing inquiry."
+    },
+    {
+      "id": "th-consciousness",
+      "title": "Consciousness",
+      "kind": "theme",
+      "route": "/themes/consciousness",
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "th-relationship",
+      "title": "Relationship",
+      "kind": "theme",
+      "route": "/themes/relationship",
+      "rationale": "this inquiry also touches relationship — nothing exists alone."
+    },
+    {
+      "id": "th-language",
+      "title": "Language",
+      "kind": "theme",
+      "route": "/themes/language",
+      "rationale": "this inquiry also touches language — what can be carried in words — and what cannot."
+    },
+    {
+      "id": "q1",
+      "title": "What lies beneath perception?",
+      "kind": "pathway",
+      "route": "/questions/what-lies-beneath-perception",
+      "rationale": "asks the same living question from a different angle: What lies beneath perception."
+    },
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "kind": "echo",
+      "route": "/essays/constraint-is-not-the-opposite-of-freedom",
+      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+    },
+    {
+      "id": "e2",
+      "title": "You Have to Go Far Enough to Make a Loop",
+      "kind": "echo",
+      "route": "/essays/you-have-to-go-far-enough-to-make-a-loop",
+      "rationale": "echoes nearby work — You Have to Go Far Enough to Make a Loop."
+    },
+    {
+      "id": "e3",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "kind": "echo",
+      "route": "/essays/every-living-system-pays-a-maintenance-cost",
+      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+    }
+  ],
+  "neighbors": [
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "slug": "constraint-is-not-the-opposite-of-freedom",
+      "sharedThemes": [
+        "th-consciousness"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e2",
+      "title": "You Have to Go Far Enough to Make a Loop",
+      "slug": "you-have-to-go-far-enough-to-make-a-loop",
+      "sharedThemes": [
+        "th-consciousness"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e3",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "slug": "every-living-system-pays-a-maintenance-cost",
+      "sharedThemes": [
+        "th-consciousness"
+      ],
+      "connectionKind": "echo"
+    }
+  ],
+  "suggestedThreads": [
+    {
+      "threadId": "thread-identity-meaning",
+      "threadTitle": "From Identity to Meaning",
+      "threadSlug": "identity-embodiment-relationship-meaning",
+      "premise": "An investigation that moves through the self, the body, relation, and what finally coheres.",
+      "fitScore": 7,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "there-is-a-cost-to-becoming-an-image",
+        "title": "There Is a Cost to Becoming an Image"
+      },
+      "rationale": "Fits the \"From Identity to Meaning\" pathway — An investigation that moves through the self, the body, relation, and what finally coheres."
+    },
+    {
+      "threadId": "thread-perception",
+      "threadTitle": "What Organizes Seeing",
+      "threadSlug": "reality-perception-consciousness",
+      "premise": "Before interpretation — what must already be in place for anything to appear as real?",
+      "fitScore": 2,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "there-is-a-cost-to-becoming-an-image",
+        "title": "There Is a Cost to Becoming an Image"
+      },
+      "rationale": "Fits the \"What Organizes Seeing\" pathway — Before interpretation — what must already be in place for anything to appear as real?"
+    }
+  ],
+  "observatory": {
+    "category": "Identity",
+    "majorConceptSlug": "identity",
+    "clusterQuestion": "What lies beneath perception?",
+    "signalKind": "essay"
+  },
+  "warnings": []
+}

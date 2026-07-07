@@ -52,7 +52,7 @@ export function journeyEventFromPath(pathname: string): JourneyEvent | null {
     };
   }
 
-  if (path === "/structure-beneath-reality") {
+  if (path === "/chambers/the-structure-beneath-reality" || path === "/structure-beneath-reality") {
     const chamber = atlas.getChamber();
     if (!chamber) return null;
     return atlasEntryEvent("chamber", chamber, themesForRef({ kind: "project", id: chamber.id }));
@@ -77,6 +77,7 @@ export function journeyEventFromPath(pathname: string): JourneyEvent | null {
     { pattern: /^\/essays\/([^/]+)$/, type: "essay", kind: "essay" },
     { pattern: /^\/questions\/([^/]+)$/, type: "question", kind: "question" },
     { pattern: /^\/field-notes\/([^/]+)$/, type: "field-note", kind: "field-note" },
+    { pattern: /^\/atlas\/([^/]+)$/, type: "book", kind: "book" },
     { pattern: /^\/library\/([^/]+)$/, type: "book", kind: "book" },
     { pattern: /^\/quotations\/([^/]+)$/, type: "quotation", kind: "quotation" },
   ];

@@ -26,6 +26,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: essay.title,
     description: essay.excerpt,
+    ...(essay.featuredImage
+      ? { openGraph: { images: [{ url: essay.featuredImage }] } }
+      : {}),
   };
 }
 

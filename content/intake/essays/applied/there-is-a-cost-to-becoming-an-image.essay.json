@@ -1,0 +1,17 @@
+{
+  "title": "There Is a Cost to Becoming an Image",
+  "mediumUrl": "https://medium.com/readers-digests/there-is-a-cost-to-becoming-an-image-0e174fb767cb",
+  "subtitle": "On Britney Spears, social media, and the temptation to trade personhood for visibility",
+  "publishedAt": "2026-06-23",
+  "featuredImage": null,
+  "status": "published",
+  "source": "medium-rss",
+  "overrides": {
+    "id": "e5",
+    "themes": ["th-identity", "th-consciousness", "th-relationship", "th-language"],
+    "parentConcepts": ["th-identity", "th-relationship"],
+    "topics": ["Identity", "Image", "Performance", "Culture", "Visibility"],
+    "questionIds": ["q1"],
+    "curatorNotes": "Image/performance/visibility via identity + relationship; culture as relational field."
+  }
+}

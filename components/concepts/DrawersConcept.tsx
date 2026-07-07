@@ -31,7 +31,7 @@ export function DrawersConcept() {
       items: [
         {
           title: project.title,
-          href: "/structure-beneath-reality",
+          href: "/chambers/the-structure-beneath-reality",
           note: project.centralQuestion,
         },
       ],
@@ -48,7 +48,7 @@ export function DrawersConcept() {
         })),
         ...hub.books.map((b) => ({
           title: b.title,
-          href: `/library/${b.slug}`,
+          href: `/atlas/${b.slug}`,
           note: "Volume",
         })),
         ...hub.fieldNotes.map((fn) => ({

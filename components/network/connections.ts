@@ -35,7 +35,7 @@ export function booksToConnections(bookIds: string[]): ConnectionItem[] {
     .map((id) => getBookById(id))
     .filter(Boolean)
     .map((b) => ({
-      href: `/library/${b!.slug}`,
+      href: `/atlas/${b!.slug}`,
       title: b!.title,
       subtitle: b!.subtitle,
     }));

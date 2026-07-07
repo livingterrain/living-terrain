@@ -38,7 +38,7 @@ export function ArchiveVolume({ book, index }: ArchiveVolumeProps) {
         shelfOffset === 2 && "sm:mt-4",
       )}
     >
-      <Link href={`/library/${book.slug}`} className="group block">
+      <Link href={`/atlas/${book.slug}`} className="group block">
         <div className="relative border border-rule/60 bg-ivory/60 px-8 py-10 transition-colors duration-700 group-hover:border-forest/30 group-hover:bg-ivory/80 sm:px-10 sm:py-12">
           <div className="absolute inset-x-0 top-0 h-1 bg-ivory-shadow/80" />
           <p className="type-folio">{statusWhispers[book.status]}</p>

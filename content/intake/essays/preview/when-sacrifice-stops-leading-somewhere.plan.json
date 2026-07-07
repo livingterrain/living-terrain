@@ -1,0 +1,296 @@
+{
+  "intake": {
+    "title": "When Sacrifice Stops Leading Somewhere",
+    "mediumUrl": "https://medium.com/@livingterrain/when-sacrifice-stops-leading-somewhere-58142a5a7275",
+    "subtitle": "People aren't just questioning wages. They're questioning the exchange itself.",
+    "publishedAt": "2026-06-15",
+    "featuredImage": null,
+    "status": "published",
+    "source": "medium-rss",
+    "overrides": {
+      "id": "e6",
+      "questionIds": [
+        "q1"
+      ]
+    }
+  },
+  "slug": "when-sacrifice-stops-leading-somewhere",
+  "id": "e6",
+  "entry": {
+    "id": "e6",
+    "slug": "when-sacrifice-stops-leading-somewhere",
+    "type": "essay",
+    "title": "When Sacrifice Stops Leading Somewhere",
+    "description": "People aren't just questioning wages. They're questioning the exchange itself.",
+    "themes": [
+      "th-identity",
+      "th-consciousness",
+      "th-embodiment",
+      "th-freedom"
+    ],
+    "parentConcepts": [
+      "th-identity",
+      "th-consciousness"
+    ],
+    "connectedItems": [],
+    "publishedAt": "2026-06-15",
+    "route": "/essays/when-sacrifice-stops-leading-somewhere",
+    "status": "published",
+    "meta": {
+      "subtitle": "People aren't just questioning wages. They're questioning the exchange itself.",
+      "excerpt": "People aren't just questioning wages. They're questioning the exchange itself.",
+      "topics": [
+        "Identity",
+        "Consciousness",
+        "Embodiment",
+        "Freedom"
+      ],
+      "externalUrl": "https://medium.com/@livingterrain/when-sacrifice-stops-leading-somewhere-58142a5a7275",
+      "style": "essay"
+    }
+  },
+  "connections": [
+    {
+      "id": "e6→p1:chamber",
+      "from": "e6",
+      "to": "p1",
+      "kind": "chamber",
+      "source": "inferred",
+      "weight": 9,
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "e6→b1:volume",
+      "from": "e6",
+      "to": "b1",
+      "kind": "volume",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "e6→th-identity:theme",
+      "from": "e6",
+      "to": "th-identity",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches identity — the self as ongoing inquiry."
+    },
+    {
+      "id": "e6→th-consciousness:theme",
+      "from": "e6",
+      "to": "th-consciousness",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "e6→th-embodiment:theme",
+      "from": "e6",
+      "to": "th-embodiment",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+    },
+    {
+      "id": "e6→th-freedom:theme",
+      "from": "e6",
+      "to": "th-freedom",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches freedom — constraint, choice, and the shape of a life."
+    },
+    {
+      "id": "e6→q1:pathway",
+      "from": "e6",
+      "to": "q1",
+      "kind": "pathway",
+      "source": "inferred",
+      "weight": 8,
+      "rationale": "asks the same living question from a different angle: What lies beneath perception."
+    },
+    {
+      "id": "e6→e1:echo",
+      "from": "e6",
+      "to": "e1",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+    },
+    {
+      "id": "e6→e3:echo",
+      "from": "e6",
+      "to": "e3",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+    },
+    {
+      "id": "e6→e5:echo",
+      "from": "e6",
+      "to": "e5",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — There Is a Cost to Becoming an Image."
+    }
+  ],
+  "chamber": {
+    "route": "/structure-beneath-reality",
+    "label": "The Structure Beneath Reality",
+    "lanternRoute": "/essays/when-sacrifice-stops-leading-somewhere"
+  },
+  "constellation": {
+    "majorConceptId": "th-identity",
+    "majorConceptTitle": "Identity",
+    "orbitLevel": 3,
+    "focusUrl": "/?focus=e6",
+    "placementNote": "Orbits Identity at supporting-idea depth (level 3)."
+  },
+  "touches": [
+    {
+      "id": "p1",
+      "title": "The Structure Beneath Reality",
+      "kind": "chamber",
+      "route": "/structure-beneath-reality",
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "b1",
+      "title": "The Structure Beneath Reality",
+      "kind": "volume",
+      "route": "/library/the-structure-beneath-reality",
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "th-identity",
+      "title": "Identity",
+      "kind": "theme",
+      "route": "/themes/identity",
+      "rationale": "this inquiry also touches identity — the self as ongoing inquiry."
+    },
+    {
+      "id": "th-consciousness",
+      "title": "Consciousness",
+      "kind": "theme",
+      "route": "/themes/consciousness",
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "th-embodiment",
+      "title": "Embodiment",
+      "kind": "theme",
+      "route": "/themes/embodiment",
+      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+    },
+    {
+      "id": "th-freedom",
+      "title": "Freedom",
+      "kind": "theme",
+      "route": "/themes/freedom",
+      "rationale": "this inquiry also touches freedom — constraint, choice, and the shape of a life."
+    },
+    {
+      "id": "q1",
+      "title": "What lies beneath perception?",
+      "kind": "pathway",
+      "route": "/questions/what-lies-beneath-perception",
+      "rationale": "asks the same living question from a different angle: What lies beneath perception."
+    },
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "kind": "echo",
+      "route": "/essays/constraint-is-not-the-opposite-of-freedom",
+      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+    },
+    {
+      "id": "e3",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "kind": "echo",
+      "route": "/essays/every-living-system-pays-a-maintenance-cost",
+      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+    },
+    {
+      "id": "e5",
+      "title": "There Is a Cost to Becoming an Image",
+      "kind": "echo",
+      "route": "/essays/there-is-a-cost-to-becoming-an-image",
+      "rationale": "echoes nearby work — There Is a Cost to Becoming an Image."
+    }
+  ],
+  "neighbors": [
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "slug": "constraint-is-not-the-opposite-of-freedom",
+      "sharedThemes": [
+        "th-consciousness",
+        "th-embodiment",
+        "th-freedom"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e3",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "slug": "every-living-system-pays-a-maintenance-cost",
+      "sharedThemes": [
+        "th-consciousness",
+        "th-embodiment"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e5",
+      "title": "There Is a Cost to Becoming an Image",
+      "slug": "there-is-a-cost-to-becoming-an-image",
+      "sharedThemes": [
+        "th-identity",
+        "th-consciousness"
+      ],
+      "connectionKind": "echo"
+    }
+  ],
+  "suggestedThreads": [
+    {
+      "threadId": "thread-identity-meaning",
+      "threadTitle": "From Identity to Meaning",
+      "threadSlug": "identity-embodiment-relationship-meaning",
+      "premise": "An investigation that moves through the self, the body, relation, and what finally coheres.",
+      "fitScore": 7,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "when-sacrifice-stops-leading-somewhere",
+        "title": "When Sacrifice Stops Leading Somewhere"
+      },
+      "rationale": "Fits the \"From Identity to Meaning\" pathway — An investigation that moves through the self, the body, relation, and what finally coheres."
+    },
+    {
+      "threadId": "thread-perception",
+      "threadTitle": "What Organizes Seeing",
+      "threadSlug": "reality-perception-consciousness",
+      "premise": "Before interpretation — what must already be in place for anything to appear as real?",
+      "fitScore": 2,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "when-sacrifice-stops-leading-somewhere",
+        "title": "When Sacrifice Stops Leading Somewhere"
+      },
+      "rationale": "Fits the \"What Organizes Seeing\" pathway — Before interpretation — what must already be in place for anything to appear as real?"
+    }
+  ],
+  "observatory": {
+    "category": "Identity",
+    "majorConceptSlug": "identity",
+    "clusterQuestion": "What lies beneath perception?",
+    "signalKind": "essay"
+  },
+  "warnings": []
+}

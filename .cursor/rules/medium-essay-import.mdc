@@ -1,0 +1,55 @@
+---
+description: Workflow for adding Medium essays to Living Terrain via content import
+globs:
+  - content/intake/essays/**
+  - lib/content-import/**
+  - lib/atlas/imports/**
+---
+
+# Medium essay import workflow
+
+When the user wants to add a Medium essay, follow this pipeline. **Do not** hand-edit `lib/atlas/data.ts` for new essays.
+
+## User provides (only)
+
+- Title
+- Medium URL
+- Subtitle
+- Publication date (`YYYY-MM-DD`)
+- Optional featured image path
+
+## You generate (via import engine)
+
+1. Create `content/intake/essays/<slug>.essay.json` (or use `npm run content:essay:new`)
+2. Run preview: `npm run content:essay:preview -- <intake-file>`
+3. Review the plan:
+   - Chamber page route `/essays/<slug>`
+   - Constellation placement (major concept orbit, `/?focus=<id>`)
+   - Theme connections ("what this touches")
+   - Neighboring essays (echo/parent)
+   - Suggested observatory threads
+4. Refine `overrides` in intake if inference is wrong:
+   - `themes`, `parentConcepts`, `topics`
+   - `questionIds`, `relatedEssayIds`
+   - `description`, `excerpt` (if subtitle alone is too thin)
+5. **Only apply when user approves**: `npm run content:essay:apply -- <intake-file>`
+
+## Do not
+
+- Import essays automatically without user review
+- Scrape Medium for full text (essays stay external)
+- Add required fields to the intake schema
+- Edit generated files in `lib/atlas/imports/essays/` by hand
+
+## Key modules
+
+- `lib/content-import/generate.ts` — inference engine
+- `lib/content-import/apply.ts` — writes atlas modules
+- `lib/atlas/imports/` — merged at runtime into atlas
+
+## After apply
+
+Remind user to restart dev server and verify:
+- `/essays/<slug>` chamber page
+- Header navigation still responsive
+- Constellation "On the map" link (`/?focus=<id>`)

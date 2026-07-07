@@ -8,7 +8,12 @@
     "dev:clean": "rm -rf .next && next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "content:essay:new": "tsx scripts/content-essay-cli.ts new",
+    "content:essay:preview": "tsx scripts/content-essay-cli.ts preview",
+    "content:essay:apply": "tsx scripts/content-essay-cli.ts apply",
+    "content:essay:list": "tsx scripts/content-essay-cli.ts list",
+    "content:medium:crawl": "tsx scripts/crawl-medium-profile.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -28,6 +33,7 @@
     "eslint": "^9.34.0",
     "eslint-config-next": "^15.5.0",
     "tailwindcss": "^4.1.12",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
 }

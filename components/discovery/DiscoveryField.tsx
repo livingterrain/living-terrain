@@ -12,6 +12,7 @@ const roomTints: Record<RoomKind, string> = {
   guide: "text-gold-faint/40",
   notebook: "text-charcoal-faint/70",
   archive: "text-charcoal-faint/60",
+  atlas: "text-gold-faint/55",
   observatory: "text-gold-faint/50",
   chamber: "text-gold-faint/55",
 };

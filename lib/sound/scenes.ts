@@ -16,8 +16,12 @@ const IMMERSIVE_REALMS: RealmSlug[] = [
 export function sceneFromPathname(pathname: string): SoundScene {
   if (pathname === "/") return "constellation";
 
-  if (pathname.startsWith("/structure-beneath-reality")) return "chamber";
-  if (pathname.startsWith("/library")) return "archive";
+  if (pathname.startsWith("/chambers") || pathname.startsWith("/structure-beneath-reality")) {
+    return "chamber";
+  }
+  if (pathname.startsWith("/atlas") || pathname.startsWith("/library")) {
+    return "archive";
+  }
   if (pathname.startsWith("/field-notes")) return "field-notes";
   if (pathname.startsWith("/observatory")) return "observatory";
   if (pathname.startsWith("/questions")) return "pathways";

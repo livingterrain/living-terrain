@@ -18,7 +18,9 @@ export function locationForPath(path: string): WorldLocationId {
 
   if (path.startsWith("/inquiry")) return "library";
 
-  if (path.startsWith("/library")) return "archive";
+  if (path.startsWith("/atlas")) return "atlas";
+
+  if (path.startsWith("/library")) return "atlas";
 
   if (path.startsWith("/field-notes")) {
     return path === "/field-notes" ? "notebook" : "lantern-reading";
@@ -26,7 +28,9 @@ export function locationForPath(path: string): WorldLocationId {
 
   if (path.startsWith("/observatory")) return "observatory";
 
-  if (path.startsWith("/structure-beneath-reality")) return "chamber";
+  if (path.startsWith("/chambers") || path.startsWith("/structure-beneath-reality")) {
+    return "chamber";
+  }
 
   if (path.startsWith("/themes/")) return "pathways";
 

@@ -1,0 +1,315 @@
+{
+  "intake": {
+    "title": "Every Living System Pays a Maintenance Cost",
+    "mediumUrl": "https://medium.com/illumination/every-living-system-pays-a-maintenance-cost-7c5f6292dd6d",
+    "subtitle": "The invisible work that determines whether living systems merely survive — or become.",
+    "publishedAt": "2026-07-06",
+    "featuredImage": null,
+    "status": "published",
+    "source": "medium-rss",
+    "overrides": {
+      "id": "e3",
+      "themes": [
+        "th-embodiment",
+        "th-structure",
+        "th-information",
+        "th-consciousness"
+      ],
+      "parentConcepts": [
+        "th-embodiment",
+        "th-structure"
+      ],
+      "topics": [
+        "Embodiment",
+        "Systems",
+        "Biology",
+        "Maintenance",
+        "Capacity"
+      ],
+      "questionIds": [
+        "q1"
+      ],
+      "curatorNotes": "Systems/biology via structure + information; maintenance as embodied capacity."
+    }
+  },
+  "slug": "every-living-system-pays-a-maintenance-cost",
+  "id": "e3",
+  "entry": {
+    "id": "e3",
+    "slug": "every-living-system-pays-a-maintenance-cost",
+    "type": "essay",
+    "title": "Every Living System Pays a Maintenance Cost",
+    "description": "The invisible work that determines whether living systems merely survive — or become.",
+    "themes": [
+      "th-embodiment",
+      "th-structure",
+      "th-information",
+      "th-consciousness"
+    ],
+    "parentConcepts": [
+      "th-embodiment",
+      "th-structure"
+    ],
+    "connectedItems": [],
+    "publishedAt": "2026-07-06",
+    "route": "/essays/every-living-system-pays-a-maintenance-cost",
+    "status": "published",
+    "meta": {
+      "subtitle": "The invisible work that determines whether living systems merely survive — or become.",
+      "excerpt": "The invisible work that determines whether living systems merely survive — or become.",
+      "topics": [
+        "Embodiment",
+        "Systems",
+        "Biology",
+        "Maintenance",
+        "Capacity"
+      ],
+      "externalUrl": "https://medium.com/illumination/every-living-system-pays-a-maintenance-cost-7c5f6292dd6d",
+      "style": "essay"
+    }
+  },
+  "connections": [
+    {
+      "id": "e3→p1:chamber",
+      "from": "e3",
+      "to": "p1",
+      "kind": "chamber",
+      "source": "inferred",
+      "weight": 9,
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "e3→b1:volume",
+      "from": "e3",
+      "to": "b1",
+      "kind": "volume",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "e3→th-embodiment:theme",
+      "from": "e3",
+      "to": "th-embodiment",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+    },
+    {
+      "id": "e3→th-structure:theme",
+      "from": "e3",
+      "to": "th-structure",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches structure — what holds form while everything changes."
+    },
+    {
+      "id": "e3→th-information:theme",
+      "from": "e3",
+      "to": "th-information",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches information — signal, structure, and what travels between minds."
+    },
+    {
+      "id": "e3→th-consciousness:theme",
+      "from": "e3",
+      "to": "th-consciousness",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "e3→q1:pathway",
+      "from": "e3",
+      "to": "q1",
+      "kind": "pathway",
+      "source": "inferred",
+      "weight": 8,
+      "rationale": "asks the same living question from a different angle: What lies beneath perception."
+    },
+    {
+      "id": "e3→e1:echo",
+      "from": "e3",
+      "to": "e1",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+    },
+    {
+      "id": "e3→e2:echo",
+      "from": "e3",
+      "to": "e2",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — You Have to Go Far Enough to Make a Loop."
+    },
+    {
+      "id": "e3→e1:parent",
+      "from": "e3",
+      "to": "e1",
+      "kind": "parent",
+      "source": "inferred",
+      "weight": 8,
+      "rationale": "grows from the earlier essay Constraint Is Not the Opposite of Freedom."
+    }
+  ],
+  "chamber": {
+    "route": "/structure-beneath-reality",
+    "label": "The Structure Beneath Reality",
+    "lanternRoute": "/essays/every-living-system-pays-a-maintenance-cost"
+  },
+  "constellation": {
+    "majorConceptId": "th-reality",
+    "majorConceptTitle": "Reality",
+    "orbitLevel": 3,
+    "focusUrl": "/?focus=e3",
+    "placementNote": "Orbits Reality at supporting-idea depth (level 3)."
+  },
+  "touches": [
+    {
+      "id": "p1",
+      "title": "The Structure Beneath Reality",
+      "kind": "chamber",
+      "route": "/structure-beneath-reality",
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "b1",
+      "title": "The Structure Beneath Reality",
+      "kind": "volume",
+      "route": "/library/the-structure-beneath-reality",
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "th-embodiment",
+      "title": "Embodiment",
+      "kind": "theme",
+      "route": "/themes/embodiment",
+      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+    },
+    {
+      "id": "th-structure",
+      "title": "Structure",
+      "kind": "theme",
+      "route": "/themes/structure",
+      "rationale": "this inquiry also touches structure — what holds form while everything changes."
+    },
+    {
+      "id": "th-information",
+      "title": "Information",
+      "kind": "theme",
+      "route": "/themes/information",
+      "rationale": "this inquiry also touches information — signal, structure, and what travels between minds."
+    },
+    {
+      "id": "th-consciousness",
+      "title": "Consciousness",
+      "kind": "theme",
+      "route": "/themes/consciousness",
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "q1",
+      "title": "What lies beneath perception?",
+      "kind": "pathway",
+      "route": "/questions/what-lies-beneath-perception",
+      "rationale": "asks the same living question from a different angle: What lies beneath perception."
+    },
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "kind": "echo",
+      "route": "/essays/constraint-is-not-the-opposite-of-freedom",
+      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+    },
+    {
+      "id": "e2",
+      "title": "You Have to Go Far Enough to Make a Loop",
+      "kind": "echo",
+      "route": "/essays/you-have-to-go-far-enough-to-make-a-loop",
+      "rationale": "echoes nearby work — You Have to Go Far Enough to Make a Loop."
+    },
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "kind": "parent",
+      "route": "/essays/constraint-is-not-the-opposite-of-freedom",
+      "rationale": "grows from the earlier essay Constraint Is Not the Opposite of Freedom."
+    }
+  ],
+  "neighbors": [
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "slug": "constraint-is-not-the-opposite-of-freedom",
+      "sharedThemes": [
+        "th-embodiment",
+        "th-structure",
+        "th-consciousness"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e2",
+      "title": "You Have to Go Far Enough to Make a Loop",
+      "slug": "you-have-to-go-far-enough-to-make-a-loop",
+      "sharedThemes": [
+        "th-consciousness"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "slug": "constraint-is-not-the-opposite-of-freedom",
+      "sharedThemes": [
+        "th-embodiment",
+        "th-structure",
+        "th-consciousness"
+      ],
+      "connectionKind": "parent"
+    }
+  ],
+  "suggestedThreads": [
+    {
+      "threadId": "thread-perception",
+      "threadTitle": "What Organizes Seeing",
+      "threadSlug": "reality-perception-consciousness",
+      "premise": "Before interpretation — what must already be in place for anything to appear as real?",
+      "fitScore": 5,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "every-living-system-pays-a-maintenance-cost",
+        "title": "Every Living System Pays a Maintenance Cost"
+      },
+      "rationale": "Fits the \"What Organizes Seeing\" pathway — Before interpretation — what must already be in place for anything to appear as real?"
+    },
+    {
+      "threadId": "thread-identity-meaning",
+      "threadTitle": "From Identity to Meaning",
+      "threadSlug": "identity-embodiment-relationship-meaning",
+      "premise": "An investigation that moves through the self, the body, relation, and what finally coheres.",
+      "fitScore": 2,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "every-living-system-pays-a-maintenance-cost",
+        "title": "Every Living System Pays a Maintenance Cost"
+      },
+      "rationale": "Fits the \"From Identity to Meaning\" pathway — An investigation that moves through the self, the body, relation, and what finally coheres."
+    }
+  ],
+  "observatory": {
+    "category": "Reality",
+    "majorConceptSlug": "reality",
+    "clusterQuestion": "What lies beneath perception?",
+    "signalKind": "essay"
+  },
+  "warnings": []
+}

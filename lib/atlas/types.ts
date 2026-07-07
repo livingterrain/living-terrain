@@ -55,6 +55,7 @@ export interface AtlasSiteConfig {
   author: string;
   mediumUrl: string;
   amazonBookUrl: string;
+  seriesUrl?: string;
 }
 
 /** Shared fields on every atlas entry */
@@ -113,6 +114,8 @@ export interface BookMeta {
   publishedYear?: number;
   publisher?: string;
   purchaseUrl?: string;
+  /** Public path to map plate cover art e.g. /images/maps/my-slug.jpg */
+  coverImage?: string;
   bookStatus: "published" | "in-progress" | "forthcoming";
   chapters: Array<{
     id: string;
@@ -129,6 +132,10 @@ export interface EssayMeta {
   excerpt: string;
   topics: string[];
   externalUrl?: string;
+  /** Public path e.g. /images/essays/my-slug.jpg */
+  featuredImage?: string;
+  /** Standard essay or signal-style field digest */
+  style?: "essay" | "field-digest";
   updatedAt?: string;
 }
 

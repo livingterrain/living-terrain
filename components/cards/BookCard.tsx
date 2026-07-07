@@ -16,7 +16,7 @@ interface BookCardProps {
 export function BookCard({ book, featured }: BookCardProps) {
   return (
     <article className="group">
-      <Link href={`/library/${book.slug}`} className="block">
+      <Link href={`/atlas/${book.slug}`} className="block">
         <div
           className={`border border-transparent transition-all duration-300 group-hover:border-border group-hover:bg-cream-dark/50 ${
             featured ? "p-8 sm:p-10" : "py-6 group-hover:px-6"

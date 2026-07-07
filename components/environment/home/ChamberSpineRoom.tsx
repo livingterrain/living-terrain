@@ -45,7 +45,7 @@ export function ChamberSpineRoom({ project }: ChamberSpineRoomProps) {
             </p>
             <p className="type-folio mt-8">{project.status.label}</p>
             <div className="mt-10 flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-10">
-              <TextLink href="/structure-beneath-reality">
+              <TextLink href="/chambers/the-structure-beneath-reality">
                 Enter the chamber
               </TextLink>
               {project.purchaseUrl && (

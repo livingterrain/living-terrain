@@ -9,6 +9,7 @@ export type WorldLocationId =
   | "library"
   | "lantern-reading"
   | "archive"
+  | "atlas"
   | "notebook"
   | "observatory"
   | "instrument-wing"
@@ -73,6 +74,13 @@ export const WORLD_LOCATIONS: Record<WorldLocationId, WorldLocation> = {
     whisper: "Manuscripts sleep in the dim. Handle them slowly.",
     depth: 0.38,
     roomKind: "archive",
+  },
+  atlas: {
+    id: "atlas",
+    place: "The Atlas",
+    whisper: "Maps of completed investigations — cartography that endures after the survey.",
+    depth: 0.42,
+    roomKind: "atlas",
   },
   notebook: {
     id: "notebook",

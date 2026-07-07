@@ -3,8 +3,11 @@ import {
   getAllQuestions,
   getAllFieldNotes,
   getAllBooks,
+  getAllProjects,
   getFlagshipProject,
+  getProjectById,
 } from "@/lib/content";
+import { getAtlas } from "@/lib/atlas";
 import { getPeerRefs } from "@/lib/relationships";
 import { getCatalogQuotations } from "@/lib/relationships/catalog";
 import {
@@ -117,6 +120,7 @@ const TIER_RANK: Record<EdgeTier, number> = {
 const CONCEPT_RADIUS = 780;
 const ESSAY_ORBIT = 340;
 const OUTER_ORBIT = 520;
+const CHAMBER_RING = 480;
 
 function conceptAnchor(
   conceptPositions: Map<string, { x: number; y: number; angle: number }>,
@@ -138,7 +142,17 @@ export function buildTerrainGraph(): TerrainGraph {
   const essays = getAllEssays();
   const notes = getAllFieldNotes();
   const books = getAllBooks();
-  const project = getFlagshipProject();
+  const chambers = getAllProjects();
+  const flagship =
+    chambers.find((c) => c.slug === "the-structure-beneath-reality") ??
+    getFlagshipProject();
+  const satellites = chambers.filter((c) => c.id !== flagship.id);
+  const chamberThemeIds = new Map(
+    getAtlas()
+      .getChambers()
+      .map((ch) => [ch.id, ch.themes]),
+  );
+  const bookToChamber = new Map(chambers.map((ch) => [ch.bookId, ch.id]));
   const publishedQuotes = getCatalogQuotations().filter(
     (q) => q.status === "published",
   );
@@ -161,20 +175,42 @@ export function buildTerrainGraph(): TerrainGraph {
 
   const conceptPositions = new Map<string, { x: number; y: number; angle: number }>();
 
-  // ── Level 1: Central chamber ──
+  // ── Level 1: Flagship chamber at center; series volumes in orbit ──
   nodes.push({
-    id: project.id,
+    id: flagship.id,
     kind: "chamber",
     level: 1,
     shape: "sun",
-    label: project.title,
+    label: flagship.title,
     sublabel: "Begin here",
-    href: "/structure-beneath-reality",
+    href: `/chambers/${flagship.slug}`,
     x: cx,
     y: cy,
     size: LEVEL_SIZE[1],
     peerIds: [],
     lod: NODE_LOD.chamber,
+  });
+
+  satellites.forEach((ch, i) => {
+    const angle = (i / satellites.length) * Math.PI * 2 - Math.PI / 2;
+    const x = cx + Math.cos(angle) * CHAMBER_RING;
+    const y = cy + Math.sin(angle) * CHAMBER_RING;
+
+    nodes.push({
+      id: ch.id,
+      kind: "chamber",
+      level: 1,
+      shape: "sun",
+      label: ch.title,
+      sublabel: "Volume chamber",
+      href: `/chambers/${ch.slug}`,
+      x,
+      y,
+      size: LEVEL_SIZE[1] * 0.62,
+      peerIds: [],
+      lod: NODE_LOD.chamber,
+    });
+    addEdge(flagship.id, ch.id, "secondary");
   });
 
   // ── Level 2: Major concepts ──
@@ -199,7 +235,13 @@ export function buildTerrainGraph(): TerrainGraph {
       lod: NODE_LOD.concept,
       conceptId: concept.id,
     });
-    addEdge(project.id, concept.id, "primary");
+    addEdge(flagship.id, concept.id, "primary");
+    for (const ch of satellites) {
+      const themes = chamberThemeIds.get(ch.id) ?? [];
+      if (themes.includes(concept.id)) {
+        addEdge(ch.id, concept.id, "secondary");
+      }
+    }
   });
 
   // ── Level 3: Essays orbit concepts ──
@@ -241,8 +283,8 @@ export function buildTerrainGraph(): TerrainGraph {
         conceptId,
       });
       addEdge(conceptId, e.id, "primary");
-      if (e.projectIds?.includes(project.id)) {
-        addEdge(project.id, e.id, "secondary");
+      for (const chamberId of e.projectIds ?? []) {
+        addEdge(chamberId, e.id, "secondary");
       }
       e.relatedEssayIds?.forEach((relId) =>
         addEdge(e.id, relId, "secondary"),
@@ -253,10 +295,22 @@ export function buildTerrainGraph(): TerrainGraph {
   // ── Level 3: Books — anchored to chamber + primary concept ──
   books.forEach((b, i) => {
     const conceptId = resolveMajorConcept(b.themeIds, [b.title]);
-    const anchor = conceptAnchor(conceptPositions, conceptId, cx, cy);
+    const chamberId = bookToChamber.get(b.id) ?? flagship.id;
+    const chamberNode = nodes.find((n) => n.id === chamberId);
+    const chamberAngle = chamberNode
+      ? Math.atan2(chamberNode.y - cy, chamberNode.x - cx)
+      : 0;
+    const anchor = chamberNode
+      ? {
+          x: chamberNode.x,
+          y: chamberNode.y,
+          angle: chamberAngle,
+        }
+      : conceptAnchor(conceptPositions, conceptId, cx, cy);
     const angle = anchor.angle + (i % 2 === 0 ? -0.25 : 0.25);
-    const x = cx + Math.cos(angle) * (CONCEPT_RADIUS * 0.55);
-    const y = cy + Math.sin(angle) * (CONCEPT_RADIUS * 0.55);
+    const orbit = chamberId === flagship.id ? CONCEPT_RADIUS * 0.55 : 120;
+    const x = anchor.x + Math.cos(angle) * orbit;
+    const y = anchor.y + Math.sin(angle) * orbit;
 
     nodes.push({
       id: b.id,
@@ -264,8 +318,8 @@ export function buildTerrainGraph(): TerrainGraph {
       level: 3,
       shape: "book",
       label: b.title,
-      sublabel: "Volume",
-      href: `/library/${b.slug}`,
+      sublabel: "Charted region",
+      href: `/atlas/${b.slug}`,
       x,
       y,
       size: LEVEL_SIZE[3] * 1.05,
@@ -273,7 +327,7 @@ export function buildTerrainGraph(): TerrainGraph {
       lod: NODE_LOD.book,
       conceptId,
     });
-    addEdge(project.id, b.id, "primary");
+    addEdge(chamberId, b.id, "primary");
     addEdge(conceptId, b.id, "secondary");
   });
 
@@ -301,7 +355,12 @@ export function buildTerrainGraph(): TerrainGraph {
       conceptId,
     });
     addEdge(conceptId, q.id, "secondary");
-    addEdge(project.id, q.id, "emerging");
+    for (const ch of chambers) {
+      const chamberProject = getProjectById(ch.id);
+      if (chamberProject?.questionIds.includes(q.id)) {
+        addEdge(ch.id, q.id, "emerging");
+      }
+    }
   });
 
   // ── Level 4: Field notes ──
@@ -383,7 +442,7 @@ export function buildTerrainGraph(): TerrainGraph {
       conceptId,
     });
     addEdge(conceptId, vo.id, "emerging");
-    addEdge(project.id, vo.id, "emerging");
+    addEdge(flagship.id, vo.id, "emerging");
   });
 
   // Peer refs from relationship engine

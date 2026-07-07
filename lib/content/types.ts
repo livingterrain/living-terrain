@@ -64,6 +64,10 @@ export interface Essay {
   observationIds?: string[];
   /** Full essay on Medium — falls back to publication URL when omitted */
   externalUrl?: string;
+  /** Optional chamber/OG image */
+  featuredImage?: string;
+  /** Signal-style digest — may migrate to field-note later */
+  style?: "essay" | "field-digest";
   status: ContentStatus;
 }
 
@@ -94,8 +98,10 @@ export interface Book {
   childRefs?: ContentRef[];
   quotationIds?: string[];
   observationIds?: string[];
-  /** Quiet purchase link — not a storefront */
+  /** Quiet field journal link — physical record of the investigation */
   purchaseUrl?: string;
+  /** Map plate cover art */
+  coverImage?: string;
 }
 
 export interface FieldNote {
@@ -163,6 +169,8 @@ export interface StructureSection {
 export interface ProjectTheme {
   title: string;
   description: string;
+  slug?: string;
+  href?: string;
 }
 
 export interface ProjectTimelineEntry {

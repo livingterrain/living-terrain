@@ -1,0 +1,73 @@
+{
+  "appliedAt": "2026-06-29",
+  "seriesUrl": "https://www.amazon.com/dp/B0GPRBT49Z",
+  "flagshipVolumes": [
+    {
+      "bookId": "b1",
+      "chamberId": "p1",
+      "slug": "the-structure-beneath-reality",
+      "title": "The Structure Beneath Reality",
+      "purchaseUrl": "https://www.amazon.com/Structure-Beneath-Reality-Chelsea-Thacker/dp/B0H3ZFPLDN",
+      "status": "published",
+      "chamberRoute": "/chambers/the-structure-beneath-reality"
+    },
+    {
+      "bookId": "b2",
+      "chamberId": "p2",
+      "slug": "the-biology-of-becoming",
+      "title": "The Biology of Becoming",
+      "purchaseUrl": "https://www.amazon.com/dp/B0G67H3641",
+      "seriesOrder": 1
+    },
+    {
+      "bookId": "b3",
+      "chamberId": "p3",
+      "slug": "the-second-birth",
+      "title": "The Second Birth",
+      "purchaseUrl": "https://www.amazon.com/dp/B0GD24JD91",
+      "seriesOrder": 2
+    },
+    {
+      "bookId": "b4",
+      "chamberId": "p4",
+      "slug": "below-criticality",
+      "title": "Below Criticality",
+      "purchaseUrl": "https://www.amazon.com/dp/B0GJ419MJC",
+      "seriesOrder": 3
+    },
+    {
+      "bookId": "b5",
+      "chamberId": "p5",
+      "slug": "embodied-physics",
+      "title": "Embodied Physics",
+      "purchaseUrl": "https://www.amazon.com/dp/B0GNMRH8Q6",
+      "seriesOrder": 4
+    },
+    {
+      "bookId": "b6",
+      "chamberId": "p6",
+      "slug": "a-field-guide-to-the-experience",
+      "title": "A Field Guide to the Experience",
+      "purchaseUrl": "https://www.amazon.com/dp/B0GK31DYJQ",
+      "seriesOrder": 5
+    },
+    {
+      "bookId": "b7",
+      "chamberId": "p7",
+      "slug": "feedback-is-god",
+      "title": "Feedback Is God",
+      "purchaseUrl": "https://www.amazon.com/dp/B0GHPQKGKX",
+      "seriesOrder": 6
+    }
+  ],
+  "chamberFeatures": [
+    "Flagship constellation nodes (7 chamber suns)",
+    "Dedicated chamber pages at /chambers/[slug]",
+    "This book gathers… section",
+    "Related essays (theme overlap ≥ 2)",
+    "Related questions and field notes (theme overlap ≥ 1)",
+    "Observatory themes with links",
+    "Related volumes in series"
+  ],
+  "legacyRedirect": "/structure-beneath-reality → /chambers/the-structure-beneath-reality"
+}

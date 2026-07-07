@@ -1,21 +1,16 @@
 import Link from "next/link";
 import { TextLink } from "@/components/design-system";
 import { TerrainConnectionInvite } from "@/components/reading/TerrainConnectionInvite";
-import type { Book, Essay, FieldNote } from "@/lib/content/types";
-import {
-  refFromBook,
-  refFromEssay,
-  refFromFieldNote,
-} from "@/lib/relationships";
+import type { Essay, FieldNote } from "@/lib/content/types";
+import { refFromEssay, refFromFieldNote } from "@/lib/relationships";
 import { formatDate } from "@/lib/utils";
 
 interface InquiryHubProps {
   essays: Essay[];
-  books: Book[];
   fieldNotes: FieldNote[];
 }
 
-export function InquiryHub({ essays, books, fieldNotes }: InquiryHubProps) {
+export function InquiryHub({ essays, fieldNotes }: InquiryHubProps) {
   return (
     <div className="space-y-20 sm:space-y-24">
       {essays.length > 0 && (
@@ -23,6 +18,10 @@ export function InquiryHub({ essays, books, fieldNotes }: InquiryHubProps) {
           <h2 id="inquiry-essays" className="type-folio text-charcoal-faint">
             Essays
           </h2>
+          <p className="type-body mt-3 max-w-xl text-[0.875rem] text-charcoal-muted">
+            Scout reports from the edges — shorter writing that extends and
+            complicates the charted regions.
+          </p>
           <ul className="threshold-carved-list mt-8">
             {essays.map((essay) => (
               <li key={essay.id}>
@@ -47,42 +46,6 @@ export function InquiryHub({ essays, books, fieldNotes }: InquiryHubProps) {
                 </Link>
                 <TerrainConnectionInvite
                   nodeRef={refFromEssay(essay)}
-                  className="mt-5"
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {books.length > 0 && (
-        <section aria-labelledby="inquiry-volumes">
-          <h2 id="inquiry-volumes" className="type-folio text-charcoal-faint">
-            Volumes
-          </h2>
-          <ul className="threshold-carved-list mt-8">
-            {books.map((book) => (
-              <li key={book.id}>
-                <Link href={`/library/${book.slug}`} className="terrain-list-link group">
-                  {book.publishedYear && (
-                    <p className="type-meta text-forest-faint">
-                      {book.publishedYear}
-                    </p>
-                  )}
-                  <h3 className="mt-2 font-heading text-xl text-charcoal transition-colors duration-700 group-hover:text-forest sm:text-2xl">
-                    {book.title}
-                  </h3>
-                  {book.subtitle && (
-                    <p className="type-lead mt-2 text-base text-charcoal-muted">
-                      {book.subtitle}
-                    </p>
-                  )}
-                  <p className="type-body mt-4 text-[0.9375rem]">
-                    {book.description}
-                  </p>
-                </Link>
-                <TerrainConnectionInvite
-                  nodeRef={refFromBook(book)}
                   className="mt-5"
                 />
               </li>
@@ -124,13 +87,23 @@ export function InquiryHub({ essays, books, fieldNotes }: InquiryHubProps) {
         </section>
       )}
 
-      <footer className="threshold-carved threshold-carved--edge pt-12 text-center">
-        <p className="type-body text-sm text-charcoal-muted">
-          Prefer to wander visually?
-        </p>
-        <TextLink href="/" className="mt-3 inline-flex min-h-11 items-center text-sm">
-          Explore the Living Terrain →
-        </TextLink>
+      <footer className="threshold-carved threshold-carved--edge space-y-6 pt-12 text-center">
+        <div>
+          <p className="type-body text-sm text-charcoal-muted">
+            Completed investigations hang as maps in
+          </p>
+          <TextLink href="/atlas" className="mt-2 inline-flex min-h-11 items-center text-sm">
+            The Atlas →
+          </TextLink>
+        </div>
+        <div>
+          <p className="type-body text-sm text-charcoal-muted">
+            Prefer to wander visually?
+          </p>
+          <TextLink href="/" className="mt-2 inline-flex min-h-11 items-center text-sm">
+            Explore the constellation →
+          </TextLink>
+        </div>
       </footer>
     </div>
   );

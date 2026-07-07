@@ -134,6 +134,8 @@ export function toEssay(entry: AtlasEntry, atlas: LivingTerrainAtlas): Essay {
     quotationIds: refsOfType(atlas, entry.id, "quotation", ["quotation"]),
     observationIds: refsOfType(atlas, entry.id, "observation", ["observation"]),
     externalUrl: meta.externalUrl,
+    featuredImage: meta.featuredImage,
+    style: meta.style,
     status: entry.status === "published" ? "published" : "draft",
   };
 }
@@ -159,6 +161,7 @@ export function toBook(entry: AtlasEntry, atlas: LivingTerrainAtlas): Book {
     quotationIds: refsOfType(atlas, entry.id, "quotation", ["quotation"]),
     observationIds: refsOfType(atlas, entry.id, "observation", ["observation"]),
     purchaseUrl: meta.purchaseUrl,
+    coverImage: meta.coverImage,
   };
 }
 
@@ -234,6 +237,10 @@ export function toObservation(
 
 export function toProject(entry: AtlasEntry, atlas: LivingTerrainAtlas): Project {
   const meta = entry.meta as ChamberMeta;
+  const themeIds =
+    entry.themes.length > 0
+      ? entry.themes
+      : (atlas.getById(meta.bookId)?.themes ?? []);
 
   return {
     id: entry.id,
@@ -248,10 +255,18 @@ export function toProject(entry: AtlasEntry, atlas: LivingTerrainAtlas): Project
       description: meta.statusDescription,
     },
     centralQuestion: meta.centralQuestion,
-    themes: atlas
-      .getMajorConcepts()
-      .slice(0, 5)
-      .map((c) => ({ title: c.title, description: c.description })),
+    themes: themeIds
+      .map((id) => atlas.getById(id))
+      .filter(
+        (c): c is AtlasEntry =>
+          !!c && (c.type === "major-concept" || c.type === "concept"),
+      )
+      .map((c) => ({
+        title: c.title,
+        description: c.description,
+        slug: c.slug,
+        href: c.route,
+      })),
     essayIds: refsOfType(atlas, entry.id, "essay", ["chamber"]),
     questionIds: refsOfType(atlas, entry.id, "question", ["pathway"]),
     fieldNoteIds: refsOfType(atlas, entry.id, "field-note", ["observation"]),

@@ -72,6 +72,21 @@ export function getBookBySlug(slug: string): Book | undefined {
   return entry ? toBook(entry, atlas()) : undefined;
 }
 
+/** Published maps in The Atlas */
+export function getAllMaps(): Book[] {
+  return getAllBooks().filter((b) => b.status === "published");
+}
+
+export function getMapBySlug(slug: string): Book | undefined {
+  return getBookBySlug(slug);
+}
+
+export function getTerritoryForMap(slug: string): Project | undefined {
+  return getProjectBySlug(slug);
+}
+
+export { resolveMapCoverSrc } from "./maps";
+
 export function getBooksByQuestionId(questionId: string): Book[] {
   return getAllBooks().filter((b) => b.questionIds.includes(questionId));
 }
@@ -112,6 +127,13 @@ export function getFlagshipBook(): Book {
 
 export function getFlagshipProject(): Project {
   return getLegacyProject(atlas());
+}
+
+export function getAllProjects(): Project[] {
+  return atlas()
+    .getPublished("chamber")
+    .map((e) => toProject(e, atlas()))
+    .sort((a, b) => a.title.localeCompare(b.title));
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {

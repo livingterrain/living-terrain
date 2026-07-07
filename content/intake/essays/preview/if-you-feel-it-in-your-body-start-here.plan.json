@@ -1,0 +1,317 @@
+{
+  "intake": {
+    "title": "If You Feel It in Your Body, Start Here",
+    "mediumUrl": "https://medium.com/illumination/if-you-feel-it-in-your-body-start-here-7595993ec1fc",
+    "subtitle": "On Who My Work Is For — And Why I Wrote These Books",
+    "publishedAt": "2026-02-25",
+    "featuredImage": null,
+    "status": "published",
+    "source": "medium-rss",
+    "overrides": {
+      "id": "e11",
+      "themes": [
+        "th-embodiment",
+        "th-identity",
+        "th-consciousness",
+        "th-relationship"
+      ],
+      "parentConcepts": [
+        "th-embodiment",
+        "th-identity"
+      ],
+      "topics": [
+        "Embodiment",
+        "Nervous System",
+        "Orientation",
+        "Healing",
+        "Systems Thinking"
+      ],
+      "questionIds": [
+        "q4"
+      ],
+      "curatorNotes": "Orientation essay — entry point to the book series."
+    }
+  },
+  "slug": "if-you-feel-it-in-your-body-start-here",
+  "id": "e11",
+  "entry": {
+    "id": "e11",
+    "slug": "if-you-feel-it-in-your-body-start-here",
+    "type": "essay",
+    "title": "If You Feel It in Your Body, Start Here",
+    "description": "On Who My Work Is For — And Why I Wrote These Books",
+    "themes": [
+      "th-embodiment",
+      "th-identity",
+      "th-consciousness",
+      "th-relationship"
+    ],
+    "parentConcepts": [
+      "th-embodiment",
+      "th-identity"
+    ],
+    "connectedItems": [],
+    "publishedAt": "2026-02-25",
+    "route": "/essays/if-you-feel-it-in-your-body-start-here",
+    "status": "published",
+    "meta": {
+      "subtitle": "On Who My Work Is For — And Why I Wrote These Books",
+      "excerpt": "On Who My Work Is For — And Why I Wrote These Books",
+      "topics": [
+        "Embodiment",
+        "Nervous System",
+        "Orientation",
+        "Healing",
+        "Systems Thinking"
+      ],
+      "externalUrl": "https://medium.com/illumination/if-you-feel-it-in-your-body-start-here-7595993ec1fc",
+      "style": "essay"
+    }
+  },
+  "connections": [
+    {
+      "id": "e11→p1:chamber",
+      "from": "e11",
+      "to": "p1",
+      "kind": "chamber",
+      "source": "inferred",
+      "weight": 9,
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "e11→b1:volume",
+      "from": "e11",
+      "to": "b1",
+      "kind": "volume",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "e11→th-embodiment:theme",
+      "from": "e11",
+      "to": "th-embodiment",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+    },
+    {
+      "id": "e11→th-identity:theme",
+      "from": "e11",
+      "to": "th-identity",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches identity — the self as ongoing inquiry."
+    },
+    {
+      "id": "e11→th-consciousness:theme",
+      "from": "e11",
+      "to": "th-consciousness",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "e11→th-relationship:theme",
+      "from": "e11",
+      "to": "th-relationship",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches relationship — nothing exists alone."
+    },
+    {
+      "id": "e11→q4:pathway",
+      "from": "e11",
+      "to": "q4",
+      "kind": "pathway",
+      "source": "inferred",
+      "weight": 8,
+      "rationale": "asks the same living question from a different angle: Can language hold the unsayable."
+    },
+    {
+      "id": "e11→e10:echo",
+      "from": "e11",
+      "to": "e10",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — The Goal Was Never Restriction."
+    },
+    {
+      "id": "e11→e5:echo",
+      "from": "e11",
+      "to": "e5",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — There Is a Cost to Becoming an Image."
+    },
+    {
+      "id": "e11→e6:echo",
+      "from": "e11",
+      "to": "e6",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — When Sacrifice Stops Leading Somewhere."
+    }
+  ],
+  "chamber": {
+    "route": "/structure-beneath-reality",
+    "label": "The Structure Beneath Reality",
+    "lanternRoute": "/essays/if-you-feel-it-in-your-body-start-here"
+  },
+  "constellation": {
+    "majorConceptId": "th-embodiment",
+    "majorConceptTitle": "Embodiment",
+    "orbitLevel": 3,
+    "focusUrl": "/?focus=e11",
+    "placementNote": "Orbits Embodiment at supporting-idea depth (level 3)."
+  },
+  "touches": [
+    {
+      "id": "p1",
+      "title": "The Structure Beneath Reality",
+      "kind": "chamber",
+      "route": "/structure-beneath-reality",
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "b1",
+      "title": "The Structure Beneath Reality",
+      "kind": "volume",
+      "route": "/library/the-structure-beneath-reality",
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "th-embodiment",
+      "title": "Embodiment",
+      "kind": "theme",
+      "route": "/themes/embodiment",
+      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+    },
+    {
+      "id": "th-identity",
+      "title": "Identity",
+      "kind": "theme",
+      "route": "/themes/identity",
+      "rationale": "this inquiry also touches identity — the self as ongoing inquiry."
+    },
+    {
+      "id": "th-consciousness",
+      "title": "Consciousness",
+      "kind": "theme",
+      "route": "/themes/consciousness",
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "th-relationship",
+      "title": "Relationship",
+      "kind": "theme",
+      "route": "/themes/relationship",
+      "rationale": "this inquiry also touches relationship — nothing exists alone."
+    },
+    {
+      "id": "q4",
+      "title": "Can language hold the unsayable?",
+      "kind": "pathway",
+      "route": "/questions/can-language-hold-the-unsayable",
+      "rationale": "asks the same living question from a different angle: Can language hold the unsayable."
+    },
+    {
+      "id": "e10",
+      "title": "The Goal Was Never Restriction",
+      "kind": "echo",
+      "route": "/essays/the-goal-was-never-restriction",
+      "rationale": "echoes nearby work — The Goal Was Never Restriction."
+    },
+    {
+      "id": "e5",
+      "title": "There Is a Cost to Becoming an Image",
+      "kind": "echo",
+      "route": "/essays/there-is-a-cost-to-becoming-an-image",
+      "rationale": "echoes nearby work — There Is a Cost to Becoming an Image."
+    },
+    {
+      "id": "e6",
+      "title": "When Sacrifice Stops Leading Somewhere",
+      "kind": "echo",
+      "route": "/essays/when-sacrifice-stops-leading-somewhere",
+      "rationale": "echoes nearby work — When Sacrifice Stops Leading Somewhere."
+    }
+  ],
+  "neighbors": [
+    {
+      "id": "e10",
+      "title": "The Goal Was Never Restriction",
+      "slug": "the-goal-was-never-restriction",
+      "sharedThemes": [
+        "th-embodiment",
+        "th-identity",
+        "th-consciousness"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e5",
+      "title": "There Is a Cost to Becoming an Image",
+      "slug": "there-is-a-cost-to-becoming-an-image",
+      "sharedThemes": [
+        "th-identity",
+        "th-consciousness",
+        "th-relationship"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e6",
+      "title": "When Sacrifice Stops Leading Somewhere",
+      "slug": "when-sacrifice-stops-leading-somewhere",
+      "sharedThemes": [
+        "th-embodiment",
+        "th-identity",
+        "th-consciousness"
+      ],
+      "connectionKind": "echo"
+    }
+  ],
+  "suggestedThreads": [
+    {
+      "threadId": "thread-identity-meaning",
+      "threadTitle": "From Identity to Meaning",
+      "threadSlug": "identity-embodiment-relationship-meaning",
+      "premise": "An investigation that moves through the self, the body, relation, and what finally coheres.",
+      "fitScore": 9,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "if-you-feel-it-in-your-body-start-here",
+        "title": "If You Feel It in Your Body, Start Here"
+      },
+      "rationale": "Fits the \"From Identity to Meaning\" pathway — An investigation that moves through the self, the body, relation, and what finally coheres."
+    },
+    {
+      "threadId": "thread-perception",
+      "threadTitle": "What Organizes Seeing",
+      "threadSlug": "reality-perception-consciousness",
+      "premise": "Before interpretation — what must already be in place for anything to appear as real?",
+      "fitScore": 2,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "if-you-feel-it-in-your-body-start-here",
+        "title": "If You Feel It in Your Body, Start Here"
+      },
+      "rationale": "Fits the \"What Organizes Seeing\" pathway — Before interpretation — what must already be in place for anything to appear as real?"
+    }
+  ],
+  "observatory": {
+    "category": "Embodiment",
+    "majorConceptSlug": "embodiment",
+    "clusterQuestion": "Can language hold the unsayable?",
+    "signalKind": "essay"
+  },
+  "warnings": []
+}

@@ -58,7 +58,7 @@ function enrichTopics(
       duration: { href: "/questions/how-do-we-inhabit-time", contentId: "q2" },
       memory: { href: "/field-notes/waiting-room", contentId: "fn2" },
       return: { href: "/essays/you-have-to-go-far-enough-to-make-a-loop", contentId: "e2" },
-      accumulation: { href: "/structure-beneath-reality", contentId: "p1" },
+      accumulation: { href: "/chambers/the-structure-beneath-reality", contentId: "p1" },
     },
     embodiment: {
       "nervous-system": { href: "/essays/constraint-is-not-the-opposite-of-freedom", contentId: "e1" },
@@ -103,7 +103,7 @@ function buildThreads(hub: Omit<ThemeHub, "threads" | "network" | "networkEdges"
       id: b.id,
       title: b.title,
       subtitle: b.subtitle,
-      href: `/library/${b.slug}`,
+      href: `/atlas/${b.slug}`,
       kind: "book",
       year: b.publishedYear?.toString(),
     });

@@ -1,0 +1,315 @@
+{
+  "intake": {
+    "title": "Signals I'm Watching — June 2026",
+    "mediumUrl": "https://medium.com/@livingterrain/signals-im-watching-june-2026-21299cd7913b",
+    "subtitle": "People are returning to faith, questioning institutions, craving community, and searching for meaning. I don't know exactly what it means…",
+    "publishedAt": "2026-06-09",
+    "featuredImage": null,
+    "status": "published",
+    "style": "field-digest",
+    "source": "medium-rss",
+    "overrides": {
+      "id": "e8",
+      "themes": [
+        "th-meaning",
+        "th-relationship",
+        "th-time",
+        "th-information"
+      ],
+      "parentConcepts": [
+        "th-meaning",
+        "th-relationship"
+      ],
+      "topics": [
+        "Meaning",
+        "Culture",
+        "Signals",
+        "Observation",
+        "Time"
+      ],
+      "questionIds": [
+        "q2",
+        "q4"
+      ],
+      "curatorNotes": "Field-digest style; may migrate to field-note later."
+    }
+  },
+  "slug": "signals-i-m-watching-june-2026",
+  "id": "e8",
+  "entry": {
+    "id": "e8",
+    "slug": "signals-i-m-watching-june-2026",
+    "type": "essay",
+    "title": "Signals I'm Watching — June 2026",
+    "description": "People are returning to faith, questioning institutions, craving community, and searching for meaning. I don't know exactly what it means…",
+    "themes": [
+      "th-meaning",
+      "th-relationship",
+      "th-time",
+      "th-information"
+    ],
+    "parentConcepts": [
+      "th-meaning",
+      "th-relationship"
+    ],
+    "connectedItems": [],
+    "publishedAt": "2026-06-09",
+    "route": "/essays/signals-i-m-watching-june-2026",
+    "status": "published",
+    "meta": {
+      "subtitle": "People are returning to faith, questioning institutions, craving community, and searching for meaning. I don't know exactly what it means…",
+      "excerpt": "People are returning to faith, questioning institutions, craving community, and searching for meaning. I don't know exactly what it means…",
+      "topics": [
+        "Meaning",
+        "Culture",
+        "Signals",
+        "Observation",
+        "Time"
+      ],
+      "externalUrl": "https://medium.com/@livingterrain/signals-im-watching-june-2026-21299cd7913b",
+      "style": "field-digest"
+    }
+  },
+  "connections": [
+    {
+      "id": "e8→p1:chamber",
+      "from": "e8",
+      "to": "p1",
+      "kind": "chamber",
+      "source": "inferred",
+      "weight": 9,
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "e8→th-meaning:theme",
+      "from": "e8",
+      "to": "th-meaning",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches meaning — how significance accumulates."
+    },
+    {
+      "id": "e8→th-relationship:theme",
+      "from": "e8",
+      "to": "th-relationship",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches relationship — nothing exists alone."
+    },
+    {
+      "id": "e8→th-time:theme",
+      "from": "e8",
+      "to": "th-time",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches time — duration as lived, not merely measured."
+    },
+    {
+      "id": "e8→th-information:theme",
+      "from": "e8",
+      "to": "th-information",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches information — signal, structure, and what travels between minds."
+    },
+    {
+      "id": "e8→q2:pathway",
+      "from": "e8",
+      "to": "q2",
+      "kind": "pathway",
+      "source": "inferred",
+      "weight": 8,
+      "rationale": "asks the same living question from a different angle: How do we inhabit time."
+    },
+    {
+      "id": "e8→q4:pathway",
+      "from": "e8",
+      "to": "q4",
+      "kind": "pathway",
+      "source": "inferred",
+      "weight": 8,
+      "rationale": "asks the same living question from a different angle: Can language hold the unsayable."
+    },
+    {
+      "id": "e8→e2:echo",
+      "from": "e8",
+      "to": "e2",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — You Have to Go Far Enough to Make a Loop."
+    },
+    {
+      "id": "e8→e4:echo",
+      "from": "e8",
+      "to": "e4",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — The Ancient Purpose of Looking Up."
+    },
+    {
+      "id": "e8→e3:echo",
+      "from": "e8",
+      "to": "e3",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+    }
+  ],
+  "chamber": {
+    "route": "/structure-beneath-reality",
+    "label": "The Structure Beneath Reality",
+    "lanternRoute": "/essays/signals-i-m-watching-june-2026"
+  },
+  "constellation": {
+    "majorConceptId": "th-meaning",
+    "majorConceptTitle": "Meaning",
+    "orbitLevel": 3,
+    "focusUrl": "/?focus=e8",
+    "placementNote": "Orbits Meaning at supporting-idea depth (level 3)."
+  },
+  "touches": [
+    {
+      "id": "p1",
+      "title": "The Structure Beneath Reality",
+      "kind": "chamber",
+      "route": "/structure-beneath-reality",
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "th-meaning",
+      "title": "Meaning",
+      "kind": "theme",
+      "route": "/themes/meaning",
+      "rationale": "this inquiry also touches meaning — how significance accumulates."
+    },
+    {
+      "id": "th-relationship",
+      "title": "Relationship",
+      "kind": "theme",
+      "route": "/themes/relationship",
+      "rationale": "this inquiry also touches relationship — nothing exists alone."
+    },
+    {
+      "id": "th-time",
+      "title": "Time",
+      "kind": "theme",
+      "route": "/themes/time",
+      "rationale": "this inquiry also touches time — duration as lived, not merely measured."
+    },
+    {
+      "id": "th-information",
+      "title": "Information",
+      "kind": "theme",
+      "route": "/themes/information",
+      "rationale": "this inquiry also touches information — signal, structure, and what travels between minds."
+    },
+    {
+      "id": "q2",
+      "title": "How do we inhabit time?",
+      "kind": "pathway",
+      "route": "/questions/how-do-we-inhabit-time",
+      "rationale": "asks the same living question from a different angle: How do we inhabit time."
+    },
+    {
+      "id": "q4",
+      "title": "Can language hold the unsayable?",
+      "kind": "pathway",
+      "route": "/questions/can-language-hold-the-unsayable",
+      "rationale": "asks the same living question from a different angle: Can language hold the unsayable."
+    },
+    {
+      "id": "e2",
+      "title": "You Have to Go Far Enough to Make a Loop",
+      "kind": "echo",
+      "route": "/essays/you-have-to-go-far-enough-to-make-a-loop",
+      "rationale": "echoes nearby work — You Have to Go Far Enough to Make a Loop."
+    },
+    {
+      "id": "e4",
+      "title": "The Ancient Purpose of Looking Up",
+      "kind": "echo",
+      "route": "/essays/the-ancient-purpose-of-looking-up",
+      "rationale": "echoes nearby work — The Ancient Purpose of Looking Up."
+    },
+    {
+      "id": "e3",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "kind": "echo",
+      "route": "/essays/every-living-system-pays-a-maintenance-cost",
+      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+    }
+  ],
+  "neighbors": [
+    {
+      "id": "e2",
+      "title": "You Have to Go Far Enough to Make a Loop",
+      "slug": "you-have-to-go-far-enough-to-make-a-loop",
+      "sharedThemes": [
+        "th-meaning",
+        "th-time"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e4",
+      "title": "The Ancient Purpose of Looking Up",
+      "slug": "the-ancient-purpose-of-looking-up",
+      "sharedThemes": [
+        "th-meaning",
+        "th-time"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e3",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "slug": "every-living-system-pays-a-maintenance-cost",
+      "sharedThemes": [
+        "th-information"
+      ],
+      "connectionKind": "echo"
+    }
+  ],
+  "suggestedThreads": [
+    {
+      "threadId": "thread-identity-meaning",
+      "threadTitle": "From Identity to Meaning",
+      "threadSlug": "identity-embodiment-relationship-meaning",
+      "premise": "An investigation that moves through the self, the body, relation, and what finally coheres.",
+      "fitScore": 7,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "signals-i-m-watching-june-2026",
+        "title": "Signals I'm Watching — June 2026"
+      },
+      "rationale": "Fits the \"From Identity to Meaning\" pathway — An investigation that moves through the self, the body, relation, and what finally coheres."
+    },
+    {
+      "threadId": "thread-time-return",
+      "threadTitle": "The Orbit of Return",
+      "threadSlug": "time-meaning-return",
+      "premise": "Not repetition — returning to the same question through different doors.",
+      "fitScore": 7,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "signals-i-m-watching-june-2026",
+        "title": "Signals I'm Watching — June 2026"
+      },
+      "rationale": "Fits the \"The Orbit of Return\" pathway — Not repetition — returning to the same question through different doors."
+    }
+  ],
+  "observatory": {
+    "category": "Meaning",
+    "majorConceptSlug": "meaning",
+    "clusterQuestion": "How do we inhabit time?",
+    "signalKind": "essay"
+  },
+  "warnings": []
+}

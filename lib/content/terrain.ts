@@ -217,7 +217,7 @@ export function getObservatorySignals(limit = 8): ObservatorySignal[] {
     date: new Date().toISOString().slice(0, 10),
     title: "The inquiry continues",
     excerpt: flagshipProject().status.description,
-    href: "/structure-beneath-reality",
+    href: "/chambers/the-structure-beneath-reality",
     peerIds: projectPeerIds(),
   });
 
@@ -239,7 +239,7 @@ export function getSiteTimeline(): SiteTimelineEntry[] {
       sortKey: parseSortKey(entry.date),
       title: entry.title,
       description: entry.description,
-      href: "/structure-beneath-reality",
+      href: "/chambers/the-structure-beneath-reality",
       kind: "project",
       peerIds: projectPeerIds(),
     });
@@ -279,7 +279,7 @@ export function getSiteTimeline(): SiteTimelineEntry[] {
       sortKey: book.publishedYear,
       title: book.title,
       description: book.description,
-      href: `/library/${book.slug}`,
+      href: `/atlas/${book.slug}`,
       kind: "book",
       peerIds: bookPeerIds(book),
     });

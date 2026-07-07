@@ -52,7 +52,13 @@ export class LivingTerrainAtlas {
   }
 
   getChamber(): AtlasEntry | undefined {
-    return this.getPublished("chamber")[0];
+    return this.getPublished("chamber").find(
+      (e) => e.slug === "the-structure-beneath-reality",
+    );
+  }
+
+  getChambers(): AtlasEntry[] {
+    return this.getPublished("chamber");
   }
 
   getConnections(id: string): AtlasConnection[] {

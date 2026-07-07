@@ -35,7 +35,7 @@ export function QuestionHubRoom({ hub }: QuestionHubRoomProps) {
       kind: "explore" as const,
       items: books.map((b) => ({
         id: b.id,
-        href: `/library/${b.slug}`,
+        href: `/atlas/${b.slug}`,
         title: b.title,
         subtitle: b.subtitle,
         peers: [b.id, ...b.questionIds],

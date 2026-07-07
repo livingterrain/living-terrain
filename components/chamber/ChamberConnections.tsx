@@ -25,8 +25,8 @@ export function ChamberConnections({
         The living network
       </h2>
       <p className="type-body mt-4 max-w-xl text-[0.9375rem]">
-        Nothing here stands alone. Questions, notes, and volumes gather around
-        this inquiry.
+        Nothing here stands alone. Questions, notes, and neighboring regions
+        gather around this inquiry.
       </p>
 
       <div className="mt-12 space-y-2">
@@ -44,6 +44,7 @@ export function ChamberConnections({
           <ConnectionWeb
             kind="thread"
             items={books}
+            label="Neighboring regions"
             className={
               questions.length > 0 || fieldNotes.length > 0
                 ? "mt-2"

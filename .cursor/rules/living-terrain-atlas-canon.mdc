@@ -1,0 +1,42 @@
+---
+description: Canon — The Atlas, The Shelves, and how completed investigations appear in Living Terrain
+alwaysApply: true
+---
+
+# Living Terrain — World Canon
+
+Philosophy is complete. Implementation expresses this world; it does not redefine it.
+
+## The four rooms
+
+| Room | Route | What it holds |
+|---|---|---|
+| **The Constellation** | `/` | Living relational truth — how everything connects |
+| **The Atlas** | `/atlas` | Completed investigations as **maps** (what remains after the survey) |
+| **The Shelves** | `/inquiry` | Ongoing inquiry — essays, field notes, shorter writing |
+| **The Observatory** | `/observatory` | Investigations still forming |
+
+## Investigation → record → map
+
+1. **Investigation** — living inquiry (Observatory, Shelves, Questions)
+2. **Record** — the physical book, the completed field journal (off the wall)
+3. **Map** — what endures in Living Terrain; cartography hung in The Atlas
+
+Books are not products. Maps are not publications. The physical book is **historical evidence** of the investigation — a field journal, not a storefront SKU.
+
+## Language
+
+**Use:** map, territory, charted, cartography, plate, artifact, field journal, scout report (essays), enter the territory
+
+**Avoid in visitor UI:** volume, publication, library (as room), archive, shelf (for maps), purchase (as primary CTA), bookstore patterns
+
+## Commerce
+
+Do not center commerce. Do not design bookstores. Field journal links are marginal whispers only.
+
+## Code notes
+
+- Atlas engine: `lib/atlas/` (data layer — unchanged name)
+- Visitor maps: `book` entries, routes `/atlas/[slug]`
+- Territory interior: `/chambers/[slug]`
+- `/library` redirects to `/atlas` (legacy)

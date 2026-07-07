@@ -1,5 +1,15 @@
 import type { AtlasConnection, AtlasData } from "./types";
 import { resolveAtlasRoute } from "./routes";
+import {
+  IMPORTED_BOOK_CONNECTIONS,
+  IMPORTED_BOOK_ENTRIES,
+  IMPORTED_ESSAY_CONNECTIONS,
+  IMPORTED_ESSAY_ENTRIES,
+} from "./imports";
+import {
+  LIVING_TERRAIN_SERIES_URL,
+  STRUCTURE_BENEATH_REALITY_URL,
+} from "./imports/books/series-catalog";
 
 /**
  * Canonical Living Terrain Atlas — single source of truth.
@@ -15,8 +25,8 @@ export const ATLAS_DATA: AtlasData = {
     url: "https://livingterrain.com",
     author: "Chelsea M. Thacker",
     mediumUrl: "https://medium.com/@livingterrain",
-    amazonBookUrl:
-      "https://www.amazon.com/Structure-Beneath-Reality-Chelsea-Thacker/dp/B0H3ZFPLDN/",
+    amazonBookUrl: STRUCTURE_BENEATH_REALITY_URL,
+    seriesUrl: LIVING_TERRAIN_SERIES_URL,
   },
 
   entries: [
@@ -188,8 +198,8 @@ export const ATLAS_DATA: AtlasData = {
       title: "The Structure Beneath Reality",
       description:
         "Reality appears stable — yet everything within it changes. This book asks what hidden structures allow that stability: the architectures of perception, embodiment, relationship, meaning, and the real that we rarely examine because they work too quietly to notice.",
-      themes: [],
-      parentConcepts: [],
+      themes: ["th-reality", "th-structure", "th-consciousness", "th-meaning"],
+      parentConcepts: ["th-reality", "th-structure"],
       connectedItems: [],
       route: resolveAtlasRoute("chamber", "the-structure-beneath-reality"),
       status: "published",
@@ -205,8 +215,7 @@ export const ATLAS_DATA: AtlasData = {
           "The volume exists in print and digital. Living Terrain maps what continues — the essays, questions, and observations that extend and complicate the work.",
         centralQuestion:
           "What are the hidden structures that allow reality to remain itself while everything within it changes?",
-        purchaseUrl:
-          "https://www.amazon.com/Structure-Beneath-Reality-Chelsea-Thacker/dp/B0H3ZFPLDN/",
+        purchaseUrl: STRUCTURE_BENEATH_REALITY_URL,
         timeline: [
           {
             id: "t1",
@@ -270,7 +279,7 @@ export const ATLAS_DATA: AtlasData = {
       title: "The Structure Beneath Reality",
       description:
         "A sustained exploration of the invisible architectures — conceptual, perceptual, and cultural — that shape how we encounter what is real.",
-      themes: [],
+      themes: ["th-reality", "th-structure", "th-consciousness", "th-meaning"],
       parentConcepts: ["th-reality", "th-structure"],
       connectedItems: [],
       publishedAt: "2024-01-01",
@@ -280,8 +289,8 @@ export const ATLAS_DATA: AtlasData = {
         subtitle: "An inquiry into what holds the world together",
         publishedYear: 2024,
         publisher: "Independently published",
-        purchaseUrl:
-          "https://www.amazon.com/Structure-Beneath-Reality-Chelsea-Thacker/dp/B0H3ZFPLDN/",
+        purchaseUrl: STRUCTURE_BENEATH_REALITY_URL,
+        coverImage: "/images/maps/the-structure-beneath-reality.jpg",
         bookStatus: "published",
         chapters: [],
       },
@@ -525,9 +534,15 @@ Time as alchemy.`,
         attribution: "Living Terrain",
       },
     },
+    ...IMPORTED_ESSAY_ENTRIES,
+    ...IMPORTED_BOOK_ENTRIES,
   ],
 
-  connections: buildConnections(),
+  connections: [
+    ...buildConnections(),
+    ...IMPORTED_ESSAY_CONNECTIONS,
+    ...IMPORTED_BOOK_CONNECTIONS,
+  ],
 };
 
 function conn(

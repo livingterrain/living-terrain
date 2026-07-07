@@ -1,0 +1,17 @@
+{
+  "title": "If You Feel It in Your Body, Start Here",
+  "mediumUrl": "https://medium.com/illumination/if-you-feel-it-in-your-body-start-here-7595993ec1fc",
+  "subtitle": "On Who My Work Is For — And Why I Wrote These Books",
+  "publishedAt": "2026-02-25",
+  "featuredImage": null,
+  "status": "published",
+  "source": "medium-rss",
+  "overrides": {
+    "id": "e11",
+    "themes": ["th-embodiment", "th-identity", "th-consciousness", "th-relationship"],
+    "parentConcepts": ["th-embodiment", "th-identity"],
+    "topics": ["Embodiment", "Nervous System", "Orientation", "Healing", "Systems Thinking"],
+    "questionIds": ["q4"],
+    "curatorNotes": "Orientation essay — entry point to the book series."
+  }
+}

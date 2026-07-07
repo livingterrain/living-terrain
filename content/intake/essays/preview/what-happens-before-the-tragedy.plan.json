@@ -1,0 +1,332 @@
+{
+  "intake": {
+    "title": "What Happens Before the Tragedy?",
+    "mediumUrl": "https://medium.com/@livingterrain/what-happens-before-the-tragedy-b07e6c737cd6",
+    "subtitle": "On fragmentation, formation, and the patterns we fail to see",
+    "publishedAt": "2026-06-09",
+    "featuredImage": null,
+    "status": "published",
+    "source": "medium-rss",
+    "overrides": {
+      "id": "e7",
+      "themes": [
+        "th-consciousness",
+        "th-perception",
+        "th-embodiment",
+        "th-information"
+      ],
+      "parentConcepts": [
+        "th-consciousness",
+        "th-embodiment"
+      ],
+      "topics": [
+        "Consciousness",
+        "Pattern Recognition",
+        "Nervous System",
+        "Responsibility",
+        "Warning Signs"
+      ],
+      "questionIds": [
+        "q1",
+        "q4"
+      ],
+      "curatorNotes": "Pattern/warning via perception + information; nervous system via embodiment."
+    }
+  },
+  "slug": "what-happens-before-the-tragedy",
+  "id": "e7",
+  "entry": {
+    "id": "e7",
+    "slug": "what-happens-before-the-tragedy",
+    "type": "essay",
+    "title": "What Happens Before the Tragedy?",
+    "description": "On fragmentation, formation, and the patterns we fail to see",
+    "themes": [
+      "th-consciousness",
+      "th-perception",
+      "th-embodiment",
+      "th-information"
+    ],
+    "parentConcepts": [
+      "th-consciousness",
+      "th-embodiment"
+    ],
+    "connectedItems": [],
+    "publishedAt": "2026-06-09",
+    "route": "/essays/what-happens-before-the-tragedy",
+    "status": "published",
+    "meta": {
+      "subtitle": "On fragmentation, formation, and the patterns we fail to see",
+      "excerpt": "On fragmentation, formation, and the patterns we fail to see",
+      "topics": [
+        "Consciousness",
+        "Pattern Recognition",
+        "Nervous System",
+        "Responsibility",
+        "Warning Signs"
+      ],
+      "externalUrl": "https://medium.com/@livingterrain/what-happens-before-the-tragedy-b07e6c737cd6",
+      "style": "essay"
+    }
+  },
+  "connections": [
+    {
+      "id": "e7→p1:chamber",
+      "from": "e7",
+      "to": "p1",
+      "kind": "chamber",
+      "source": "inferred",
+      "weight": 9,
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "e7→b1:volume",
+      "from": "e7",
+      "to": "b1",
+      "kind": "volume",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "e7→th-consciousness:theme",
+      "from": "e7",
+      "to": "th-consciousness",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "e7→th-perception:theme",
+      "from": "e7",
+      "to": "th-perception",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches perception — what organizes seeing before interpretation."
+    },
+    {
+      "id": "e7→th-embodiment:theme",
+      "from": "e7",
+      "to": "th-embodiment",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+    },
+    {
+      "id": "e7→th-information:theme",
+      "from": "e7",
+      "to": "th-information",
+      "kind": "theme",
+      "source": "inferred",
+      "weight": 7,
+      "rationale": "this inquiry also touches information — signal, structure, and what travels between minds."
+    },
+    {
+      "id": "e7→q1:pathway",
+      "from": "e7",
+      "to": "q1",
+      "kind": "pathway",
+      "source": "inferred",
+      "weight": 8,
+      "rationale": "asks the same living question from a different angle: What lies beneath perception."
+    },
+    {
+      "id": "e7→q4:pathway",
+      "from": "e7",
+      "to": "q4",
+      "kind": "pathway",
+      "source": "inferred",
+      "weight": 8,
+      "rationale": "asks the same living question from a different angle: Can language hold the unsayable."
+    },
+    {
+      "id": "e7→e3:echo",
+      "from": "e7",
+      "to": "e3",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+    },
+    {
+      "id": "e7→e1:echo",
+      "from": "e7",
+      "to": "e1",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+    },
+    {
+      "id": "e7→e4:echo",
+      "from": "e7",
+      "to": "e4",
+      "kind": "echo",
+      "source": "inferred",
+      "weight": 6,
+      "rationale": "echoes nearby work — The Ancient Purpose of Looking Up."
+    }
+  ],
+  "chamber": {
+    "route": "/structure-beneath-reality",
+    "label": "The Structure Beneath Reality",
+    "lanternRoute": "/essays/what-happens-before-the-tragedy"
+  },
+  "constellation": {
+    "majorConceptId": "th-consciousness",
+    "majorConceptTitle": "Consciousness",
+    "orbitLevel": 3,
+    "focusUrl": "/?focus=e7",
+    "placementNote": "Orbits Consciousness at supporting-idea depth (level 3)."
+  },
+  "touches": [
+    {
+      "id": "p1",
+      "title": "The Structure Beneath Reality",
+      "kind": "chamber",
+      "route": "/structure-beneath-reality",
+      "rationale": "returns to the chamber where this inquiry began."
+    },
+    {
+      "id": "b1",
+      "title": "The Structure Beneath Reality",
+      "kind": "volume",
+      "route": "/library/the-structure-beneath-reality",
+      "rationale": "extends the argument first made in the published volume."
+    },
+    {
+      "id": "th-consciousness",
+      "title": "Consciousness",
+      "kind": "theme",
+      "route": "/themes/consciousness",
+      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+    },
+    {
+      "id": "th-perception",
+      "title": "Perception",
+      "kind": "theme",
+      "route": "/themes/perception",
+      "rationale": "this inquiry also touches perception — what organizes seeing before interpretation."
+    },
+    {
+      "id": "th-embodiment",
+      "title": "Embodiment",
+      "kind": "theme",
+      "route": "/themes/embodiment",
+      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+    },
+    {
+      "id": "th-information",
+      "title": "Information",
+      "kind": "theme",
+      "route": "/themes/information",
+      "rationale": "this inquiry also touches information — signal, structure, and what travels between minds."
+    },
+    {
+      "id": "q1",
+      "title": "What lies beneath perception?",
+      "kind": "pathway",
+      "route": "/questions/what-lies-beneath-perception",
+      "rationale": "asks the same living question from a different angle: What lies beneath perception."
+    },
+    {
+      "id": "q4",
+      "title": "Can language hold the unsayable?",
+      "kind": "pathway",
+      "route": "/questions/can-language-hold-the-unsayable",
+      "rationale": "asks the same living question from a different angle: Can language hold the unsayable."
+    },
+    {
+      "id": "e3",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "kind": "echo",
+      "route": "/essays/every-living-system-pays-a-maintenance-cost",
+      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+    },
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "kind": "echo",
+      "route": "/essays/constraint-is-not-the-opposite-of-freedom",
+      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+    },
+    {
+      "id": "e4",
+      "title": "The Ancient Purpose of Looking Up",
+      "kind": "echo",
+      "route": "/essays/the-ancient-purpose-of-looking-up",
+      "rationale": "echoes nearby work — The Ancient Purpose of Looking Up."
+    }
+  ],
+  "neighbors": [
+    {
+      "id": "e3",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "slug": "every-living-system-pays-a-maintenance-cost",
+      "sharedThemes": [
+        "th-consciousness",
+        "th-embodiment",
+        "th-information"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e1",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "slug": "constraint-is-not-the-opposite-of-freedom",
+      "sharedThemes": [
+        "th-consciousness",
+        "th-embodiment"
+      ],
+      "connectionKind": "echo"
+    },
+    {
+      "id": "e4",
+      "title": "The Ancient Purpose of Looking Up",
+      "slug": "the-ancient-purpose-of-looking-up",
+      "sharedThemes": [
+        "th-consciousness",
+        "th-perception"
+      ],
+      "connectionKind": "echo"
+    }
+  ],
+  "suggestedThreads": [
+    {
+      "threadId": "thread-perception",
+      "threadTitle": "What Organizes Seeing",
+      "threadSlug": "reality-perception-consciousness",
+      "premise": "Before interpretation — what must already be in place for anything to appear as real?",
+      "fitScore": 5,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "what-happens-before-the-tragedy",
+        "title": "What Happens Before the Tragedy?"
+      },
+      "rationale": "Fits the \"What Organizes Seeing\" pathway — Before interpretation — what must already be in place for anything to appear as real?"
+    },
+    {
+      "threadId": "thread-identity-meaning",
+      "threadTitle": "From Identity to Meaning",
+      "threadSlug": "identity-embodiment-relationship-meaning",
+      "premise": "An investigation that moves through the self, the body, relation, and what finally coheres.",
+      "fitScore": 2,
+      "suggestedStep": {
+        "kind": "essay",
+        "slug": "what-happens-before-the-tragedy",
+        "title": "What Happens Before the Tragedy?"
+      },
+      "rationale": "Fits the \"From Identity to Meaning\" pathway — An investigation that moves through the self, the body, relation, and what finally coheres."
+    }
+  ],
+  "observatory": {
+    "category": "Consciousness",
+    "majorConceptSlug": "consciousness",
+    "clusterQuestion": "What lies beneath perception?",
+    "signalKind": "essay"
+  },
+  "warnings": []
+}

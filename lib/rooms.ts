@@ -8,6 +8,7 @@ export type RoomKind =
   | "guide"
   | "notebook"
   | "archive"
+  | "atlas"
   | "observatory"
   | "chamber";
 
@@ -33,7 +34,7 @@ export const rooms: Record<RoomKind, RoomProfile> = {
   },
   library: {
     kind: "library",
-    whisper: "Volumes rest in the quiet. Nothing is arranged by date.",
+    whisper: "Writing from the edges of the terrain.",
     surface: "threshold-room threshold-room--library",
     vignette: "room-vignette-library",
   },
@@ -53,6 +54,12 @@ export const rooms: Record<RoomKind, RoomProfile> = {
     kind: "archive",
     whisper: "Manuscripts sleep in the dim. Handle them slowly.",
     surface: "threshold-room threshold-room--archive",
+    vignette: "room-vignette-archive",
+  },
+  atlas: {
+    kind: "atlas",
+    whisper: "Maps of completed investigations — cartography that endures after the survey.",
+    surface: "threshold-room threshold-room--atlas",
     vignette: "room-vignette-archive",
   },
   observatory: {

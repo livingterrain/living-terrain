@@ -1,0 +1,17 @@
+{
+  "title": "Every Living System Pays a Maintenance Cost",
+  "mediumUrl": "https://medium.com/illumination/every-living-system-pays-a-maintenance-cost-7c5f6292dd6d",
+  "subtitle": "The invisible work that determines whether living systems merely survive — or become.",
+  "publishedAt": "2026-07-06",
+  "featuredImage": null,
+  "status": "published",
+  "source": "medium-rss",
+  "overrides": {
+    "id": "e3",
+    "themes": ["th-embodiment", "th-structure", "th-information", "th-consciousness"],
+    "parentConcepts": ["th-embodiment", "th-structure"],
+    "topics": ["Embodiment", "Systems", "Biology", "Maintenance", "Capacity"],
+    "questionIds": ["q1"],
+    "curatorNotes": "Systems/biology via structure + information; maintenance as embodied capacity."
+  }
+}

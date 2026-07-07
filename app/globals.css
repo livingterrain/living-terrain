@@ -963,8 +963,13 @@
   }
 
   .threshold-room--library,
-  .threshold-room--guide {
+  .threshold-room--guide,
+  .threshold-room--atlas {
     background: transparent;
+  }
+
+  .threshold-room--atlas {
+    --atlas-amber: #c4a06a;
   }
 
   @media (prefers-reduced-motion: reduce) {

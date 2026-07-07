@@ -1,0 +1,23 @@
+{
+  "title": "What Happens Before the Tragedy?",
+  "mediumUrl": "https://medium.com/@livingterrain/what-happens-before-the-tragedy-b07e6c737cd6",
+  "subtitle": "On fragmentation, formation, and the patterns we fail to see",
+  "publishedAt": "2026-06-09",
+  "featuredImage": null,
+  "status": "published",
+  "source": "medium-rss",
+  "overrides": {
+    "id": "e7",
+    "themes": ["th-consciousness", "th-perception", "th-embodiment", "th-information"],
+    "parentConcepts": ["th-consciousness", "th-embodiment"],
+    "topics": [
+      "Consciousness",
+      "Pattern Recognition",
+      "Nervous System",
+      "Responsibility",
+      "Warning Signs"
+    ],
+    "questionIds": ["q1", "q4"],
+    "curatorNotes": "Pattern/warning via perception + information; nervous system via embodiment."
+  }
+}

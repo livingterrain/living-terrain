@@ -3,8 +3,8 @@ import type { AtlasEntryType } from "./types";
 const ROUTES: Record<AtlasEntryType, (slug: string) => string> = {
   "major-concept": (slug) => `/themes/${slug}`,
   concept: (slug) => `/themes/${slug}`,
-  chamber: () => "/structure-beneath-reality",
-  book: (slug) => `/library/${slug}`,
+  chamber: (slug) => `/chambers/${slug}`,
+  book: (slug) => `/atlas/${slug}`,
   essay: (slug) => `/essays/${slug}`,
   question: (slug) => `/questions/${slug}`,
   "field-note": (slug) => `/field-notes/${slug}`,

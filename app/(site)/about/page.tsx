@@ -43,7 +43,7 @@ export default function AboutPage() {
               </p>
               <p>
                 The central chamber is{" "}
-                <TextLink href="/structure-beneath-reality">
+                <TextLink href="/chambers/the-structure-beneath-reality">
                   The Structure Beneath Reality
                 </TextLink>
                 — an inquiry into what allows reality to remain itself while

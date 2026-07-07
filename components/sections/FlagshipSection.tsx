@@ -23,11 +23,11 @@ export function FlagshipSection({ book }: FlagshipSectionProps) {
         <Hairline motif className="my-12" />
 
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-10">
-          <TextLink href="/structure-beneath-reality">
-            Enter the project
+          <TextLink href={`/chambers/${book.slug}`}>
+            Enter the chamber
           </TextLink>
-          <TextLink href={`/library/${book.slug}`} muted>
-            View in library
+          <TextLink href={`/atlas/${book.slug}`} muted>
+            View the map
           </TextLink>
         </div>
 
