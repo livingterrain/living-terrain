@@ -16,11 +16,9 @@ import { MapRevealVeil } from "./MapRevealVeil";
 import { MapWhisper } from "./MapWhisper";
 import { MobileTerrainGuide } from "./MobileTerrainGuide";
 import { TerrainPulse } from "./TerrainPulse";
-import { ThresholdHeroLandscape } from "./ThresholdHeroLandscape";
 import { ThresholdAtmosphere } from "./ThresholdAtmosphere";
-import { ThresholdChoices } from "./ThresholdChoices";
+import { ThresholdEntrance } from "./ThresholdEntrance";
 import { computeDiscoveryDepth } from "@/lib/concepts/constellation-discovery";
-import { cn } from "@/lib/utils";
 import type { GraphNode } from "@/lib/concepts/graph";
 import { buildTerrainGraph } from "@/lib/concepts/graph";
 import type { ViewBox } from "@/lib/concepts/universe-viewport";
@@ -29,17 +27,17 @@ import {
   saveConstellationSession,
   clearConstellationSession,
 } from "@/lib/constellation/session";
-import { THRESHOLD, NAVIGATION } from "@/lib/atmosphere/tempo";
+import { NAVIGATION } from "@/lib/atmosphere/tempo";
 import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import { usePrefersReducedMotion } from "@/lib/atmosphere/use-prefers-reduced-motion";
 import { CIRCADIAN_POLL_MS } from "@/lib/atmosphere/circadian";
 import { syncCircadian } from "@/lib/atmosphere/circadian-store";
 import { useWonderArrival } from "@/lib/wonder/use-wonder-arrival";
-import { useLayoutSettled } from "@/lib/hooks/use-mounted";
 
 type Phase = "threshold" | "crossing" | "within";
 
 const THRESHOLD_VOID = "#06080c";
+const MAP_VOID = "#020408";
 
 const fade = { duration: 2.8, ease: NAVIGATION.ease };
 
@@ -69,8 +67,6 @@ export function ThresholdWorld() {
   const entered = phase === "within";
   const crossing = phase === "crossing";
 
-  const thresholdReady = useLayoutSettled();
-
   const crossingMs = reducedMotion ? 300 : isMobile ? 900 : 500;
   crossingMsRef.current = crossingMs;
 
@@ -91,11 +87,6 @@ export function ThresholdWorld() {
   );
 
   const hoveredNode = nodes.find((n) => n.id === hoveredId);
-
-  const starBrightness =
-    phase === "crossing" ? 0.78 : phase === "within" ? 0.46 : 0.32;
-  const fogDensity =
-    phase === "crossing" ? 1.7 : phase === "within" ? 0.35 : 1;
 
   const enterMap = useCallback(() => {
     setPhase((current) => {
@@ -240,10 +231,6 @@ export function ThresholdWorld() {
   const showPathPanel =
     wonder.chromeVisible && mapInteractive && !hoveredId;
 
-  const contentVisible = thresholdReady || entered || reducedMotion;
-  /** Blur/filter layers stay static on threshold — motion only after entering the map */
-  const motionActive = entered || reducedMotion;
-
   useEffect(() => {
     if (!entered) return;
     syncCircadian();
@@ -253,103 +240,39 @@ export function ThresholdWorld() {
 
   return (
     <div
-      className={cn(
-        "threshold-world-root fixed inset-0 flex flex-col overflow-hidden text-ivory supports-[height:100dvh]:min-h-[100dvh] min-h-screen",
-        "threshold-world-root--atmosphere-active",
-        contentVisible && "threshold-world-root--hero-content-visible",
-        motionActive && "threshold-world-root--ambient-active",
-      )}
-      style={{ backgroundColor: entered ? "#020408" : THRESHOLD_VOID }}
+      className="fixed inset-0 flex flex-col overflow-hidden text-ivory supports-[height:100dvh]:min-h-[100dvh] min-h-screen"
+      style={{ backgroundColor: entered ? MAP_VOID : THRESHOLD_VOID }}
     >
-      <div className="threshold-atmosphere-stack pointer-events-none absolute inset-0 z-[1]">
-        <div
-          className={cn(
-            "threshold-page-atmosphere pointer-events-none absolute inset-0",
-            entered && "threshold-page-atmosphere--deep",
-          )}
-        >
+      {entered && (
+        <div className="pointer-events-none absolute inset-0 z-[1]">
           <ThresholdAtmosphere
             atmosphereLive
-            backgroundMotionActive={motionActive}
-            starBrightness={entered || crossing ? starBrightness : 0}
-            fogDensity={fogDensity}
-            clarity={entered}
-            revealProgress={entered ? wonder.awakening : 0}
-            awakeningProgress={entered ? wonder.awakening : 0}
-            atmosphereRefinement={entered ? wonder.atmosphere : 0}
-            elapsedMs={entered ? wonder.elapsedMs : 0}
+            backgroundMotionActive={!reducedMotion}
+            starBrightness={0.46}
+            fogDensity={0.35}
+            clarity
+            revealProgress={wonder.awakening}
+            awakeningProgress={wonder.awakening}
+            atmosphereRefinement={wonder.atmosphere}
+            elapsedMs={wonder.elapsedMs}
             attention={wonder.attention}
           />
-          <ObservatoryRings
-            visible={entered || crossing}
-            crossing={crossing}
-            awakening={wonder.awakening}
-          />
         </div>
-
-        {(phase === "threshold" || crossing) && (
-          <ThresholdHeroLandscape
-            crossing={crossing}
-            reducedMotion={reducedMotion}
-          />
-        )}
-      </div>
+      )}
 
       <SoundMuteControl
-        className="text-ivory/40 hover:text-ivory/60 transition-opacity duration-[2.8s]"
+        className="relative z-40 text-ivory/40 hover:text-ivory/60 transition-opacity duration-[2.8s]"
         iconOnly={!wonder.chromeVisible}
         style={{ opacity: wonder.chromeVisible ? wonder.chromeOpacity : 0.35 }}
       />
 
-      <AnimatePresence>
-        {(phase === "threshold" || crossing) && (
-          <div
-            key="threshold-layer"
-            className="threshold-hero-layer absolute inset-0 z-30 flex items-center justify-center overflow-y-auto overscroll-contain"
-            style={{
-              paddingTop: "max(1.5rem, env(safe-area-inset-top))",
-              paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))",
-            }}
-          >
-            <div
-              className={cn(
-                "hero-foreground relative z-10 mx-auto my-auto w-full max-w-2xl py-8 text-center sm:py-10",
-                contentVisible && "hero-foreground--visible",
-                crossing && "hero-foreground--exiting",
-              )}
-              style={{
-                paddingLeft: "max(1.25rem, env(safe-area-inset-left, 0px))",
-                paddingRight: "max(1.25rem, env(safe-area-inset-right, 0px))",
-                transform: "translateZ(0)",
-              }}
-            >
-              <p className="type-chamber text-ivory/38 sm:text-ivory/32">
-                Threshold
-              </p>
-
-              <h1 className="mt-5 font-heading text-[1.75rem] leading-[1.12] text-ivory sm:mt-7 sm:text-3xl md:text-[2.25rem]">
-                <HeadingBloom bloomClassName="hero-heading-bloom inset-[-2.5rem_-3.5rem] sm:inset-[-3rem_-4.5rem]">
-                  Living Terrain
-                </HeadingBloom>
-              </h1>
-
-              <div className="mx-auto mt-8 max-w-md space-y-5 text-left text-[0.9375rem] leading-[1.92] text-ivory/52 sm:mt-10 sm:max-w-lg sm:text-center sm:text-base sm:leading-[1.96]">
-                <p className="font-heading text-lg italic leading-[1.65] text-ivory/62 sm:text-xl">
-                  Something vast and quiet lies ahead.
-                </p>
-                <p>You need not understand it yet.</p>
-                <p className="text-ivory/44">
-                  Step forward when something pulls you.
-                </p>
-              </div>
-
-              {!crossing && (
-                <ThresholdChoices onExplore={handleCross} exploring={crossing} />
-              )}
-            </div>
-          </div>
-        )}
-      </AnimatePresence>
+      {(phase === "threshold" || crossing) && (
+        <ThresholdEntrance
+          crossing={crossing}
+          entering={crossing}
+          onEnter={handleCross}
+        />
+      )}
 
       <AnimatePresence>
         {wonder.chromeVisible && mapInteractive && (
@@ -394,9 +317,7 @@ export function ThresholdWorld() {
       <motion.div
         className="relative z-10 min-h-0 flex-1 isolation-isolate"
         initial={{ opacity: arriving ? 0.2 : 0 }}
-        animate={{
-          opacity: entered ? 1 : 0,
-        }}
+        animate={{ opacity: entered ? 1 : 0 }}
         transition={{
           duration: crossing ? 0.45 : arriving ? NAVIGATION.readingToMap.enter / 1000 : 0,
           delay: crossing ? 0 : arriving ? 0.12 : 0,
@@ -475,33 +396,5 @@ export function ThresholdWorld() {
         </div>
       </motion.div>
     </div>
-  );
-}
-
-function ObservatoryRings({
-  visible,
-  crossing,
-  awakening,
-}: {
-  visible: boolean;
-  crossing: boolean;
-  awakening: number;
-}) {
-  const opacity =
-    (visible ? 0.012 : 0) +
-    (crossing ? 0.006 : 0) +
-    awakening * 0.02;
-
-  return (
-    <svg
-      className="pointer-events-none absolute left-1/2 top-[42%] h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-[3s]"
-      style={{ opacity }}
-      viewBox="0 0 100 100"
-      aria-hidden
-    >
-      <circle cx="50" cy="50" r="48" fill="none" stroke="#788898" strokeWidth="0.12" />
-      <circle cx="50" cy="50" r="36" fill="none" stroke="#788898" strokeWidth="0.08" opacity="0.6" />
-      <circle cx="50" cy="50" r="24" fill="none" stroke="#788898" strokeWidth="0.06" opacity="0.4" />
-    </svg>
   );
 }
