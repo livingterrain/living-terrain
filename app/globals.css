@@ -972,23 +972,38 @@
     --atlas-amber: #c4a06a;
   }
 
-  .map-cover__journal {
-    cursor: pointer;
+  .map-cover__artifact {
+    cursor: default;
+    transition: transform 1.6s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  }
+
+  .map-cover__artifact:hover {
+    transform: translateY(-3px);
+  }
+
+  .map-cover__artifact:hover .map-cover__mount {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      inset 0 -1px 0 rgba(4, 6, 8, 0.3),
+      0 2px 0 rgba(196, 160, 106, 0.05),
+      0 14px 36px -12px rgba(4, 6, 8, 0.42);
   }
 
   .map-cover__mount {
-    padding: 0.625rem 0.75rem 0.875rem;
+    padding: 0.75rem 0.875rem 1rem;
     background: linear-gradient(
       168deg,
-      color-mix(in srgb, #1a1c20 88%, #c4a06a) 0%,
-      color-mix(in srgb, #121418 94%, transparent) 55%,
-      color-mix(in srgb, #0e1014 96%, transparent) 100%
+      color-mix(in srgb, #1c1e22 85%, #c4a06a) 0%,
+      color-mix(in srgb, #14161a 92%, transparent) 50%,
+      color-mix(in srgb, #101214 95%, transparent) 100%
     );
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      inset 0 -1px 0 rgba(4, 6, 8, 0.35),
-      0 1px 0 rgba(196, 160, 106, 0.04);
-    border: 1px solid color-mix(in srgb, #2a2824 90%, #c4a06a);
+      inset 0 -1px 0 rgba(4, 6, 8, 0.32),
+      0 1px 0 rgba(196, 160, 106, 0.04),
+      0 10px 28px -14px rgba(4, 6, 8, 0.38);
+    border: 1px solid color-mix(in srgb, #2a2824 88%, #c4a06a);
+    transition: box-shadow 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
   }
 
   .map-artifact__plaque {
@@ -1017,6 +1032,19 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .map-cover__artifact,
+    .map-cover__artifact:hover {
+      transform: none;
+    }
+
+    .map-cover__artifact:hover .map-cover__mount {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        inset 0 -1px 0 rgba(4, 6, 8, 0.32),
+        0 1px 0 rgba(196, 160, 106, 0.04),
+        0 10px 28px -14px rgba(4, 6, 8, 0.38);
+    }
+
     .world-lantern-reading__glow,
     .world-pathways-glow,
     .world-observatory-ring {

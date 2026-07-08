@@ -85,7 +85,7 @@ export function getTerritoryForMap(slug: string): Project | undefined {
   return getProjectBySlug(slug);
 }
 
-export { resolveMapCoverSrc } from "./maps";
+export { resolveMapCoverDimensions, resolveMapCoverSrc } from "./maps";
 
 export function getBooksByQuestionId(questionId: string): Book[] {
   return getAllBooks().filter((b) => b.questionIds.includes(questionId));

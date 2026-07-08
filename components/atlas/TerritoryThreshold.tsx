@@ -37,6 +37,9 @@ export function TerritoryThreshold({ map, territory }: TerritoryThresholdProps) 
         <div className="shrink-0 lg:pt-2">
           <MapCover
             map={map}
+            territoryHref={
+              territory ? `/chambers/${territory.slug}` : undefined
+            }
             journalUrl={map.purchaseUrl}
             scale="threshold"
             priority

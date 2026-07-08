@@ -30,7 +30,7 @@ export default function AtlasPage() {
           <p className="type-body mx-auto mb-24 max-w-sm text-center text-[0.875rem] leading-relaxed tracking-wide text-charcoal-muted/90 sm:mb-32">
             Stand before a region. Choose which territory to enter.
           </p>
-          <ul className="mx-auto flex max-w-lg flex-col gap-36 sm:gap-44">
+          <ul className="mx-auto flex max-w-xl flex-col gap-40 sm:gap-48">
             {maps.map((map, index) => (
               <MapArtifactCard key={map.id} map={map} index={index} />
             ))}
