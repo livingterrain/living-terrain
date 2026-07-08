@@ -43,7 +43,7 @@ export default async function ObservationPage({ params }: PageProps) {
 
   return (
     <ObservatoryReadingShell
-      collection="Field Note"
+      collection="Recorded observation"
       title={displayTitle(observation)}
       meta={
         <>

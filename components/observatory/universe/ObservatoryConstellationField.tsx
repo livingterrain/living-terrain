@@ -17,7 +17,8 @@ export function ObservatoryConstellationField({
     <div className="obs-universe-constellations">
       <ObservatoryEmergence minHeight="min-h-[55vh] sm:min-h-[70vh]" delay={0.1}>
         <p className="obs-universe-whisper mx-auto max-w-md text-center">
-          Every cluster of light holds a question. None exhausts what it points toward.
+          Inquiry charts — constellations of question, not answers. Each cluster
+          marks a region still under observation.
         </p>
       </ObservatoryEmergence>
 

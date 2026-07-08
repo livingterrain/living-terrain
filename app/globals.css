@@ -194,55 +194,75 @@
     color: var(--color-gold);
   }
 
-  /* Observatory — deep space research studio */
+  /* Observatory — warm research cabinet; evidence accumulates quietly */
   .observatory-realm {
-    --obs-amber: #d4bc8a;
-    --obs-amber-dim: #a89468;
-    --obs-ivory: #ebe6dc;
-    --obs-muted: #9aa4b4;
-    --obs-faint: #6e788c;
-    --obs-surface: #080a10;
-    --obs-elevated: #0e121c;
-    --obs-border: color-mix(in srgb, var(--obs-amber) 14%, transparent);
+    --obs-brass: #c4a06a;
+    --obs-brass-dim: #9a7f52;
+    --obs-amber: #c9a86c;
+    --obs-amber-dim: #9a7f52;
+    --obs-ivory: #ede4d4;
+    --obs-paper: #e8dfd0;
+    --obs-muted: #a89888;
+    --obs-faint: #7a6e62;
+    --obs-walnut: #1a1410;
+    --obs-surface: #161210;
+    --obs-elevated: #1e1814;
+    --obs-border: color-mix(in srgb, var(--obs-brass) 16%, transparent);
     background-color: var(--obs-surface);
     color: var(--obs-ivory);
   }
 
-  /* ── Observatory universe — infinite interior ── */
+  /* ── Observatory interior — quiet museum lighting, not deep space ── */
   .obs-universe-realm {
-    background-color: #040508;
+    background-color: #120e0b;
   }
 
   .obs-universe-field__sky {
     background:
       radial-gradient(
-        ellipse 120% 80% at 50% 110%,
-        #12182c 0%,
-        #0a0c14 38%,
-        #040508 72%,
-        #020204 100%
+        ellipse 100% 70% at 50% 100%,
+        color-mix(in srgb, #2a2018 90%, #c4a06a) 0%,
+        #161210 42%,
+        #120e0b 78%,
+        #0e0a08 100%
       );
+  }
+
+  .obs-universe-field__chart {
+    opacity: 0.045;
+    background-image:
+      linear-gradient(
+        color-mix(in srgb, var(--obs-brass) 40%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--obs-brass) 40%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, black 20%, transparent 72%);
   }
 
   .obs-universe-field__nebula {
     background:
       radial-gradient(
-        ellipse 55% 40% at 22% 18%,
-        color-mix(in srgb, #3a4868 18%, transparent),
-        transparent 70%
+        ellipse 50% 38% at 18% 72%,
+        color-mix(in srgb, var(--obs-brass) 12%, transparent),
+        transparent 68%
       ),
       radial-gradient(
-        ellipse 45% 35% at 78% 28%,
-        color-mix(in srgb, #2a3448 12%, transparent),
-        transparent 65%
+        ellipse 42% 32% at 82% 68%,
+        color-mix(in srgb, #8a6a48 10%, transparent),
+        transparent 62%
       );
-    opacity: 0.85;
+    opacity: 0.9;
   }
 
   .obs-universe-star {
-    background: color-mix(in srgb, #d8dce8 75%, transparent);
-    box-shadow: 0 0 4px color-mix(in srgb, #c8d0e8 35%, transparent);
-    animation: obs-star-breathe calc(8s + var(--star-offset, 0s)) var(--ease-breath) infinite;
+    background: color-mix(in srgb, var(--obs-paper) 55%, var(--obs-brass));
+    box-shadow: 0 0 3px color-mix(in srgb, var(--obs-brass) 25%, transparent);
+    animation: obs-star-breathe calc(10s + var(--star-offset, 0s)) var(--ease-breath) infinite;
   }
 
   .obs-universe-star--bright {
@@ -252,18 +272,18 @@
   @keyframes obs-star-breathe {
     0%,
     100% {
-      opacity: 0.35;
+      opacity: 0.2;
       transform: scale(1);
     }
     45% {
-      opacity: 1;
-      transform: scale(1.35);
+      opacity: 0.55;
+      transform: scale(1.15);
     }
   }
 
   .obs-universe-particle {
-    background: color-mix(in srgb, var(--obs-amber) 35%, transparent);
-    opacity: 0.12;
+    background: color-mix(in srgb, var(--obs-brass) 28%, transparent);
+    opacity: 0.08;
     animation: obs-particle-drift calc(42s + var(--particle-offset, 0s)) linear infinite;
   }
 
@@ -287,13 +307,13 @@
 
   .obs-universe-field__fog--a {
     background:
-      radial-gradient(ellipse 90% 40% at 30% 60%, #8a9ab8, transparent 70%);
+      radial-gradient(ellipse 90% 40% at 30% 60%, color-mix(in srgb, #6a5848 35%, transparent), transparent 70%);
     animation: obs-fog-a 28s var(--ease-breath) infinite alternate;
   }
 
   .obs-universe-field__fog--b {
     background:
-      radial-gradient(ellipse 70% 35% at 70% 45%, #6a7888, transparent 68%);
+      radial-gradient(ellipse 70% 35% at 70% 45%, color-mix(in srgb, #5a4838 28%, transparent), transparent 68%);
     animation: obs-fog-b 36s var(--ease-breath) infinite alternate-reverse;
     opacity: 0.05;
   }
@@ -303,9 +323,9 @@
       linear-gradient(
         180deg,
         transparent 40%,
-        color-mix(in srgb, #2a3040 25%, transparent) 100%
+        color-mix(in srgb, #2a2018 30%, transparent) 100%
       );
-    opacity: 0.12;
+    opacity: 0.14;
   }
 
   @keyframes obs-fog-a {
@@ -332,17 +352,17 @@
       linear-gradient(
         180deg,
         transparent,
-        color-mix(in srgb, #12182c 35%, transparent) 45%,
-        color-mix(in srgb, #080a10 80%, transparent) 100%
+        color-mix(in srgb, #2a2018 40%, transparent) 45%,
+        color-mix(in srgb, #120e0b 85%, transparent) 100%
       );
   }
 
   .obs-universe-field__lantern {
     background:
       radial-gradient(
-        ellipse 90% 55% at 50% 100%,
-        color-mix(in srgb, var(--obs-amber) 14%, transparent),
-        transparent 72%
+        ellipse 85% 50% at 50% 100%,
+        color-mix(in srgb, var(--obs-brass) 16%, transparent),
+        transparent 70%
       );
     pointer-events: none;
   }
@@ -351,7 +371,7 @@
     background: linear-gradient(
       180deg,
       transparent 0%,
-      color-mix(in srgb, #020204 35%, transparent) 55%,
+      color-mix(in srgb, #0e0a08 40%, transparent) 55%,
       color-mix(in srgb, #020204 75%, transparent) 100%
     );
   }
@@ -531,9 +551,10 @@
     display: block;
     width: 4px;
     height: 4px;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--obs-ivory) 50%, transparent);
-    animation: obs-star-breathe 14s var(--ease-breath) infinite;
+    border-radius: 1px;
+    background: color-mix(in srgb, var(--obs-paper) 45%, var(--obs-brass));
+    box-shadow: 0 0 4px color-mix(in srgb, var(--obs-brass) 20%, transparent);
+    animation: obs-star-breathe 16s var(--ease-breath) infinite;
   }
 
   .obs-universe-mist__text {
@@ -559,38 +580,37 @@
     opacity: 1;
   }
 
-  /* Growing lights */
+  /* Growing specimens — still forming, not luminous */
   .obs-universe-growing__halo {
     position: absolute;
-    inset: -1.5rem;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      color-mix(in srgb, var(--obs-amber) calc(var(--light-intensity, 0.5) * 40%), transparent),
-      transparent 72%
+    inset: -0.75rem;
+    border-radius: 2px;
+    background: color-mix(
+      in srgb,
+      var(--obs-brass) calc(var(--light-intensity, 0.5) * 16%),
+      transparent
     );
-    animation: obs-amber-pulse calc(10s + var(--light-intensity, 0.5) * 6s) var(--ease-breath) infinite;
+    border: 1px solid color-mix(in srgb, var(--obs-brass) 20%, transparent);
+    animation: obs-amber-pulse calc(12s + var(--light-intensity, 0.5) * 6s) var(--ease-breath) infinite;
   }
 
   @keyframes obs-amber-pulse {
     0%,
     100% {
-      opacity: 0.45;
-      transform: scale(0.92);
+      opacity: 0.3;
     }
     50% {
-      opacity: 0.95;
-      transform: scale(1.08);
+      opacity: 0.55;
     }
   }
 
   .obs-universe-growing__core {
     display: block;
-    width: calc(6px + var(--light-intensity, 0.5) * 6px);
-    height: calc(6px + var(--light-intensity, 0.5) * 6px);
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--obs-amber) calc(var(--light-intensity, 0.5) * 100%), transparent);
-    box-shadow: 0 0 20px color-mix(in srgb, var(--obs-amber) 50%, transparent);
+    width: calc(4px + var(--light-intensity, 0.5) * 3px);
+    height: calc(4px + var(--light-intensity, 0.5) * 3px);
+    border-radius: 1px;
+    background: color-mix(in srgb, var(--obs-brass) calc(var(--light-intensity, 0.5) * 85%), transparent);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--obs-brass) 28%, transparent);
   }
 
   .obs-universe-growing__meta {
@@ -649,11 +669,134 @@
   }
 
   .obs-universe-witness {
-    border-top: 1px solid color-mix(in srgb, var(--obs-amber) 10%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--obs-brass) 12%, transparent);
     padding-top: 0.5rem;
   }
 
+  .obs-specimen-surface {
+    border: 1px solid color-mix(in srgb, var(--obs-brass) 14%, transparent);
+    background: linear-gradient(
+      168deg,
+      color-mix(in srgb, var(--obs-walnut) 92%, var(--obs-brass)) 0%,
+      color-mix(in srgb, var(--obs-surface) 96%, transparent) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--obs-paper) 6%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, #0a0806 40%, transparent),
+      0 8px 32px -16px color-mix(in srgb, #0a0806 70%, transparent);
+    position: relative;
+  }
+
+  .obs-specimen-surface::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    background: linear-gradient(
+      225deg,
+      color-mix(in srgb, var(--obs-paper) 8%, transparent) 45%,
+      transparent 46%
+    );
+    border-bottom: 1px solid color-mix(in srgb, var(--obs-brass) 12%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--obs-brass) 10%, transparent);
+    pointer-events: none;
+  }
+
+  .obs-specimen-surface::after {
+    content: "";
+    position: absolute;
+    inset: 1.25rem 1.5rem auto;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--obs-brass) 14%, transparent) 20%,
+      color-mix(in srgb, var(--obs-brass) 14%, transparent) 80%,
+      transparent
+    );
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .obs-workbench__artifact {
+    position: absolute;
+    opacity: 0.055;
+    color: color-mix(in srgb, var(--obs-brass) 70%, var(--obs-paper));
+  }
+
+  .obs-workbench__artifact--notebook {
+    left: -2%;
+    bottom: 8%;
+    width: min(28vw, 220px);
+    transform: rotate(-6deg);
+  }
+
+  .obs-workbench__artifact--notebook-mobile {
+    left: -4%;
+    bottom: 12%;
+    width: 42vw;
+    opacity: 0.04;
+    transform: rotate(-5deg);
+  }
+
+  .obs-workbench__artifact--fold {
+    right: -1%;
+    top: 6%;
+    width: min(22vw, 170px);
+    transform: rotate(4deg);
+    opacity: 0.05;
+  }
+
+  .obs-workbench__artifact--botanical {
+    left: 2%;
+    top: 38%;
+    width: min(14vw, 100px);
+    transform: rotate(-2deg);
+    opacity: 0.045;
+  }
+
+  .obs-workbench__artifact--astro {
+    left: 4%;
+    top: 4%;
+    width: min(16vw, 120px);
+    transform: rotate(-8deg);
+    opacity: 0.04;
+  }
+
+  .obs-workbench__artifact--geo {
+    right: 1%;
+    bottom: 22%;
+    width: min(26vw, 200px);
+    transform: rotate(2deg);
+    opacity: 0.048;
+  }
+
+  .obs-workbench__artifact--note {
+    right: 14%;
+    top: 52%;
+    width: min(12vw, 88px);
+    transform: rotate(3deg);
+    opacity: 0.042;
+  }
+
+  .obs-universe-arrival__orient {
+    text-shadow: none;
+  }
+
+  .observatory-form button[type="button"][data-active="true"],
+  .observatory-form button[type="button"].obs-concept-active {
+    border-color: color-mix(in srgb, var(--obs-brass) 45%, transparent);
+    background: color-mix(in srgb, var(--obs-brass) 8%, transparent);
+    color: var(--obs-ivory);
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .obs-workbench__artifact {
+      opacity: 0.035;
+    }
+
     .obs-universe-star,
     .obs-universe-particle,
     .obs-universe-field__fog--a,
@@ -761,7 +904,19 @@
   }
 
   .observatory-form button[type="submit"]:hover:not(:disabled) {
-    color: var(--obs-amber);
+    color: var(--obs-brass);
+  }
+
+  .observation-evidence {
+    border-bottom: 1px solid color-mix(in srgb, var(--obs-brass) 10%, transparent);
+    padding: 1.75rem 0;
+  }
+
+  .observation-evidence__label {
+    font-size: 0.5625rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--obs-brass-dim);
   }
 
   .hairline { height: 1px; background: var(--color-rule); }

@@ -17,35 +17,36 @@ export function ObservationCard({ observation, compact }: ObservationCardProps) 
   const href = `/observatory/observations/${observation.slug}`;
 
   return (
-    <article className="group border-b border-rule/35 py-7 sm:py-8">
+    <article className="observation-evidence group">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="sm:max-w-xl">
-          <Link href={href} className="block">
-            <h3 className="font-heading text-lg text-charcoal transition-colors duration-700 group-hover:text-forest sm:text-xl">
+          <p className="observation-evidence__label">Recorded observation</p>
+          <Link href={href} className="mt-2 block">
+            <h3 className="font-heading text-lg text-[var(--obs-ivory)] transition-colors duration-700 group-hover:text-[var(--obs-brass)] sm:text-xl">
               {displayTitle(observation)}
             </h3>
           </Link>
           {!compact && (
-            <p className="type-body mt-3 text-[0.9375rem] leading-relaxed text-charcoal-muted line-clamp-4">
+            <p className="type-body mt-3 text-[0.9375rem] leading-relaxed text-[var(--obs-muted)] line-clamp-4">
               {observation.body}
             </p>
           )}
           {themes.length > 0 && (
-            <p className="type-meta mt-4 text-forest-faint">
+            <p className="type-meta mt-4 text-[var(--obs-brass-dim)]">
               {themes.join(" · ")}
             </p>
           )}
           {observation.terrainLocation && (
-            <p className="type-meta mt-2 text-charcoal-faint/80">
+            <p className="type-meta mt-2 text-[var(--obs-faint)]">
               {observation.terrainLocation}
             </p>
           )}
         </div>
         <div className="shrink-0 text-right">
-          <time className="type-meta block">
+          <time className="type-meta block text-[var(--obs-faint)]">
             {formatDate(observation.createdAt)}
           </time>
-          <p className="type-meta mt-2 text-charcoal-faint/70">
+          <p className="type-meta mt-2 text-[var(--obs-faint)]/80">
             {contributorLabel(observation)}
           </p>
         </div>

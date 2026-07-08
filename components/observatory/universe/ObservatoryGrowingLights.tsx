@@ -13,13 +13,13 @@ export function ObservatoryGrowingLights({ lights }: ObservatoryGrowingLightsPro
   return (
     <ObservatoryEmergence minHeight="min-h-[80vh] sm:min-h-[105vh]" delay={0.1}>
       <div className="obs-universe-growing mx-auto w-full max-w-3xl">
-        <p className="obs-universe-chamber text-center">Still becoming</p>
+        <p className="obs-universe-chamber text-center">Still forming</p>
         <p className="obs-universe-whisper mx-auto mt-4 max-w-md text-center text-sm">
-          Some lights are only beginning to gather. They have not decided what
-          they are yet.
+          Specimens on the workbench — labeled, but not yet catalogued. Some may
+          never be.
         </p>
 
-        <div className="relative mx-auto mt-24 aspect-[16/10] w-full max-w-2xl sm:mt-32">
+        <div className="obs-specimen-surface relative mx-auto mt-24 aspect-[16/10] w-full max-w-2xl rounded-sm p-6 sm:mt-32 sm:p-8">
           {lights.map(({ idea, x, y, intensity }) => (
             <Link
               key={idea.id}

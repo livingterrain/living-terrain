@@ -20,8 +20,8 @@ export function ObservatoryDepthField() {
   const mx = useMotionValue(0);
   const px = useSpring(mx, { stiffness: 12, damping: 40, mass: 1.8 });
 
-  const starCount = isMobile ? 95 : 220;
-  const particleCount = isMobile ? 10 : 36;
+  const starCount = isMobile ? 42 : 88;
+  const particleCount = isMobile ? 6 : 18;
 
   const stars = useMemo(() => generateStarField(starCount), [starCount]);
   const particles = useMemo(
@@ -62,6 +62,7 @@ export function ObservatoryDepthField() {
       aria-hidden
     >
       <div className="obs-universe-field__sky absolute inset-0" />
+      <div className="obs-universe-field__chart absolute inset-0" />
 
       <motion.div
         className="obs-universe-field__nebula absolute inset-0"

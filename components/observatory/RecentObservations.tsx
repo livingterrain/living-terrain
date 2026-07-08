@@ -10,12 +10,12 @@ export function RecentObservations({ observations }: RecentObservationsProps) {
 
   return (
     <section aria-labelledby="recent-observations" className="mt-20">
-      <h2 id="recent-observations" className="type-folio">
-        Recent Observations
+      <h2 id="recent-observations" className="type-folio text-[var(--obs-brass-dim)]">
+        Recent entries in the ledger
       </h2>
-      <p className="type-body mt-3 max-w-xl text-[0.9375rem] text-charcoal-muted">
-        What visitors have noticed — added to the shared investigation, without
-        hurry or debate.
+      <p className="type-body mt-3 max-w-xl text-[0.9375rem] text-[var(--obs-muted)]">
+        What visitors have recorded — evidence added to the shared investigation,
+        without hurry or debate.
       </p>
       <div className="mt-8">
         {observations.map((observation) => (

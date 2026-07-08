@@ -19,8 +19,8 @@ export function ObservatoryPathwayField({ threads }: ObservatoryPathwayFieldProp
     <div className="obs-universe-pathways">
       <ObservatoryEmergence minHeight="min-h-[60vh] sm:min-h-[75vh]" delay={0.05}>
         <p className="obs-universe-whisper mx-auto max-w-lg text-center">
-          Pathways wind through the same sky — not categories, but routes someone
-          might walk twice and never the same way.
+          Pathways traced in the ledger — routes someone might walk twice and
+          never read the same way.
         </p>
       </ObservatoryEmergence>
 

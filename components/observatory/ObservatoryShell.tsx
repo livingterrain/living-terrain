@@ -11,7 +11,7 @@ export function ObservatoryShell({ children, className }: ObservatoryShellProps)
   return (
     <div className={cn("observatory-realm relative min-h-[calc(100dvh-4.5rem)] sm:min-h-[calc(100dvh-5rem)]", className)}>
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
         style={{
           background:
             "radial-gradient(ellipse 80% 60% at 50% 0%, #c4a06a 0%, transparent 70%)",
@@ -30,7 +30,7 @@ interface ObservatoryThresholdProps {
 
 export function ObservatoryThreshold({
   title = "Observatory",
-  description = "A quiet place where ideas are collected, connected, and allowed to mature.",
+  description = "A warm cabinet where evidence quietly accumulates — questions open, patterns slow to emerge.",
 }: ObservatoryThresholdProps) {
   return (
     <header className="border-b border-[var(--obs-border)] px-7 py-20 text-center sm:px-12 sm:py-28 lg:px-14">

@@ -8,7 +8,7 @@ import { getObservatoryCollections } from "@/lib/observatory/collections";
 export const metadata: Metadata = {
   title: "Observatory",
   description:
-    "An impossibly vast interior — where ideas exist as light, and curiosity is the only compass.",
+    "A warm cabinet of living observations — where evidence quietly accumulates and questions remain open.",
 };
 
 export default function ObservatoryPage() {

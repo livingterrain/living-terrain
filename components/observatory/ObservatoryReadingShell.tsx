@@ -5,7 +5,7 @@ import { Thread } from "@/components/thread";
 import { cn } from "@/lib/utils";
 
 interface ObservatoryReadingShellProps {
-  collection: "Essay" | "Field Note" | "Thread" | "Growing Idea";
+  collection: "Essay" | "Field Note" | "Thread" | "Growing Idea" | "Recorded observation";
   title: string;
   subtitle?: string;
   meta?: ReactNode;

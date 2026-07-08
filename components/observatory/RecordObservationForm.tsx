@@ -70,7 +70,7 @@ export function RecordObservationForm({
 
   if (status === "success") {
     return (
-      <p className={cn("type-body text-[0.9375rem] text-forest", className)}>
+      <p className={cn("type-body text-[0.9375rem] text-[var(--obs-brass)]", className)}>
         {message}
       </p>
     );
@@ -80,7 +80,7 @@ export function RecordObservationForm({
     <form onSubmit={handleSubmit} className={cn("space-y-8", className)}>
       <div>
         <label htmlFor="obs-title" className="type-folio text-charcoal-faint">
-          Title <span className="font-normal opacity-60">(optional)</span>
+          Label <span className="font-normal opacity-60">(optional)</span>
         </label>
         <input
           id="obs-title"
@@ -90,7 +90,7 @@ export function RecordObservationForm({
           maxLength={120}
           disabled={status === "loading"}
           className="mt-3 w-full border-b border-rule/50 bg-transparent py-2 font-heading text-lg text-charcoal placeholder:text-charcoal-faint/40 focus:border-forest/40 focus:outline-none"
-          placeholder="A few words, if any"
+          placeholder="A few words for the catalog card"
         />
       </div>
 
@@ -108,16 +108,16 @@ export function RecordObservationForm({
           rows={6}
           disabled={status === "loading"}
           className="mt-3 w-full resize-y border-b border-rule/50 bg-transparent py-2 font-body text-[0.9375rem] leading-relaxed text-charcoal placeholder:text-charcoal-faint/40 focus:border-forest/40 focus:outline-none"
-          placeholder="What did you notice? Record it without hurry."
+          placeholder="What did you notice? Record it as evidence, without hurry."
         />
       </div>
 
       <fieldset>
         <legend className="type-folio text-charcoal-faint">
-          Concepts connected
+          Concepts touched
         </legend>
         <p className="type-body mt-2 text-[0.8125rem] text-charcoal-muted">
-          Which ideas on the terrain does this touch?
+          Which regions of the terrain does this evidence relate to?
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {concepts.map((concept) => {
@@ -129,10 +129,10 @@ export function RecordObservationForm({
                 onClick={() => toggleConcept(concept.id)}
                 disabled={status === "loading"}
                 className={cn(
-                  "rounded-full border px-3 py-1.5 text-[0.75rem] tracking-wide transition-colors duration-700",
+                  "rounded-sm border px-3 py-1.5 text-[0.75rem] tracking-wide transition-colors duration-700",
                   active
-                    ? "border-forest/50 bg-forest/5 text-forest"
-                    : "border-rule/50 text-charcoal-faint hover:border-forest/30 hover:text-charcoal-muted",
+                    ? "obs-concept-active border-[var(--obs-brass)]/45 bg-[color-mix(in_srgb,var(--obs-brass)_8%,transparent)] text-[var(--obs-ivory)]"
+                    : "border-rule/50 text-charcoal-faint hover:border-[var(--obs-brass)]/30 hover:text-charcoal-muted",
                 )}
               >
                 {concept.title}
@@ -144,7 +144,7 @@ export function RecordObservationForm({
 
       <div>
         <label htmlFor="obs-location" className="type-folio text-charcoal-faint">
-          Location in the terrain{" "}
+          Where in the terrain{" "}
           <span className="font-normal opacity-60">(optional)</span>
         </label>
         <input
@@ -155,7 +155,7 @@ export function RecordObservationForm({
           maxLength={120}
           disabled={status === "loading"}
           className="mt-3 w-full border-b border-rule/50 bg-transparent py-2 font-body text-[0.9375rem] text-charcoal placeholder:text-charcoal-faint/40 focus:border-forest/40 focus:outline-none"
-          placeholder="A realm, inquiry, or path where this arose"
+          placeholder="A chamber, inquiry, or path where this arose"
         />
       </div>
 
@@ -166,11 +166,11 @@ export function RecordObservationForm({
             checked={anonymous}
             onChange={(e) => setAnonymous(e.target.checked)}
             disabled={status === "loading"}
-            className="mt-1 accent-forest"
+            className="mt-1 accent-[var(--obs-brass)]"
           />
           <span className="type-body text-[0.875rem] text-charcoal-muted">
-            Record anonymously — your observation joins the inquiry without a
-            name attached.
+            Record without attribution — the evidence joins the ledger; the name
+            does not.
           </span>
         </label>
 
@@ -180,7 +180,7 @@ export function RecordObservationForm({
               htmlFor="obs-name"
               className="type-folio text-charcoal-faint"
             >
-              Name <span className="font-normal opacity-60">(optional)</span>
+              Attribution <span className="font-normal opacity-60">(optional)</span>
             </label>
             <input
               id="obs-name"
@@ -190,7 +190,7 @@ export function RecordObservationForm({
               maxLength={60}
               disabled={status === "loading"}
               className="mt-3 w-full border-b border-rule/50 bg-transparent py-2 font-body text-[0.875rem] text-charcoal focus:border-forest/40 focus:outline-none"
-              placeholder="How you wish to be credited, if at all"
+              placeholder="How you wish to appear in the catalog, if at all"
             />
           </div>
         )}
@@ -199,9 +199,9 @@ export function RecordObservationForm({
       <button
         type="submit"
         disabled={status === "loading" || body.trim().length < 20 || !themeIds.length}
-        className="type-body text-[0.875rem] text-charcoal transition-colors duration-700 hover:text-forest disabled:opacity-40"
+        className="type-body text-[0.875rem] text-charcoal transition-colors duration-700 hover:text-[var(--obs-brass)] disabled:opacity-40"
       >
-        {status === "loading" ? "Recording…" : "Add to the Observatory"}
+        {status === "loading" ? "Recording…" : "Place in the ledger"}
       </button>
 
       {status === "error" && (

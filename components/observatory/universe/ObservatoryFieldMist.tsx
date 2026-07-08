@@ -15,13 +15,13 @@ export function ObservatoryFieldMist({ sparks }: ObservatoryFieldMistProps) {
   return (
     <ObservatoryEmergence minHeight="min-h-[75vh] sm:min-h-[100vh]" delay={0.08}>
       <div className="obs-universe-mist mx-auto w-full max-w-3xl">
-        <p className="obs-universe-chamber text-center">Field observations</p>
+        <p className="obs-universe-chamber text-center">Field notes</p>
         <p className="obs-universe-whisper mx-auto mt-4 max-w-md text-center text-sm">
-          Fragments caught at the edge of understanding — drifting in the lower
-          atmosphere.
+          Fragments from the lower drawers — observations caught before they
+          knew what they were becoming.
         </p>
 
-        <div className="relative mx-auto mt-24 aspect-[4/3] w-full max-w-2xl sm:mt-28">
+        <div className="obs-specimen-surface relative mx-auto mt-24 aspect-[4/3] w-full max-w-2xl rounded-sm p-6 sm:mt-28 sm:p-8">
           {sparks.map(({ note, x, y, depth }) => (
             <Link
               key={note.id}
