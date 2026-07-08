@@ -385,6 +385,1292 @@
     opacity: 0.92;
   }
 
+  /* ══ The glasshouse interior — a living conservatory observatory ══ */
+  .obs-conservatory {
+    --cons-day: #ecdfc2;
+    --cons-green: #7c8a55;
+    --cons-stone: #2a2018;
+    color: var(--obs-brass);
+  }
+
+  .obs-cons__sky {
+    background:
+      radial-gradient(
+        ellipse 68% 52% at 50% -10%,
+        color-mix(in srgb, var(--cons-day) 40%, transparent) 0%,
+        color-mix(in srgb, #3a2e20 55%, transparent) 26%,
+        transparent 60%
+      ),
+      linear-gradient(
+        180deg,
+        #17110b 0%,
+        #1b140d 38%,
+        #130e09 70%,
+        #0c0805 100%
+      );
+  }
+
+  .obs-cons__daylight {
+    background: radial-gradient(
+      ellipse 42% 40% at 50% -4%,
+      color-mix(in srgb, var(--cons-day) 55%, transparent),
+      transparent 62%
+    );
+    opacity: 0.4;
+    mix-blend-mode: screen;
+  }
+
+  .obs-cons__rays {
+    background: repeating-conic-gradient(
+      from 158deg at 50% -6%,
+      color-mix(in srgb, var(--cons-day) 20%, transparent) 0deg 1.6deg,
+      transparent 1.6deg 8deg
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 60% 80% at 50% 0%,
+      black,
+      transparent 70%
+    );
+    mask-image: radial-gradient(
+      ellipse 60% 80% at 50% 0%,
+      black,
+      transparent 70%
+    );
+    opacity: 0.26;
+    mix-blend-mode: screen;
+  }
+
+  .obs-cons__dome {
+    display: flex;
+    justify-content: center;
+    opacity: 0.72;
+  }
+
+  .obs-cons__dome-svg {
+    width: min(1500px, 150vw);
+    height: auto;
+  }
+
+  .obs-cons__glass {
+    fill: color-mix(in srgb, var(--cons-day) 7%, transparent);
+  }
+
+  .obs-cons__iron {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 42%, transparent);
+    stroke-width: 1.1;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__iron-heavy {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 58%, transparent);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__stage {
+    height: min(90vh, 940px);
+  }
+
+  .obs-cons__canopy {
+    position: absolute;
+    left: 50%;
+    bottom: 30vh;
+    transform: translateX(-50%);
+    width: min(640px, 86vw);
+    height: min(640px, 86vw);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--cons-green) 22%, transparent),
+      transparent 64%
+    );
+    opacity: 0.5;
+    filter: blur(10px);
+  }
+
+  .obs-cons__tree-svg {
+    position: absolute;
+    left: 50%;
+    bottom: 22vh;
+    transform: translateX(-50%);
+    width: min(320px, 44vw);
+    height: auto;
+  }
+
+  .obs-cons__bark {
+    fill: color-mix(in srgb, #0e0a06 88%, transparent);
+  }
+
+  .obs-cons__branch path {
+    fill: none;
+    stroke: color-mix(in srgb, #0e0a06 92%, transparent);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__leaves ellipse {
+    fill: color-mix(in srgb, var(--cons-green) 24%, #0b0805);
+    opacity: 0.55;
+  }
+
+  .obs-cons__arch-svg {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(620px, 84vw);
+    height: auto;
+    opacity: 0.97;
+  }
+
+  .obs-cons__stone {
+    fill: color-mix(in srgb, var(--cons-stone) 82%, #120d09);
+  }
+
+  .obs-cons__stone-line {
+    fill: none;
+    stroke: color-mix(in srgb, #000 45%, transparent);
+    stroke-width: 1.4;
+  }
+
+  .obs-cons__stone-edge {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 22%, transparent);
+    stroke-width: 1.2;
+  }
+
+  .obs-cons__sides {
+    opacity: 0.5;
+  }
+
+  .obs-cons__side {
+    position: absolute;
+    bottom: 0;
+    height: min(82vh, 860px);
+    width: auto;
+  }
+
+  .obs-cons__side--l {
+    left: 0;
+  }
+
+  .obs-cons__side--r {
+    right: 0;
+  }
+
+  .obs-cons__side-iron path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 26%, transparent);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__foliage {
+    opacity: 0.6;
+  }
+
+  .obs-cons__frond {
+    height: auto;
+  }
+
+  .obs-cons__foliage--tl {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    width: min(280px, 30vw);
+  }
+
+  .obs-cons__foliage--tr {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: min(280px, 30vw);
+    transform: scaleX(-1);
+  }
+
+  .obs-cons__frond-stem path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--cons-green) 55%, #0e0a06);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__frond-leaf ellipse {
+    fill: color-mix(in srgb, var(--cons-green) 46%, #0e0a06);
+    opacity: 0.5;
+  }
+
+  .obs-cons__mote {
+    background: color-mix(in srgb, var(--cons-day) 60%, var(--obs-brass));
+    box-shadow: 0 0 4px color-mix(in srgb, var(--cons-day) 40%, transparent);
+    opacity: 0;
+    animation-name: obs-cons-mote;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes obs-cons-mote {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.5;
+    }
+    50% {
+      transform: translateY(-30px);
+    }
+    80% {
+      opacity: 0.32;
+    }
+    100% {
+      transform: translateY(-64px);
+      opacity: 0;
+    }
+  }
+
+  .obs-cons__fog {
+    background: radial-gradient(
+      ellipse 120% 38% at 50% 60%,
+      color-mix(in srgb, #6a5a44 22%, transparent),
+      transparent 70%
+    );
+    opacity: 0.18;
+    mix-blend-mode: screen;
+  }
+
+  .obs-cons__water {
+    height: 32vh;
+    overflow: hidden;
+  }
+
+  .obs-cons__water-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse 38% 92% at 50% 0%,
+        color-mix(in srgb, var(--cons-day) 13%, transparent),
+        transparent 60%
+      ),
+      linear-gradient(
+        180deg,
+        transparent,
+        color-mix(in srgb, #100b07 72%, transparent) 26%,
+        #0a0604 100%
+      );
+  }
+
+  .obs-cons__water-sheen {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent 0 6px,
+      color-mix(in srgb, var(--cons-day) 5%, transparent) 6px 7px
+    );
+    -webkit-mask-image: linear-gradient(180deg, black, transparent 68%);
+    mask-image: linear-gradient(180deg, black, transparent 68%);
+    opacity: 0.4;
+    animation: obs-cons-ripple 9s ease-in-out infinite alternate;
+  }
+
+  @keyframes obs-cons-ripple {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(3px);
+    }
+  }
+
+  .obs-cons__waterline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--obs-brass) 30%, transparent) 30%,
+      color-mix(in srgb, var(--obs-brass) 30%, transparent) 70%,
+      transparent
+    );
+    opacity: 0.5;
+  }
+
+  /* Misty garden glowing through the central arch */
+  .obs-cons__garden {
+    position: absolute;
+    left: 50%;
+    bottom: 24vh;
+    transform: translateX(-50%);
+    width: min(360px, 46vw);
+    height: min(520px, 62vh);
+    background: radial-gradient(
+      ellipse 60% 66% at 50% 34%,
+      color-mix(in srgb, var(--cons-day) 44%, transparent),
+      color-mix(in srgb, var(--cons-green) 18%, transparent) 50%,
+      transparent 74%
+    );
+    filter: blur(8px);
+    opacity: 0.9;
+  }
+
+  /* Receding colonnade */
+  .obs-cons__arcade {
+    opacity: 0.62;
+  }
+
+  .obs-cons__side-iron,
+  .obs-cons__side-iron path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 26%, transparent);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__book {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 30%, #0e0a06);
+    stroke-width: 6;
+    stroke-linecap: round;
+    opacity: 0.42;
+  }
+
+  .obs-cons__frame {
+    fill: color-mix(in srgb, #0e0a06 55%, transparent);
+    stroke: color-mix(in srgb, var(--obs-brass) 30%, transparent);
+    stroke-width: 1.3;
+  }
+
+  .obs-cons__frame-mark {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 34%, transparent);
+    stroke-width: 1;
+  }
+
+  .obs-cons__jar path {
+    fill: color-mix(in srgb, var(--cons-day) 6%, transparent);
+    stroke: color-mix(in srgb, var(--obs-brass) 24%, transparent);
+    stroke-width: 1;
+  }
+
+  .obs-cons__jar path.obs-cons__jar-life {
+    fill: color-mix(in srgb, var(--cons-green) 34%, #0e0a06);
+    stroke: none;
+    opacity: 0.6;
+  }
+
+  /* Perspective stone floor */
+  .obs-cons__floor {
+    height: 52vh;
+    opacity: 0.55;
+  }
+
+  .obs-cons__floor::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, #241a12 42%, transparent) 32%,
+      color-mix(in srgb, #17110b 74%, transparent) 100%
+    );
+  }
+
+  .obs-cons__floor-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-mask-image: linear-gradient(180deg, transparent 2%, black 40%);
+    mask-image: linear-gradient(180deg, transparent 2%, black 40%);
+  }
+
+  .obs-cons__floor-line {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 20%, transparent);
+    stroke-width: 1;
+  }
+
+  /* Brass instruments */
+  .obs-cons__instruments {
+    opacity: 0.72;
+  }
+
+  .obs-cons__armillary {
+    position: absolute;
+    right: 12%;
+    bottom: 22vh;
+    width: min(148px, 15vw);
+    height: auto;
+  }
+
+  .obs-cons__telescope {
+    position: absolute;
+    left: 11%;
+    bottom: 22vh;
+    width: min(150px, 15vw);
+    height: auto;
+  }
+
+  .obs-cons__brass path,
+  .obs-cons__brass circle,
+  .obs-cons__brass ellipse {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 42%, transparent);
+    stroke-width: 1.3;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__brass circle.obs-cons__brass-core {
+    fill: color-mix(in srgb, var(--obs-amber) 58%, transparent);
+    stroke: none;
+  }
+
+  .obs-cons__brass path.obs-cons__brass-barrel {
+    stroke-width: 5;
+    stroke: color-mix(in srgb, var(--obs-brass) 46%, transparent);
+  }
+
+  /* A single leaf drifting down through the light */
+  .obs-cons__leaf-fall {
+    position: absolute;
+    top: -8%;
+    left: 43%;
+    width: 20px;
+    opacity: 0.5;
+    animation: obs-cons-leaf 28s linear infinite;
+  }
+
+  .obs-cons__leaf-svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .obs-cons__leaf-shape {
+    fill: color-mix(in srgb, var(--cons-green) 30%, #100b06);
+    stroke: color-mix(in srgb, var(--cons-green) 40%, #100b06);
+    stroke-width: 1;
+    opacity: 0.85;
+  }
+
+  .obs-cons__leaf-vein {
+    fill: none;
+    stroke: color-mix(in srgb, var(--cons-green) 50%, transparent);
+    stroke-width: 0.8;
+  }
+
+  @keyframes obs-cons-leaf {
+    0% {
+      transform: translateY(-8vh) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.5;
+    }
+    88% {
+      opacity: 0.4;
+    }
+    100% {
+      transform: translateY(96vh) translateX(70px) rotate(230deg);
+      opacity: 0;
+    }
+  }
+
+  .obs-cons__vignette {
+    background: radial-gradient(
+      ellipse 92% 82% at 50% 42%,
+      transparent 46%,
+      color-mix(in srgb, #000 60%, transparent) 100%
+    );
+    opacity: 0.52;
+  }
+
+  /* Cathedral-scale glazed vault + carved stone (room redesign) */
+  .obs-cons__vault {
+    opacity: 0.98;
+  }
+
+  .obs-cons__vault-svg {
+    width: min(1500px, 150vw);
+    height: auto;
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.25));
+  }
+
+  .obs-cons__vault-rib {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 44%, transparent);
+    stroke-width: 1.45;
+    stroke-linecap: round;
+    opacity: 0.72;
+  }
+
+  .obs-cons__vault-rib--heavy {
+    stroke-width: 2.35;
+    opacity: 0.96;
+  }
+
+  .obs-cons__vault-verd {
+    fill: none;
+    stroke: color-mix(in srgb, var(--cons-green) 58%, transparent);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    opacity: 0.52;
+    filter: blur(0.2px);
+  }
+
+  .obs-cons__oculus-ring {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 52%, transparent);
+    stroke-width: 1.15;
+    opacity: 0.52;
+  }
+
+  .obs-cons__oculus-core {
+    fill: color-mix(in srgb, var(--obs-amber) 38%, transparent);
+    opacity: 0.62;
+  }
+
+  /* Subtle pane-grid impression on the glass */
+  .obs-cons__panes {
+    opacity: 0.16;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent 0 11px,
+        color-mix(in srgb, var(--obs-brass) 18%, transparent) 11px 12px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0 14px,
+        color-mix(in srgb, var(--obs-brass) 14%, transparent) 14px 15px
+      );
+    -webkit-mask-image: radial-gradient(
+      ellipse 55% 62% at 50% 10%,
+      black 0 62%,
+      transparent 82%
+    );
+    mask-image: radial-gradient(
+      ellipse 55% 62% at 50% 10%,
+      black 0 62%,
+      transparent 82%
+    );
+  }
+
+  /* Great central arch opening */
+  .obs-cons__ga-svg {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(620px, 84vw);
+    height: auto;
+    opacity: 0.97;
+    filter: drop-shadow(0 18px 38px rgba(0, 0, 0, 0.25));
+  }
+
+  .obs-cons__ga-rim {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 40%, transparent);
+    stroke-width: 2.55;
+    opacity: 0.55;
+    filter: none;
+  }
+
+  .obs-cons__voussoir {
+    stroke: color-mix(in srgb, var(--obs-brass) 20%, transparent);
+    stroke-width: 0.85;
+    opacity: 0.9;
+  }
+
+  /* Incised groove primitive (two-line engraving) */
+  .obs-eng-dark {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.65);
+    stroke-width: 1.65;
+    stroke-linecap: round;
+    opacity: 0.85;
+  }
+
+  .obs-eng-lite {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 32%, transparent);
+    stroke-width: 1.15;
+    stroke-linecap: round;
+    opacity: 0.62;
+  }
+
+  .obs-cons__ga-emblem circle {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 32%, transparent);
+    stroke-width: 1.25;
+    opacity: 0.6;
+  }
+
+  .obs-cons__ga-emblem line {
+    stroke: color-mix(in srgb, var(--obs-brass) 40%, transparent);
+    stroke-width: 0.85;
+    opacity: 0.48;
+  }
+
+  .obs-cons__roots path {
+    fill: none;
+    stroke: color-mix(in srgb, #0d0a06 92%, transparent);
+    stroke-width: 3.05;
+    stroke-linecap: round;
+    opacity: 0.58;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
+  }
+
+  /* Engraved floor medallion lying under the light */
+  .obs-cons__medallion {
+    position: absolute;
+    inset-x: 0;
+    bottom: 0;
+    height: 52vh;
+    pointer-events: none;
+  }
+
+  .obs-cons__med-svg {
+    position: absolute;
+    left: 50%;
+    bottom: -2vh;
+    transform: translateX(-50%);
+    width: min(560px, 72vw);
+    height: auto;
+    opacity: 0.55;
+  }
+
+  .obs-cons__med-glow {
+    fill: color-mix(in srgb, var(--obs-brass) 22%, transparent);
+    opacity: 0.28;
+  }
+
+  .obs-cons__med-line {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 26%, transparent);
+    stroke-width: 1.15;
+    opacity: 0.42;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__med-tick {
+    fill: none;
+    stroke: color-mix(in srgb, var(--obs-brass) 20%, transparent);
+    stroke-width: 0.7;
+    opacity: 0.28;
+  }
+
+  .obs-cons__med-core {
+    fill: color-mix(in srgb, var(--obs-amber) 40%, transparent);
+    opacity: 0.62;
+  }
+
+  /* Aerial perspective — distance dissolves into warm haze */
+  .obs-cons__depth {
+    background: radial-gradient(
+      ellipse 72% 48% at 50% 40%,
+      color-mix(in srgb, var(--cons-day) 12%, transparent),
+      transparent 66%
+    );
+    opacity: 0.5;
+    mix-blend-mode: screen;
+  }
+
+  /* Stone material — lit edges, gradient shading, moss reclaiming the base */
+  .obs-cons__stone-lit {
+    fill: none;
+    stroke: color-mix(in srgb, var(--cons-day) 34%, transparent);
+    stroke-width: 1.1;
+    opacity: 0.4;
+  }
+
+  .obs-cons__moss ellipse {
+    fill: color-mix(in srgb, var(--cons-green) 48%, #0a0705);
+  }
+
+  /* Central arch — backlit inner rim from the garden beyond */
+  .obs-cons__arch-rim {
+    fill: none;
+    stroke: color-mix(in srgb, var(--cons-day) 46%, transparent);
+    stroke-width: 2.4;
+    opacity: 0.4;
+    filter: blur(1.5px);
+  }
+
+  /* Ivy climbing the stone */
+  .obs-cons__ivy-svg {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(632px, 85vw);
+    height: auto;
+    opacity: 0.72;
+  }
+
+  .obs-cons__ivy path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--cons-green) 44%, #0d0a06);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__ivy-leaf path {
+    fill: color-mix(in srgb, var(--cons-green) 42%, #0a0705);
+    opacity: 0.72;
+  }
+
+  /* Tendrils hanging from the dome ironwork */
+  .obs-cons__tendrils {
+    opacity: 0.5;
+  }
+
+  .obs-cons__tendril {
+    position: absolute;
+    top: min(6vh, 60px);
+    width: min(48px, 8vw);
+    height: auto;
+    transform-origin: 50% 0;
+    animation: obs-cons-sway 12s ease-in-out infinite alternate;
+  }
+
+  .obs-cons__tendril--a {
+    left: 41%;
+  }
+
+  .obs-cons__tendril--b {
+    left: 51%;
+    animation-duration: 15s;
+    animation-delay: -4s;
+  }
+
+  .obs-cons__tendril--c {
+    left: 57%;
+    animation-duration: 13.5s;
+    animation-delay: -8s;
+  }
+
+  .obs-cons__tendril-stem path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--cons-green) 46%, #0d0a06);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__tendril-leaf path {
+    fill: color-mix(in srgb, var(--cons-green) 42%, #0a0705);
+    opacity: 0.7;
+  }
+
+  @keyframes obs-cons-sway {
+    from {
+      transform: rotate(-2deg);
+    }
+    to {
+      transform: rotate(2.4deg);
+    }
+  }
+
+  /* Warm pool of light landing on the stone floor */
+  .obs-cons__lightpool {
+    background: radial-gradient(
+      ellipse 40% 30% at 50% 72%,
+      color-mix(in srgb, var(--cons-day) 22%, transparent),
+      transparent 60%
+    );
+    opacity: 0.55;
+    mix-blend-mode: screen;
+  }
+
+  /* Soft shadow grounding the tree on the floor */
+  .obs-cons__stage::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 19vh;
+    transform: translateX(-50%);
+    width: min(440px, 54vw);
+    height: 74px;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse at 50% 40%,
+      rgba(0, 0, 0, 0.55),
+      transparent 70%
+    );
+    filter: blur(9px);
+  }
+
+  /* Still water mirroring the tree and the garden light */
+  .obs-cons__reflect {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, black, transparent 82%);
+    mask-image: linear-gradient(180deg, black, transparent 82%);
+    opacity: 0.55;
+    filter: blur(1.6px);
+  }
+
+  .obs-cons__reflect-inner {
+    position: absolute;
+    inset: 0;
+    animation: obs-cons-ripple 9s ease-in-out infinite alternate;
+  }
+
+  .obs-cons__reflect-garden {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: min(320px, 42vw);
+    height: 66%;
+    background: radial-gradient(
+      ellipse 60% 46% at 50% 0%,
+      color-mix(in srgb, var(--cons-day) 44%, transparent),
+      color-mix(in srgb, var(--cons-green) 16%, transparent) 46%,
+      transparent 72%
+    );
+    filter: blur(6px);
+  }
+
+  .obs-cons__reflect .obs-cons__tree-svg {
+    position: absolute;
+    top: -2%;
+    bottom: auto;
+    left: 50%;
+    transform: translateX(-50%) scaleY(-1);
+    width: min(320px, 44vw);
+  }
+
+  /* Reeds and lily pads at the water's edge */
+  .obs-cons__reeds-svg {
+    position: absolute;
+    top: -34px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    opacity: 0.62;
+  }
+
+  .obs-cons__reed path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--cons-green) 46%, #0a0705);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .obs-cons__lily ellipse {
+    fill: color-mix(in srgb, var(--cons-green) 30%, #0a0705);
+    opacity: 0.5;
+  }
+
+  /* Fine material grain unifying stone, glass and air */
+  .obs-cons__grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .obs-cons__mote,
+    .obs-cons__water-sheen,
+    .obs-cons__reflect-inner,
+    .obs-cons__tendril {
+      animation: none !important;
+    }
+    .obs-cons__mote {
+      opacity: 0.3;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .obs-cons__foliage {
+      opacity: 0.4;
+    }
+    .obs-cons__foliage--tr {
+      display: none;
+    }
+    .obs-cons__dome-svg {
+      width: 158vw;
+    }
+    .obs-cons__tree-svg {
+      width: 58vw;
+      bottom: 20vh;
+    }
+    .obs-cons__arch-svg {
+      width: 96vw;
+    }
+    .obs-cons__ga-svg {
+      width: 96vw;
+    }
+    .obs-cons__vault-svg {
+      width: 178vw;
+      opacity: 0.7;
+    }
+    .obs-cons__med-svg {
+      width: min(500px, 86vw);
+      opacity: 0.5;
+    }
+    .obs-cons__water {
+      height: 26vh;
+    }
+    .obs-cons__floor {
+      height: 40vh;
+    }
+    .obs-cons__garden {
+      width: 64vw;
+    }
+    .obs-cons__ivy-svg {
+      width: 96vw;
+      opacity: 0.55;
+    }
+    .obs-cons__tendrils {
+      opacity: 0.34;
+    }
+    .obs-cons__tendril--c {
+      display: none;
+    }
+    .obs-cons__reflect {
+      opacity: 0.22;
+    }
+    .obs-cons__reflect .obs-cons__tree-svg {
+      width: 58vw;
+    }
+    .obs-cons__grain {
+      opacity: 0.04;
+    }
+    .obs-cons__stage::after {
+      bottom: 17vh;
+    }
+  }
+
+  /* ══ Furniture — physical homes the room holds ═══════════════════════
+     Every zone of content sits in a real object: an aged research table,
+     a brass instrument plate set into the wall, a framed study that hangs,
+     a cork specimen board. Built from material gradients + engraving +
+     real depth (rim light, ambient occlusion, a cast shadow on the floor)
+     so nothing reads as a card floating over wallpaper. */
+
+  .obs-fx {
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Engraved brass plaque — replaces floating labels; screwed to the piece */
+  .obs-fx__plaque {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    padding: 0.34rem 1.1rem;
+    border-radius: 2px;
+    font-family: var(--font-body, inherit);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, #241708 78%, var(--obs-brass));
+    background:
+      linear-gradient(
+        158deg,
+        color-mix(in srgb, var(--obs-brass) 88%, #fff5df) 0%,
+        var(--obs-brass) 32%,
+        color-mix(in srgb, var(--obs-brass) 58%, #2a1a0e) 100%
+      );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 246, 222, 0.55),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.4),
+      0 2px 5px rgba(0, 0, 0, 0.45);
+    text-shadow: 0 1px 0 rgba(255, 246, 222, 0.3);
+  }
+
+  .obs-fx__plaque::before,
+  .obs-fx__plaque::after {
+    content: "";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, #f4e1af, #6a4f28 72%);
+    box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.7);
+    flex: none;
+  }
+
+  /* ── Aged research table ─────────────────────────────────────────── */
+  .obs-fx--table {
+    --edge: clamp(15px, 2.4vw, 26px);
+    padding: clamp(1.5rem, 4vw, 2.9rem);
+    border-radius: 4px 4px 2px 2px;
+    border: 1px solid color-mix(in srgb, var(--obs-brass) 20%, transparent);
+    border-bottom: none;
+    background:
+      linear-gradient(180deg, rgba(255, 240, 210, 0.06), rgba(0, 0, 0, 0.22)),
+      repeating-linear-gradient(
+        93deg,
+        transparent 0 5px,
+        rgba(0, 0, 0, 0.05) 5px 6px,
+        transparent 6px 11px
+      ),
+      linear-gradient(180deg, #3d2d1c 0%, #31241698 40%, #281c11 100%),
+      linear-gradient(180deg, #3a2a1a, #271b10);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 238, 204, 0.16),
+      inset 0 0 40px rgba(0, 0, 0, 0.35);
+  }
+
+  /* the table's front edge — implied thickness */
+  .obs-fx--table::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    top: 100%;
+    height: var(--edge);
+    background: linear-gradient(180deg, #291d12, #160f09);
+    border-radius: 0 0 4px 4px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 238, 204, 0.1),
+      0 20px 34px -14px rgba(0, 0, 0, 0.75);
+  }
+
+  /* cast shadow on the floor */
+  .obs-fx--table::after {
+    content: "";
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    top: calc(100% + var(--edge));
+    height: 46px;
+    background: radial-gradient(
+      ellipse at 50% 0%,
+      rgba(0, 0, 0, 0.5),
+      transparent 72%
+    );
+    filter: blur(7px);
+    z-index: -2;
+  }
+
+  /* two heavy legs behind the top */
+  .obs-fx__legs {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + var(--edge));
+    height: clamp(64px, 13vh, 132px);
+    z-index: -1;
+    background:
+      linear-gradient(180deg, #2a1e13, #150e08) no-repeat 11% 0 /
+        clamp(15px, 2vw, 24px) 100%,
+      linear-gradient(180deg, #2a1e13, #150e08) no-repeat 89% 0 /
+        clamp(15px, 2vw, 24px) 100%;
+  }
+
+  /* ── Brass instrument plate, set into the wall ───────────────────── */
+  .obs-fx--plate {
+    padding: clamp(1.1rem, 3.2vw, 2.2rem);
+    border-radius: 5px;
+    border: 2px solid color-mix(in srgb, #2a1c10 55%, var(--obs-brass));
+    background:
+      radial-gradient(
+        ellipse 130% 80% at 50% -10%,
+        rgba(255, 242, 214, 0.16),
+        transparent 58%
+      ),
+      repeating-linear-gradient(
+        118deg,
+        rgba(0, 0, 0, 0.05) 0 2px,
+        transparent 2px 5px
+      ),
+      linear-gradient(152deg, #a17c47 0%, #6c5030 54%, #3f2e1a 100%);
+    box-shadow:
+      inset 0 2px 3px rgba(255, 242, 214, 0.32),
+      inset 0 -8px 18px rgba(0, 0, 0, 0.5),
+      0 26px 48px -18px rgba(0, 0, 0, 0.82);
+  }
+
+  /* engraved inner border */
+  .obs-fx--plate::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    box-shadow: inset 0 0 0 1px rgba(255, 242, 214, 0.14);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* four corner screws */
+  .obs-fx--plate::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background-image:
+      radial-gradient(circle, #f4e1af 0 1.6px, #5e4526 1.7px 3px, transparent 3.2px),
+      radial-gradient(circle, #f4e1af 0 1.6px, #5e4526 1.7px 3px, transparent 3.2px),
+      radial-gradient(circle, #f4e1af 0 1.6px, #5e4526 1.7px 3px, transparent 3.2px),
+      radial-gradient(circle, #f4e1af 0 1.6px, #5e4526 1.7px 3px, transparent 3.2px);
+    background-repeat: no-repeat;
+    background-position:
+      15px 15px,
+      right 15px top 15px,
+      left 15px bottom 15px,
+      right 15px bottom 15px;
+  }
+
+  /* recessed dark engraving well the diagram glows within */
+  .obs-fx__well {
+    position: relative;
+    border-radius: 3px;
+    padding: clamp(1rem, 3vw, 2rem);
+    background: radial-gradient(ellipse at 50% 26%, #1b140d, #0c0805);
+    box-shadow:
+      inset 0 4px 18px rgba(0, 0, 0, 0.82),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 240, 210, 0.05);
+  }
+
+  /* ── Framed study, hanging ───────────────────────────────────────── */
+  .obs-fx--frame {
+    padding: clamp(0.85rem, 2.4vw, 1.4rem);
+    border-radius: 3px;
+    background: linear-gradient(150deg, #6d502f, #3a2a18 78%);
+    box-shadow:
+      inset 0 0 0 2px rgba(0, 0, 0, 0.42),
+      inset 0 2px 2px rgba(255, 242, 214, 0.28),
+      0 30px 52px -22px rgba(0, 0, 0, 0.82);
+  }
+
+  .obs-fx--frame::before {
+    content: "";
+    position: absolute;
+    inset: clamp(6px, 1.6vw, 11px);
+    border-radius: 2px;
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 0, 0, 0.55),
+      inset 0 0 0 2px rgba(255, 242, 214, 0.1);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .obs-fx__matte {
+    position: relative;
+    border-radius: 1px;
+    padding: clamp(1.1rem, 3.4vw, 2.3rem);
+    background: linear-gradient(180deg, #201811, #16100a);
+    box-shadow: inset 0 3px 12px rgba(0, 0, 0, 0.72);
+  }
+
+  /* cord + nail — the study hangs */
+  .obs-fx__cord {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: clamp(30px, 6vh, 64px);
+    pointer-events: none;
+    background: radial-gradient(
+        circle at 50% 0,
+        var(--obs-brass) 0 2px,
+        color-mix(in srgb, var(--obs-brass) 40%, #1a1208) 2px 3px,
+        transparent 3.4px
+      )
+      no-repeat;
+  }
+
+  .obs-fx__cord::before,
+  .obs-fx__cord::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 1px;
+    height: 104%;
+    background: linear-gradient(
+      var(--obs-brass),
+      color-mix(in srgb, var(--obs-brass) 34%, transparent)
+    );
+    transform-origin: bottom center;
+    opacity: 0.7;
+  }
+
+  .obs-fx__cord::before {
+    left: 24%;
+    transform: rotate(15deg);
+  }
+
+  .obs-fx__cord::after {
+    right: 24%;
+    transform: rotate(-15deg);
+  }
+
+  /* ── Cork / parchment specimen board ─────────────────────────────── */
+  .obs-fx--board {
+    padding: clamp(1.4rem, 3.6vw, 2.6rem);
+    border-radius: 3px;
+    border: clamp(9px, 1.6vw, 15px) solid #33251699;
+    background:
+      radial-gradient(circle at 28% 18%, rgba(255, 240, 210, 0.05), transparent 46%),
+      radial-gradient(rgba(0, 0, 0, 0.16) 0.5px, transparent 0.6px) 0 0 / 5px 5px,
+      linear-gradient(158deg, #6f5330, #4a3720 74%, #3a2b18);
+    box-shadow:
+      inset 0 0 46px rgba(0, 0, 0, 0.5),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.4),
+      0 26px 48px -20px rgba(0, 0, 0, 0.82);
+  }
+
+  .obs-fx__pins {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background-image:
+      radial-gradient(circle, #f0d49a 0 2.4px, #6a3f22 2.6px 4.4px, transparent 4.6px),
+      radial-gradient(circle, #f0d49a 0 2.4px, #6a3f22 2.6px 4.4px, transparent 4.6px),
+      radial-gradient(circle, #cf6f52 0 2.4px, #5e2a1c 2.6px 4.4px, transparent 4.6px),
+      radial-gradient(circle, #cf6f52 0 2.4px, #5e2a1c 2.6px 4.4px, transparent 4.6px);
+    background-repeat: no-repeat;
+    background-position:
+      18px 16px,
+      right 18px top 16px,
+      left 18px bottom 16px,
+      right 18px bottom 16px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .obs-fx--frame {
+      transform-origin: 50% -40px;
+      animation: obs-fx-sway 16s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes obs-fx-sway {
+    from {
+      transform: rotate(-0.35deg);
+    }
+    to {
+      transform: rotate(0.35deg);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .obs-fx__legs {
+      height: clamp(48px, 9vh, 90px);
+    }
+    .obs-fx--frame {
+      animation: none;
+    }
+  }
+
   .obs-universe-chamber {
     font-size: 0.6875rem;
     letter-spacing: 0.22em;
@@ -783,6 +2069,423 @@
 
   .obs-universe-arrival__orient {
     text-shadow: none;
+  }
+
+  /* ── Zone 1 · The observation table ─────────────────────────────── */
+
+  .obs-notebook {
+    display: flex;
+    position: relative;
+    border: 1px solid color-mix(in srgb, var(--obs-brass) 16%, transparent);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow:
+      0 28px 64px -30px rgba(6, 4, 2, 0.85),
+      0 2px 0 color-mix(in srgb, #0a0806 55%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--obs-paper) 7%, transparent);
+  }
+
+  /* One object placed on a table, lightly askew, casting onto the floor */
+  .obs-notebook--placed {
+    transform: rotate(-0.7deg);
+    box-shadow:
+      0 40px 80px -34px rgba(4, 3, 1, 0.92),
+      0 8px 22px -16px rgba(4, 3, 1, 0.7),
+      inset 0 1px 0 color-mix(in srgb, var(--obs-paper) 7%, transparent);
+  }
+
+  .obs-notebook__page {
+    flex: 1;
+    min-height: 15rem;
+    padding: 1.75rem 1.6rem;
+    background: linear-gradient(
+      176deg,
+      color-mix(in srgb, var(--obs-paper) 22%, #15100b),
+      color-mix(in srgb, var(--obs-paper) 14%, #100c08)
+    );
+  }
+
+  .obs-notebook__page--left {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    border-right: 1px solid color-mix(in srgb, #0a0806 55%, transparent);
+    box-shadow: inset -16px 0 24px -20px rgba(6, 4, 2, 0.9);
+    color: color-mix(in srgb, var(--obs-brass) 58%, var(--obs-paper));
+  }
+
+  .obs-notebook__pressed {
+    width: 5.25rem;
+    height: auto;
+    opacity: 0.6;
+  }
+
+  .obs-notebook__caption {
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--obs-brass) 52%, transparent);
+  }
+
+  .obs-notebook__page--right {
+    text-align: left;
+    box-shadow: inset 16px 0 24px -20px rgba(6, 4, 2, 0.9);
+    background-image:
+      repeating-linear-gradient(
+        color-mix(in srgb, var(--obs-brass) 5%, transparent) 0 1px,
+        transparent 1px 2rem
+      ),
+      linear-gradient(
+        176deg,
+        color-mix(in srgb, var(--obs-paper) 22%, #15100b),
+        color-mix(in srgb, var(--obs-paper) 14%, #100c08)
+      );
+  }
+
+  .obs-notebook__heading {
+    margin-bottom: 0.9rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--obs-brass) 68%, transparent);
+  }
+
+  .obs-notebook__lines {
+    font-family: var(--font-heading), serif;
+    font-style: italic;
+    font-size: 1.0625rem;
+    line-height: 2rem;
+    color: color-mix(in srgb, var(--obs-ivory) 82%, transparent);
+  }
+
+  .obs-notebook__lines p {
+    margin: 0;
+  }
+
+  .obs-notebook__aside {
+    opacity: 0.68;
+  }
+
+  .obs-notebook__latest {
+    display: block;
+    margin-top: 1.4rem;
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--obs-brass) 14%, transparent);
+  }
+
+  .obs-notebook__latest-label {
+    display: block;
+    font-size: 0.5625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--obs-brass) 58%, transparent);
+  }
+
+  .obs-notebook__latest-title {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.9375rem;
+    color: color-mix(in srgb, var(--obs-ivory) 76%, transparent);
+    transition: color 1200ms ease;
+  }
+
+  .obs-notebook__latest:hover .obs-notebook__latest-title,
+  .obs-notebook__latest:focus-visible .obs-notebook__latest-title {
+    color: var(--obs-amber);
+  }
+
+  .obs-pinned {
+    width: 7rem;
+    pointer-events: none;
+    color: color-mix(in srgb, var(--obs-brass) 64%, var(--obs-paper));
+    transform: rotate(var(--pin-rotate, 0deg));
+    z-index: 20;
+    filter: drop-shadow(0 12px 18px rgba(6, 4, 2, 0.5));
+  }
+
+  .obs-pinned--botanical {
+    width: 6rem;
+  }
+  .obs-pinned--astro {
+    width: 7.5rem;
+  }
+  .obs-pinned--geo {
+    width: 8.5rem;
+  }
+  .obs-pinned--leaf {
+    width: 5.25rem;
+  }
+
+  .obs-pinned__tack {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 35% 30%,
+      color-mix(in srgb, var(--obs-amber) 88%, white),
+      var(--obs-brass)
+    );
+    box-shadow: 0 2px 5px rgba(6, 4, 2, 0.6);
+    z-index: 2;
+  }
+
+  .obs-pinned__art {
+    padding: 0.6rem;
+    border: 1px solid color-mix(in srgb, var(--obs-brass) 14%, transparent);
+    border-radius: 2px;
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--obs-paper) 15%, #14100b),
+      color-mix(in srgb, var(--obs-paper) 9%, #100b07)
+    );
+  }
+
+  .obs-pinned__art svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .obs-pinned__label {
+    display: block;
+    margin-top: 0.4rem;
+    text-align: center;
+    font-size: 0.5625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--obs-brass) 52%, transparent);
+  }
+
+  /* ── Zone 2 · Recent observations (slips on the table) ──────────── */
+
+  .obs-recent__slips {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .obs-recent__slips {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem 2rem;
+    }
+  }
+
+  .obs-slip-wrap {
+    transform: rotate(var(--slip-tilt, 0deg));
+  }
+
+  .obs-slip {
+    height: 100%;
+    padding: 1.4rem 1.4rem 1.25rem;
+    border: 1px solid color-mix(in srgb, var(--obs-brass) 12%, transparent);
+    border-radius: 2px;
+    background: linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--obs-paper) 15%, #14100b),
+      color-mix(in srgb, var(--obs-paper) 9%, #100b07)
+    );
+    box-shadow:
+      0 14px 30px -20px rgba(6, 4, 2, 0.8),
+      inset 0 1px 0 color-mix(in srgb, var(--obs-paper) 6%, transparent);
+    transition:
+      transform 1200ms ease,
+      box-shadow 1200ms ease,
+      border-color 1200ms ease;
+  }
+
+  .obs-slip:hover,
+  .obs-slip:focus-visible {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--obs-brass) 26%, transparent);
+    box-shadow: 0 22px 44px -22px rgba(6, 4, 2, 0.85);
+  }
+
+  .obs-slip__excerpt {
+    font-family: var(--font-heading), serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--obs-ivory) 84%, transparent);
+  }
+
+  .obs-slip__meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    margin-top: 1rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--obs-brass) 62%, transparent);
+  }
+
+  .obs-slip__when {
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: color-mix(in srgb, var(--obs-ivory) 44%, transparent);
+  }
+
+  .obs-slip__hand {
+    margin-top: 0.6rem;
+    font-family: var(--font-heading), serif;
+    font-style: italic;
+    font-size: 0.8125rem;
+    color: color-mix(in srgb, var(--obs-ivory) 50%, transparent);
+  }
+
+  /* Worktable dressing for the scattered slips */
+  .obs-recent-table {
+    padding-top: clamp(2.4rem, 5vw, 3.4rem);
+  }
+
+  .obs-recent-table__plaque,
+  .obs-research-table__plaque {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -52%);
+    z-index: 4;
+  }
+
+  .obs-recent-table__note {
+    margin: 0 auto;
+    max-width: 30rem;
+    text-align: center;
+    font-family: var(--font-heading), serif;
+    font-style: italic;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--obs-ivory) 52%, transparent);
+  }
+
+  .obs-recent-table .obs-recent__slips {
+    margin-top: clamp(1.6rem, 4vw, 2.6rem);
+  }
+
+  /* Slips read as paper pinned to the wood */
+  .obs-recent-table .obs-slip {
+    padding-top: 1.7rem;
+    background: linear-gradient(
+        168deg,
+        color-mix(in srgb, var(--obs-paper) 26%, #171009),
+        color-mix(in srgb, var(--obs-paper) 15%, #120c07)
+      );
+  }
+
+  .obs-slip__pin {
+    position: absolute;
+    top: 0.55rem;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 30%, #f4e1af, #7a4f22 72%);
+    box-shadow:
+      0 2px 3px rgba(0, 0, 0, 0.55),
+      inset 0 0 1px rgba(0, 0, 0, 0.6);
+  }
+
+  .obs-slip {
+    position: relative;
+  }
+
+  /* Zone 3 · Emerging patterns — engraved brass instrument plate */
+  .obs-pattern-plate {
+    text-align: center;
+  }
+
+  .obs-pattern-plate__plaque {
+    margin: 0 auto;
+  }
+
+  .obs-pattern-plate__legend {
+    margin: 0.9rem auto 0;
+    max-width: 30rem;
+    font-family: var(--font-heading), serif;
+    font-style: italic;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: color-mix(in srgb, #2a1c0e 74%, var(--obs-brass));
+    text-shadow: 0 1px 0 rgba(255, 246, 222, 0.18);
+  }
+
+  .obs-pattern-plate__well {
+    margin-top: clamp(1.1rem, 3vw, 1.9rem);
+  }
+
+  /* Zone 4 · Long investigations — framed studies that hang */
+  .obs-study {
+    padding-top: clamp(30px, 6vh, 64px);
+  }
+
+  .obs-study-frame__plate {
+    margin: clamp(1rem, 3vw, 1.6rem) auto 0;
+    width: fit-content;
+    padding: 0.28rem 0.9rem;
+    border-radius: 2px;
+    font-size: 0.5625rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, #241708 76%, var(--obs-brass));
+    background: linear-gradient(
+      158deg,
+      color-mix(in srgb, var(--obs-brass) 82%, #fff5df),
+      color-mix(in srgb, var(--obs-brass) 56%, #2a1a0e)
+    );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 246, 222, 0.5),
+      0 2px 4px rgba(0, 0, 0, 0.45);
+    text-shadow: 0 1px 0 rgba(255, 246, 222, 0.3);
+  }
+
+  /* Zone 5 · Specimen board + record board */
+  .obs-specimen-board,
+  .obs-record-board {
+    padding-top: clamp(2.6rem, 5.2vw, 3.6rem);
+    text-align: center;
+  }
+
+  .obs-specimen-board__plaque,
+  .obs-record-board__plaque {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -52%);
+    z-index: 4;
+  }
+
+  .obs-specimen-board__note,
+  .obs-record-board__note {
+    margin: 0 auto;
+    max-width: 30rem;
+    font-family: var(--font-heading), serif;
+    font-style: italic;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--obs-ivory) 62%, transparent);
+  }
+
+  /* the form sits on a pinned parchment sheet */
+  .obs-record-board__sheet {
+    position: relative;
+    text-align: left;
+    padding: clamp(1.1rem, 3.4vw, 1.9rem);
+    border-radius: 2px;
+    background: linear-gradient(
+        168deg,
+        color-mix(in srgb, var(--obs-paper) 24%, #171009),
+        color-mix(in srgb, var(--obs-paper) 14%, #120c07)
+      );
+    box-shadow:
+      0 16px 34px -22px rgba(0, 0, 0, 0.8),
+      inset 0 1px 0 rgba(255, 244, 216, 0.08);
   }
 
   .observatory-form button[type="button"][data-active="true"],

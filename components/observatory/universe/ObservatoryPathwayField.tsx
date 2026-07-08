@@ -18,10 +18,14 @@ export function ObservatoryPathwayField({ threads }: ObservatoryPathwayFieldProp
   return (
     <div className="obs-universe-pathways">
       <ObservatoryEmergence minHeight="min-h-[60vh] sm:min-h-[75vh]" delay={0.05}>
-        <p className="obs-universe-whisper mx-auto max-w-lg text-center">
-          Pathways traced in the ledger — routes someone might walk twice and
-          never read the same way.
-        </p>
+        <div className="flex flex-col items-center text-center">
+          <span className="obs-fx__plaque">Long investigations</span>
+          <p className="obs-universe-whisper mx-auto mt-6 max-w-lg">
+            Framed studies hung along the stone — inquiries kept under
+            observation. When one finally settles, it is charted as a map in
+            The Atlas.
+          </p>
+        </div>
       </ObservatoryEmergence>
 
       {threads.map((thread, ti) => (
@@ -49,54 +53,61 @@ function PathwayThread({ thread }: { thread: ObservatoryThread }) {
   });
 
   return (
-    <div className="obs-universe-pathway mx-auto w-full max-w-2xl">
-      <Link
-        href={`/observatory/threads/${thread.slug}`}
-        className="group block text-center"
-      >
-        <h2 className="obs-universe-pathway__title font-heading text-xl text-[var(--obs-ivory)] transition-colors duration-[1800ms] group-hover:text-[var(--obs-amber)] sm:text-2xl">
-          {thread.title}
-        </h2>
-        <p className="obs-universe-whisper mx-auto mt-4 max-w-md text-sm">
-          {thread.premise}
-        </p>
-      </Link>
-
-      <div className="relative mx-auto mt-20 aspect-[10/8.8] w-full max-w-xl">
-        <svg
-          viewBox={`0 0 ${VB_W} ${VB_H}`}
-          className="h-full w-full overflow-visible"
-          aria-hidden
-        >
-          <path
-            d={pathD}
-            fill="none"
-            className="obs-universe-pathway__trace"
-          />
-        </svg>
-
-        {points.map(({ step, x, y, si }) => (
+    <div className="obs-universe-pathway obs-study mx-auto w-full max-w-xl">
+      <div className="obs-fx obs-fx--frame obs-study-frame">
+        <span className="obs-fx__cord" aria-hidden />
+        <div className="obs-fx__matte">
           <Link
-            key={step.slug}
-            href={step.href}
-            className={cn(
-              "obs-universe-pathway__node group absolute touch-manipulation",
-              activeStep === si && "obs-universe-pathway__node--active",
-            )}
-            style={{
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: "translate(-50%, -50%)",
-            }}
-            onMouseEnter={() => setActiveStep(si)}
-            onMouseLeave={() => setActiveStep(null)}
-            onFocus={() => setActiveStep(si)}
-            onBlur={() => setActiveStep(null)}
+            href={`/observatory/threads/${thread.slug}`}
+            className="group block text-center"
           >
-            <span className="obs-universe-pathway__beacon" aria-hidden />
-            <span className="obs-universe-pathway__name">{step.title}</span>
+            <h2 className="obs-universe-pathway__title font-heading text-xl text-[var(--obs-ivory)] transition-colors duration-[1800ms] group-hover:text-[var(--obs-amber)] sm:text-2xl">
+              {thread.title}
+            </h2>
+            <p className="obs-universe-whisper mx-auto mt-4 max-w-md text-sm">
+              {thread.premise}
+            </p>
           </Link>
-        ))}
+
+          <div className="relative mx-auto mt-14 aspect-[10/8.8] w-full">
+            <svg
+              viewBox={`0 0 ${VB_W} ${VB_H}`}
+              className="h-full w-full overflow-visible"
+              aria-hidden
+            >
+              <path
+                d={pathD}
+                fill="none"
+                className="obs-universe-pathway__trace"
+              />
+            </svg>
+
+            {points.map(({ step, x, y, si }) => (
+              <Link
+                key={step.slug}
+                href={step.href}
+                className={cn(
+                  "obs-universe-pathway__node group absolute touch-manipulation",
+                  activeStep === si && "obs-universe-pathway__node--active",
+                )}
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
+                onMouseEnter={() => setActiveStep(si)}
+                onMouseLeave={() => setActiveStep(null)}
+                onFocus={() => setActiveStep(si)}
+                onBlur={() => setActiveStep(null)}
+              >
+                <span className="obs-universe-pathway__beacon" aria-hidden />
+                <span className="obs-universe-pathway__name">{step.title}</span>
+              </Link>
+            ))}
+          </div>
+
+          <p className="obs-study-frame__plate">Study · under observation</p>
+        </div>
       </div>
     </div>
   );

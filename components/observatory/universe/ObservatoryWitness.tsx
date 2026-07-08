@@ -28,12 +28,18 @@ export function ObservatoryWitness({ concepts }: ObservatoryWitnessProps) {
 
       <ObservatoryEmergence minHeight="min-h-[70vh]" delay={0.15}>
         <div className="obs-universe-witness mx-auto w-full max-w-lg">
-          <p className="obs-universe-chamber text-center">Record an observation</p>
-          <p className="obs-universe-whisper mx-auto mt-4 max-w-sm text-center text-sm">
-            Not a comment — a piece of evidence added to the shared ledger.
-          </p>
-          <div className="observatory-form mt-14">
-            <RecordObservationForm concepts={concepts} />
+          <div className="obs-fx obs-fx--board obs-record-board relative mx-auto">
+            <span className="obs-fx__pins" aria-hidden />
+            <div className="obs-fx__plaque obs-record-board__plaque">
+              Add to the board
+            </div>
+            <p className="obs-record-board__note">
+              Not a comment — an observation pinned beside the others, for
+              someone to find later.
+            </p>
+            <div className="observatory-form obs-record-board__sheet mt-10">
+              <RecordObservationForm concepts={concepts} />
+            </div>
           </div>
         </div>
       </ObservatoryEmergence>
