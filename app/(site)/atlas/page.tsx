@@ -23,14 +23,14 @@ export default function AtlasPage() {
       />
 
       <section
-        className="pb-32 pt-8 sm:pb-44 sm:pt-12"
+        className="pb-36 pt-6 sm:pb-48 sm:pt-10"
         aria-label="Charted territories"
       >
         <Container narrow>
-          <p className="type-body mx-auto mb-20 max-w-md text-center text-[0.9375rem] leading-relaxed text-charcoal-muted sm:mb-28">
+          <p className="type-body mx-auto mb-24 max-w-sm text-center text-[0.875rem] leading-relaxed tracking-wide text-charcoal-muted/90 sm:mb-32">
             Stand before a region. Choose which territory to enter.
           </p>
-          <ul className="mx-auto grid max-w-4xl gap-24 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-32 lg:gap-x-20 lg:gap-y-40">
+          <ul className="mx-auto flex max-w-lg flex-col gap-36 sm:gap-44">
             {maps.map((map, index) => (
               <MapArtifactCard key={map.id} map={map} index={index} />
             ))}

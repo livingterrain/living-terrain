@@ -43,18 +43,20 @@ export function TerritoryThreshold({ map, territory }: TerritoryThresholdProps) 
           />
         </div>
         <div className="mt-14 max-w-xl lg:mt-2">
-          <p className="type-folio text-[0.625rem] uppercase tracking-[0.18em] text-charcoal-faint">
+          <p className="type-folio text-[0.5625rem] uppercase tracking-[0.22em] text-charcoal-faint/90">
             Charted territory
           </p>
           <h1 className="type-display mt-5 text-balance">{map.title}</h1>
           {map.subtitle && (
-            <p className="type-lead mt-5 text-lg leading-relaxed text-charcoal-muted">
+            <p className="type-lead mt-5 text-lg italic leading-relaxed text-charcoal-muted/90">
               {map.subtitle}
             </p>
           )}
-          <p className="type-body mt-10 text-[0.9375rem] leading-relaxed sm:text-base">
-            {map.description}
-          </p>
+          <div className="map-artifact__plaque mt-10 border-t border-[#c4a06a]/12 pt-8">
+            <p className="type-body text-[0.9375rem] leading-[1.8] text-charcoal-muted/90 sm:text-base">
+              {map.description}
+            </p>
+          </div>
           {territory && (
             <TextLink
               href={`/chambers/${territory.slug}`}

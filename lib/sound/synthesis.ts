@@ -1,5 +1,18 @@
 /** Procedural synthesis helpers — no audio files */
 
+export function createBrownNoiseBuffer(ctx: AudioContext, seconds: number): AudioBuffer {
+  const len = ctx.sampleRate * seconds;
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const data = buf.getChannelData(0);
+  let last = 0;
+  for (let i = 0; i < len; i++) {
+    const white = Math.random() * 2 - 1;
+    last = (last + 0.02 * white) / 1.02;
+    data[i] = last * 2.8;
+  }
+  return buf;
+}
+
 export function createPinkNoiseBuffer(ctx: AudioContext, seconds: number): AudioBuffer {
   const len = ctx.sampleRate * seconds;
   const buf = ctx.createBuffer(1, len, ctx.sampleRate);
@@ -35,33 +48,33 @@ export function playGlassChime(
   ctx: AudioContext,
   dest: GainNode,
   seed = "chime",
-  vol = 0.028,
+  vol = 0.011,
 ): void {
   const t = ctx.currentTime;
-  const base = hashToPitch(seed, 1040, 480);
+  const base = hashToPitch(seed, 520, 180);
 
-  [1, 1.5, 2.01].forEach((ratio, i) => {
+  [1, 1.498].forEach((ratio, i) => {
     const osc = ctx.createOscillator();
     osc.type = "sine";
     osc.frequency.value = base * ratio;
     const g = ctx.createGain();
     g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(vol / (i + 1), t + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 1.4 + i * 0.15);
+    g.gain.linearRampToValueAtTime(vol / (i + 1), t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 2.8 + i * 0.2);
     osc.connect(g);
     g.connect(dest);
     osc.start(t);
-    osc.stop(t + 1.8);
+    osc.stop(t + 3.2);
   });
 }
 
 export function playSingingBowl(
   ctx: AudioContext,
   dest: GainNode,
-  vol = 0.022,
+  vol = 0.009,
 ): void {
   const t = ctx.currentTime;
-  const freqs = [196, 294, 392];
+  const freqs = [130, 195, 261];
 
   for (const freq of freqs) {
     const osc = ctx.createOscillator();
@@ -69,33 +82,56 @@ export function playSingingBowl(
     osc.frequency.value = freq;
     const g = ctx.createGain();
     g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(vol, t + 0.12);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 4.8);
+    g.gain.linearRampToValueAtTime(vol, t + 0.35);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 7.5);
     osc.connect(g);
     g.connect(dest);
     osc.start(t);
-    osc.stop(t + 5.2);
+    osc.stop(t + 8);
   }
 }
 
 export function playSoftResonance(
   ctx: AudioContext,
   dest: GainNode,
-  vol = 0.016,
+  vol = 0.007,
 ): void {
   const t = ctx.currentTime;
   const osc = ctx.createOscillator();
   osc.type = "sine";
-  osc.frequency.setValueAtTime(220, t);
-  osc.frequency.linearRampToValueAtTime(185, t + 3.5);
+  osc.frequency.setValueAtTime(146, t);
+  osc.frequency.linearRampToValueAtTime(128, t + 5);
   const g = ctx.createGain();
   g.gain.setValueAtTime(0, t);
-  g.gain.linearRampToValueAtTime(vol, t + 0.6);
-  g.gain.exponentialRampToValueAtTime(0.0001, t + 4.2);
+  g.gain.linearRampToValueAtTime(vol, t + 1.2);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 6.5);
   osc.connect(g);
   g.connect(dest);
   osc.start(t);
-  osc.stop(t + 4.5);
+  osc.stop(t + 7);
+}
+
+/** Barely-there hover — low warmth, not a game chime */
+export function playHoverWhisper(
+  ctx: AudioContext,
+  dest: GainNode,
+  seed = "node",
+  masterVol = 0.006,
+): void {
+  const t = ctx.currentTime;
+  const freq = hashToPitch(seed, 240, 80);
+
+  const osc = ctx.createOscillator();
+  osc.type = "sine";
+  osc.frequency.value = freq;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(masterVol, t + 0.08);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+  osc.connect(g);
+  g.connect(dest);
+  osc.start(t);
+  osc.stop(t + 1);
 }
 
 export function playPianoHarmonic(
@@ -131,30 +167,9 @@ export function playCrystallineTone(
   ctx: AudioContext,
   dest: GainNode,
   seed = "node",
-  masterVol = 0.022,
+  masterVol = 0.008,
 ): void {
-  const t = ctx.currentTime;
-  const freq = hashToPitch(seed, 920, 360);
-
-  const partials = [
-    { ratio: 1, vol: 1, decay: 0.55 },
-    { ratio: 2.01, vol: 0.35, decay: 0.35 },
-    { ratio: 3.02, vol: 0.12, decay: 0.22 },
-  ];
-
-  for (const p of partials) {
-    const osc = ctx.createOscillator();
-    osc.type = "sine";
-    osc.frequency.value = freq * p.ratio;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(masterVol * p.vol, t + 0.006);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + p.decay);
-    osc.connect(g);
-    g.connect(dest);
-    osc.start(t);
-    osc.stop(t + p.decay + 0.05);
-  }
+  playHoverWhisper(ctx, dest, seed, masterVol);
 }
 
 export function playPaperRustle(ctx: AudioContext, dest: GainNode, vol = 0.018): void {

@@ -19,9 +19,8 @@ export function sceneFromPathname(pathname: string): SoundScene {
   if (pathname.startsWith("/chambers") || pathname.startsWith("/structure-beneath-reality")) {
     return "chamber";
   }
-  if (pathname.startsWith("/atlas") || pathname.startsWith("/library")) {
-    return "archive";
-  }
+  if (pathname.startsWith("/atlas")) return "atlas";
+  if (pathname.startsWith("/library")) return "archive";
   if (pathname.startsWith("/field-notes")) return "field-notes";
   if (pathname.startsWith("/observatory")) return "observatory";
   if (pathname.startsWith("/questions")) return "pathways";
@@ -34,94 +33,120 @@ export function sceneFromPathname(pathname: string): SoundScene {
 
   if (pathname.startsWith("/themes")) return "reading";
   if (pathname.startsWith("/essays")) return "reading";
+  if (pathname.startsWith("/inquiry")) return "reading";
   if (pathname.startsWith("/quotations")) return "reading";
 
   return "reading";
 }
 
-export const SCENE_CROSSFADE_SEC = 4.5;
+export const SCENE_CROSSFADE_SEC = 6;
 
-/** Target layer gains per scene (0–1) — sparse, restorative */
+/**
+ * Target layer gains per scene (0–1).
+ * Sparse architecture — room tone and air, not music.
+ */
 export const SCENE_LAYER_GAINS: Record<
   SoundScene,
   Partial<Record<string, number>>
 > = {
   silence: {},
   constellation: {
-    harmonic: 0.14,
-    wind: 0.22,
+    roomTone: 0.42,
+    harmonic: 0.06,
+    wind: 0.14,
   },
   "realm-reality": {
-    harmonic: 0.09,
-    wind: 0.07,
-    realmReality: 0.28,
+    roomTone: 0.32,
+    harmonic: 0.04,
+    wind: 0.06,
+    realmReality: 0.18,
   },
   "realm-relationship": {
-    harmonic: 0.1,
-    wind: 0.06,
-    realmRelationship: 0.27,
+    roomTone: 0.32,
+    harmonic: 0.04,
+    wind: 0.05,
+    realmRelationship: 0.17,
   },
   "realm-meaning": {
-    harmonic: 0.07,
+    roomTone: 0.34,
+    harmonic: 0.04,
     wind: 0.05,
-    realmMeaning: 0.25,
+    realmMeaning: 0.16,
   },
   "realm-identity": {
-    harmonic: 0.08,
+    roomTone: 0.32,
+    harmonic: 0.04,
     wind: 0.05,
-    realmIdentity: 0.24,
+    realmIdentity: 0.15,
   },
   "realm-language": {
-    harmonic: 0.06,
+    roomTone: 0.3,
+    harmonic: 0.03,
     wind: 0.04,
-    realmLanguage: 0.21,
+    realmLanguage: 0.14,
   },
   "realm-time": {
-    harmonic: 0.07,
-    wind: 0.06,
-    realmTime: 0.26,
+    roomTone: 0.36,
+    harmonic: 0.04,
+    wind: 0.05,
+    realmTime: 0.17,
   },
   "realm-embodiment": {
-    harmonic: 0.08,
+    roomTone: 0.32,
+    harmonic: 0.04,
     wind: 0.05,
-    realmIdentity: 0.22,
+    realmIdentity: 0.14,
   },
   "realm-freedom": {
-    harmonic: 0.09,
-    wind: 0.08,
-    realmMeaning: 0.2,
+    roomTone: 0.32,
+    harmonic: 0.04,
+    wind: 0.06,
+    realmMeaning: 0.13,
   },
   "realm-consciousness": {
-    harmonic: 0.08,
-    wind: 0.06,
-    realmRelationship: 0.18,
+    roomTone: 0.34,
+    harmonic: 0.04,
+    wind: 0.05,
+    realmRelationship: 0.12,
   },
   chamber: {
-    harmonic: 0.08,
-    wind: 0.1,
-    chamberDrone: 0.16,
+    roomTone: 0.48,
+    harmonic: 0.05,
+    wind: 0.08,
+    chamberDrone: 0.12,
+  },
+  atlas: {
+    roomTone: 0.52,
+    harmonic: 0.03,
+    wind: 0.06,
+    archiveRoom: 0.1,
   },
   archive: {
-    harmonic: 0.04,
-    wind: 0.03,
-    archiveRoom: 0.22,
+    roomTone: 0.44,
+    harmonic: 0.03,
+    wind: 0.04,
+    archiveRoom: 0.14,
   },
   "field-notes": {
-    harmonic: 0.05,
-    wind: 0.13,
-    fieldWind: 0.24,
+    roomTone: 0.28,
+    harmonic: 0.03,
+    wind: 0.1,
+    fieldWind: 0.14,
   },
   observatory: {
-    harmonic: 0.1,
-    wind: 0.12,
-    observatoryAir: 0.14,
+    roomTone: 0.4,
+    harmonic: 0.05,
+    wind: 0.08,
+    observatoryAir: 0.1,
   },
   reading: {
-    harmonic: 0.07,
-    wind: 0.04,
+    roomTone: 0.36,
+    harmonic: 0.04,
+    wind: 0.05,
   },
   pathways: {
-    harmonic: 0.08,
-    wind: 0.07,
+    roomTone: 0.38,
+    harmonic: 0.04,
+    wind: 0.06,
   },
 };

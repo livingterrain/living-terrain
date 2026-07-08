@@ -1,6 +1,7 @@
 import type { RealmSlug } from "@/lib/realms/types";
 
 export type SoundLayerId =
+  | "roomTone"
   | "harmonic"
   | "wind"
   | "realmReality"
@@ -19,6 +20,7 @@ export type SoundScene =
   | "constellation"
   | `realm-${RealmSlug}`
   | "chamber"
+  | "atlas"
   | "archive"
   | "field-notes"
   | "observatory"

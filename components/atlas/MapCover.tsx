@@ -37,44 +37,46 @@ export function MapCover({
 
   const frameClass =
     scale === "threshold"
-      ? "max-w-sm sm:max-w-[17rem]"
-      : "max-w-[12rem] sm:max-w-[13.5rem]";
+      ? "max-w-[15rem] sm:max-w-[20rem]"
+      : "max-w-[14rem] sm:max-w-[17.5rem]";
 
   const plate = (
-    <div
-      className={cn(
-        "map-cover__frame relative aspect-[2/3] overflow-hidden bg-[#121418]",
-        "border border-[#2a2824]/80",
-        "shadow-[2px_6px_18px_-4px_rgba(4,6,8,0.45),inset_0_1px_0_rgba(255,255,255,0.04)]",
-        journalUrl &&
-          "transition-[box-shadow,transform] duration-[1.2s] ease-[cubic-bezier(0.45,0.05,0.55,0.95)] hover:shadow-[3px_8px_22px_-4px_rgba(4,6,8,0.5)]",
-      )}
-    >
-      {!failed ? (
-        <Image
-          src={src}
-          alt=""
-          fill
-          className="object-cover"
-          sizes={
-            scale === "threshold"
-              ? "(max-width: 640px) 80vw, 272px"
-              : "(max-width: 640px) 45vw, 216px"
-          }
-          priority={priority}
-          onError={() => setFailed(true)}
+    <div className="map-cover__mount">
+      <div
+        className={cn(
+          "map-cover__frame relative aspect-[2/3] overflow-hidden bg-[#121418]",
+          "border border-[#2a2824]/90",
+          "shadow-[1px_2px_0_rgba(196,160,106,0.06),2px_8px_24px_-6px_rgba(4,6,8,0.5),inset_0_1px_0_rgba(255,255,255,0.03)]",
+          journalUrl &&
+            "transition-[box-shadow] duration-[1.4s] ease-[cubic-bezier(0.45,0.05,0.55,0.95)] group-hover/journal:shadow-[2px_10px_28px_-6px_rgba(4,6,8,0.55)]",
+        )}
+      >
+        {!failed ? (
+          <Image
+            src={src}
+            alt=""
+            fill
+            className="object-cover"
+            sizes={
+              scale === "threshold"
+                ? "(max-width: 640px) 80vw, 320px"
+                : "(max-width: 640px) 55vw, 280px"
+            }
+            priority={priority}
+            onError={() => setFailed(true)}
+          />
+        ) : (
+          <MapCoverFallback title={map.title} subtitle={map.subtitle} />
+        )}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#040608]/10 via-transparent to-[#040608]/35"
+          aria-hidden="true"
         />
-      ) : (
-        <MapCoverFallback title={map.title} subtitle={map.subtitle} />
-      )}
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#040608]/30"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-[#c4a06a]/[0.07]"
-        aria-hidden="true"
-      />
+        <div
+          className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-[#c4a06a]/[0.08]"
+          aria-hidden="true"
+        />
+      </div>
     </div>
   );
 
@@ -98,7 +100,7 @@ export function MapCover({
 
       {scale === "threshold" && (
         <div
-          className="mx-auto mt-4 h-px w-10 bg-gradient-to-r from-transparent via-[#c4a06a]/25 to-transparent"
+          className="mx-auto mt-5 h-px w-12 bg-gradient-to-r from-transparent via-[#c4a06a]/22 to-transparent"
           aria-hidden="true"
         />
       )}
@@ -106,9 +108,9 @@ export function MapCover({
       {journalUrl && showJournalWhisper && (
         <figcaption
           className={cn(
-            "type-body text-center text-[0.6875rem] leading-relaxed tracking-wide text-charcoal-faint/90",
-            scale === "threshold" ? "mt-5" : "mt-4",
-            journalUrl && "group-hover/journal:text-charcoal-muted",
+            "type-body text-center text-[0.625rem] leading-relaxed tracking-[0.04em] text-charcoal-faint/80",
+            scale === "threshold" ? "mt-6" : "mt-5",
+            journalUrl && "transition-colors duration-[1.2s] group-hover/journal:text-charcoal-muted/90",
           )}
         >
           {whisper}

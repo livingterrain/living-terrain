@@ -2,13 +2,14 @@ import type { SoundLayerId, SoundScene } from "./types";
 import { REALM_SOUND_LFO } from "@/lib/realms/ambience";
 import { SCENE_CROSSFADE_SEC, SCENE_LAYER_GAINS } from "./scenes";
 import {
+  createBrownNoiseBuffer,
   createPinkNoiseBuffer,
   playBirdChirp,
-  playCrystallineTone,
   playGlassChime,
-  playPianoHarmonic,
+  playHoverWhisper,
   playPaperRustle,
   playSingingBowl,
+  playSoftResonance,
   playWoodTap,
 } from "./synthesis";
 
@@ -18,6 +19,7 @@ interface Layer {
 }
 
 const ALL_LAYERS: SoundLayerId[] = [
+  "roomTone",
   "harmonic",
   "wind",
   "realmReality",
@@ -89,12 +91,12 @@ export class TerrainSoundEngine {
   async playHover(seed?: string): Promise<void> {
     if (!this.activated || this.muted) return;
     const now = performance.now();
-    if (now - this.lastHoverAt < 320) return;
+    if (now - this.lastHoverAt < 480) return;
     this.lastHoverAt = now;
 
     await this.ensureReady();
     if (!this.ctx || !this.hoverBus) return;
-    playCrystallineTone(this.ctx, this.hoverBus, seed ?? "node");
+    playHoverWhisper(this.ctx, this.hoverBus, seed ?? "node");
   }
 
   dispose(): void {
@@ -126,7 +128,7 @@ export class TerrainSoundEngine {
     this.master = master;
 
     const hoverBus = ctx.createGain();
-    hoverBus.gain.value = 0.65;
+    hoverBus.gain.value = 0.38;
     hoverBus.connect(master);
     this.hoverBus = hoverBus;
 
@@ -141,10 +143,10 @@ export class TerrainSoundEngine {
   private applyMasterGain(): void {
     if (!this.ctx || !this.master) return;
     const t = this.ctx.currentTime;
-    const target = this.activated && !this.muted ? 0.16 : 0;
+    const target = this.activated && !this.muted ? 0.1 : 0;
     this.master.gain.cancelScheduledValues(t);
     this.master.gain.setValueAtTime(this.master.gain.value, t);
-    this.master.gain.linearRampToValueAtTime(target, t + 1.8);
+    this.master.gain.linearRampToValueAtTime(target, t + 2.4);
   }
 
   private crossfadeToScene(scene: SoundScene): void {
@@ -174,15 +176,27 @@ export class TerrainSoundEngine {
             if (this.scene !== "constellation" || !this.ctx || !this.hoverBus || this.muted) {
               return;
             }
-            const roll = Math.random();
-            if (roll < 0.42) playSingingBowl(this.ctx, this.hoverBus, 0.014);
-            else if (roll < 0.78) playGlassChime(this.ctx, this.hoverBus, `chime-${Date.now()}`, 0.016);
-            else playPianoHarmonic(this.ctx, this.hoverBus, `harmonic-${Date.now()}`, 0.012);
+            if (Math.random() < 0.55) playSoftResonance(this.ctx, this.hoverBus);
+            else playSingingBowl(this.ctx, this.hoverBus);
             scheduleConstellation();
-          }, 90000 + Math.random() * 60000),
+          }, 140000 + Math.random() * 100000),
         );
       };
       scheduleConstellation();
+    }
+
+    if (scene === "atlas") {
+      const scheduleAtlas = () => {
+        this.eventTimers.push(
+          window.setTimeout(() => {
+            if (this.scene !== "atlas" || !this.ctx || !this.hoverBus || this.muted) return;
+            if (Math.random() < 0.7) playSingingBowl(this.ctx, this.hoverBus, 0.007);
+            else playGlassChime(this.ctx, this.hoverBus, `atlas-${Date.now()}`, 0.008);
+            scheduleAtlas();
+          }, 180000 + Math.random() * 120000),
+        );
+      };
+      scheduleAtlas();
     }
 
     if (scene === "archive") {
@@ -190,10 +204,10 @@ export class TerrainSoundEngine {
         this.eventTimers.push(
           window.setTimeout(() => {
             if (this.scene !== "archive" || !this.ctx || !this.hoverBus || this.muted) return;
-            if (Math.random() > 0.5) playPaperRustle(this.ctx, this.hoverBus);
-            else playWoodTap(this.ctx, this.hoverBus);
+            if (Math.random() > 0.6) playPaperRustle(this.ctx, this.hoverBus, 0.01);
+            else playWoodTap(this.ctx, this.hoverBus, 0.007);
             scheduleArchive();
-          }, 22000 + Math.random() * 38000),
+          }, 45000 + Math.random() * 55000),
         );
       };
       scheduleArchive();
@@ -204,9 +218,9 @@ export class TerrainSoundEngine {
         this.eventTimers.push(
           window.setTimeout(() => {
             if (this.scene !== "field-notes" || !this.ctx || !this.hoverBus || this.muted) return;
-            if (Math.random() > 0.55) playBirdChirp(this.ctx, this.hoverBus);
+            if (Math.random() > 0.55) playBirdChirp(this.ctx, this.hoverBus, 0.008);
             scheduleField();
-          }, 35000 + Math.random() * 55000),
+          }, 55000 + Math.random() * 75000),
         );
       };
       scheduleField();
@@ -230,61 +244,81 @@ export class TerrainSoundEngine {
     const stops: Array<() => void> = [];
 
     switch (id) {
+      case "roomTone": {
+        const internal = ctx.createGain();
+        internal.gain.value = 0.65;
+        const buf = createBrownNoiseBuffer(ctx, 28);
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        src.loop = true;
+        const lowpass = ctx.createBiquadFilter();
+        lowpass.type = "lowpass";
+        lowpass.frequency.value = 118;
+        lowpass.Q.value = 0.4;
+        const highpass = ctx.createBiquadFilter();
+        highpass.type = "highpass";
+        highpass.frequency.value = 28;
+        const breathLfo = ctx.createOscillator();
+        breathLfo.frequency.value = 0.004;
+        const breathGain = ctx.createGain();
+        breathGain.gain.value = 0.025;
+        breathLfo.connect(breathGain);
+        breathGain.connect(internal.gain);
+        src.connect(highpass);
+        highpass.connect(lowpass);
+        lowpass.connect(internal);
+        internal.connect(gain);
+        src.start();
+        breathLfo.start();
+        stops.push(() => {
+          src.stop();
+          breathLfo.stop();
+        });
+        break;
+      }
       case "harmonic": {
         const internal = ctx.createGain();
-        internal.gain.value = 0.28;
+        internal.gain.value = 0.18;
         const root = ctx.createOscillator();
         root.type = "sine";
-        root.frequency.value = 110;
-        const fifth = ctx.createOscillator();
-        fifth.type = "sine";
-        fifth.frequency.value = 165;
-        const octave = ctx.createOscillator();
-        octave.type = "sine";
-        octave.frequency.value = 220;
+        root.frequency.value = 55;
         const lfo = ctx.createOscillator();
-        lfo.frequency.value = 0.008;
+        lfo.frequency.value = 0.003;
         const lfoGain = ctx.createGain();
-        lfoGain.gain.value = 0.05;
+        lfoGain.gain.value = 0.018;
         lfo.connect(lfoGain);
         lfoGain.connect(internal.gain);
         root.connect(internal);
-        fifth.connect(internal);
-        octave.connect(internal);
         internal.connect(gain);
         root.start();
-        fifth.start();
-        octave.start();
         lfo.start();
         stops.push(() => {
           root.stop();
-          fifth.stop();
-          octave.stop();
           lfo.stop();
         });
         break;
       }
       case "wind": {
         const internal = ctx.createGain();
-        internal.gain.value = 0.55;
-        const buf = createPinkNoiseBuffer(ctx, 12);
+        internal.gain.value = 0.42;
+        const buf = createPinkNoiseBuffer(ctx, 24);
         const src = ctx.createBufferSource();
         src.buffer = buf;
         src.loop = true;
         const filter = ctx.createBiquadFilter();
         filter.type = "bandpass";
-        filter.frequency.value = 520;
-        filter.Q.value = 0.28;
+        filter.frequency.value = 280;
+        filter.Q.value = 0.22;
         const lfo = ctx.createOscillator();
-        lfo.frequency.value = 0.009;
+        lfo.frequency.value = 0.005;
         const lfoGain = ctx.createGain();
-        lfoGain.gain.value = 0.06;
+        lfoGain.gain.value = 0.035;
         lfo.connect(lfoGain);
         lfoGain.connect(filter.frequency);
         const breathLfo = ctx.createOscillator();
-        breathLfo.frequency.value = 0.018;
+        breathLfo.frequency.value = 0.011;
         const breathGain = ctx.createGain();
-        breathGain.gain.value = 0.035;
+        breathGain.gain.value = 0.022;
         breathLfo.connect(breathGain);
         breathGain.connect(internal.gain);
         src.connect(filter);
@@ -329,7 +363,7 @@ export class TerrainSoundEngine {
         break;
       }
       case "archiveRoom": {
-        this.attachDrone(ctx, gain, [120, 180], "triangle", stops, 0.35);
+        this.attachDrone(ctx, gain, [92, 138], "sine", stops, 0.28);
         break;
       }
       case "fieldWind": {
@@ -347,7 +381,7 @@ export class TerrainSoundEngine {
         break;
       }
       case "observatoryAir": {
-        this.attachDrone(ctx, gain, [440, 660, 880], "sine", stops, 0.25);
+        this.attachDrone(ctx, gain, [72, 108], "sine", stops, 0.2);
         break;
       }
     }
@@ -374,12 +408,12 @@ export class TerrainSoundEngine {
     lfoRate = 0.007,
   ): void {
     const bus = ctx.createGain();
-    bus.gain.value = mix * 0.55;
+    bus.gain.value = mix * 0.38;
     bus.connect(dest);
     const lfo = ctx.createOscillator();
     lfo.frequency.value = lfoRate;
     const lfoGain = ctx.createGain();
-    lfoGain.gain.value = 0.04;
+    lfoGain.gain.value = 0.022;
     lfo.connect(lfoGain);
     lfoGain.connect(bus.gain);
     lfo.start();
@@ -389,7 +423,7 @@ export class TerrainSoundEngine {
       osc.type = type;
       osc.frequency.value = freq;
       const g = ctx.createGain();
-      g.gain.value = 0.45 / freqs.length;
+      g.gain.value = 0.38 / freqs.length;
       osc.connect(g);
       g.connect(bus);
       osc.start();
