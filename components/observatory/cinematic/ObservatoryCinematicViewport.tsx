@@ -2,6 +2,7 @@
 
 import {
   motion,
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -9,11 +10,10 @@ import {
   type MotionValue,
 } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import {
   CAMERA_SPRING,
-  CAMERA_SPRING_MOBILE,
   CAMERA_SPRING_REDUCED,
   PARALLAX,
   VANISHING_ORIGIN,
@@ -32,10 +32,10 @@ import {
   SCENE_ORDER,
 } from "@/lib/observatory/cinematic/journey";
 import {
-  MOBILE_DRIFT_SCALE,
+  compileMobileSceneOpacity,
+  getMobileMountedScenes,
   MOBILE_JOURNEY_TOTAL_VH,
-  MOBILE_LAYER_POSITION,
-  MOBILE_PARALLAX_DEPTH,
+  MOBILE_SCENE_PLATE,
   MOBILE_SCENE_POSITION,
 } from "@/lib/observatory/cinematic/mobile";
 import {
@@ -60,25 +60,52 @@ const COOL_KEYS = compileCoolWashOpacity();
 const WATER_KEYS = compileWaterOpacity();
 const DUST_KEYS = compileDustOpacity();
 
-const SCENE_OPACITY = Object.fromEntries(
+const DESKTOP_SCENE_OPACITY = Object.fromEntries(
   SCENE_ORDER.map((id) => [id, compileSceneOpacity(id)]),
 ) as Record<CinematicSceneId, { input: number[]; output: number[] }>;
 
+const MOBILE_SCENE_OPACITY = Object.fromEntries(
+  SCENE_ORDER.map((id) => [id, compileMobileSceneOpacity(id)]),
+) as Record<CinematicSceneId, { input: number[]; output: number[] }>;
+
 /**
- * Five-beat cinematic journey — compressed scroll, calm steadicam handoffs.
+ * Five-beat cinematic journey.
+ * Desktop: layered 2.5D stack (unchanged).
+ * Mobile: lean single-plate window — mount ≤2 scenes, no heavy compositing.
  */
 export function ObservatoryCinematicViewport() {
+  const { isMobile } = useBreakpoint();
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  // Avoid SSR desktop stack flashing onto phones (would decode all PNG layers).
+  if (!hydrated) {
+    return (
+      <div
+        className="obs-cine-journey"
+        style={{ height: "100dvh" }}
+        aria-hidden
+      >
+        <div className="obs-cine-viewport">
+          <div className="obs-cine-stage" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isMobile) {
+    return <MobileCinematicJourney />;
+  }
+  return <DesktopCinematicJourney />;
+}
+
+function DesktopCinematicJourney() {
   const journeyRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion() ?? false;
-  const { isMobile } = useBreakpoint();
-  const variant = isMobile ? "mobile" : "desktop";
-  const origin = isMobile
-    ? VANISHING_ORIGIN.mobile
-    : VANISHING_ORIGIN.desktop;
-  const depthScale = isMobile ? MOBILE_PARALLAX_DEPTH : 1;
-  const driftScale = isMobile ? MOBILE_DRIFT_SCALE : 1;
-  const journeyHeight = isMobile ? MOBILE_JOURNEY_TOTAL_VH : JOURNEY_TOTAL_VH;
-  const journeyUnit = isMobile ? "dvh" : "vh";
+  const origin = VANISHING_ORIGIN.desktop;
 
   const { scrollYProgress } = useScroll({
     target: journeyRef,
@@ -87,90 +114,60 @@ export function ObservatoryCinematicViewport() {
 
   const progress = useSpring(
     scrollYProgress,
-    reduced
-      ? CAMERA_SPRING_REDUCED
-      : isMobile
-        ? CAMERA_SPRING_MOBILE
-        : CAMERA_SPRING,
+    reduced ? CAMERA_SPRING_REDUCED : CAMERA_SPRING,
   );
 
-  const drift = useTransform(
-    progress,
-    DRIFT_KEYS.input,
-    DRIFT_KEYS.output,
-  );
+  const drift = useTransform(progress, DRIFT_KEYS.input, DRIFT_KEYS.output);
 
   const backY = useTransform(
     drift,
-    (v) => `${-0.75 * v * PARALLAX.back * depthScale * driftScale}%`,
+    (v) => `${-0.75 * v * PARALLAX.back}%`,
   );
-  const midY = useTransform(
-    drift,
-    (v) => `${-0.95 * v * PARALLAX.mid * depthScale * driftScale}%`,
-  );
-  const foreY = useTransform(
-    drift,
-    (v) => `${-1.1 * v * PARALLAX.fore * depthScale * driftScale}%`,
-  );
+  const midY = useTransform(drift, (v) => `${-0.95 * v * PARALLAX.mid}%`);
+  const foreY = useTransform(drift, (v) => `${-1.1 * v * PARALLAX.fore}%`);
 
-  const backScale = useTransform(drift, (v) =>
-    reduced ? 1 : 1 + 0.006 * v * driftScale,
-  );
-  const midScale = useTransform(drift, (v) =>
-    reduced ? 1 : 1 + 0.008 * v * driftScale,
-  );
+  const backScale = useTransform(drift, (v) => (reduced ? 1 : 1 + 0.006 * v));
+  const midScale = useTransform(drift, (v) => (reduced ? 1 : 1 + 0.008 * v));
 
-  const deskOpacity = useTransform(
-    progress,
-    DESK_KEYS.input,
-    DESK_KEYS.output,
-  );
+  const deskOpacity = useTransform(progress, DESK_KEYS.input, DESK_KEYS.output);
   const lamplightOpacity = useTransform(
     progress,
     LAMP_KEYS.input,
     LAMP_KEYS.output,
   );
-  const hazeOpacity = useTransform(
-    progress,
-    HAZE_KEYS.input,
-    HAZE_KEYS.output,
-  );
+  const hazeOpacity = useTransform(progress, HAZE_KEYS.input, HAZE_KEYS.output);
   const coolWash = useTransform(progress, COOL_KEYS.input, COOL_KEYS.output);
   const waterOpacity = useTransform(
     progress,
     WATER_KEYS.input,
     WATER_KEYS.output,
   );
-  const dustOpacity = useTransform(
-    progress,
-    DUST_KEYS.input,
-    DUST_KEYS.output,
-  );
+  const dustOpacity = useTransform(progress, DUST_KEYS.input, DUST_KEYS.output);
 
   const opacity01 = useTransform(
     progress,
-    SCENE_OPACITY["01-threshold"].input,
-    SCENE_OPACITY["01-threshold"].output,
+    DESKTOP_SCENE_OPACITY["01-threshold"].input,
+    DESKTOP_SCENE_OPACITY["01-threshold"].output,
   );
   const opacity02 = useTransform(
     progress,
-    SCENE_OPACITY["02-first-reveal"].input,
-    SCENE_OPACITY["02-first-reveal"].output,
+    DESKTOP_SCENE_OPACITY["02-first-reveal"].input,
+    DESKTOP_SCENE_OPACITY["02-first-reveal"].output,
   );
   const opacity03 = useTransform(
     progress,
-    SCENE_OPACITY["03-observatory"].input,
-    SCENE_OPACITY["03-observatory"].output,
+    DESKTOP_SCENE_OPACITY["03-observatory"].input,
+    DESKTOP_SCENE_OPACITY["03-observatory"].output,
   );
   const opacity04 = useTransform(
     progress,
-    SCENE_OPACITY["04-sanctuary"].input,
-    SCENE_OPACITY["04-sanctuary"].output,
+    DESKTOP_SCENE_OPACITY["04-sanctuary"].input,
+    DESKTOP_SCENE_OPACITY["04-sanctuary"].output,
   );
   const opacity05 = useTransform(
     progress,
-    SCENE_OPACITY["05-arrival"].input,
-    SCENE_OPACITY["05-arrival"].output,
+    DESKTOP_SCENE_OPACITY["05-arrival"].input,
+    DESKTOP_SCENE_OPACITY["05-arrival"].output,
   );
 
   const sceneOpacity: Record<CinematicSceneId, MotionValue<number>> = {
@@ -213,25 +210,11 @@ export function ObservatoryCinematicViewport() {
     };
   };
 
-  const objectPositionFor = (
-    sceneId: CinematicSceneId,
-    layerId: DepthLayerId,
-  ): string => {
-    if (isMobile) {
-      return (
-        MOBILE_LAYER_POSITION[sceneId]?.[layerId] ??
-        MOBILE_SCENE_POSITION[sceneId]
-      );
-    }
-    return CINEMATIC_SCENES[sceneId].objectPosition.desktop;
-  };
-
   return (
     <div
       ref={journeyRef}
       className="obs-cine-journey"
-      data-mobile={isMobile ? "true" : undefined}
-      style={{ height: `${journeyHeight * 100}${journeyUnit}` }}
+      style={{ height: `${JOURNEY_TOTAL_VH * 100}vh` }}
     >
       <div className="obs-cine-viewport">
         <div className="obs-cine-stage">
@@ -247,11 +230,11 @@ export function ObservatoryCinematicViewport() {
             >
               <SceneStack
                 scene={CINEMATIC_SCENES[sceneId]}
-                variant={variant}
+                variant="desktop"
                 transformOrigin={origin}
                 layerMotion={layerMotionFor(sceneId)}
-                objectPositionFor={(layerId) =>
-                  objectPositionFor(sceneId, layerId)
+                objectPositionFor={() =>
+                  CINEMATIC_SCENES[sceneId].objectPosition.desktop
                 }
                 reduced={reduced}
               />
@@ -259,7 +242,7 @@ export function ObservatoryCinematicViewport() {
           ))}
 
           <ObservatoryCinematicLife
-            isMobile={isMobile}
+            isMobile={false}
             waterOpacity={waterOpacity}
             dustOpacity={dustOpacity}
           />
@@ -279,6 +262,124 @@ export function ObservatoryCinematicViewport() {
             style={reduced ? undefined : { opacity: coolWash }}
             aria-hidden
           />
+          <div className="obs-cine-vignette" aria-hidden />
+        </div>
+
+        <p className="obs-cine-whisper">You are still walking…</p>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Mobile: one JPEG plate per beat, ≤2 scenes mounted, raw scroll (no spring),
+ * opacity-only transitions — no parallax, particles, or blend stacks.
+ */
+function MobileCinematicJourney() {
+  const journeyRef = useRef<HTMLDivElement>(null);
+  const origin = VANISHING_ORIGIN.mobile;
+
+  const { scrollYProgress } = useScroll({
+    target: journeyRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Raw scroll — spring overshoot was compounding transition glitches on touch
+  const progress = scrollYProgress;
+
+  const [mounted, setMounted] = useState<CinematicSceneId[]>(() =>
+    getMobileMountedScenes(0),
+  );
+
+  useMotionValueEvent(progress, "change", (value) => {
+    const next = getMobileMountedScenes(value);
+    setMounted((prev) => {
+      if (
+        prev.length === next.length &&
+        prev.every((id, i) => id === next[i])
+      ) {
+        return prev;
+      }
+      return next;
+    });
+  });
+
+  const opacity01 = useTransform(
+    progress,
+    MOBILE_SCENE_OPACITY["01-threshold"].input,
+    MOBILE_SCENE_OPACITY["01-threshold"].output,
+  );
+  const opacity02 = useTransform(
+    progress,
+    MOBILE_SCENE_OPACITY["02-first-reveal"].input,
+    MOBILE_SCENE_OPACITY["02-first-reveal"].output,
+  );
+  const opacity03 = useTransform(
+    progress,
+    MOBILE_SCENE_OPACITY["03-observatory"].input,
+    MOBILE_SCENE_OPACITY["03-observatory"].output,
+  );
+  const opacity04 = useTransform(
+    progress,
+    MOBILE_SCENE_OPACITY["04-sanctuary"].input,
+    MOBILE_SCENE_OPACITY["04-sanctuary"].output,
+  );
+  const opacity05 = useTransform(
+    progress,
+    MOBILE_SCENE_OPACITY["05-arrival"].input,
+    MOBILE_SCENE_OPACITY["05-arrival"].output,
+  );
+
+  const sceneOpacity: Record<CinematicSceneId, MotionValue<number>> = {
+    "01-threshold": opacity01,
+    "02-first-reveal": opacity02,
+    "03-observatory": opacity03,
+    "04-sanctuary": opacity04,
+    "05-arrival": opacity05,
+  };
+
+  return (
+    <div
+      ref={journeyRef}
+      className="obs-cine-journey"
+      data-mobile="true"
+      style={{ height: `${MOBILE_JOURNEY_TOTAL_VH * 100}dvh` }}
+    >
+      <div className="obs-cine-viewport">
+        <div className="obs-cine-stage">
+          {[...mounted].reverse().map((sceneId) => (
+            <motion.div
+              key={sceneId}
+              className="obs-cine-world obs-cine-world--plate"
+              data-scene={sceneId}
+              style={{
+                opacity: sceneOpacity[sceneId],
+                transformOrigin: origin,
+              }}
+            >
+              <div className="obs-cine-plane obs-cine-plane--plate">
+                <Image
+                  src={MOBILE_SCENE_PLATE[sceneId]}
+                  alt=""
+                  fill
+                  priority={sceneId === "01-threshold"}
+                  loading={
+                    sceneId === "01-threshold" || sceneId === "02-first-reveal"
+                      ? "eager"
+                      : "lazy"
+                  }
+                  sizes="(max-width: 430px) 100vw, 430px"
+                  quality={72}
+                  className="obs-cine-plane__image"
+                  style={{
+                    objectPosition: MOBILE_SCENE_POSITION[sceneId],
+                  }}
+                  draggable={false}
+                />
+              </div>
+            </motion.div>
+          ))}
+
           <div className="obs-cine-vignette" aria-hidden />
         </div>
 

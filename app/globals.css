@@ -5168,7 +5168,7 @@
     }
   }
 
-  /* Mobile-only — portrait crops, dvh viewport, lighter effects */
+  /* Mobile-only — lean plates, dvh viewport, no GPU-heavy compositing */
   @media (max-width: 639px) {
     .obs-cine-realm {
       overflow-x: clip;
@@ -5192,17 +5192,39 @@
       max-width: 100%;
     }
 
+    .obs-cine-world {
+      will-change: opacity;
+      transform: none;
+    }
+
+    .obs-cine-plane {
+      will-change: auto;
+    }
+
+    .obs-cine-plane--plate,
+    .obs-cine-world--plate {
+      inset: 0;
+    }
+
     .obs-cine-plane__image {
       object-fit: cover;
     }
 
     .obs-cine-lamplight,
-    .obs-cine-cool-wash {
-      mix-blend-mode: normal;
+    .obs-cine-haze,
+    .obs-cine-cool-wash,
+    .obs-cine-life {
+      display: none;
     }
 
-    .obs-cine-life__dust {
-      box-shadow: none;
+    .obs-cine-vignette {
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, #060504 28%, transparent) 0%,
+        transparent 14%,
+        transparent 82%,
+        color-mix(in srgb, #060504 40%, transparent) 100%
+      );
     }
 
     .obs-cine-whisper {
