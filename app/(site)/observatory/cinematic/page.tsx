@@ -1,13 +1,6 @@
-import type { Metadata } from "next";
-import { ObservatoryCinematicExperience } from "@/components/observatory/cinematic";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Observatory — Cinematic Preview",
-  description:
-    "A scroll-driven passage through the Observatory — threshold to arrival.",
-  robots: { index: false, follow: false },
-};
-
+/** Legacy preview route — cinematic experience now lives at /observatory. */
 export default function ObservatoryCinematicPage() {
-  return <ObservatoryCinematicExperience />;
+  redirect("/observatory");
 }
