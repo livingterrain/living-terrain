@@ -1,0 +1,82 @@
+{
+  "status": "APPROVED",
+  "approvedAt": "2026-07-11",
+  "purpose": "Locked storyboard set. Every GLB is judged against these frames. Runtime recreates them — does not reinterpret.",
+  "masterReference": "/observatory/living-terrain-master-desktop.png",
+  "pipeline": ["concept-art", "storyboards", "environment-art", "runtime"],
+  "primaryVisualReference": "04-sanctuary",
+  "visualLanguageGuide": "/observatory/institute/art-direction/visual-language-guide.md",
+  "governingConstraint": "/observatory/institute/art-direction/perception-first.md",
+  "beats": [
+    {
+      "id": "01-threshold",
+      "title": "Threshold — The Invitation",
+      "status": "approved",
+      "image": "/observatory/institute/art-direction/01-threshold.png",
+      "scrollT": 0.06,
+      "camera": { "position": [0, 1.645, 4.051], "gaze": [0, 1.689, -1.327], "fov": 56.9 },
+      "emotionalTarget": "Immediate mystery. Warm lantern vs cool depth. Portal framing.",
+      "mustRead": ["Copper patina doors with roundels", "Walnut desk", "Brass oil lamp glow", "Open manuscript", "Hint of nave beyond"],
+      "silhouettePriority": "Door frame within frame. Desk foreground mass. Darkness beyond invites."
+    },
+    {
+      "id": "02-first-reveal",
+      "title": "First Reveal — The Cathedral Opens",
+      "status": "approved",
+      "image": "/observatory/institute/art-direction/02-first-reveal.png",
+      "scrollT": 0.22,
+      "camera": { "position": [0, 1.792, -5.148], "gaze": [0, 1.772, -10.641], "fov": 54.7 },
+      "emotionalTarget": "First breath of scale. Water, light, verticality.",
+      "mustRead": ["Central water channel with glass reflections", "Massive trunk-like piers", "Celestial blue glass left", "Botanical green glass right", "Vault ribs with vines"],
+      "silhouettePriority": "Strong verticals. Overlapping forms. No flat tunnel."
+    },
+    {
+      "id": "03-observatory",
+      "title": "Observatory — Quiet Discovery",
+      "status": "approved",
+      "image": "/observatory/institute/art-direction/03-observatory.png",
+      "scrollT": 0.42,
+      "camera": { "position": [0, 1.898, -16.648], "gaze": [0, 1.862, -22.281], "fov": 52.3 },
+      "emotionalTarget": "Scholarly life embedded in stone. Brass, books, specimens.",
+      "mustRead": ["Brass armillary on walnut stand left aisle", "Books and jars", "Ivy on pier", "Stained glass above", "Dust in light"],
+      "silhouettePriority": "Armillary profile breaks symmetry. Instruments have arc and ring silhouette."
+    },
+    {
+      "id": "04-sanctuary",
+      "title": "Sanctuary — Emotional Climax",
+      "status": "approved-primary-reference",
+      "image": "/observatory/institute/art-direction/04-sanctuary.png",
+      "scrollT": 0.88,
+      "camera": { "position": [0, 2.123, -43.1], "gaze": [0, 2.09, -49.053], "fov": 47.2 },
+      "emotionalTarget": "Everything leads here. Tree monumental. Architecture frames tree.",
+      "mustRead": ["Monumental tree with real branches", "Roots in carved stone planter", "Rose window celestial backlight", "Carved apse curve", "Layered foreground/mid/background"],
+      "silhouettePriority": "Tree owns 40-60% of frame. Organic mass vs rigid carved stone."
+    },
+    {
+      "id": "05-arrival",
+      "title": "Arrival — Beneath the Tree",
+      "status": "approved",
+      "image": "/observatory/institute/art-direction/05-arrival.png",
+      "scrollT": 1.0,
+      "camera": { "position": [0, 2.18, -50], "gaze": [0, 2.14, -54], "fov": 46 },
+      "emotionalTarget": "Stillness. Wonder. God-rays. Reflection.",
+      "mustRead": ["Canopy overhead", "Rose window through branches", "Water reflection at feet", "Dust motes in light shafts", "Ivy and moss on stone"],
+      "silhouettePriority": "Overhead foliage ceiling. Human-scale stillness against monumental scale."
+    }
+  ],
+  "rules": [
+    "Build only what the camera sees",
+    "Emotional image beats architectural correctness",
+    "If trunk beats column, choose trunk",
+    "Gray-shaded silhouette must pass before materials",
+    "Runtime recreates approved art — never explores",
+    "No threshold, nave, armillary, or props until Sanctuary runtime screenshot approved"
+  ],
+  "frozenRuntimeSystems": [
+    "path.ts camera spline, look curve, FOV, journey length",
+    "InstituteCamera damping and gaze",
+    "InstituteExperience scroll and viewport",
+    "Water channel placement",
+    "Route /observatory"
+  ]
+}

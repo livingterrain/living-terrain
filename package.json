@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack --hostname 127.0.0.1 --port 3000",
     "dev:fast": "next dev --turbopack",
     "dev:clean": "rm -rf .next && next dev --turbopack",
     "build": "next build",
