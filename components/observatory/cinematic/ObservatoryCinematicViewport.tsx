@@ -13,6 +13,7 @@ import { useRef } from "react";
 import { useBreakpoint } from "@/lib/atmosphere/use-breakpoint";
 import {
   CAMERA_SPRING,
+  CAMERA_SPRING_MOBILE,
   CAMERA_SPRING_REDUCED,
   PARALLAX,
   VANISHING_ORIGIN,
@@ -30,6 +31,13 @@ import {
   JOURNEY_TOTAL_VH,
   SCENE_ORDER,
 } from "@/lib/observatory/cinematic/journey";
+import {
+  MOBILE_DRIFT_SCALE,
+  MOBILE_JOURNEY_TOTAL_VH,
+  MOBILE_LAYER_POSITION,
+  MOBILE_PARALLAX_DEPTH,
+  MOBILE_SCENE_POSITION,
+} from "@/lib/observatory/cinematic/mobile";
 import {
   resolveLayerSrc,
   type CinematicScene,
@@ -67,7 +75,10 @@ export function ObservatoryCinematicViewport() {
   const origin = isMobile
     ? VANISHING_ORIGIN.mobile
     : VANISHING_ORIGIN.desktop;
-  const depth = isMobile ? 0.82 : 1;
+  const depthScale = isMobile ? MOBILE_PARALLAX_DEPTH : 1;
+  const driftScale = isMobile ? MOBILE_DRIFT_SCALE : 1;
+  const journeyHeight = isMobile ? MOBILE_JOURNEY_TOTAL_VH : JOURNEY_TOTAL_VH;
+  const journeyUnit = isMobile ? "dvh" : "vh";
 
   const { scrollYProgress } = useScroll({
     target: journeyRef,
@@ -76,7 +87,11 @@ export function ObservatoryCinematicViewport() {
 
   const progress = useSpring(
     scrollYProgress,
-    reduced ? CAMERA_SPRING_REDUCED : CAMERA_SPRING,
+    reduced
+      ? CAMERA_SPRING_REDUCED
+      : isMobile
+        ? CAMERA_SPRING_MOBILE
+        : CAMERA_SPRING,
   );
 
   const drift = useTransform(
@@ -87,22 +102,22 @@ export function ObservatoryCinematicViewport() {
 
   const backY = useTransform(
     drift,
-    (v) => `${-0.75 * v * PARALLAX.back * depth}%`,
+    (v) => `${-0.75 * v * PARALLAX.back * depthScale * driftScale}%`,
   );
   const midY = useTransform(
     drift,
-    (v) => `${-0.95 * v * PARALLAX.mid * depth}%`,
+    (v) => `${-0.95 * v * PARALLAX.mid * depthScale * driftScale}%`,
   );
   const foreY = useTransform(
     drift,
-    (v) => `${-1.1 * v * PARALLAX.fore * depth}%`,
+    (v) => `${-1.1 * v * PARALLAX.fore * depthScale * driftScale}%`,
   );
 
   const backScale = useTransform(drift, (v) =>
-    reduced ? 1 : 1 + 0.006 * v,
+    reduced ? 1 : 1 + 0.006 * v * driftScale,
   );
   const midScale = useTransform(drift, (v) =>
-    reduced ? 1 : 1 + 0.008 * v,
+    reduced ? 1 : 1 + 0.008 * v * driftScale,
   );
 
   const deskOpacity = useTransform(
@@ -198,13 +213,25 @@ export function ObservatoryCinematicViewport() {
     };
   };
 
-  const alignedPosition = isMobile ? "center 38%" : "center 46%";
+  const objectPositionFor = (
+    sceneId: CinematicSceneId,
+    layerId: DepthLayerId,
+  ): string => {
+    if (isMobile) {
+      return (
+        MOBILE_LAYER_POSITION[sceneId]?.[layerId] ??
+        MOBILE_SCENE_POSITION[sceneId]
+      );
+    }
+    return CINEMATIC_SCENES[sceneId].objectPosition.desktop;
+  };
 
   return (
     <div
       ref={journeyRef}
       className="obs-cine-journey"
-      style={{ height: `${JOURNEY_TOTAL_VH * 100}vh` }}
+      data-mobile={isMobile ? "true" : undefined}
+      style={{ height: `${journeyHeight * 100}${journeyUnit}` }}
     >
       <div className="obs-cine-viewport">
         <div className="obs-cine-stage">
@@ -221,9 +248,11 @@ export function ObservatoryCinematicViewport() {
               <SceneStack
                 scene={CINEMATIC_SCENES[sceneId]}
                 variant={variant}
-                objectPosition={alignedPosition}
                 transformOrigin={origin}
                 layerMotion={layerMotionFor(sceneId)}
+                objectPositionFor={(layerId) =>
+                  objectPositionFor(sceneId, layerId)
+                }
                 reduced={reduced}
               />
             </motion.div>
@@ -262,16 +291,16 @@ export function ObservatoryCinematicViewport() {
 function SceneStack({
   scene,
   variant,
-  objectPosition,
   transformOrigin,
   layerMotion,
+  objectPositionFor,
   reduced,
 }: {
   scene: CinematicScene;
   variant: "desktop" | "mobile";
-  objectPosition: string;
   transformOrigin: string;
   layerMotion: Record<DepthLayerId, LayerMotion | undefined>;
+  objectPositionFor: (layerId: DepthLayerId) => string;
   reduced: boolean;
 }) {
   return (
@@ -305,7 +334,7 @@ function SceneStack({
               priority={scene.id === "01-threshold" && layer.depth <= 2}
               sizes="100vw"
               className="obs-cine-plane__image"
-              style={{ objectPosition }}
+              style={{ objectPosition: objectPositionFor(layer.id) }}
               draggable={false}
             />
           </motion.div>

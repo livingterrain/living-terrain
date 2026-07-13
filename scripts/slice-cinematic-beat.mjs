@@ -1,5 +1,7 @@
 /**
  * Slice an approved storyboard frame into depth planes for 2.5D runtime.
+ * Desktop: landscape 1536×1024. Mobile: portrait 1024×1536 center-crop.
+ *
  * Usage: node scripts/slice-cinematic-beat.mjs 03-observatory
  */
 import fs from "node:fs";
@@ -9,7 +11,6 @@ import sharp from "sharp";
 const beatId = process.argv[2];
 if (!beatId) {
   console.error("Usage: node scripts/slice-cinematic-beat.mjs <beat-id>");
-  console.error("Example: node scripts/slice-cinematic-beat.mjs 03-observatory");
   process.exit(1);
 }
 
@@ -18,11 +19,14 @@ const SRC = path.join(
   ROOT,
   `public/observatory/institute/art-direction/${beatId}.png`,
 );
-const OUT = path.join(ROOT, `public/observatory/cinematic/layers/beat-${beatId.slice(0, 2)}`);
+const OUT = path.join(
+  ROOT,
+  `public/observatory/cinematic/layers/beat-${beatId.slice(0, 2)}`,
+);
 
-const CANVAS = { width: 1536, height: 1024 };
+const DESKTOP_CANVAS = { width: 1536, height: 1024 };
 
-const LAYERS = {
+const DESKTOP_LAYERS = {
   back: { top: 0, left: 0, width: 1536, height: 620, featherBottom: 120 },
   "mid-nave": {
     top: 100,
@@ -54,6 +58,42 @@ const LAYERS = {
     width: 1536,
     height: 344,
     featherTop: 100,
+  },
+};
+
+const MOBILE_CANVAS = { width: 1024, height: 1536 };
+
+/** Portrait layers — aligned with threshold mobile slices */
+const MOBILE_LAYERS = {
+  back: { top: 0, left: 0, width: 1024, height: 1180, featherBottom: 160 },
+  "mid-nave": {
+    top: 200,
+    left: 0,
+    width: 1024,
+    height: 980,
+    featherTop: 100,
+    featherBottom: 180,
+  },
+  "fore-left": {
+    top: 0,
+    left: 0,
+    width: 160,
+    height: 1536,
+    featherRight: 50,
+  },
+  "fore-right": {
+    top: 0,
+    left: 864,
+    width: 160,
+    height: 1536,
+    featherLeft: 50,
+  },
+  "fore-floor": {
+    top: 980,
+    left: 0,
+    width: 1024,
+    height: 556,
+    featherTop: 140,
   },
 };
 
@@ -90,10 +130,26 @@ function featherMask(w, h, spec) {
   return pixels;
 }
 
-async function buildLayer(outPath, layerName, spec) {
+async function portraitSource() {
+  const scaledW = Math.round(1536 * (MOBILE_CANVAS.height / 1024));
+  const left = Math.round((scaledW - MOBILE_CANVAS.width) / 2);
+  return sharp(SRC)
+    .resize({ height: MOBILE_CANVAS.height })
+    .extract({
+      left,
+      top: 0,
+      width: MOBILE_CANVAS.width,
+      height: MOBILE_CANVAS.height,
+    })
+    .ensureAlpha()
+    .png()
+    .toBuffer();
+}
+
+async function buildLayer(source, canvas, outPath, layerName, spec) {
   const { top, left, width, height, ...feather } = spec;
 
-  const crop = await sharp(SRC)
+  const crop = await sharp(source)
     .extract({ left, top, width, height })
     .ensureAlpha()
     .raw()
@@ -113,8 +169,8 @@ async function buildLayer(outPath, layerName, spec) {
 
   await sharp({
     create: {
-      width: CANVAS.width,
-      height: CANVAS.height,
+      width: canvas.width,
+      height: canvas.height,
       channels: 4,
       background: { r: 0, g: 0, b: 0, alpha: 0 },
     },
@@ -132,14 +188,34 @@ async function main() {
     process.exit(1);
   }
 
-  for (const variant of ["desktop", "mobile"]) {
-    const outDir = path.join(OUT, variant);
-    fs.mkdirSync(outDir, { recursive: true });
-    console.log(`\n${beatId} / ${variant}`);
-    for (const [layerName, spec] of Object.entries(LAYERS)) {
-      await buildLayer(path.join(outDir, `${layerName}.png`), layerName, spec);
-    }
+  const mobileSrc = await portraitSource();
+
+  console.log(`\n${beatId} / desktop`);
+  const desktopDir = path.join(OUT, "desktop");
+  fs.mkdirSync(desktopDir, { recursive: true });
+  for (const [layerName, spec] of Object.entries(DESKTOP_LAYERS)) {
+    await buildLayer(
+      SRC,
+      DESKTOP_CANVAS,
+      path.join(desktopDir, `${layerName}.png`),
+      layerName,
+      spec,
+    );
   }
+
+  console.log(`\n${beatId} / mobile (portrait)`);
+  const mobileDir = path.join(OUT, "mobile");
+  fs.mkdirSync(mobileDir, { recursive: true });
+  for (const [layerName, spec] of Object.entries(MOBILE_LAYERS)) {
+    await buildLayer(
+      mobileSrc,
+      MOBILE_CANVAS,
+      path.join(mobileDir, `${layerName}.png`),
+      layerName,
+      spec,
+    );
+  }
+
   console.log("\nDone.");
 }
 

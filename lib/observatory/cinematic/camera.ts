@@ -18,6 +18,13 @@ export const CAMERA_SPRING_REDUCED = {
   mass: 0.5,
 } as const;
 
+/** Touch-friendly — less spring lag on mobile scroll */
+export const CAMERA_SPRING_MOBILE = {
+  stiffness: 56,
+  damping: 36,
+  mass: 0.85,
+} as const;
+
 /**
  * Subtle depth separation — foreground only slightly ahead of mid.
  * Back and mid stay nearly locked for vanishing-point stability.

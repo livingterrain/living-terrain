@@ -13,7 +13,7 @@ type Props = {
   dustOpacity: MotionValue<number>;
 };
 
-/** Restrained atmospheric layers — dust, water shimmer. */
+/** Restrained atmospheric layers — lighter on mobile for touch performance. */
 export function ObservatoryCinematicLife({
   isMobile,
   waterOpacity,
@@ -23,13 +23,13 @@ export function ObservatoryCinematicLife({
 
   const dust = useMemo(
     () =>
-      Array.from({ length: isMobile ? 8 : 14 }, (_, i) => ({
+      Array.from({ length: isMobile ? 4 : 14 }, (_, i) => ({
         id: i,
         left: `${((i * 53.1) % 100).toFixed(1)}%`,
         top: `${10 + ((i * 37.7) % 75)}%`,
-        size: i % 5 === 0 ? 2 : i % 3 === 0 ? 1.3 : 0.85,
+        size: isMobile ? 0.75 : i % 5 === 0 ? 2 : i % 3 === 0 ? 1.3 : 0.85,
         delay: (i % 6) * 2.4,
-        dur: 20 + (i % 5) * 4,
+        dur: isMobile ? 28 : 20 + (i % 5) * 4,
       })),
     [isMobile],
   );
@@ -44,10 +44,12 @@ export function ObservatoryCinematicLife({
 
   return (
     <div className="obs-cine-life" aria-hidden>
-      <motion.div
-        className="obs-cine-life__water"
-        style={{ opacity: waterOpacity }}
-      />
+      {!isMobile && (
+        <motion.div
+          className="obs-cine-life__water"
+          style={{ opacity: waterOpacity }}
+        />
+      )}
       <motion.div
         className="obs-cine-life__dust-field"
         style={{ opacity: dustOpacity }}

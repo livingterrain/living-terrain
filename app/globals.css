@@ -5167,4 +5167,49 @@
       animation: none;
     }
   }
+
+  /* Mobile-only — portrait crops, dvh viewport, lighter effects */
+  @media (max-width: 639px) {
+    .obs-cine-realm {
+      overflow-x: clip;
+      max-width: 100vw;
+    }
+
+    .obs-cine-journey {
+      width: 100%;
+      max-width: 100vw;
+    }
+
+    .obs-cine-viewport {
+      height: calc(100svh - 3.75rem);
+      height: calc(100dvh - 3.75rem);
+      max-width: 100vw;
+    }
+
+    .obs-cine-stage,
+    .obs-cine-world,
+    .obs-cine-plane {
+      max-width: 100%;
+    }
+
+    .obs-cine-plane__image {
+      object-fit: cover;
+    }
+
+    .obs-cine-lamplight,
+    .obs-cine-cool-wash {
+      mix-blend-mode: normal;
+    }
+
+    .obs-cine-life__dust {
+      box-shadow: none;
+    }
+
+    .obs-cine-whisper {
+      font-size: 0.625rem;
+      left: max(1rem, env(safe-area-inset-left, 0px));
+      bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+      max-width: calc(100% - 4.5rem);
+    }
+  }
 }
