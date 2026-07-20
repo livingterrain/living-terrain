@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ChamberPage } from "@/components/chamber";
 import { BecomingChamber } from "@/components/chamber/editorial/BecomingChamber";
+import { EditorialChamber } from "@/components/chamber/editorial/EditorialChamber";
+import { SECOND_BIRTH_SPEC } from "@/lib/chamber/editorial/the-second-birth";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
 
 interface PageProps {
@@ -28,9 +30,14 @@ export default async function ChamberRoutePage({ params }: PageProps) {
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
-  // Editorial chamber prototype — The Biology of Becoming only.
+  // Editorial chamber prototype — The Biology of Becoming only (custom).
   if (slug === "the-biology-of-becoming") {
     return <BecomingChamber project={project} />;
+  }
+
+  // Reusable editorial template — The Second Birth (test).
+  if (slug === "the-second-birth") {
+    return <EditorialChamber project={project} spec={SECOND_BIRTH_SPEC} />;
   }
 
   const lead =
