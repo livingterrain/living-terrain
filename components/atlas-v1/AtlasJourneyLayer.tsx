@@ -12,6 +12,7 @@ import {
   getEssay,
   getQuestion,
   relationsFor,
+  resolveUnfinishedEdge,
   type AtlasV1ConceptId,
   type AtlasV1EssayId,
   type AtlasV1QuestionId,
@@ -90,18 +91,17 @@ export function AtlasJourneyLayer({
     ? getEssay(journey.activeEssayId)
     : null;
   const nextRelations = relationsFor(question, journey.currentConceptId);
-  const unfinished = (() => {
-    const hint = question.unfinishedHint;
-    if (!journey.trail.includes(hint.from)) return null;
-    if (journey.trail.includes(hint.to)) return null;
-    for (const id of journey.trail) {
-      const rels = relationsFor(question, id);
-      if (rels.some((r) => r.to === hint.to)) {
-        return null;
-      }
+  const unfinished = question
+    ? resolveUnfinishedEdge(question, journey.trail)
+    : null;
+
+  // History can restore pause after the unfinished edge is already known —
+  // never leave the visitor on an empty pause surface.
+  useEffect(() => {
+    if (view === "pause" && !unfinished) {
+      onBack();
     }
-    return hint;
-  })();
+  }, [view, unfinished, onBack]);
 
   return (
     <div
@@ -167,6 +167,7 @@ export function AtlasJourneyLayer({
               onRead={onRead}
               onDone={onDone}
               onBeginAgain={onBeginAgain}
+              canRest={Boolean(unfinished)}
             />
           </motion.div>
         )}
@@ -343,6 +344,7 @@ function JourneyView({
   onRead,
   onDone,
   onBeginAgain,
+  canRest,
 }: {
   questionText: string;
   closingQuestion: string;
@@ -362,6 +364,7 @@ function JourneyView({
   onRead: () => void;
   onDone: () => void;
   onBeginAgain: () => void;
+  canRest: boolean;
 }) {
   const onConceptKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -509,7 +512,7 @@ function JourneyView({
               conceptName
             )}
           </p>
-          {!threadComplete && (
+          {!threadComplete && canRest && (
             <button
               type="button"
               onClick={onDone}

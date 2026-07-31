@@ -81,7 +81,10 @@ export function Header() {
           </TerrainLink>
 
           {present && !isHome && (
-            <p className="world-presence__place pointer-events-none absolute left-1/2 hidden max-w-[10rem] -translate-x-1/2 truncate px-2 text-center font-heading text-[0.75rem] italic text-charcoal-muted/70 sm:block sm:max-w-[12rem] sm:text-[0.8125rem] lg:max-w-xs">
+            <p
+              className="world-presence__place pointer-events-none absolute left-1/2 hidden max-w-[10rem] -translate-x-1/2 truncate px-2 text-center font-heading text-[0.75rem] italic text-charcoal-muted/70 sm:block sm:max-w-[12rem] sm:text-[0.8125rem] lg:hidden"
+              aria-hidden
+            >
               {place}
             </p>
           )}

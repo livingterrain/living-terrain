@@ -505,7 +505,11 @@ export const ATLAS_V1_QUESTIONS: AtlasV1Question[] = [
 ];
 
 export function getQuestion(id: AtlasV1QuestionId): AtlasV1Question {
-  return ATLAS_V1_QUESTIONS.find((q) => q.id === id)!;
+  const question = ATLAS_V1_QUESTIONS.find((q) => q.id === id);
+  if (!question) {
+    throw new Error(`Unknown Atlas question: ${id}`);
+  }
+  return question;
 }
 
 export function getConcept(id: AtlasV1ConceptId): AtlasV1Concept {
@@ -522,4 +526,19 @@ export function relationsFor(
 ): AtlasV1Relation[] {
   /** One relationship per scene — the grammar of Atlas */
   return (question.relations[conceptId] ?? []).slice(0, 1);
+}
+
+/**
+ * The unfinished edge for pause / “Rest here”.
+ * Valid only after the visitor has reached `from` and has not yet walked to `to`.
+ * Must not treat corpus adjacency as “already followed” — only the trail does.
+ */
+export function resolveUnfinishedEdge(
+  question: AtlasV1Question,
+  trail: readonly AtlasV1ConceptId[],
+): AtlasV1Question["unfinishedHint"] | null {
+  const hint = question.unfinishedHint;
+  if (!trail.includes(hint.from)) return null;
+  if (trail.includes(hint.to)) return null;
+  return hint;
 }

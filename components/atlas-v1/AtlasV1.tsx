@@ -11,6 +11,11 @@ import type {
   AtlasV1ConceptId,
   AtlasV1QuestionId,
 } from "@/lib/atlas-v1/content";
+import {
+  getConcept,
+  getQuestion,
+  resolveUnfinishedEdge,
+} from "@/lib/atlas-v1/content";
 import { VOID_QUESTIONS } from "@/lib/atlas-v1/questions";
 import { TheVoid, type VoidSurface } from "@/components/void/TheVoid";
 import type {
@@ -30,6 +35,75 @@ type HistoryPayload = {
   journey: JourneyState | null;
   relationsVisible?: boolean;
 };
+
+function isUsableJourney(journey: JourneyState | null): journey is JourneyState {
+  if (!journey) return false;
+  try {
+    getQuestion(journey.questionId);
+    return Boolean(getConcept(journey.currentConceptId));
+  } catch {
+    return false;
+  }
+}
+
+function sanitizeHistory(
+  state: HistoryPayload | null,
+): { view: View; journey: JourneyState | null; relationsVisible: boolean; voidComplete: boolean } {
+  if (!state) {
+    return {
+      view: "void",
+      journey: null,
+      relationsVisible: false,
+      voidComplete: false,
+    };
+  }
+
+  const nextView =
+    (state.view as string) === "start" ? "void" : state.view;
+  const journey = isUsableJourney(state.journey) ? state.journey : null;
+
+  // Non-void views require a usable journey — otherwise Void rests at height 0
+  // and nothing renders (blank Atlas).
+  if (nextView !== "void" && !journey) {
+    return {
+      view: "void",
+      journey: null,
+      relationsVisible: false,
+      voidComplete: true,
+    };
+  }
+
+  if (nextView === "pause" && journey) {
+    try {
+      const unfinished = resolveUnfinishedEdge(
+        getQuestion(journey.questionId),
+        journey.trail,
+      );
+      if (!unfinished) {
+        return {
+          view: "journey",
+          journey,
+          relationsVisible: Boolean(state.relationsVisible),
+          voidComplete: true,
+        };
+      }
+    } catch {
+      return {
+        view: "void",
+        journey: null,
+        relationsVisible: false,
+        voidComplete: true,
+      };
+    }
+  }
+
+  return {
+    view: nextView,
+    journey,
+    relationsVisible: Boolean(state.relationsVisible),
+    voidComplete: nextView !== "void",
+  };
+}
 
 const AtlasJourneyLayer = dynamic(
   () =>
@@ -127,28 +201,31 @@ export function AtlasV1() {
 
   useEffect(() => {
     function onPop(e: PopStateEvent) {
-      const state = e.state as HistoryPayload | null;
+      const restored = sanitizeHistory(e.state as HistoryPayload | null);
       clearLinger();
       clearNoticeTimer();
       setNotice(null);
-      if (!state) {
-        setView("void");
-        setJourney(null);
-        setRelationsVisible(false);
-        setBondNoticed(false);
-        return;
-      }
-      const nextView =
-        (state.view as string) === "start" ? "void" : state.view;
-      setView(nextView);
-      setJourney(state.journey);
-      setRelationsVisible(Boolean(state.relationsVisible));
-      setBondNoticed(Boolean(state.relationsVisible));
+      setView(restored.view);
+      setJourney(restored.journey);
+      setRelationsVisible(restored.relationsVisible);
+      setBondNoticed(restored.relationsVisible);
+      setVoidComplete(restored.voidComplete);
       scrollTop();
     }
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, [clearLinger, clearNoticeTimer, scrollTop]);
+
+  // Defensive: never leave the realm on a non-void view without a journey.
+  useEffect(() => {
+    if (view !== "void" && !journey) {
+      setView("void");
+      setRelationsVisible(false);
+      setBondNoticed(false);
+      setNotice(null);
+      setVoidComplete(true);
+    }
+  }, [view, journey]);
 
   useEffect(
     () => () => {
@@ -307,6 +384,15 @@ export function AtlasV1() {
 
   const doneForNow = useCallback(() => {
     if (!journey) return;
+    try {
+      const unfinished = resolveUnfinishedEdge(
+        getQuestion(journey.questionId),
+        journey.trail,
+      );
+      if (!unfinished) return;
+    } catch {
+      return;
+    }
     clearLinger();
     setView("pause");
     pushHistory("pause", journey, false);
@@ -326,12 +412,15 @@ export function AtlasV1() {
     scrollTop();
   }, [clearLinger, clearNoticeTimer, pushHistory, scrollTop]);
 
-  const voidSurface: VoidSurface =
-    view === "void"
-      ? voidComplete
-        ? "questions"
-        : "threshold"
-      : "rest";
+  // Render-time guard mirrors the effect — avoids one blank paint if state is invalid.
+  const showJourney = view !== "void" && isUsableJourney(journey);
+  // If view is non-void without a journey, never use "rest" (height 0 / blank-events none).
+  const showVoidSurface: VoidSurface = showJourney
+    ? "rest"
+    : view !== "void" || voidComplete
+      ? "questions"
+      : "threshold";
+  const voidHidden = showJourney;
 
   return (
     <div
@@ -345,13 +434,13 @@ export function AtlasV1() {
       />
 
       {/* Climate + language live in TheVoid; not trapped in a fixed shell */}
-      <div aria-hidden={view !== "void" ? true : undefined}>
-        <TheVoid onChoose={startQuestion} surface={voidSurface} />
+      <div aria-hidden={voidHidden ? true : undefined}>
+        <TheVoid onChoose={startQuestion} surface={showVoidSurface} />
       </div>
 
-      {view !== "void" && journey && (
+      {showJourney && (
         <AtlasJourneyLayer
-          view={view}
+          view={view as JourneyViewMode}
           journey={journey}
           notice={notice}
           relationsVisible={relationsVisible}

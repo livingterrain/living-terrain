@@ -13,7 +13,8 @@
     "content:essay:preview": "tsx scripts/content-essay-cli.ts preview",
     "content:essay:apply": "tsx scripts/content-essay-cli.ts apply",
     "content:essay:list": "tsx scripts/content-essay-cli.ts list",
-    "content:medium:crawl": "tsx scripts/crawl-medium-profile.ts"
+    "content:medium:crawl": "tsx scripts/crawl-medium-profile.ts",
+    "verify:atlas": "tsx scripts/verify-atlas-journey.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
