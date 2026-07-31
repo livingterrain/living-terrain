@@ -25,7 +25,13 @@ const READING_PREFIX =
   /^\/(essays|questions|field-notes|atlas|library|inquiry|quotations|chambers|structure-beneath-reality)/;
 
 export function isMapPath(path: string): boolean {
-  return path === "/" || path === "";
+  return (
+    path === "/" ||
+    path === "" ||
+    path === "/terrain-v2" ||
+    path === "/atlas" ||
+    path === "/atlas-v1"
+  );
 }
 
 export function isThemePath(path: string): boolean {

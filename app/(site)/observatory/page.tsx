@@ -1,12 +1,30 @@
 import type { Metadata } from "next";
-import { ObservatoryCinematicExperience } from "@/components/observatory/cinematic";
+import { Container } from "@/components/layout/Container";
+import { Room, RoomThreshold } from "@/components/environment";
+import { ObservatoryHub } from "@/components/observatory/ObservatoryV1";
 
 export const metadata: Metadata = {
-  title: "Observatory",
+  title: "The Observatory",
   description:
-    "A scroll-driven passage through the Observatory — threshold to arrival.",
+    "Where research lives before it becomes essays, books, or Atlas.",
 };
 
 export default function ObservatoryPage() {
-  return <ObservatoryCinematicExperience />;
+  return (
+    <Room kind="observatory">
+      <RoomThreshold
+        kind="observatory"
+        title="The Observatory"
+        whisper="This is where questions begin."
+        description="Not every observation becomes a theory. Not every theory survives. Research as it exists before it becomes a map."
+        align="center"
+      />
+
+      <section className="pb-32 pt-2 sm:pb-40">
+        <Container narrow>
+          <ObservatoryHub />
+        </Container>
+      </section>
+    </Room>
+  );
 }

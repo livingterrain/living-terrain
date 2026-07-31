@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-/** Legacy preview route — cinematic experience now lives at /observatory. */
-export default function ObservatoryCinematicPage() {
+/** Cinematic passage retired — Observatory is living questions. */
+export default function ObservatoryCinematicRedirect() {
   redirect("/observatory");
 }

@@ -30,6 +30,15 @@ export function Header() {
   }, [open]);
 
   useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  useEffect(() => {
     function onScroll() {
       setScrolled(window.scrollY > 64);
     }
@@ -85,7 +94,7 @@ export function Header() {
               )}
               aria-label="Directions"
             >
-              {PATHWAYS.slice(0, 3).map((p) => (
+              {PATHWAYS.map((p) => (
                 <PathwayLink
                   key={p.href}
                   href={p.href}
@@ -128,6 +137,7 @@ export function Header() {
                 "world-presence__further hidden min-h-10 items-center font-heading text-[0.8125rem] italic text-charcoal-muted transition-colors duration-[1200ms] hover:text-ivory lg:flex",
                 present ? "opacity-100" : "opacity-70",
               )}
+              aria-label={open ? "Close further directions" : "Further directions"}
               aria-expanded={open}
             >
               {open ? "Close" : "Further…"}

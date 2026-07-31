@@ -19,7 +19,7 @@ export default function EssaysPage() {
       <RoomThreshold
         kind="library"
         title="Essays"
-        whisper="The library — discoveries mapped by inquiry, not chronology."
+        whisper="Scout reports from the edges — mapped by inquiry, not chronology."
       />
 
       <section className="pb-24 pt-4 sm:pb-32">
@@ -27,8 +27,8 @@ export default function EssaysPage() {
           <div className="threshold-carved threshold-carved--edge px-0 py-8 text-center sm:py-10">
             <p className="type-body mx-auto max-w-lg text-[0.9375rem]">
               The full text of each essay lives on Medium. Living Terrain maps
-              them here — tracing how they connect to questions and volumes
-              across the terrain.
+              them here — tracing how they connect to questions and maps across
+              the terrain.
             </p>
             <MediumPublicationLink prominent className="mt-6" />
           </div>

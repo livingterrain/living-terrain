@@ -1,42 +1,17 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/layout/Container";
-import { MapArtifactCard } from "@/components/atlas";
-import { Room, RoomThreshold } from "@/components/environment";
-import { getAllMaps } from "@/lib/content";
+import { AtlasV1 } from "@/components/atlas-v1/AtlasV1";
 
 export const metadata: Metadata = {
   title: "The Atlas",
   description:
-    "Maps of completed investigations — enduring cartography from surveys of the terrain.",
+    "Enter Living Terrain through a living question. Think through relationships drawn from the published writing — maps of completed investigations wait beyond.",
 };
 
+/**
+ * The Atlas — public entry.
+ * The Void (attention threshold) → questions → Journey → Evidence → Pause.
+ * Charted map plates remain at /atlas/[slug]; the finding aid at /atlas/charts.
+ */
 export default function AtlasPage() {
-  const maps = getAllMaps();
-
-  return (
-    <Room kind="atlas">
-      <RoomThreshold
-        kind="atlas"
-        title="The Atlas"
-        description="Completed investigations endure here as maps — not the journals themselves, but the cartography that remains after the survey."
-        align="center"
-      />
-
-      <section
-        className="pb-36 pt-6 sm:pb-48 sm:pt-10"
-        aria-label="Charted territories"
-      >
-        <Container narrow>
-          <p className="type-body mx-auto mb-24 max-w-sm text-center text-[0.875rem] leading-relaxed tracking-wide text-charcoal-muted/90 sm:mb-32">
-            Stand before a region. Choose which territory to enter.
-          </p>
-          <ul className="mx-auto flex max-w-xl flex-col gap-40 sm:gap-48">
-            {maps.map((map, index) => (
-              <MapArtifactCard key={map.id} map={map} index={index} />
-            ))}
-          </ul>
-        </Container>
-      </section>
-    </Room>
-  );
+  return <AtlasV1 />;
 }

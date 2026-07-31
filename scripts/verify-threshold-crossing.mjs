@@ -5,7 +5,7 @@
  */
 import { chromium } from "playwright";
 
-const URL = process.env.LT_URL ?? "http://localhost:3000";
+const URL = process.env.LT_URL ?? "http://localhost:3001";
 const RUNS = 20;
 const WAIT_MS = 5000;
 

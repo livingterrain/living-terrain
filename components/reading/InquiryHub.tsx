@@ -98,10 +98,10 @@ export function InquiryHub({ essays, fieldNotes }: InquiryHubProps) {
         </div>
         <div>
           <p className="type-body text-sm text-charcoal-muted">
-            Prefer to wander visually?
+            Prefer to begin again?
           </p>
           <TextLink href="/" className="mt-2 inline-flex min-h-11 items-center text-sm">
-            Explore the constellation →
+            Return to the threshold →
           </TextLink>
         </div>
       </footer>

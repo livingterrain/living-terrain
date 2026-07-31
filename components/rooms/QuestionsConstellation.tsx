@@ -100,7 +100,7 @@ function QuestionHubPlate({
                       key={b.id}
                       className="type-body text-[0.8125rem] text-charcoal-muted"
                     >
-                      <span className="text-forest-faint">Volume · </span>
+                      <span className="text-forest-faint">Map · </span>
                       {b.title}
                     </li>
                   ))}

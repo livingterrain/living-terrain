@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PathwayLink } from "@/components/design-system/threshold";
 import { Container } from "@/components/layout/Container";
+import { PATHWAYS } from "@/lib/world/pathways";
 
 export function Footer() {
   return (
@@ -14,12 +15,15 @@ export function Footer() {
           className="mx-auto mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-4"
           aria-label="Horizons"
         >
-          <PathwayLink href="/questions" className="min-h-11 justify-center py-2 text-sm">
-            Where paths branch
-          </PathwayLink>
-          <PathwayLink href="/observatory" className="min-h-11 justify-center py-2 text-sm">
-            Inward
-          </PathwayLink>
+          {PATHWAYS.map((p) => (
+            <PathwayLink
+              key={p.href}
+              href={p.href}
+              className="min-h-11 justify-center py-2 text-sm"
+            >
+              {p.label}
+            </PathwayLink>
+          ))}
           <PathwayLink href="/" className="min-h-11 justify-center py-2 text-sm">
             Outward
           </PathwayLink>

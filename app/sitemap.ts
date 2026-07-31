@@ -8,6 +8,7 @@ import {
   getStructureSections,
 } from "@/lib/content";
 import { siteConfig } from "@/lib/content/data";
+import { getInvestigations } from "@/lib/observatory/investigations";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.url;
@@ -15,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
     "/atlas",
+    "/atlas/charts",
     "/inquiry",
     "/questions",
     "/essays",
@@ -26,7 +28,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${base}${path}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
-    priority: path === "" ? 1 : path === "/atlas" ? 0.9 : 0.8,
+    priority:
+      path === ""
+        ? 1
+        : path === "/atlas"
+          ? 0.9
+          : path === "/atlas/charts"
+            ? 0.75
+            : 0.8,
   }));
 
   const questions = getAllQuestions().map((q) => ({
@@ -71,11 +80,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const investigations = getInvestigations().map((i) => ({
+    url: `${base}/observatory/${i.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  }));
+
   return [
     ...staticRoutes,
     ...chambers,
     ...maps,
     ...questions,
+    ...investigations,
     ...essays,
     ...notes,
     ...sections,

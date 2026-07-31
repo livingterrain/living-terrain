@@ -15,7 +15,7 @@ export const PATHWAYS: WorldPathway[] = [
   {
     href: "/atlas",
     label: "The atlas",
-    hint: "Maps of completed investigations",
+    hint: "Enter through a living question",
   },
   {
     href: "/inquiry",
@@ -30,7 +30,7 @@ export const PATHWAYS: WorldPathway[] = [
   {
     href: "/observatory",
     label: "Inward",
-    hint: "Amber light where ideas are still forming",
+    hint: "Research before it becomes a map",
   },
 ];
 

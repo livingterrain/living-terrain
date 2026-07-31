@@ -7,8 +7,16 @@ import {
   useMemo,
   useState,
 } from "react";
+import dynamic from "next/dynamic";
 import type { NodeRef } from "@/lib/relationships";
-import { ThreadExperience } from "./ThreadExperience";
+
+const ThreadExperience = dynamic(
+  () =>
+    import("./ThreadExperience").then((m) => ({
+      default: m.ThreadExperience,
+    })),
+  { ssr: false },
+);
 
 export interface ThreadSession {
   origin: NodeRef;
@@ -50,10 +58,7 @@ export function ThreadProvider({ children }: { children: React.ReactNode }) {
     <ThreadContext.Provider value={value}>
       {children}
       {session && (
-        <ThreadExperience
-          session={session}
-          onClose={close}
-        />
+        <ThreadExperience session={session} onClose={close} />
       )}
     </ThreadContext.Provider>
   );

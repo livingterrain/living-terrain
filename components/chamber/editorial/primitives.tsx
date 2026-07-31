@@ -18,7 +18,7 @@ export function ArchivePlate({
   return (
     <dl className="w-full max-w-[13.5rem] space-y-5">
       <div>
-        <dt className="type-chamber">Volume</dt>
+        <dt className="type-chamber">Map</dt>
         <dd className="mt-1.5 font-heading text-[0.9375rem] text-charcoal">
           {volume}
         </dd>

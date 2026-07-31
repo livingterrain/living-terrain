@@ -13,6 +13,26 @@ const nextConfig: NextConfig = {
         destination: "/observatory",
         permanent: true,
       },
+      {
+        source: "/observatory/proto",
+        destination: "/observatory",
+        permanent: true,
+      },
+      {
+        source: "/observatory/legacy",
+        destination: "/observatory",
+        permanent: true,
+      },
+      {
+        source: "/observatory/threads/:slug",
+        destination: "/observatory",
+        permanent: false,
+      },
+      {
+        source: "/atlas-map",
+        destination: "/atlas",
+        permanent: false,
+      },
     ];
   },
   async headers() {

@@ -1,4 +1,25 @@
 export type {
+  ObservatoryInvestigation,
+  InvestigationStatus,
+  FieldObservation,
+  EvidenceLink,
+} from "./investigations";
+
+export {
+  getInvestigations,
+  getInvestigationBySlug,
+  getRelatedInvestigations,
+  getFieldObservations,
+  getEvidenceLinks,
+  getEvidenceForInvestigation,
+  statusLabel,
+  evidenceKindLabel,
+  INVESTIGATIONS,
+  FIELD_OBSERVATIONS,
+  EVIDENCE_LINKS,
+} from "./investigations";
+
+export type {
   JourneyKind,
   JourneyEvent,
   VisitJourney,

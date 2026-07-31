@@ -4,7 +4,7 @@
  */
 import { chromium } from "playwright";
 
-const base = process.argv[2] ?? "http://127.0.0.1:3000";
+const base = process.argv[2] ?? "http://127.0.0.1:3001";
 const runs = Number(process.argv[3] ?? 5);
 
 async function sample(page) {

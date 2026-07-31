@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils";
 
 const typeLabels: Record<SearchResult["type"], string> = {
   essay: "Essay",
-  book: "Book",
+  book: "Map",
   question: "Question",
-  "field-note": "Field Note",
+  "field-note": "Field note",
   theme: "Theme",
   quotation: "Quotation",
   observation: "Observation",
@@ -114,12 +114,14 @@ export function SearchDialog({ variant = "site" }: SearchDialogProps) {
                 className={
                   isMap
                     ? "border border-ivory/12 bg-[color-mix(in_srgb,#06080c_94%,transparent)] shadow-[0_16px_48px_rgba(0,0,0,0.5)] backdrop-blur-md"
-                    : "border border-rule bg-ivory"
+                    : "border border-ivory/12 bg-[color-mix(in_srgb,#0a0c10_96%,transparent)] shadow-[0_16px_48px_rgba(0,0,0,0.45)] backdrop-blur-md"
                 }
               >
                 <div
                   className={
-                    isMap ? "border-b border-ivory/10 px-5" : "border-b border-rule px-5"
+                    isMap
+                      ? "border-b border-ivory/10 px-5"
+                      : "border-b border-ivory/10 px-5"
                   }
                 >
                   <input
@@ -135,7 +137,7 @@ export function SearchDialog({ variant = "site" }: SearchDialogProps) {
                     className={
                       isMap
                         ? "w-full bg-transparent py-5 font-body text-sm text-ivory/78 placeholder:text-ivory/28 focus:outline-none"
-                        : "w-full bg-transparent py-5 font-body text-sm text-charcoal placeholder:text-charcoal-faint focus:outline-none"
+                        : "w-full bg-transparent py-5 font-body text-sm text-ivory/78 placeholder:text-ivory/28 focus:outline-none"
                     }
                   />
                 </div>
@@ -145,12 +147,12 @@ export function SearchDialog({ variant = "site" }: SearchDialogProps) {
                       className={
                         isMap
                           ? "px-5 py-8 text-sm italic text-ivory/36"
-                          : "type-meta px-5 py-8"
+                          : "px-5 py-8 text-sm italic text-ivory/36"
                       }
                     >
                       {isMap
                         ? "No thread found — try a nearby word."
-                        : "No entries found."}
+                        : "Nothing found — try another word."}
                     </p>
                   )}
                   {results.map((result) => (
@@ -161,39 +163,32 @@ export function SearchDialog({ variant = "site" }: SearchDialogProps) {
                         "w-full px-5 py-4 text-left touch-manipulation min-h-[3.25rem]",
                         isMap
                           ? "border-b border-ivory/8 transition-colors duration-500 hover:bg-ivory/[0.04] active:bg-ivory/[0.06]"
-                          : "border-b border-rule/60 transition-colors duration-[600ms] hover:bg-ivory-deep/40 active:bg-ivory-deep/50",
+                          : "border-b border-ivory/8 transition-colors duration-500 hover:bg-ivory/[0.04] active:bg-ivory/[0.06]",
                       )}
                     >
-                      {!isMap && <p className="type-folio">{typeLabels[result.type]}</p>}
+                      {!isMap && (
+                        <p className="font-body text-[0.625rem] uppercase tracking-[0.16em] text-ivory/40">
+                          {typeLabels[result.type]}
+                        </p>
+                      )}
                       <p
                         className={cn(
-                          "font-heading text-base",
-                          isMap ? "text-ivory/76" : "mt-1.5 text-charcoal",
+                          "font-heading text-base text-ivory/76",
+                          !isMap && "mt-1.5",
                         )}
                       >
                         {result.title}
                       </p>
-                      <p
-                        className={cn(
-                          "mt-1.5 line-clamp-2 text-sm leading-relaxed",
-                          isMap ? "italic text-ivory/36" : "type-meta",
-                        )}
-                      >
+                      <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed italic text-ivory/36">
                         {result.excerpt}
                       </p>
                     </button>
                   ))}
                   {!query.trim() && (
-                    <p
-                      className={
-                        isMap
-                          ? "px-5 py-8 text-sm italic leading-relaxed text-ivory/32"
-                          : "type-meta px-5 py-8"
-                      }
-                    >
+                    <p className="px-5 py-8 text-sm italic leading-relaxed text-ivory/32">
                       {isMap
-                        ? "Essays, volumes, questions, field notes — trace a bond."
-                        : "Essays, books, questions, field notes."}
+                        ? "Essays, maps, questions, field notes — trace a bond."
+                        : "Essays, maps, questions, field notes."}
                     </p>
                   )}
                 </div>

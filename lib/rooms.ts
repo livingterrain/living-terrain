@@ -58,13 +58,13 @@ export const rooms: Record<RoomKind, RoomProfile> = {
   },
   atlas: {
     kind: "atlas",
-    whisper: "Maps of completed investigations — cartography that endures after the survey.",
+    whisper: "Enter through a question. Think through relationships.",
     surface: "threshold-room threshold-room--atlas",
     vignette: "room-vignette-archive",
   },
   observatory: {
     kind: "observatory",
-    whisper: "Signals gather. Ideas mature in the amber dark.",
+    whisper: "This is where questions begin.",
     surface: "threshold-room threshold-room--observatory",
     vignette: "room-vignette-observatory",
   },

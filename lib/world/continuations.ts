@@ -50,9 +50,9 @@ const CONTINUATIONS: Partial<Record<WorldLocationId, CuriosityContinuation>> = {
     whisper: "The live terrain is carved in stone at the edge.",
   },
   observatory: {
-    href: "/chambers/the-structure-beneath-reality",
-    label: "The inner chamber",
-    whisper: "The deepest room is still ahead.",
+    href: "/inquiry",
+    label: "The shelves",
+    whisper: "When research settles into writing, it finds the shelves.",
   },
   chamber: {
     href: "/",
