@@ -517,7 +517,19 @@ export function getConcept(id: AtlasV1ConceptId): AtlasV1Concept {
 }
 
 export function getEssay(id: AtlasV1EssayId): AtlasV1Essay {
-  return ATLAS_V1_ESSAYS[id];
+  const essay = ATLAS_V1_ESSAYS[id];
+  if (!essay) {
+    throw new Error(`Unknown Atlas essay: ${id}`);
+  }
+  return essay;
+}
+
+/** Essay shown by “This lives in the writing” for a concept on a journey. */
+export function resolveEvidenceEssayId(
+  question: AtlasV1Question,
+  conceptId: AtlasV1ConceptId,
+): AtlasV1EssayId | null {
+  return question.evidence[conceptId] ?? ATLAS_V1_CONCEPTS[conceptId]?.essayId ?? null;
 }
 
 export function relationsFor(

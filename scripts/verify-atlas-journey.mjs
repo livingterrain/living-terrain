@@ -8,8 +8,12 @@ import { chromium } from "playwright";
 import assert from "node:assert/strict";
 import {
   getQuestion,
+  resolveEvidenceEssayId,
   resolveUnfinishedEdge,
+  getEssay,
+  ATLAS_V1_QUESTIONS,
 } from "../lib/atlas-v1/content.ts";
+import { VOID_QUESTIONS } from "../lib/atlas-v1/questions.ts";
 
 const base = process.argv[2] ?? "http://127.0.0.1:3001";
 
@@ -32,6 +36,30 @@ function unitUnfinished() {
   assert.equal(resolveUnfinishedEdge(q, ["technology"]), null);
 
   console.log("unit: resolveUnfinishedEdge OK");
+}
+
+function unitEvidenceCoverage() {
+  for (const vq of VOID_QUESTIONS) {
+    const q = getQuestion(vq.id);
+    assert.equal(q.id, vq.id);
+    const startId = resolveEvidenceEssayId(q, q.startConceptId);
+    assert.ok(startId, `${q.id}: start concept has evidence`);
+    assert.ok(getEssay(startId).body.length > 0, `${q.id}: essay body present`);
+
+    // Every mapped evidence id resolves.
+    for (const [conceptId, essayId] of Object.entries(q.evidence)) {
+      const essay = getEssay(essayId);
+      assert.ok(essay.title, `${q.id}/${conceptId}: essay title`);
+      assert.ok(essay.body.length > 0, `${q.id}/${conceptId}: essay body`);
+    }
+  }
+
+  // Book-representing excerpts remain reachable by id.
+  assert.match(getEssay("second-birth").title, /Second Birth/i);
+  assert.match(getEssay("structure-beneath").title, /Structure Beneath/i);
+
+  assert.equal(ATLAS_V1_QUESTIONS.length, VOID_QUESTIONS.length);
+  console.log("unit: evidence coverage OK");
 }
 
 async function probe(page, label) {
@@ -63,6 +91,24 @@ async function probe(page, label) {
     null,
     { timeout: 8000 },
   );
+
+  // Evidence / reading path from the opening concept.
+  await page.waitForFunction(
+    () =>
+      [...document.querySelectorAll("button")].some((b) =>
+        /This lives in the writing/i.test(b.textContent || ""),
+      ),
+    null,
+    { timeout: 8000 },
+  );
+  await page.getByRole("button", { name: "This lives in the writing" }).click();
+  await page.waitForSelector(".atlas-v1-prose h2", { timeout: 5000 });
+  const evidenceTitle = (await page.locator(".atlas-v1-prose h2").innerText()).trim();
+  const evidenceBody = (await page.locator(".atlas-v1-prose").innerText()).trim();
+  assert.ok(evidenceTitle.length > 0, `${label}: evidence title`);
+  assert.ok(evidenceBody.length > 80, `${label}: evidence body`);
+  await page.getByRole("button", { name: "Return to what you noticed" }).click();
+  await page.waitForSelector(".atlas-v1-concept", { timeout: 8000 });
 
   await page.getByRole("button", { name: "Rest here" }).click();
   await page.waitForSelector(".atlas-v1-pause", { timeout: 5000 });
@@ -152,12 +198,48 @@ async function probe(page, label) {
   );
   assert.ok(pauseRecovered.textLen > 0, `${label}: invalid pause not blank`);
 
+  // Evidence without activeEssayId must recover (not blank).
+  await page.evaluate(() => {
+    const bad = {
+      view: "evidence",
+      journey: {
+        questionId: "body-react",
+        currentConceptId: "body",
+        trail: ["body"],
+        essaysOpened: [],
+        activeEssayId: null,
+        noticedWhy: null,
+      },
+      relationsVisible: true,
+    };
+    history.pushState(bad, "", "/atlas");
+    window.dispatchEvent(new PopStateEvent("popstate", { state: bad }));
+  });
+  await page.waitForTimeout(500);
+  const evidenceRecovered = await page.evaluate(() => ({
+    prose: !!document.querySelector(".atlas-v1-prose"),
+    concept: !!document.querySelector(".atlas-v1-concept"),
+    questions: document.querySelectorAll(".the-void-question").length,
+    textLen: (document.body?.innerText || "").trim().length,
+  }));
+  assert.equal(
+    evidenceRecovered.prose,
+    false,
+    `${label}: empty evidence view not kept`,
+  );
+  assert.ok(
+    evidenceRecovered.concept || evidenceRecovered.questions > 0,
+    `${label}: invalid evidence recovers to journey or questions`,
+  );
+  assert.ok(evidenceRecovered.textLen > 0, `${label}: invalid evidence not blank`);
+
   console.log(`${label}: OK`);
 }
 
 let browser;
 try {
   unitUnfinished();
+  unitEvidenceCoverage();
   browser = await chromium.launch({ headless: true });
 
   for (const [label, viewport] of [

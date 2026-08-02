@@ -12,6 +12,7 @@ import {
   getEssay,
   getQuestion,
   relationsFor,
+  resolveEvidenceEssayId,
   resolveUnfinishedEdge,
   type AtlasV1ConceptId,
   type AtlasV1EssayId,
@@ -87,9 +88,14 @@ export function AtlasJourneyLayer({
   const crossfade = reduced ? { duration: 0.01 } : CROSSFADE;
   const question = getQuestion(journey.questionId);
   const current = getConcept(journey.currentConceptId);
-  const essay = journey.activeEssayId
-    ? getEssay(journey.activeEssayId)
-    : null;
+  const essay = (() => {
+    if (!journey.activeEssayId) return null;
+    try {
+      return getEssay(journey.activeEssayId);
+    } catch {
+      return null;
+    }
+  })();
   const nextRelations = relationsFor(question, journey.currentConceptId);
   const unfinished = question
     ? resolveUnfinishedEdge(question, journey.trail)
@@ -102,6 +108,13 @@ export function AtlasJourneyLayer({
       onBack();
     }
   }, [view, unfinished, onBack]);
+
+  // Evidence without a resolvable essay must return to the journey, not blank.
+  useEffect(() => {
+    if (view === "evidence" && !essay) {
+      onReturn();
+    }
+  }, [view, essay, onReturn]);
 
   return (
     <div
@@ -151,8 +164,8 @@ export function AtlasJourneyLayer({
               conceptName={current.name}
               fragment={current.fragment}
               hasEvidence={Boolean(
-                question.evidence[journey.currentConceptId] ??
-                  current.essayId,
+                question &&
+                  resolveEvidenceEssayId(question, journey.currentConceptId),
               )}
               bondNoticed={bondNoticed}
               trail={journey.trail}

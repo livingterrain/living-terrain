@@ -13,7 +13,9 @@ import type {
 } from "@/lib/atlas-v1/content";
 import {
   getConcept,
+  getEssay,
   getQuestion,
+  resolveEvidenceEssayId,
   resolveUnfinishedEdge,
 } from "@/lib/atlas-v1/content";
 import { VOID_QUESTIONS } from "@/lib/atlas-v1/questions";
@@ -95,6 +97,16 @@ function sanitizeHistory(
         voidComplete: true,
       };
     }
+  }
+
+  // Evidence requires an active essay — otherwise the layer paints nothing.
+  if (nextView === "evidence" && journey && !journey.activeEssayId) {
+    return {
+      view: "journey",
+      journey,
+      relationsVisible: Boolean(state.relationsVisible),
+      voidComplete: true,
+    };
   }
 
   return {
@@ -351,14 +363,14 @@ export function AtlasV1() {
     settleInto(journey, notice.to, notice.why);
   }, [notice, journey, clearNoticeTimer, settleInto]);
 
-  const openEvidence = useCallback(async () => {
+  const openEvidence = useCallback(() => {
     if (!journey) return;
-    const { getQuestion, getConcept } = await import("@/lib/atlas-v1/content");
     const question = getQuestion(journey.questionId);
     const current = getConcept(journey.currentConceptId);
-    const essayId =
-      question.evidence[journey.currentConceptId] ?? current.essayId;
+    const essayId = resolveEvidenceEssayId(question, journey.currentConceptId);
     if (!essayId) return;
+    // Ensure the essay corpus entry exists before entering evidence view.
+    getEssay(essayId);
     clearLinger();
     const next: JourneyState = {
       ...journey,
@@ -366,6 +378,7 @@ export function AtlasV1() {
       essaysOpened: journey.essaysOpened.includes(essayId)
         ? journey.essaysOpened
         : [...journey.essaysOpened, essayId],
+      noticedWhy: journey.noticedWhy ?? current.fragment,
     };
     setJourney(next);
     setView("evidence");
