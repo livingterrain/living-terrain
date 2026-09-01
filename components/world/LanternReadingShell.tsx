@@ -14,6 +14,8 @@ interface LanternReadingShellProps {
   meta?: ReactNode;
   children: ReactNode;
   nodeRef?: NodeRef;
+  /** Quiet material after Follow the Thread (e.g. publication mirror) */
+  afterThread?: ReactNode;
   returnHref: string;
   threadHref?: string;
   threadTitle?: string;
@@ -31,6 +33,7 @@ export function LanternReadingShell({
   meta,
   children,
   nodeRef,
+  afterThread,
   returnHref,
   threadHref,
   threadTitle,
@@ -48,21 +51,21 @@ export function LanternReadingShell({
 
       <article className="relative z-10 mx-auto max-w-[36rem] py-14 pl-[max(1.25rem,env(safe-area-inset-left,0px))] pr-[max(1.25rem,env(safe-area-inset-right,0px))] sm:px-12 sm:py-24 lg:px-14">
         <header className="threshold-carved threshold-carved--edge pb-12">
-          <p className="type-folio text-forest-faint">{collection}</p>
-          <h1 className="mt-5 font-heading text-[1.75rem] leading-[1.15] text-charcoal sm:text-[2.125rem]">
+          <p className="type-folio lantern-label">{collection}</p>
+          <h1 className="lantern-title mt-5 font-heading text-[1.75rem] leading-[1.15] sm:text-[2.125rem]">
             {title}
           </h1>
           {subtitle && (
-            <p className="mt-4 font-heading text-lg italic leading-relaxed text-charcoal-muted">
+            <p className="lantern-subtitle mt-4 font-heading text-lg italic leading-relaxed">
               {subtitle}
             </p>
           )}
           {meta && (
-            <div className="type-meta mt-5 text-charcoal-faint">{meta}</div>
+            <div className="type-meta lantern-meta mt-5">{meta}</div>
           )}
         </header>
 
-        <div className="type-body py-12 text-[0.9375rem] leading-[1.88] sm:text-base sm:leading-[1.92]">
+        <div className="type-body lantern-body py-12 text-[0.9375rem] leading-[1.88] sm:text-base sm:leading-[1.92]">
           {children}
         </div>
 
@@ -72,6 +75,8 @@ export function LanternReadingShell({
           </div>
         )}
 
+        {afterThread}
+
         <nav
           className="threshold-carved threshold-carved--edge mt-16 space-y-4 pt-10"
           aria-label="Continue wandering"
@@ -79,14 +84,14 @@ export function LanternReadingShell({
           {threadHref && threadTitle && (
             <Link
               href={threadHref}
-              className="flex min-h-11 items-center text-[0.875rem] text-charcoal-muted transition-colors duration-[1200ms] hover:text-forest active:text-forest/80"
+              className="lantern-link flex min-h-11 items-center text-[0.875rem]"
             >
               ↓ Continue thread: {threadTitle}
             </Link>
           )}
           <Link
             href={returnHref}
-            className="flex min-h-11 items-center text-[0.875rem] text-charcoal-muted transition-colors duration-[1200ms] hover:text-forest active:text-forest/80"
+            className="lantern-link flex min-h-11 items-center text-[0.875rem]"
           >
             ← Return to the shelf
           </Link>

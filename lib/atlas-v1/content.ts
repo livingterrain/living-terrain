@@ -26,6 +26,7 @@ export type AtlasV1EssayId =
   | "looking-up"
   | "before-tragedy"
   | "second-birth"
+  | "biology-of-becoming"
   | "structure-beneath";
 
 export type AtlasV1QuestionId =
@@ -50,6 +51,63 @@ export type AtlasV1Essay = {
   subtitle?: string;
   /** Authentic excerpt for Evidence — enough to think with */
   body: string[];
+};
+
+/**
+ * Known Living Terrain source for an Evidence excerpt.
+ * Only entries with existing book plates or essay routes.
+ */
+export type AtlasV1Source = {
+  kind: "book" | "essay";
+  href: string;
+};
+
+/** Provenance for Atlas Evidence — seed mapping for the canonical registry. Atlas UI resolves source via SOURCED_FROM, not this table. */
+export const ATLAS_V1_SOURCE: Record<AtlasV1EssayId, AtlasV1Source> = {
+  "feel-it-in-body": {
+    kind: "essay",
+    href: "/essays/if-you-feel-it-in-your-body-start-here",
+  },
+  "maintenance-cost": {
+    kind: "essay",
+    href: "/essays/every-living-system-pays-a-maintenance-cost",
+  },
+  "cost-of-image": {
+    kind: "essay",
+    href: "/essays/there-is-a-cost-to-becoming-an-image",
+  },
+  "constraint-freedom": {
+    kind: "essay",
+    href: "/essays/constraint-is-not-the-opposite-of-freedom",
+  },
+  "never-restriction": {
+    kind: "essay",
+    href: "/essays/the-goal-was-never-restriction",
+  },
+  "make-a-loop": {
+    kind: "essay",
+    href: "/essays/you-have-to-go-far-enough-to-make-a-loop",
+  },
+  "looking-up": {
+    kind: "essay",
+    href: "/essays/the-ancient-purpose-of-looking-up",
+  },
+  "before-tragedy": {
+    kind: "essay",
+    href: "/essays/what-happens-before-the-tragedy",
+  },
+  "second-birth": {
+    kind: "book",
+    href: "/atlas/the-second-birth",
+  },
+  "biology-of-becoming": {
+    kind: "book",
+    href: "/atlas/the-biology-of-becoming",
+  },
+  "structure-beneath": {
+    kind: "book",
+    href: "/atlas/the-structure-beneath-reality",
+  },
 };
 
 export type AtlasV1Relation = {
@@ -100,7 +158,7 @@ export const ATLAS_V1_CONCEPTS: Record<AtlasV1ConceptId, AtlasV1Concept> = {
     id: "adaptation",
     name: "Adaptation",
     fragment: "Nothing was broken — only adapted.",
-    essayId: "second-birth",
+    essayId: "biology-of-becoming",
   },
   constraint: {
     id: "constraint",
@@ -275,11 +333,22 @@ export const ATLAS_V1_ESSAYS: Record<AtlasV1EssayId, AtlasV1Essay> = {
     subtitle: "Evidence, Embodiment, and Becoming",
     body: [
       "What does it mean to be born again — not spiritually, but physiologically?",
-      "Nothing was broken — only adapted. The system is reorganizing around what it has survived.",
-      "The body does not resist change. It resists change it has not yet been made safe for.",
-      "Long before a belief changes, thresholds shift — what the system will tolerate, what it will notice, what it will allow to matter. Perception is downstream of capacity.",
+      "For readers who have crossed through breakdown and are reconstructing consciously. Nothing was broken — only adapted. This volume moves from awareness into embodiment.",
+      "A second birth is not a metaphor layered onto the body. It is the physiological work of reorganization — evidence gathering in sensation, identity loosening its grip, and a new pattern of capacity taking shape.",
       "Reconstruction begins as evidence, continues as embodiment, and only then becomes a self that can stay.",
       "Nothing was broken — only adapted. The work is not repair. It is reorganization.",
+    ],
+  },
+  "biology-of-becoming": {
+    id: "biology-of-becoming",
+    title: "The Biology of Becoming",
+    subtitle: "How the Nervous System Rewrites Identity, Reality & Destiny",
+    body: [
+      "What must the nervous system do before identity, perception, or reality can change?",
+      "Nothing in the body breaks arbitrarily. The system is reorganizing around what it has survived.",
+      "The body does not resist change. It resists change it has not yet been made safe for.",
+      "Trauma physiology suggests a quiet inversion: the body does not wait for the mind to decide. Long before a belief changes, thresholds shift — what the system will tolerate, what it will notice, what it will allow to matter. Perception is downstream of capacity.",
+      "Safety is not the absence of threat. It is the presence of capacity.",
     ],
   },
   "structure-beneath": {
@@ -326,7 +395,7 @@ export const ATLAS_V1_QUESTIONS: AtlasV1Question[] = [
     evidence: {
       body: "feel-it-in-body",
       feedback: "maintenance-cost",
-      adaptation: "second-birth",
+      adaptation: "biology-of-becoming",
       participation: "second-birth",
     },
     unfinishedHint: {
@@ -524,6 +593,12 @@ export function getEssay(id: AtlasV1EssayId): AtlasV1Essay {
   return essay;
 }
 
+/** Living Terrain source plate/page for an Evidence excerpt, when known.
+ *  LEGACY lookup. /atlas evidence links resolve through the canonical registry. */
+export function getEssaySource(id: AtlasV1EssayId): AtlasV1Source {
+  return ATLAS_V1_SOURCE[id];
+}
+
 /** Essay shown by “This lives in the writing” for a concept on a journey. */
 export function resolveEvidenceEssayId(
   question: AtlasV1Question,
@@ -532,6 +607,10 @@ export function resolveEvidenceEssayId(
   return question.evidence[conceptId] ?? ATLAS_V1_CONCEPTS[conceptId]?.essayId ?? null;
 }
 
+/**
+ * One relationship per scene — presentation order from local journey metadata.
+ * WHY text is not authoritative here; /atlas overlays canonical RELATES_TO notes.
+ */
 export function relationsFor(
   question: AtlasV1Question,
   conceptId: AtlasV1ConceptId,

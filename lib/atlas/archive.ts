@@ -344,7 +344,7 @@ export const ATLAS_DOMAINS: ReadonlyArray<AtlasDomainDef> = [
         description: "On silence, metaphor, and the edge of expression.",
         status: "Open Inquiry",
         kind: "question",
-        href: "/questions/can-language-hold-the-unsayable",
+        href: "/atlas",
       },
     ],
   },
@@ -359,7 +359,7 @@ export const ATLAS_DOMAINS: ReadonlyArray<AtlasDomainDef> = [
         description: "On the structures we inherit before we notice them.",
         status: "Open Inquiry",
         kind: "question",
-        href: "/questions/what-lies-beneath-perception",
+        href: "/atlas",
       },
       {
         id: "q-time",
@@ -367,7 +367,7 @@ export const ATLAS_DOMAINS: ReadonlyArray<AtlasDomainDef> = [
         description: "Memory, rhythm, and the texture of duration.",
         status: "Open Inquiry",
         kind: "question",
-        href: "/questions/how-do-we-inhabit-time",
+        href: "/atlas",
       },
       {
         id: "time",

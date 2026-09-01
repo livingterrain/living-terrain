@@ -56,6 +56,7 @@ function unitEvidenceCoverage() {
 
   // Book-representing excerpts remain reachable by id.
   assert.match(getEssay("second-birth").title, /Second Birth/i);
+  assert.match(getEssay("biology-of-becoming").title, /Biology of Becoming/i);
   assert.match(getEssay("structure-beneath").title, /Structure Beneath/i);
 
   assert.equal(ATLAS_V1_QUESTIONS.length, VOID_QUESTIONS.length);
@@ -69,15 +70,17 @@ async function probe(page, label) {
   const initial = await page.evaluate(() => ({
     locked: document.querySelector(".the-void")?.classList.contains("the-void--locked"),
     attend: !!document.querySelector(".the-void-attend"),
+    questions: document.querySelectorAll(".the-void-question").length,
+    inquiry: (document.body?.innerText || "").includes("What are you trying to understand?"),
     textLen: (document.body?.innerText || "").trim().length,
   }));
-  assert.equal(initial.attend, true, `${label}: attend control present`);
-  assert.equal(initial.locked, true, `${label}: starts locked`);
+  assert.equal(initial.locked, false, `${label}: no threshold lock`);
+  assert.equal(initial.attend, false, `${label}: no attend gate`);
+  assert.equal(initial.inquiry, true, `${label}: inquiry on first paint`);
+  assert.ok(initial.questions >= 6, `${label}: questions on first paint`);
 
-  await page.locator(".the-void-attend").focus();
-  await page.waitForSelector(".the-void-question", { timeout: 8000 });
   const questionCount = await page.locator(".the-void-question").count();
-  assert.ok(questionCount >= 6, `${label}: questions visible after recognition`);
+  assert.ok(questionCount >= 6, `${label}: six questions usable immediately`);
 
   await page.locator(".the-void-question").first().click();
   await page.waitForSelector(".atlas-v1-concept", { timeout: 10000 });

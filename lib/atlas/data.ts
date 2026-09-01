@@ -12,8 +12,8 @@ import {
 } from "./imports/books/series-catalog";
 
 /**
- * Canonical Living Terrain Atlas — single source of truth.
- * Add entries and connections here as the terrain grows.
+ * Living Terrain atlas content records (books, essays, chambers, legacy nodes).
+ * Connection edges below are LEGACY / NON-CANONICAL — see lib/canonical/.
  */
 export const ATLAS_DATA: AtlasData = {
   version: 1,
@@ -252,7 +252,7 @@ export const ATLAS_DATA: AtlasData = {
             title: "Begin with the central question",
             description:
               "What lies beneath perception? Follow this thread through connected questions, notes, and essays.",
-            href: "/questions/what-lies-beneath-perception",
+            href: "/atlas",
           },
           {
             id: "w2",
@@ -315,6 +315,29 @@ export const ATLAS_DATA: AtlasData = {
           "What the heart taught me about judgment, discernment, and the structure of life",
         excerpt:
           "The heartbeat does not emerge from complete freedom — it emerges from structure. Maybe constraints are not what stand between us and life. Maybe they are what make freedom possible.",
+        body: `The heart is fascinating.
+
+For most of my life, I assumed important things required a central authority issuing instructions. A boss. A leader. A brain. Something in charge.
+
+Then I learned that the heart does not wait for permission from the brain to beat. Embedded within the heart itself is a small cluster of cells called the sinoatrial node. These cells generate electrical impulses on their own, creating the rhythm that coordinates the rest of the heart.
+
+The more I learned about it, the stranger it seemed.
+
+The heartbeat does not emerge from complete freedom. It emerges from structure. From gradients. From specialized cells remaining distinct. From boundaries being maintained.
+
+Remove the distinctions and the rhythm disappears. Remove the gradients and the current stops flowing. Remove the structure and the system collapses.
+
+That realization forced me to confront something I had spent much of my life assuming: Maybe constraints are not the opposite of freedom. Maybe they are what make freedom possible.
+
+At first, that felt backwards. Most of us experience constraints as something imposed from the outside — something limiting, standing between us and what we want. Yet living systems seemed to be telling a different story. The boundaries were not merely restricting possibilities. They were creating them.
+
+Electricity only flows because gradients exist. A river requires banks. A language requires distinctions between words. Music requires differences between notes. An ecosystem requires specialization.
+
+Life does not emerge from the elimination of distinctions. Life emerges from distinctions entering into relationship.
+
+A song without structure is not freer. It is no longer music. A river without banks is not freer. It is no longer a river. A body without boundaries is not freer. It is no longer alive.
+
+Perhaps wisdom is not learning how to eliminate constraints. Perhaps wisdom is learning which constraints create the possibility for life, meaning, love, and flourishing.`,
         topics: ["Consciousness", "Philosophy", "Structure", "Embodiment", "Freedom"],
         externalUrl:
           "https://medium.com/illumination/constraint-is-not-the-opposite-of-freedom-5e0d1b6eac28",
@@ -538,6 +561,12 @@ Time as alchemy.`,
     ...IMPORTED_BOOK_ENTRIES,
   ],
 
+  /**
+   * LEGACY / NON-CANONICAL relationship graph.
+   * Mixes explicit seed edges with inferred theme-overlap, pathway, FLAGSHIP,
+   * and generateEssayConnections() output. Do not treat as Atlas truth.
+   * Trusted relations live in lib/canonical/ and are not derived from this array.
+   */
   connections: [
     ...buildConnections(),
     ...IMPORTED_ESSAY_CONNECTIONS,
@@ -599,8 +628,8 @@ function buildConnections(): AtlasConnection[] {
   // Essays
   c.push(conn("e1", "q1", "pathway", "inferred", 8, "asks the same question from a different angle."));
   c.push(conn("e1", "q4", "pathway", "inferred", 8, "neighbors this inquiry through language and what words can carry."));
-  c.push(conn("e1", "b1", "volume", "inferred", 7, "extends the argument first made in the published volume."));
-  c.push(conn("e1", "p1", "chamber", "inferred", 9, "returns to the chamber where this inquiry began."));
+  c.push(conn("e1", "b1", "volume", "explicit", 8, "named beside The Structure Beneath Reality in Living Terrain’s atlas of inquiry."));
+  c.push(conn("e1", "p1", "chamber", "explicit", 9, "returns to the chamber where this inquiry began."));
   c.push(conn("e1", "e2", "child", "explicit", 9, "opens further into how meaning is made, not merely found."));
   c.push(conn("e1", "e2", "echo", "inferred", 6, "echoes the same pulse from another direction."));
   c.push(
@@ -637,8 +666,8 @@ function buildConnections(): AtlasConnection[] {
 
   c.push(conn("e2", "q1", "pathway", "inferred", 8, "returns to the question beneath perception."));
   c.push(conn("e2", "q2", "pathway", "inferred", 8, "continues this question across years."));
-  c.push(conn("e2", "b1", "volume", "inferred", 7, "belongs to the same volume of inquiry."));
-  c.push(conn("e2", "p1", "chamber", "inferred", 9, "deepens the chamber's central question."));
+  c.push(conn("e2", "b1", "volume", "explicit", 8, "belongs to the same volume of inquiry as The Structure Beneath Reality."));
+  c.push(conn("e2", "p1", "chamber", "explicit", 9, "deepens the chamber's central question."));
   c.push(conn("e2", "e1", "parent", "explicit", 9, "grows from the earlier essay on constraint and freedom."));
   c.push(conn("e2", "e1", "echo", "inferred", 6, "echoes the same inquiry from a different register."));
   c.push(

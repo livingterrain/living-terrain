@@ -36,3 +36,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .vercel
+.env*
+
+# local scratch / preview artifacts
+/tmp/
+
+# cursor debug screenshots
+.cursor/*.png

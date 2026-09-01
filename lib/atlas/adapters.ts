@@ -12,7 +12,11 @@ import type {
   Theme,
 } from "../content/types";
 import type { LivingTerrainAtlas } from "./registry";
-import type { AtlasEntry, AtlasEntryType } from "./types";
+import type {
+  AtlasConnection,
+  AtlasEntry,
+  AtlasEntryType,
+} from "./types";
 import { atlasTypeToContentKind } from "./routes";
 import type {
   BookMeta,
@@ -36,12 +40,22 @@ function refsOfType(
   id: string,
   targetType: AtlasEntryType,
   kinds: Parameters<LivingTerrainAtlas["getConnectedIds"]>[1][],
+  options?: { source?: AtlasConnection["source"] },
 ): string[] {
   const ids = new Set<string>();
   for (const kind of kinds) {
-    for (const cid of atlas.getConnectedIds(id, kind, "both")) {
-      const entry = atlas.getById(cid);
-      if (entry?.type === targetType) ids.add(cid);
+    for (const connection of atlas.getConnections(id)) {
+      if (connection.kind !== kind) continue;
+      if (options?.source && connection.source !== options.source) continue;
+      const other =
+        connection.from === id
+          ? connection.to
+          : connection.to === id
+            ? connection.from
+            : null;
+      if (!other) continue;
+      const entry = atlas.getById(other);
+      if (entry?.type === targetType) ids.add(other);
     }
   }
   return [...ids];
@@ -123,6 +137,7 @@ export function toEssay(entry: AtlasEntry, atlas: LivingTerrainAtlas): Essay {
     publishedAt: entry.publishedAt ?? "",
     updatedAt: meta.updatedAt,
     excerpt: meta.excerpt,
+    body: meta.body,
     topics: meta.topics,
     questionIds: refsOfType(atlas, entry.id, "question", ["pathway"]),
     projectIds: refsOfType(atlas, entry.id, "chamber", ["chamber"]),
@@ -267,7 +282,9 @@ export function toProject(entry: AtlasEntry, atlas: LivingTerrainAtlas): Project
         slug: c.slug,
         href: c.route,
       })),
-    essayIds: refsOfType(atlas, entry.id, "essay", ["chamber"]),
+    essayIds: refsOfType(atlas, entry.id, "essay", ["chamber"], {
+      source: "explicit",
+    }),
     questionIds: refsOfType(atlas, entry.id, "question", ["pathway"]),
     fieldNoteIds: refsOfType(atlas, entry.id, "field-note", ["observation"]),
     relatedBookIds: refsOfType(atlas, entry.id, "book", ["volume"]).filter(

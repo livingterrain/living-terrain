@@ -45,6 +45,11 @@ export interface Essay {
   publishedAt: string;
   updatedAt?: string;
   excerpt: string;
+  /**
+   * Full essay prose for on-site Read (paragraphs separated by blank lines).
+   * Optional during migration.
+   */
+  body?: string;
   topics: string[];
   /** Question IDs this essay explores */
   questionIds: string[];
@@ -62,7 +67,7 @@ export interface Essay {
   childRefs?: ContentRef[];
   quotationIds?: string[];
   observationIds?: string[];
-  /** Full essay on Medium — falls back to publication URL when omitted */
+  /** Medium (or other) publication mirror — not the primary Read destination */
   externalUrl?: string;
   /** Optional chamber/OG image */
   featuredImage?: string;

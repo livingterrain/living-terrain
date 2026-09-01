@@ -24,6 +24,8 @@ export interface EssayIntakeOverrides {
   id?: string;
   description?: string;
   excerpt?: string;
+  /** Full on-site essay prose (paragraphs separated by blank lines) */
+  body?: string;
   themes?: string[];
   parentConcepts?: string[];
   topics?: string[];

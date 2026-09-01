@@ -1,3 +1,8 @@
+/**
+ * Thread — LEGACY / NON-CANONICAL visitor surface over ATLAS_DATA.connections.
+ * Curates 3–6 follow links from the old graph, including inferred edges.
+ * Not the canonical relation layer (lib/canonical/).
+ */
 import { getEdgesFrom, getEdgesTo, getNode } from "./graph";
 import { composeRationale, strengthFromWeight, typeLabelForKind } from "./rationale";
 import type {

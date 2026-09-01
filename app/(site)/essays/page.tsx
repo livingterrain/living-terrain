@@ -1,39 +1,48 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
-import { EssayLandscape } from "@/components/rooms";
+import { EssaysArchive } from "@/components/reading/EssaysArchive";
 import { MediumPublicationLink } from "@/components/reading/MediumPublicationLink";
-import { getEssayClusters } from "@/lib/content";
+import { getAllEssays } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Essays",
   description:
-    "Discoveries in an evolving landscape — essays mapped by inquiry, not chronology.",
+    "Scout reports from the edges — published writing gathered on The Shelves.",
 };
 
 export default function EssaysPage() {
-  const clusters = getEssayClusters();
+  const essays = getAllEssays().filter((e) => e.status === "published");
 
   return (
     <Room kind="library">
       <RoomThreshold
         kind="library"
         title="Essays"
-        whisper="Scout reports from the edges — mapped by inquiry, not chronology."
+        whisper="Scout reports from the edges."
+        align="center"
       />
 
       <section className="pb-24 pt-4 sm:pb-32">
         <Container narrow>
-          <div className="threshold-carved threshold-carved--edge px-0 py-8 text-center sm:py-10">
-            <p className="type-body mx-auto max-w-lg text-[0.9375rem]">
-              The full text of each essay lives on Medium. Living Terrain maps
-              them here — tracing how they connect to questions and maps across
-              the terrain.
-            </p>
-            <MediumPublicationLink prominent className="mt-6" />
+          <div className="mb-10 text-center sm:mb-12">
+            <MediumPublicationLink className="text-[0.8125rem]" />
           </div>
 
-          <EssayLandscape clusters={clusters} />
+          <EssaysArchive essays={essays} />
+
+          <nav
+            className="threshold-carved threshold-carved--edge mt-20 pt-10"
+            aria-label="Return"
+          >
+            <Link
+              href="/inquiry"
+              className="lantern-link flex min-h-11 items-center text-[0.875rem]"
+            >
+              ← The Shelves
+            </Link>
+          </nav>
         </Container>
       </section>
     </Room>

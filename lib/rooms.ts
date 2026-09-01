@@ -64,7 +64,7 @@ export const rooms: Record<RoomKind, RoomProfile> = {
   },
   observatory: {
     kind: "observatory",
-    whisper: "This is where questions begin.",
+    whisper: "Still forming.",
     surface: "threshold-room threshold-room--observatory",
     vignette: "room-vignette-observatory",
   },

@@ -18,6 +18,10 @@ export function locationForPath(path: string): WorldLocationId {
 
   if (path.startsWith("/inquiry")) return "library";
 
+  if (path.startsWith("/books")) return "library";
+
+  if (path.startsWith("/visual-maps")) return "library";
+
   if (path.startsWith("/atlas")) return "atlas";
 
   if (path.startsWith("/library")) return "atlas";

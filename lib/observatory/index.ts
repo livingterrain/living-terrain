@@ -1,23 +1,54 @@
 export type {
+  Observation,
+  ObservationStatus,
+  ObservationVisibility,
+  ObservationProvenance,
+} from "./observations";
+
+export {
+  OBSERVATIONS,
+  getObservations,
+  getPublicObservations,
+  getBenchObservations,
+  getObservationById,
+  getObservationsByIds,
+  observationCue,
+  observationWhen,
+} from "./observations";
+
+export type {
   ObservatoryInvestigation,
   InvestigationStatus,
-  FieldObservation,
-  EvidenceLink,
+  DownstreamEcho,
 } from "./investigations";
 
 export {
   getInvestigations,
   getInvestigationBySlug,
+  getInvestigationById,
   getRelatedInvestigations,
-  getFieldObservations,
-  getEvidenceLinks,
-  getEvidenceForInvestigation,
+  getInvestigationObservations,
   statusLabel,
+  echoKindLabel,
   evidenceKindLabel,
   INVESTIGATIONS,
-  FIELD_OBSERVATIONS,
-  EVIDENCE_LINKS,
+  DISSOLVED_INVESTIGATIONS,
 } from "./investigations";
+
+/** Private researcher vocabulary — not a public glossary surface */
+export type {
+  FrameworkTerm,
+  FrameworkTermStatus,
+} from "./framework-terms";
+
+export {
+  FRAMEWORK_TERMS,
+  getFrameworkTerms,
+  getFrameworkTermById,
+  getTermsForInvestigation,
+  termLabel,
+  termLabels,
+} from "./framework-terms";
 
 export type {
   JourneyKind,

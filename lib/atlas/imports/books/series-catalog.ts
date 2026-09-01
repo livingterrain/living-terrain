@@ -24,6 +24,59 @@ export interface SeriesBookCatalogEntry {
   parentConcepts: string[];
 }
 
+/**
+ * Revised & Expanded Biology edition — supersedes the original on public shelves.
+ * Original `the-biology-of-becoming` / b2 remains for historical routes.
+ * ASIN B0HBZY27JN — Amazon listing (user-provided).
+ * Exact Amazon publication day was not independently retrievable (listing blocked);
+ * year 2026 is confirmed by Chelsea's Medium featured-book card.
+ */
+export interface RevisedEditionCatalogEntry {
+  id: string;
+  slug: string;
+  title: string;
+  /** Empty when the Amazon listing has no separate subtitle field */
+  subtitle: string;
+  description: string;
+  purchaseUrl: string;
+  publishedYear: number;
+  publishedAt: string;
+  themes: string[];
+  parentConcepts: string[];
+  /** Existing chamber / territory to reuse — do not duplicate prose */
+  territorySlug: string;
+  chamberId: string;
+  /** Original edition book id this supersedes on public shelves */
+  supersedesId: string;
+}
+
+export const BIOLOGY_REVISED_EXPANDED: RevisedEditionCatalogEntry = {
+  id: "b8",
+  slug: "the-biology-of-becoming-revised-expanded",
+  title: "The Biology of Becoming — Revised & Expanded",
+  subtitle: "",
+  description:
+    "Drawing from neuroscience, physiology, immunology, systems theory, evolutionary biology, and complexity science, Chelsea M. Thacker explores the body not as a collection of isolated parts, but as an adaptive living system continuously responding to its environment.",
+  purchaseUrl: "https://www.amazon.com/dp/B0HBZY27JN",
+  publishedYear: 2026,
+  publishedAt: "2026-01-01",
+  themes: ["th-embodiment", "th-consciousness", "th-identity", "th-reality"],
+  parentConcepts: ["th-embodiment", "th-consciousness"],
+  territorySlug: "the-biology-of-becoming",
+  chamberId: "p2",
+  supersedesId: "b2",
+};
+
+/** Slugs hidden from visitor-facing map galleries (routes preserved) */
+export const SUPERSEDED_PUBLIC_MAP_SLUGS = new Set<string>([
+  "the-biology-of-becoming",
+]);
+
+/** Edition plate → existing chamber / territory slug */
+export const MAP_TERRITORY_ALIASES: Record<string, string> = {
+  "the-biology-of-becoming-revised-expanded": "the-biology-of-becoming",
+};
+
 /** Six volumes in the Living Terrain Series (Amazon) */
 export const LIVING_TERRAIN_SERIES: SeriesBookCatalogEntry[] = [
   {

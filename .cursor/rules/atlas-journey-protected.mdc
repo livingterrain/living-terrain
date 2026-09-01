@@ -1,0 +1,32 @@
+---
+description: Atlas concept journey is a protected core interaction — visual work may wrap it, never replace it.
+globs: components/atlas-v1/**/*
+alwaysApply: false
+---
+
+# Atlas Journey — Protected Core Interaction
+
+The Atlas concept journey (Body → Feedback → Adaptation → Participation, and the same pattern for other questions) is a **protected core interaction**.
+
+## Must not change without explicit user approval
+
+- Journey renderer (`JourneyView` / bond destination click targets)
+- Concept click targets and bond `onFollow` wiring
+- Journey state transitions (`followBond`, notice → settle, trail updates)
+- Authored bond order / canonical relations used for progression
+- Moving the next concept into decorative SVG or non-interactive chrome
+- Invisible overlays above click targets
+- Replacing working navigation to make the journey “feel more spatial”
+
+## Allowed without rewriting the journey
+
+- Subtle background structure
+- Passive path traces
+- Atmospheric responses
+- Visualizing completed paths elsewhere (e.g. Living Thread, Atlas threshold)
+
+Visual behavior wraps the interaction. It does not rewrite it.
+
+## body-react special case
+
+Do not introduce a separate journey renderer for `body-react` (or any single question) unless the user explicitly requests a new experiment and accepts that the protected click path must remain intact.

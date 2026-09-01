@@ -1,3 +1,7 @@
+/**
+ * LEGACY / NON-CANONICAL runtime graph over ATLAS_DATA.connections.
+ * Inferred edges are included. Not the canonical relation layer.
+ */
 import { getAtlas, atlasTypeToContentKind } from "../atlas";
 import { registerVisitorObservations } from "../observatory/atlas-bridge";
 import type { AtlasConnection, AtlasEntry } from "../atlas/types";

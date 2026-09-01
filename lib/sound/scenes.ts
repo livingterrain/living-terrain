@@ -34,6 +34,8 @@ export function sceneFromPathname(pathname: string): SoundScene {
   if (pathname.startsWith("/themes")) return "reading";
   if (pathname.startsWith("/essays")) return "reading";
   if (pathname.startsWith("/inquiry")) return "reading";
+  if (pathname.startsWith("/books")) return "reading";
+  if (pathname.startsWith("/visual-maps")) return "reading";
   if (pathname.startsWith("/quotations")) return "reading";
 
   return "reading";
@@ -133,11 +135,12 @@ export const SCENE_LAYER_GAINS: Record<
     wind: 0.1,
     fieldWind: 0.14,
   },
+  /* PHASE 3 — quieter Witness room: air + faint harmonic decay, no music */
   observatory: {
-    roomTone: 0.4,
-    harmonic: 0.05,
-    wind: 0.08,
-    observatoryAir: 0.1,
+    roomTone: 0.34,
+    harmonic: 0.035,
+    wind: 0.05,
+    observatoryAir: 0.08,
   },
   reading: {
     roomTone: 0.36,

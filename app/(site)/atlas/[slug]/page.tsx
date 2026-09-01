@@ -10,8 +10,8 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const { getAllMaps } = await import("@/lib/content");
-  return getAllMaps().map((m) => ({ slug: m.slug }));
+  const { getAllPublishedMaps } = await import("@/lib/content");
+  return getAllPublishedMaps().map((m) => ({ slug: m.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

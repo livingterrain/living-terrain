@@ -50,6 +50,12 @@ function scoreQuestionOverlap(
   return overlap * 3 + parentOverlap * 2;
 }
 
+/**
+ * LEGACY / NON-CANONICAL.
+ * Theme-overlap inference for imported essays. Output is tagged source:"inferred"
+ * and feeds ATLAS_DATA.connections / Thread only.
+ * Must never populate lib/canonical relations.
+ */
 export function generateEssayConnections(
   essayId: string,
   intake: EssayIntake,

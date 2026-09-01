@@ -8,6 +8,10 @@ import { PersistentTerrainAtmosphere } from "@/components/atmosphere/PersistentT
 import { TerrainContentShell } from "@/components/atmosphere/TerrainContentShell";
 import { siteConfig } from "@/lib/content/data";
 import "./globals.css";
+/* Revertible spectral/life layer — delete this import + app/v2-life.css to roll back */
+import "./v2-life.css";
+/* Architecture pass: Menu + location whisper + Atlas root territories */
+import "./orientation.css";
 
 const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
@@ -47,8 +51,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sourceSerif.variable} ${inter.variable}`}>
       <body
-        className="min-h-screen bg-[#06080c] antialiased text-ivory"
-        style={{ backgroundColor: "#06080c", color: "#ebe6dc" }}
+        className="min-h-screen bg-[#030405] antialiased text-ivory"
+        style={{ backgroundColor: "#030405", color: "#ebe6dc" }}
       >
         <TerrainSoundProvider>
           <TerrainNavigationProvider>

@@ -24,6 +24,7 @@ export interface AtmosphereMorph {
   fogWarmth: number;
 }
 
+/** V2 morph — cool mineral field; paper/fog warmth suppressed. */
 const ZONE_BASE: Record<
   RouteZone,
   Omit<AtmosphereMorph, "voidColor" | "starColor" | "paperColor" | "glowColor">
@@ -31,54 +32,54 @@ const ZONE_BASE: Record<
   map: {
     voidOpacity: 1,
     paperOpacity: 0,
-    starOpacity: 0.75,
+    starOpacity: 0.55,
     starDriftSec: THRESHOLD_MOTION.driftSec,
-    particleOpacity: 0.28,
+    particleOpacity: 0.12,
     particleDriftSec: THRESHOLD_MOTION.crossingSec,
-    glowOpacity: 0.18,
+    glowOpacity: 0.08,
     fieldOpacity: 0,
     themeOpacity: 0,
-    fogOpacity: 0.42,
-    fogWarmth: 0.32,
+    fogOpacity: 0.08,
+    fogWarmth: 0,
   },
   reading: {
-    voidOpacity: 0.72,
-    paperOpacity: 0.42,
-    starOpacity: 0.04,
+    voidOpacity: 1,
+    paperOpacity: 0,
+    starOpacity: 0.02,
     starDriftSec: THRESHOLD_MOTION.dawnSec,
-    particleOpacity: 0.045,
+    particleOpacity: 0.02,
     particleDriftSec: THRESHOLD_MOTION.dawnSec,
-    glowOpacity: 0.1,
-    fieldOpacity: 0.22,
+    glowOpacity: 0.04,
+    fieldOpacity: 0.08,
     themeOpacity: 0,
-    fogOpacity: 0.14,
-    fogWarmth: 0.58,
+    fogOpacity: 0.02,
+    fogWarmth: 0,
   },
   theme: {
-    voidOpacity: 0.88,
+    voidOpacity: 1,
     paperOpacity: 0,
-    starOpacity: 0.14,
+    starOpacity: 0.1,
     starDriftSec: THRESHOLD_MOTION.crossingSec,
-    particleOpacity: 0.18,
+    particleOpacity: 0.08,
     particleDriftSec: THRESHOLD_MOTION.driftSec,
-    glowOpacity: 0.24,
+    glowOpacity: 0.1,
     fieldOpacity: 0,
     themeOpacity: 1,
-    fogOpacity: 0.32,
-    fogWarmth: 0.48,
+    fogOpacity: 0.06,
+    fogWarmth: 0,
   },
   neutral: {
-    voidOpacity: 0.68,
-    paperOpacity: 0.38,
-    starOpacity: 0.032,
+    voidOpacity: 1,
+    paperOpacity: 0,
+    starOpacity: 0.06,
     starDriftSec: THRESHOLD_MOTION.dawnSec,
-    particleOpacity: 0.04,
+    particleOpacity: 0.03,
     particleDriftSec: THRESHOLD_MOTION.crossingSec,
-    glowOpacity: 0.09,
-    fieldOpacity: 0.24,
+    glowOpacity: 0.05,
+    fieldOpacity: 0.1,
     themeOpacity: 0,
-    fogOpacity: 0.12,
-    fogWarmth: 0.52,
+    fogOpacity: 0.03,
+    fogWarmth: 0,
   },
 };
 
@@ -89,7 +90,6 @@ export function atmosphereMorphForPath(
 ): AtmosphereMorph {
   const zone = getRouteZone(path);
   const base = ZONE_BASE[zone];
-
   const depthMul = 0.85 + depth * 0.28;
 
   const starOpacity =
@@ -110,24 +110,22 @@ export function atmosphereMorphForPath(
   );
 
   return {
-    voidColor: zone === "map" ? circadian.voidBase : "#06080c",
-    voidOpacity: Math.min(1, base.voidOpacity + depth * 0.22),
-    paperColor: circadian.ivoryTint,
-    paperOpacity: Math.max(0, base.paperOpacity - depth * 0.18),
+    voidColor: "#030405",
+    voidOpacity: Math.min(1, base.voidOpacity + depth * 0.08),
+    paperColor: "transparent",
+    paperOpacity: 0,
     starOpacity,
     starColor: circadian.starColor,
     starDriftSec,
     particleOpacity,
     particleDriftSec,
-    glowOpacity: base.glowOpacity * circadian.lightPoolOpacity * (1 - depth * 0.15),
-    glowColor:
-      zone === "reading" || zone === "neutral"
-        ? circadian.ivoryTint
-        : circadian.ambientTop,
+    glowOpacity:
+      base.glowOpacity * circadian.lightPoolOpacity * (1 - depth * 0.15),
+    glowColor: circadian.ambientTop,
     fieldOpacity: base.fieldOpacity * circadian.fieldOpacity * (1 - depth * 0.2),
     themeOpacity: base.themeOpacity,
-    fogOpacity: base.fogOpacity * circadian.fogMul * depthMul,
-    fogWarmth: base.fogWarmth * circadian.fogWarmth + circadian.warmth * 0.15,
+    fogOpacity: base.fogOpacity * Math.min(1, circadian.fogMul * 0.35) * depthMul,
+    fogWarmth: 0,
   };
 }
 

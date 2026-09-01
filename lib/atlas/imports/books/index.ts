@@ -1,7 +1,7 @@
 import { resolveAtlasRoute } from "../../routes";
 import type { AtlasConnection, AtlasEntry } from "../../types";
 import {
-  ESSAY_THEME_INDEX,
+  BIOLOGY_REVISED_EXPANDED,
   LIVING_TERRAIN_SERIES,
   type SeriesBookCatalogEntry,
 } from "./series-catalog";
@@ -122,11 +122,39 @@ function buildChamberEntry(book: SeriesBookCatalogEntry): AtlasEntry {
   };
 }
 
-export const IMPORTED_BOOK_ENTRIES: AtlasEntry[] =
-  LIVING_TERRAIN_SERIES.flatMap((book) => [
+function buildRevisedEditionBookEntry(): AtlasEntry {
+  const book = BIOLOGY_REVISED_EXPANDED;
+  return {
+    id: book.id,
+    slug: book.slug,
+    type: "book",
+    title: book.title,
+    description: book.description,
+    themes: book.themes,
+    parentConcepts: book.parentConcepts,
+    connectedItems: [],
+    publishedAt: book.publishedAt,
+    route: resolveAtlasRoute("book", book.slug),
+    status: "published",
+    meta: {
+      ...(book.subtitle ? { subtitle: book.subtitle } : {}),
+      publishedYear: book.publishedYear,
+      publisher: "Independently published",
+      purchaseUrl: book.purchaseUrl,
+      coverImage: `/images/maps/${book.slug}.jpg`,
+      bookStatus: "published",
+      chapters: [],
+    },
+  };
+}
+
+export const IMPORTED_BOOK_ENTRIES: AtlasEntry[] = [
+  ...LIVING_TERRAIN_SERIES.flatMap((book) => [
     buildBookEntry(book),
     buildChamberEntry(book),
-  ]);
+  ]),
+  buildRevisedEditionBookEntry(),
+];
 
 /** Theme sets for auto-linking questions and field notes */
 const QUESTION_THEMES: { id: string; themes: string[] }[] = [
@@ -185,6 +213,11 @@ function linkByThemeOverlap(
   );
 }
 
+/**
+ * LEGACY / NON-CANONICAL book graph edges.
+ * Explicit chamber↔volume links are mixed with inferred FLAGSHIP overlap
+ * (questions, field notes, neighboring volumes). Must never populate lib/canonical.
+ */
 export const IMPORTED_BOOK_CONNECTIONS: AtlasConnection[] = (() => {
   const c: AtlasConnection[] = [];
 
@@ -195,31 +228,7 @@ export const IMPORTED_BOOK_CONNECTIONS: AtlasConnection[] = (() => {
       c.push(conn(volume.chamberId, themeId, "theme", "explicit", 8));
     }
 
-    for (const essay of ESSAY_THEME_INDEX) {
-      const overlap = themeOverlap(essay.themes, volume.themes);
-      if (overlap >= 2) {
-        c.push(
-          conn(
-            essay.id,
-            volume.id,
-            "volume",
-            "inferred",
-            5 + overlap,
-            "gathers essays that orbit the same Observatory themes.",
-          ),
-        );
-        c.push(
-          conn(
-            essay.id,
-            volume.chamberId,
-            "chamber",
-            "inferred",
-            6 + overlap,
-            "returns to the chamber where this inquiry gathers.",
-          ),
-        );
-      }
-    }
+    // Essay↔book links are curated explicitly below — do not dump by theme overlap.
 
     for (const question of QUESTION_THEMES) {
       linkByThemeOverlap(
@@ -270,6 +279,106 @@ export const IMPORTED_BOOK_CONNECTIONS: AtlasConnection[] = (() => {
         );
       }
     }
+  }
+
+  /**
+   * Curated essay ↔ chamber / book links only.
+   * Sources: chamber editorial references + Atlas archive domain co-location.
+   * Do not invent — omit when no repository evidence exists.
+   */
+  const EXPLICIT_ESSAY_LINKS: ReadonlyArray<{
+    essayId: string;
+    bookId: string;
+    chamberId: string;
+    rationale: string;
+  }> = [
+    {
+      essayId: "e11",
+      bookId: "b2",
+      chamberId: "p2",
+      rationale:
+        "named in The Biology of Becoming chamber as a connected inquiry.",
+    },
+    {
+      essayId: "e1",
+      bookId: "b2",
+      chamberId: "p2",
+      rationale:
+        "named in The Biology of Becoming chamber as a related inquiry.",
+    },
+    {
+      essayId: "e11",
+      bookId: "b3",
+      chamberId: "p3",
+      rationale: "named in The Second Birth chamber editorial references.",
+    },
+    {
+      essayId: "e3",
+      bookId: "b4",
+      chamberId: "p4",
+      rationale:
+        "paired with Below Criticality in the Atlas systems finding aid.",
+    },
+    {
+      essayId: "e1",
+      bookId: "b5",
+      chamberId: "p5",
+      rationale:
+        "paired with Embodied Physics in the Atlas energy finding aid.",
+    },
+    {
+      essayId: "e9",
+      bookId: "b6",
+      chamberId: "p6",
+      rationale:
+        "paired with A Field Guide to the Experience in the Atlas consciousness finding aid.",
+    },
+    {
+      essayId: "e3",
+      bookId: "b7",
+      chamberId: "p7",
+      rationale:
+        "paired with Feedback Is God in the Atlas systems finding aid.",
+    },
+  ];
+
+  for (const link of EXPLICIT_ESSAY_LINKS) {
+    c.push(
+      conn(
+        link.essayId,
+        link.bookId,
+        "volume",
+        "explicit",
+        8,
+        link.rationale,
+      ),
+    );
+    c.push(
+      conn(
+        link.essayId,
+        link.chamberId,
+        "chamber",
+        "explicit",
+        8,
+        link.rationale,
+      ),
+    );
+  }
+
+  // Revised Biology edition → existing Biology chamber (no duplicate territory prose)
+  const revised = BIOLOGY_REVISED_EXPANDED;
+  c.push(
+    conn(
+      revised.chamberId,
+      revised.id,
+      "volume",
+      "explicit",
+      9,
+      "the current Revised & Expanded edition of this investigation.",
+    ),
+  );
+  for (const themeId of revised.themes) {
+    c.push(conn(revised.id, themeId, "theme", "explicit", 8));
   }
 
   return c;

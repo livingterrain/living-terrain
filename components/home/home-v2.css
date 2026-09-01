@@ -1,0 +1,529 @@
+/* ═══════════════════════════════════════════════════════════
+   Living Terrain — Visual System V2 (Home only)
+   Cinematic scientific mysticism.
+   Primitives: field · point · line · axis · orbit · layer ·
+               threshold · node · thread · pulse · material · light
+   Isolated under .lt-v2 — do not propagate.
+   ═══════════════════════════════════════════════════════════ */
+
+.lt-v2 {
+  /* Shared V2 foundation tokens — Home composition unchanged */
+  --lt-v2-void: var(--lt-void, #030405);
+  --lt-v2-bone: var(--lt-bone, #ebe6dc);
+  --lt-v2-bone-dim: var(--lt-bone-dim, color-mix(in srgb, #ebe6dc 42%, transparent));
+  --lt-v2-bone-faint: var(--lt-bone-faint, color-mix(in srgb, #ebe6dc 22%, transparent));
+  --lt-v2-mineral: var(--lt-mineral, #c4a86a);
+  --lt-v2-mineral-soft: var(--lt-mineral-soft, color-mix(in srgb, #c4a86a 55%, transparent));
+  --lt-v2-cool: var(--lt-cool, #7a8a9a);
+  --lt-v2-axis-x: 68%;
+  --lt-v2-ease: var(--lt-ease, cubic-bezier(0.38, 0.02, 0.42, 1));
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  width: 100%;
+  overflow: clip;
+  color: var(--lt-v2-bone);
+  background: var(--lt-v2-void);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ——— FIELD ——— */
+.lt-v2__field {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.lt-v2__void {
+  position: absolute;
+  inset: 0;
+  background: var(--lt-v2-void);
+}
+
+/* Barely perceptible atmospheric layer — cool depth, not taupe wash */
+.lt-v2__depth {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 70% 50% at 72% 42%,
+      color-mix(in srgb, #0c1218 55%, transparent) 0%,
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      #020304 0%,
+      transparent 28%,
+      transparent 72%,
+      color-mix(in srgb, #06080c 80%, transparent) 100%
+    );
+  opacity: 0.9;
+}
+
+/* Orbit — cycles / astronomy / zodiac as incomplete ellipse, not a wheel */
+.lt-v2__orbit {
+  position: absolute;
+  top: 50%;
+  left: var(--lt-v2-axis-x);
+  width: min(92vw, 52rem);
+  height: min(92vw, 52rem);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, #ebe6dc 5.5%, transparent);
+  mask-image: linear-gradient(
+    125deg,
+    transparent 18%,
+    black 38%,
+    black 58%,
+    transparent 82%
+  );
+  opacity: 0.85;
+  animation: lt-v2-orbit-drift 120s linear infinite;
+}
+
+@keyframes lt-v2-orbit-drift {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Axis — vertical centers / orientation / threshold spine */
+.lt-v2__axis {
+  position: absolute;
+  top: 12%;
+  bottom: 14%;
+  left: var(--lt-v2-axis-x);
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, #ebe6dc 14%, transparent) 18%,
+    color-mix(in srgb, #ebe6dc 22%, transparent) 50%,
+    color-mix(in srgb, #ebe6dc 14%, transparent) 82%,
+    transparent 100%
+  );
+  transition: opacity 0.8s var(--lt-v2-ease), filter 0.8s var(--lt-v2-ease);
+}
+
+.lt-v2--attend-atlas .lt-v2__axis,
+.lt-v2--attend-observatory .lt-v2__axis,
+.lt-v2--attend-shelves .lt-v2__axis {
+  filter: brightness(1.35);
+}
+
+/* Horizon — earth/sky threshold, material boundary */
+.lt-v2__horizon {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 72%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, #ebe6dc 8%, transparent) 22%,
+    color-mix(in srgb, #ebe6dc 12%, transparent) 50%,
+    color-mix(in srgb, #ebe6dc 8%, transparent) 78%,
+    transparent 100%
+  );
+}
+
+.lt-v2__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.028;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* Nodes — points of light along the axis (biology: centers; astronomy: points) */
+.lt-v2__node {
+  position: absolute;
+  left: var(--lt-v2-axis-x);
+  width: 5px;
+  height: 5px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: color-mix(in srgb, #ebe6dc 45%, transparent);
+  box-shadow: 0 0 0 0 transparent;
+  transition:
+    background 0.7s var(--lt-v2-ease),
+    box-shadow 0.7s var(--lt-v2-ease),
+    transform 0.7s var(--lt-v2-ease);
+}
+
+.lt-v2__node--observatory {
+  top: 28%;
+}
+.lt-v2__node--atlas {
+  top: 48%;
+}
+.lt-v2__node--shelves {
+  top: 68%;
+}
+
+.lt-v2__node[data-active="true"] {
+  background: var(--lt-v2-mineral);
+  box-shadow:
+    0 0 10px color-mix(in srgb, #c4a86a 45%, transparent),
+    0 0 28px color-mix(in srgb, #c4a86a 18%, transparent);
+  transform: translate(-50%, -50%) scale(1.35);
+}
+
+/* Thread — relationship made visible by attention */
+.lt-v2__thread {
+  position: absolute;
+  top: 18%;
+  left: max(2rem, 8vw);
+  width: 0;
+  height: 1px;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, #c4a86a 0%, transparent),
+    color-mix(in srgb, #c4a86a 35%, transparent),
+    color-mix(in srgb, #ebe6dc 18%, transparent)
+  );
+  transform-origin: left center;
+  transition:
+    opacity 0.75s var(--lt-v2-ease),
+    width 0.9s var(--lt-v2-ease),
+    top 0.75s var(--lt-v2-ease);
+}
+
+.lt-v2__thread--on {
+  opacity: 1;
+  width: calc(var(--lt-v2-axis-x) - 10vw);
+}
+
+.lt-v2--attend-observatory .lt-v2__thread {
+  top: 28%;
+}
+.lt-v2--attend-atlas .lt-v2__thread {
+  top: 48%;
+}
+.lt-v2--attend-shelves .lt-v2__thread {
+  top: 68%;
+}
+
+/* ——— STAGE ——— */
+.lt-v2__stage {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100dvh;
+  width: 100%;
+  padding:
+    max(1.25rem, env(safe-area-inset-top))
+    max(1.25rem, env(safe-area-inset-right))
+    max(1.5rem, env(safe-area-inset-bottom))
+    max(1.25rem, env(safe-area-inset-left));
+}
+
+.lt-v2__identity {
+  position: relative;
+  z-index: 2;
+  max-width: 22rem;
+  padding-top: 0.35rem;
+}
+
+.lt-v2__mark {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.lt-v2__title {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 92%, transparent);
+}
+
+.lt-v2__orient {
+  margin: 0.85rem 0 0;
+  max-width: 16rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.9375rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--lt-v2-bone-dim);
+  text-wrap: pretty;
+}
+
+/* Loci — places/states along the axis, not cards */
+.lt-v2__loci {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: auto;
+  padding-top: 3rem;
+}
+
+.lt-v2__locus {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.75rem 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 0.85rem;
+  row-gap: 0.3rem;
+  align-items: start;
+  padding: 1.1rem 0.25rem;
+  text-decoration: none;
+  color: inherit;
+  border: 0;
+  background: none;
+  border-radius: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.55s var(--lt-v2-ease);
+}
+
+.lt-v2__locus + .lt-v2__locus {
+  border-top: 1px solid color-mix(in srgb, #ebe6dc 5%, transparent);
+}
+
+.lt-v2__locus:focus-visible {
+  outline: none;
+}
+
+.lt-v2__locus-dot {
+  grid-row: 1 / span 2;
+  align-self: center;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, #ebe6dc 35%, transparent);
+  transition:
+    background 0.55s var(--lt-v2-ease),
+    box-shadow 0.55s var(--lt-v2-ease),
+    transform 0.55s var(--lt-v2-ease);
+}
+
+.lt-v2__locus-label {
+  grid-column: 2;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 78%, transparent);
+  transition:
+    color 0.55s var(--lt-v2-ease),
+    text-shadow 0.55s var(--lt-v2-ease);
+}
+
+.lt-v2__locus-hint {
+  grid-column: 2;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--lt-v2-bone-faint);
+  transition: color 0.55s var(--lt-v2-ease);
+}
+
+.lt-v2__locus:hover .lt-v2__locus-label,
+.lt-v2__locus:focus-visible .lt-v2__locus-label {
+  color: #f2ebe0;
+  text-shadow: 0 0 24px color-mix(in srgb, #c4a86a 14%, transparent);
+}
+
+.lt-v2__locus:hover .lt-v2__locus-hint,
+.lt-v2__locus:focus-visible .lt-v2__locus-hint {
+  color: var(--lt-v2-bone-dim);
+}
+
+.lt-v2__locus:hover .lt-v2__locus-dot,
+.lt-v2__locus:focus-visible .lt-v2__locus-dot {
+  background: var(--lt-v2-mineral);
+  box-shadow: 0 0 12px color-mix(in srgb, #c4a86a 40%, transparent);
+  transform: scale(1.4);
+}
+
+.lt-v2__locus:focus-visible .lt-v2__locus-label {
+  box-shadow: 0 1px 0 var(--lt-v2-mineral-soft);
+}
+
+/* Dim siblings when one is held — system of relations */
+.lt-v2--attend-atlas .lt-v2__locus:not([data-region="atlas"]),
+.lt-v2--attend-shelves .lt-v2__locus:not([data-region="shelves"]),
+.lt-v2--attend-observatory .lt-v2__locus:not([data-region="observatory"]) {
+  opacity: 0.38;
+}
+
+/* ——— Desktop: identity left, loci along the axis ——— */
+@media (min-width: 900px) {
+  .lt-v2__stage {
+    grid-template-columns: minmax(18rem, 1fr) minmax(16rem, 22rem);
+    align-items: stretch;
+    padding:
+      max(2.5rem, env(safe-area-inset-top))
+      max(3rem, 5vw)
+      max(2.5rem, env(safe-area-inset-bottom))
+      max(2.5rem, 5vw);
+  }
+
+  .lt-v2__identity {
+    align-self: center;
+    max-width: 26rem;
+    padding-top: 0;
+    padding-bottom: 8vh;
+  }
+
+  .lt-v2__title {
+    font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+    letter-spacing: 0.22em;
+  }
+
+  .lt-v2__orient {
+    margin-top: 1.15rem;
+    font-size: 1.0625rem;
+    max-width: 18rem;
+  }
+
+  .lt-v2__loci {
+    justify-content: center;
+    margin-top: 0;
+    padding-top: 0;
+    padding-right: 2vw;
+    gap: 0.15rem;
+  }
+
+  .lt-v2__locus {
+    padding: 1.35rem 0.5rem 1.35rem 0;
+    border-top: 0 !important;
+  }
+
+  .lt-v2__locus + .lt-v2__locus {
+    border-top: 0;
+  }
+
+  .lt-v2__locus-label {
+    font-size: 1.125rem;
+    letter-spacing: 0.18em;
+  }
+
+  .lt-v2__locus--atlas .lt-v2__locus-label {
+    font-size: 1.25rem;
+    letter-spacing: 0.2em;
+    color: color-mix(in srgb, #ebe6dc 88%, transparent);
+  }
+
+  .lt-v2__locus-hint {
+    font-size: 0.875rem;
+    max-width: 16rem;
+  }
+
+  /* Position loci to align with axis nodes */
+  .lt-v2__loci {
+    display: block;
+    position: relative;
+    height: 100%;
+    min-height: 70vh;
+  }
+
+  .lt-v2__locus {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: grid;
+  }
+
+  .lt-v2__locus--observatory {
+    top: 22%;
+  }
+
+  .lt-v2__locus--atlas {
+    top: 46%;
+    transform: translateY(-50%);
+  }
+
+  .lt-v2__locus--shelves {
+    top: 70%;
+  }
+}
+
+/* Mobile: keep field quiet; loci as vertical threshold list */
+@media (max-width: 899px) {
+  .lt-v2__orbit {
+    width: 140vw;
+    height: 140vw;
+    left: 78%;
+    opacity: 0.55;
+  }
+
+  .lt-v2__axis {
+    left: auto;
+    right: max(1.25rem, env(safe-area-inset-right));
+    opacity: 0.55;
+  }
+
+  .lt-v2__node {
+    left: auto;
+    right: max(1.25rem, env(safe-area-inset-right));
+    transform: translate(50%, -50%);
+  }
+
+  .lt-v2__node[data-active="true"] {
+    transform: translate(50%, -50%) scale(1.35);
+  }
+
+  .lt-v2__thread {
+    display: none;
+  }
+
+  .lt-v2__horizon {
+    top: auto;
+    bottom: 38%;
+  }
+
+  .lt-v2__identity {
+    max-width: 14rem;
+  }
+
+  .lt-v2__title {
+    font-size: 1.125rem;
+    letter-spacing: 0.16em;
+  }
+
+  .lt-v2__orient {
+    margin-top: 0.55rem;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lt-v2__orbit {
+    animation: none !important;
+  }
+
+  .lt-v2__node,
+  .lt-v2__locus,
+  .lt-v2__locus-label,
+  .lt-v2__locus-hint,
+  .lt-v2__locus-dot,
+  .lt-v2__thread,
+  .lt-v2__axis {
+    transition: none !important;
+  }
+}

@@ -225,6 +225,31 @@ export class TerrainSoundEngine {
       };
       scheduleField();
     }
+
+    /* PHASE 3 — Observatory: rare soft bowl decay, never a repeating ding */
+    if (scene === "observatory") {
+      const scheduleObservatory = () => {
+        this.eventTimers.push(
+          window.setTimeout(() => {
+            if (
+              this.scene !== "observatory" ||
+              !this.ctx ||
+              !this.hoverBus ||
+              this.muted
+            ) {
+              return;
+            }
+            if (Math.random() < 0.45) {
+              playSingingBowl(this.ctx, this.hoverBus, 0.0045);
+            } else {
+              playSoftResonance(this.ctx, this.hoverBus, 0.004);
+            }
+            scheduleObservatory();
+          }, 160000 + Math.random() * 140000),
+        );
+      };
+      scheduleObservatory();
+    }
   }
 
   private clearEventTimers(): void {

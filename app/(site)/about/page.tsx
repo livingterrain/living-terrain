@@ -52,7 +52,7 @@ export default function AboutPage() {
               </p>
               <p>
                 If you are new here, follow a{" "}
-                <TextLink href="/questions">question</TextLink>, read an{" "}
+                <TextLink href="/atlas">question</TextLink>, read an{" "}
                 <MediumPublicationLink /> essay, or simply wander until
                 something catches your attention. The terrain rewards slow
                 movement.

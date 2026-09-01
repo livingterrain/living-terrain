@@ -1,0 +1,599 @@
+/* ═══════════════════════════════════════════════════════════
+   Living Terrain — V2 Life Layer (revertible)
+   Spectral / celestial refinement over nocturnal foundation.
+   Delete this file + its @import to roll back.
+   Does NOT change IA, routes, or copy.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* Spectral centers — light through differentiated systems */
+  --lt-root: #6e3a2e;
+  --lt-sacral: #8a5a32;
+  --lt-solar: #b89658;
+  --lt-heart: #5a6e52;
+  --lt-throat: #4a6478;
+  --lt-perception: #4a4e78;
+  --lt-unity: #5a4870;
+
+  /* Destination identities */
+  --lt-signal-observatory: color-mix(in srgb, var(--lt-perception) 55%, var(--lt-unity));
+  --lt-signal-atlas: color-mix(in srgb, var(--lt-heart) 50%, var(--lt-solar));
+  --lt-signal-shelves: color-mix(in srgb, var(--lt-sacral) 45%, #ebe6dc);
+
+  --lt-midnight: #081018;
+  --lt-life-ease: cubic-bezier(0.38, 0.02, 0.42, 1);
+}
+
+/* ——— Interior celestial grammar (discovered, not displayed) ——— */
+
+.lt-field__ecliptic {
+  position: absolute;
+  inset: -8%;
+  opacity: 0.55;
+  color: var(--lt-bone);
+}
+
+.lt-field__ecliptic svg {
+  width: 100%;
+  height: 100%;
+}
+
+.lt-field__ecliptic-arc {
+  fill: none;
+  stroke: color-mix(in srgb, var(--lt-bone) 7%, transparent);
+  stroke-width: 0.35;
+}
+
+.lt-field__ecliptic-arc--soft {
+  stroke: color-mix(in srgb, var(--lt-throat) 12%, transparent);
+  stroke-width: 0.28;
+}
+
+.lt-field__ecliptic-line {
+  stroke: color-mix(in srgb, var(--lt-bone) 5%, transparent);
+  stroke-width: 0.22;
+}
+
+.lt-field__ecliptic-node {
+  fill: color-mix(in srgb, var(--lt-bone) 28%, transparent);
+}
+
+.lt-field__refraction {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background:
+    radial-gradient(
+      ellipse 18% 10% at 72% 28%,
+      color-mix(in srgb, var(--lt-perception) 8%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 14% 8% at 30% 62%,
+      color-mix(in srgb, var(--lt-heart) 6%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 12% 7% at 58% 78%,
+      color-mix(in srgb, var(--lt-sacral) 5%, transparent),
+      transparent 70%
+    );
+  pointer-events: none;
+}
+
+/* Regional spectral depth */
+.lt-field[data-lt-region="atlas"] {
+  --lt-depth-cool: color-mix(in srgb, var(--lt-midnight) 70%, var(--lt-heart));
+}
+
+.lt-field[data-lt-region="atlas"] .lt-field__refraction {
+  opacity: 0.45;
+  background:
+    radial-gradient(
+      ellipse 42% 28% at 68% 40%,
+      color-mix(in srgb, var(--lt-heart) 7%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 22% 16% at 24% 72%,
+      color-mix(in srgb, var(--lt-solar) 5%, transparent),
+      transparent 70%
+    );
+}
+
+.lt-field[data-lt-region="atlas"] .lt-field__orbit {
+  border-color: color-mix(in srgb, var(--lt-signal-atlas) 14%, transparent);
+}
+
+.lt-field[data-lt-region="observatory"] {
+  --lt-depth-cool: color-mix(in srgb, var(--lt-midnight) 75%, var(--lt-perception));
+}
+
+.lt-field[data-lt-region="observatory"] .lt-field__refraction {
+  opacity: 0.5;
+  background:
+    radial-gradient(
+      ellipse 30% 22% at 22% 18%,
+      color-mix(in srgb, var(--lt-perception) 10%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 18% 14% at 78% 58%,
+      color-mix(in srgb, var(--lt-unity) 7%, transparent),
+      transparent 72%
+    );
+}
+
+.lt-field[data-lt-region="observatory"] .lt-field__ecliptic-arc--soft {
+  stroke: color-mix(in srgb, var(--lt-perception) 18%, transparent);
+}
+
+.lt-field[data-lt-region="shelves"] {
+  --lt-depth-cool: color-mix(in srgb, #0c0e10 80%, var(--lt-sacral));
+}
+
+.lt-field[data-lt-region="shelves"] .lt-field__refraction {
+  opacity: 0.4;
+  background:
+    radial-gradient(
+      ellipse 36% 20% at 50% 8%,
+      color-mix(in srgb, var(--lt-sacral) 6%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 20% 12% at 70% 55%,
+      color-mix(in srgb, #ebe6dc 4%, transparent),
+      transparent 72%
+    );
+}
+
+.lt-field[data-lt-region="shelves"] .lt-field__horizon {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--lt-signal-shelves) 16%, transparent) 30%,
+    color-mix(in srgb, #ebe6dc 12%, transparent) 50%,
+    color-mix(in srgb, var(--lt-signal-shelves) 16%, transparent) 70%,
+    transparent
+  );
+}
+
+/* ——— HOME — spectral destination signals (composition preserved) ——— */
+
+.lt-v2__depth {
+  background:
+    radial-gradient(
+      ellipse 70% 50% at 72% 42%,
+      color-mix(in srgb, #0c1218 55%, transparent) 0%,
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 16% 12% at 68% 28%,
+      color-mix(in srgb, var(--lt-perception) 5%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 14% 10% at 68% 48%,
+      color-mix(in srgb, var(--lt-heart) 4%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 14% 10% at 68% 68%,
+      color-mix(in srgb, var(--lt-sacral) 4%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      #020304 0%,
+      transparent 28%,
+      transparent 72%,
+      color-mix(in srgb, #06080c 80%, transparent) 100%
+    );
+}
+
+.lt-v2 .lt-v2__node--observatory {
+  background: color-mix(in srgb, var(--lt-signal-observatory) 70%, #ebe6dc);
+  opacity: 0.85;
+}
+
+.lt-v2 .lt-v2__node--atlas {
+  background: color-mix(in srgb, var(--lt-signal-atlas) 70%, #ebe6dc);
+  opacity: 0.85;
+}
+
+.lt-v2 .lt-v2__node--shelves {
+  background: color-mix(in srgb, var(--lt-signal-shelves) 70%, #ebe6dc);
+  opacity: 0.85;
+}
+
+.lt-v2 .lt-v2__locus--observatory .lt-v2__locus-dot {
+  background: color-mix(in srgb, var(--lt-signal-observatory) 65%, transparent);
+}
+
+.lt-v2 .lt-v2__locus--atlas .lt-v2__locus-dot {
+  background: color-mix(in srgb, var(--lt-signal-atlas) 65%, transparent);
+}
+
+.lt-v2 .lt-v2__locus--shelves .lt-v2__locus-dot {
+  background: color-mix(in srgb, var(--lt-signal-shelves) 65%, transparent);
+}
+
+.lt-v2--attend-observatory .lt-v2__orbit {
+  border-color: color-mix(in srgb, var(--lt-signal-observatory) 22%, transparent);
+  opacity: 1;
+  filter: brightness(1.15);
+}
+
+.lt-v2--attend-atlas .lt-v2__orbit {
+  border-color: color-mix(in srgb, var(--lt-signal-atlas) 22%, transparent);
+  opacity: 1;
+  filter: brightness(1.15);
+}
+
+.lt-v2--attend-shelves .lt-v2__orbit {
+  border-color: color-mix(in srgb, var(--lt-signal-shelves) 22%, transparent);
+  opacity: 1;
+  filter: brightness(1.12);
+}
+
+.lt-v2__locus:hover .lt-v2__locus-label,
+.lt-v2__locus:focus-visible .lt-v2__locus-label {
+  color: #ebe6dc;
+}
+
+.lt-v2__locus:hover .lt-v2__locus-hint,
+.lt-v2__locus:focus-visible .lt-v2__locus-hint {
+  color: color-mix(in srgb, #ebe6dc 55%, transparent);
+}
+
+.lt-v2__locus--observatory:hover .lt-v2__locus-dot,
+.lt-v2__locus--observatory:focus-visible .lt-v2__locus-dot {
+  background: var(--lt-signal-observatory);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--lt-signal-observatory) 40%, transparent);
+  transform: scale(1.35);
+}
+
+.lt-v2__locus--atlas:hover .lt-v2__locus-dot,
+.lt-v2__locus--atlas:focus-visible .lt-v2__locus-dot {
+  background: var(--lt-signal-atlas);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--lt-signal-atlas) 40%, transparent);
+  transform: scale(1.35);
+}
+
+.lt-v2__locus--shelves:hover .lt-v2__locus-dot,
+.lt-v2__locus--shelves:focus-visible .lt-v2__locus-dot {
+  background: var(--lt-signal-shelves);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--lt-signal-shelves) 35%, transparent);
+  transform: scale(1.35);
+}
+
+.lt-v2__thread {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--lt-solar) 28%, transparent),
+    color-mix(in srgb, #ebe6dc 16%, transparent)
+  );
+}
+
+.lt-v2--attend-observatory .lt-v2__thread {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--lt-signal-observatory) 40%, transparent),
+    color-mix(in srgb, #ebe6dc 14%, transparent)
+  );
+}
+
+.lt-v2--attend-atlas .lt-v2__thread {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--lt-signal-atlas) 40%, transparent),
+    color-mix(in srgb, #ebe6dc 14%, transparent)
+  );
+}
+
+.lt-v2--attend-shelves .lt-v2__thread {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--lt-signal-shelves) 40%, transparent),
+    color-mix(in srgb, #ebe6dc 14%, transparent)
+  );
+}
+
+/* ——— ATLAS — legibility + living threads (highest priority) ——— */
+
+.atlas-v1-wash {
+  background:
+    radial-gradient(
+      ellipse 70% 48% at 68% 36%,
+      color-mix(in srgb, #0a1410 50%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 40% 28% at 12% 88%,
+      color-mix(in srgb, var(--lt-solar) 3.5%, transparent) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 24% 16% at 50% 20%,
+      color-mix(in srgb, var(--lt-heart) 4%, transparent),
+      transparent 70%
+    );
+}
+
+.the-void-inquiry {
+  color: color-mix(in srgb, #ebe6dc 78%, transparent);
+  font-size: 1.2rem;
+}
+
+@media (min-width: 640px) {
+  .the-void-inquiry {
+    font-size: 1.28rem;
+  }
+}
+
+.the-void-questions {
+  position: relative;
+  margin-top: 2.1rem;
+  pointer-events: auto;
+}
+
+.the-void-question-list {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.the-void-threads {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.the-void-thread {
+  fill: none;
+  stroke: color-mix(in srgb, var(--lt-signal-atlas) 18%, transparent);
+  stroke-width: 0.75;
+  opacity: 0.35;
+  transition: opacity 0.8s var(--lt-life-ease), stroke 0.8s var(--lt-life-ease);
+}
+
+.the-void-thread-node {
+  fill: color-mix(in srgb, var(--lt-signal-atlas) 55%, #ebe6dc);
+  opacity: 0.45;
+  transition:
+    opacity 0.7s var(--lt-life-ease),
+    fill 0.7s var(--lt-life-ease),
+    r 0.7s var(--lt-life-ease);
+}
+
+.the-void-question-row {
+  border-top-color: color-mix(in srgb, #ebe6dc 10%, transparent);
+  position: relative;
+}
+
+.the-void-question-row:last-child {
+  border-bottom-color: color-mix(in srgb, #ebe6dc 10%, transparent);
+}
+
+.the-void-question {
+  color: color-mix(in srgb, #ebe6dc 88%, transparent);
+  padding-left: 1.15rem;
+  position: relative;
+  transition:
+    color 0.55s var(--lt-life-ease),
+    text-shadow 0.7s var(--lt-life-ease),
+    transform 0.55s var(--lt-life-ease);
+}
+
+.the-void-question::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: color-mix(in srgb, var(--lt-signal-atlas) 40%, #ebe6dc);
+  box-shadow: 0 0 0 0 transparent;
+  transition:
+    background 0.55s var(--lt-life-ease),
+    box-shadow 0.7s var(--lt-life-ease),
+    transform 0.55s var(--lt-life-ease);
+}
+
+.the-void-question:hover,
+.the-void-question:focus-visible {
+  color: #f2ebe0;
+  text-shadow: 0 0 28px color-mix(in srgb, var(--lt-solar) 22%, transparent);
+}
+
+.the-void-question:hover::before,
+.the-void-question:focus-visible::before {
+  background: var(--lt-solar);
+  box-shadow:
+    0 0 10px color-mix(in srgb, var(--lt-solar) 45%, transparent),
+    0 0 22px color-mix(in srgb, var(--lt-heart) 20%, transparent);
+  transform: translateY(-50%) scale(1.35);
+}
+
+.the-void-question-row:hover ~ .the-void-threads .the-void-thread,
+.the-void-questions:has(.the-void-question:hover) .the-void-thread,
+.the-void-questions:has(.the-void-question:focus-visible) .the-void-thread {
+  opacity: 0.7;
+  stroke: color-mix(in srgb, var(--lt-signal-atlas) 40%, transparent);
+}
+
+.the-void-questions:has(.the-void-question:hover) .the-void-thread-node,
+.the-void-questions:has(.the-void-question:focus-visible) .the-void-thread-node {
+  opacity: 0.85;
+  fill: var(--lt-solar);
+}
+
+.the-void-charts {
+  color: color-mix(in srgb, #ebe6dc 58%, transparent);
+}
+
+.the-void-charts a:hover,
+.the-void-charts a:focus-visible {
+  color: color-mix(in srgb, #ebe6dc 88%, transparent);
+}
+
+/* Slightly less void before first interaction */
+.the-void-language {
+  padding-top: clamp(4.5rem, 14vh, 7.5rem);
+}
+
+/* ——— OBSERVATORY — sparse celestial marks ——— */
+
+.lt-field[data-lt-region="observatory"] .lt-field__ecliptic {
+  opacity: 0.7;
+}
+
+.lt-field__drift {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(1px 1px at 18% 32%, color-mix(in srgb, var(--lt-perception) 55%, transparent), transparent),
+    radial-gradient(1px 1px at 62% 18%, color-mix(in srgb, var(--lt-unity) 40%, transparent), transparent),
+    radial-gradient(1.2px 1.2px at 78% 54%, color-mix(in srgb, #ebe6dc 35%, transparent), transparent),
+    radial-gradient(1px 1px at 34% 72%, color-mix(in srgb, var(--lt-perception) 40%, transparent), transparent),
+    radial-gradient(1px 1px at 88% 78%, color-mix(in srgb, var(--lt-unity) 30%, transparent), transparent),
+    radial-gradient(1px 1px at 12% 58%, color-mix(in srgb, #ebe6dc 28%, transparent), transparent);
+  animation: lt-field-drift 48s linear infinite;
+}
+
+@keyframes lt-field-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -2.5%, 0);
+  }
+}
+
+.obs-studio__folio {
+  color: color-mix(in srgb, #ebe6dc 72%, var(--lt-perception));
+}
+
+.obs-studio__pin {
+  position: relative;
+  padding-left: 0.85rem;
+}
+
+.obs-studio__pin::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--lt-perception) 45%, transparent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--lt-unity) 18%, transparent);
+}
+
+.obs-studio__case {
+  position: relative;
+  transition: text-shadow 0.7s var(--lt-life-ease);
+}
+
+.obs-studio__case:hover,
+.obs-studio__case:focus-visible {
+  text-shadow: 0 0 28px color-mix(in srgb, var(--lt-perception) 18%, transparent);
+}
+
+/* ——— SHELVES — spectral shelf signatures ——— */
+
+.shelves-signal::before {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 4px;
+  margin-bottom: 0.85rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, #ebe6dc 30%, transparent);
+  transition: background 0.6s var(--lt-life-ease), box-shadow 0.7s var(--lt-life-ease);
+}
+
+.shelves-signal--books::before {
+  background: color-mix(in srgb, var(--lt-sacral) 55%, #ebe6dc);
+}
+
+.shelves-signal--essays::before {
+  background: color-mix(in srgb, var(--lt-heart) 55%, #ebe6dc);
+}
+
+.shelves-signal--maps::before {
+  background: color-mix(in srgb, var(--lt-throat) 55%, #ebe6dc);
+}
+
+.shelves-signal:hover::before,
+.shelves-signal:focus-visible::before {
+  box-shadow: 0 0 12px color-mix(in srgb, var(--lt-solar) 35%, transparent);
+}
+
+.shelves-signal--books h2 {
+  color: color-mix(in srgb, #ebe6dc 88%, var(--lt-sacral)) !important;
+}
+
+.shelves-signal--books:hover h2,
+.shelves-signal--books:focus-visible h2 {
+  color: color-mix(in srgb, #ebe6dc 70%, var(--lt-solar)) !important;
+  text-shadow: 0 0 24px color-mix(in srgb, var(--lt-sacral) 18%, transparent);
+}
+
+.shelves-signal--essays h2 {
+  color: color-mix(in srgb, #ebe6dc 88%, var(--lt-heart)) !important;
+}
+
+.shelves-signal--essays:hover h2,
+.shelves-signal--essays:focus-visible h2 {
+  color: color-mix(in srgb, #ebe6dc 75%, var(--lt-heart)) !important;
+  text-shadow: 0 0 24px color-mix(in srgb, var(--lt-heart) 16%, transparent);
+}
+
+.shelves-signal--maps h2 {
+  color: color-mix(in srgb, #ebe6dc 88%, var(--lt-throat)) !important;
+}
+
+.shelves-signal--maps:hover h2,
+.shelves-signal--maps:focus-visible h2 {
+  color: color-mix(in srgb, #ebe6dc 75%, var(--lt-throat)) !important;
+  text-shadow: 0 0 24px color-mix(in srgb, var(--lt-throat) 16%, transparent);
+}
+
+/* ——— Living signal: shared interactive warmth ——— */
+
+a:focus-visible,
+button:focus-visible {
+  outline-color: color-mix(in srgb, var(--lt-solar) 55%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lt-v2__orbit,
+  .lt-field__ecliptic,
+  .lt-field__drift,
+  .the-void-thread,
+  .the-void-thread-node,
+  .lt-v2__locus,
+  .the-void-question {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .lt-field__drift {
+    transform: none !important;
+  }
+}

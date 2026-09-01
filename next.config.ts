@@ -33,6 +33,21 @@ const nextConfig: NextConfig = {
         destination: "/atlas",
         permanent: false,
       },
+      {
+        source: "/field-notes",
+        destination: "/inquiry",
+        permanent: false,
+      },
+      {
+        source: "/questions",
+        destination: "/atlas",
+        permanent: true,
+      },
+      {
+        source: "/questions/:slug",
+        destination: "/atlas",
+        permanent: true,
+      },
     ];
   },
   async headers() {

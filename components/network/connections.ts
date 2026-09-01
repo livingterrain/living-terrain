@@ -2,7 +2,6 @@ import type { ConnectionItem } from "./ConnectionWeb";
 import {
   getBookById,
   getEssayById,
-  getEssayReadUrl,
   getFieldNoteById,
   getQuestionById,
 } from "@/lib/content";
@@ -12,7 +11,7 @@ export function questionsToConnections(questionIds: string[]): ConnectionItem[] 
     .map((id) => getQuestionById(id))
     .filter(Boolean)
     .map((q) => ({
-      href: `/questions/${q!.slug}`,
+      href: `/atlas`,
       title: q!.title,
       subtitle: q!.subtitle,
     }));
@@ -23,10 +22,10 @@ export function essaysToConnections(essayIds: string[]): ConnectionItem[] {
     .map((id) => getEssayById(id))
     .filter(Boolean)
     .map((e) => ({
-      href: getEssayReadUrl(e!),
+      href: `/essays/${e!.slug}`,
       title: e!.title,
       subtitle: e!.subtitle ?? e!.excerpt,
-      external: true,
+      external: false,
     }));
 }
 

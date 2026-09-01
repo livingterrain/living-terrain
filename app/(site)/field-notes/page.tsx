@@ -1,32 +1,9 @@
-import type { Metadata } from "next";
-import { Container } from "@/components/layout/Container";
-import {
-  FieldFragment,
-  Room,
-  RoomThreshold,
-} from "@/components/environment";
-import { getAllFieldNotes } from "@/lib/content";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Field Notes",
-  description:
-    "Short observations from Living Terrain — moments of attention, recorded in the field.",
-};
-
+/**
+ * Field Notes index — quarantined from public Shelves.
+ * Underlying note routes remain; data is not deleted.
+ */
 export default function FieldNotesPage() {
-  const notes = getAllFieldNotes();
-
-  return (
-    <Room kind="notebook">
-      <RoomThreshold kind="notebook" />
-
-      <section className="pb-24 pt-8 sm:pb-32">
-        <Container narrow>
-          {notes.map((note, index) => (
-            <FieldFragment key={note.id} note={note} index={index} />
-          ))}
-        </Container>
-      </section>
-    </Room>
-  );
+  redirect("/inquiry");
 }

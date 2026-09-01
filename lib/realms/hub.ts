@@ -1,3 +1,9 @@
+/**
+ * Theme hubs — LEGACY / NON-CANONICAL relational discovery.
+ * Membership-by-themeIds plus hardcoded enrichTopics (including Field Notes
+ * and original Biology). Still rendered on /themes/*; not Atlas truth.
+ * Trusted relations live in lib/canonical/.
+ */
 import { NODE_WHISPERS } from "@/lib/concepts/constellation-discovery";
 import {
   getAllEssays,
@@ -33,7 +39,7 @@ function enrichTopics(
       models: { href: "/themes/structure", contentId: "th-structure" },
       perception: { href: "/themes/perception", contentId: "th-perception" },
       systems: { href: "/themes/structure", contentId: "th-structure" },
-      truth: { href: "/questions/what-is-a-place", contentId: "q3" },
+      truth: { href: "/atlas", contentId: "q3" },
       essays: { href: "/essays/constraint-is-not-the-opposite-of-freedom", contentId: "e1" },
       emergence: { href: "/field-notes/familiar-path", contentId: "fn5" },
     },
@@ -51,11 +57,11 @@ function enrichTopics(
       "nervous-system": { href: "/essays/constraint-is-not-the-opposite-of-freedom", contentId: "e1" },
     },
     language: {
-      silence: { href: "/questions/can-language-hold-the-unsayable", contentId: "q4" },
-      metaphor: { href: "/questions/can-language-hold-the-unsayable", contentId: "q4" },
+      silence: { href: "/atlas", contentId: "q4" },
+      metaphor: { href: "/atlas", contentId: "q4" },
     },
     time: {
-      duration: { href: "/questions/how-do-we-inhabit-time", contentId: "q2" },
+      duration: { href: "/atlas", contentId: "q2" },
       memory: { href: "/field-notes/waiting-room", contentId: "fn2" },
       return: { href: "/essays/you-have-to-go-far-enough-to-make-a-loop", contentId: "e2" },
       accumulation: { href: "/chambers/the-structure-beneath-reality", contentId: "p1" },
@@ -69,11 +75,11 @@ function enrichTopics(
       constraint: { href: "/essays/constraint-is-not-the-opposite-of-freedom", contentId: "e1" },
       structure: { href: "/themes/structure", contentId: "th-structure" },
       embodiment: { href: "/themes/embodiment", contentId: "th-embodiment" },
-      path: { href: "/questions/what-is-a-place", contentId: "q3" },
+      path: { href: "/atlas", contentId: "q3" },
     },
     consciousness: {
       perception: { href: "/themes/perception", contentId: "th-perception" },
-      awareness: { href: "/questions/what-lies-beneath-perception", contentId: "q1" },
+      awareness: { href: "/atlas", contentId: "q1" },
       presence: { href: "/field-notes/light-on-water", contentId: "fn1" },
       field: { href: "/essays/you-have-to-go-far-enough-to-make-a-loop", contentId: "e2" },
     },
@@ -113,7 +119,7 @@ function buildThreads(hub: Omit<ThemeHub, "threads" | "network" | "networkEdges"
       id: q.id,
       title: q.title,
       subtitle: q.subtitle,
-      href: `/questions/${q.slug}`,
+      href: `/atlas`,
       kind: "question",
     });
   }
@@ -158,7 +164,7 @@ function buildChapters(hub: Omit<ThemeHub, "chapters">): RealmChapter[] {
       title: q.title,
       subtitle: q.subtitle,
       body: q.description,
-      href: `/questions/${q.slug}`,
+      href: `/atlas`,
       kind: "question",
     });
   }
@@ -235,7 +241,7 @@ function buildWordLinks(themeId: string): WordOccurrence[] {
       if (re.test(text)) {
         occurrences.push({
           word,
-          href: `/questions/${q.slug}`,
+          href: `/atlas`,
           title: q.title,
           excerpt: q.description.slice(0, 120),
         });

@@ -6,7 +6,7 @@ const ROUTES: Record<AtlasEntryType, (slug: string) => string> = {
   chamber: (slug) => `/chambers/${slug}`,
   book: (slug) => `/atlas/${slug}`,
   essay: (slug) => `/essays/${slug}`,
-  question: (slug) => `/questions/${slug}`,
+  question: () => `/atlas`,
   "field-note": (slug) => `/field-notes/${slug}`,
   observation: (slug) => `/observatory/observations/${slug}`,
   quotation: (slug) => `/quotations/${slug}`,

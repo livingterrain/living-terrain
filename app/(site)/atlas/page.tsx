@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AtlasV1 } from "@/components/atlas-v1/AtlasV1";
+import { getAtlasCanonicalView } from "@/lib/canonical/atlas-view";
 
 export const metadata: Metadata = {
   title: "The Atlas",
@@ -13,5 +14,6 @@ export const metadata: Metadata = {
  * Charted map plates remain at /atlas/[slug]; the finding aid at /atlas/charts.
  */
 export default function AtlasPage() {
-  return <AtlasV1 />;
+  const canonical = getAtlasCanonicalView();
+  return <AtlasV1 canonical={canonical} />;
 }

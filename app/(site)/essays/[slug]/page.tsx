@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LanternReadingShell } from "@/components/world/LanternReadingShell";
 import { TextLink } from "@/components/design-system";
+import { renderBody } from "@/components/reading/Prose";
 import {
   getAllEssays,
   getEssayBySlug,
@@ -37,7 +38,22 @@ export default async function EssayPage({ params }: PageProps) {
   const essay = getEssayBySlug(slug);
   if (!essay) notFound();
 
-  const nodeRef = refFromEssay(essay);
+  const hasBody = Boolean(essay.body?.trim());
+  const mediumUrl = getEssayReadUrl(essay);
+
+  const mediumWhisper = (
+    <p className="lantern-meta mt-10 text-[0.8125rem] leading-relaxed">
+      Also published on{" "}
+      <TextLink
+        href={mediumUrl}
+        external
+        className="lantern-link text-[0.8125rem]"
+      >
+        Medium
+      </TextLink>
+      .
+    </p>
+  );
 
   return (
     <LanternReadingShell
@@ -52,22 +68,29 @@ export default async function EssayPage({ params }: PageProps) {
           )}
         </>
       }
-      nodeRef={nodeRef}
+      nodeRef={hasBody ? refFromEssay(essay) : undefined}
+      afterThread={hasBody ? mediumWhisper : undefined}
       returnHref="/essays"
       variant="library"
     >
-      <p>{essay.excerpt}</p>
-      <p className="mt-8 text-[0.9375rem] text-charcoal-muted">
-        The full essay is published on Medium. Living Terrain holds it here as
-        part of a connected investigation.
-      </p>
-      <TextLink
-        href={getEssayReadUrl(essay)}
-        external
-        className="mt-8 inline-block"
-      >
-        Read on Medium
-      </TextLink>
+      {hasBody ? (
+        <div>{renderBody(essay.body!)}</div>
+      ) : (
+        <>
+          <p>{essay.excerpt}</p>
+          <p className="lantern-meta mt-8 text-[0.9375rem]">
+            The full essay is published on Medium. Living Terrain holds it here
+            as part of a connected investigation.
+          </p>
+          <TextLink
+            href={mediumUrl}
+            external
+            className="lantern-link mt-8 inline-block"
+          >
+            Read on Medium
+          </TextLink>
+        </>
+      )}
     </LanternReadingShell>
   );
 }

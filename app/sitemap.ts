@@ -2,13 +2,12 @@ import type { MetadataRoute } from "next";
 import {
   getAllMaps,
   getAllEssays,
-  getAllFieldNotes,
   getAllProjects,
-  getAllQuestions,
   getStructureSections,
 } from "@/lib/content";
 import { siteConfig } from "@/lib/content/data";
 import { getInvestigations } from "@/lib/observatory/investigations";
+import { getVisualMapCollections } from "@/lib/visual-maps";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.url;
@@ -18,9 +17,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/atlas",
     "/atlas/charts",
     "/inquiry",
-    "/questions",
+    "/books",
     "/essays",
-    "/field-notes",
+    "/visual-maps",
     "/observatory",
     "/about",
     "/search",
@@ -34,15 +33,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         : path === "/atlas"
           ? 0.9
           : path === "/atlas/charts"
-            ? 0.75
+            ? 0.55
             : 0.8,
-  }));
-
-  const questions = getAllQuestions().map((q) => ({
-    url: `${base}/questions/${q.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
   }));
 
   const essays = getAllEssays().map((e) => ({
@@ -57,13 +49,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.85,
-  }));
-
-  const notes = getAllFieldNotes().map((n) => ({
-    url: `${base}/field-notes/${n.slug}`,
-    lastModified: new Date(n.publishedAt),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
   }));
 
   const chambers = getAllProjects().map((p) => ({
@@ -87,14 +72,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
+  const visualMaps = getVisualMapCollections().flatMap((c) => [
+    {
+      url: `${base}/visual-maps/${c.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.65,
+    },
+    ...c.items.map((p) => ({
+      url: `${base}/visual-maps/${c.slug}/${p.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  ]);
+
   return [
     ...staticRoutes,
     ...chambers,
     ...maps,
-    ...questions,
     ...investigations,
     ...essays,
-    ...notes,
     ...sections,
+    ...visualMaps,
   ];
 }

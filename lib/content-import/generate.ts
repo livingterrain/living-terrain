@@ -143,6 +143,9 @@ export async function generateEssayImportPlan(
       topics,
       externalUrl: intake.mediumUrl.trim(),
       style: intake.style ?? "essay",
+      ...(intake.overrides?.body?.trim()
+        ? { body: intake.overrides.body.trim() }
+        : {}),
       ...(intake.featuredImage
         ? { featuredImage: `/images/essays/${slug}.jpg` }
         : {}),

@@ -43,7 +43,7 @@ export default async function FieldNotePage({ params }: PageProps) {
         </>
       }
       nodeRef={nodeRef}
-      returnHref="/field-notes"
+      returnHref="/inquiry"
       variant="notebook"
     >
       <div className="italic">{renderBody(note.body)}</div>

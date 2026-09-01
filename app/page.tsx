@@ -1,14 +1,14 @@
 import { Suspense } from "react";
-import { HomeOrientation } from "@/components/home";
+import { HomeV2 } from "@/components/home/HomeV2";
 
 function HomeFallback() {
-  return <div className="fixed inset-0 bg-[#06080c]" aria-hidden />;
+  return <div className="fixed inset-0 bg-[#030405]" aria-hidden />;
 }
 
 export default function HomePage() {
   return (
     <Suspense fallback={<HomeFallback />}>
-      <HomeOrientation />
+      <HomeV2 />
     </Suspense>
   );
 }

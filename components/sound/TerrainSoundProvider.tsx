@@ -19,7 +19,7 @@ interface TerrainSoundContextValue {
   activated: boolean;
   muted: boolean;
   scene: SoundScene;
-  activate: () => void;
+  activate: (preferredScene?: SoundScene) => Promise<void>;
   setScene: (scene: SoundScene) => void;
   playHover: (seed?: string) => void;
   setMuted: (muted: boolean) => void;
@@ -50,8 +50,9 @@ export function TerrainSoundProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => () => engine.dispose(), [engine]);
 
-  const activate = useCallback(() => {
-    void engine.activate().then(() => {
+  const activate = useCallback(
+    async (preferredScene?: SoundScene) => {
+      await engine.activate();
       setActivated(true);
       try {
         const stored = localStorage.getItem(SOUND_MUTE_KEY);
@@ -63,9 +64,13 @@ export function TerrainSoundProvider({ children }: { children: ReactNode }) {
         setMutedState(false);
         engine.setMuted(false);
       }
-      void engine.setScene(scene === "silence" ? "constellation" : scene);
-    });
-  }, [engine, scene]);
+      const next =
+        preferredScene ?? (scene === "silence" ? "constellation" : scene);
+      setSceneState(next);
+      await engine.setScene(next);
+    },
+    [engine, scene],
+  );
 
   const setScene = useCallback(
     (next: SoundScene) => {

@@ -20,19 +20,31 @@ export const PATHWAYS: WorldPathway[] = [
   {
     href: "/inquiry",
     label: "The shelves",
-    hint: "Writing from the edges of the terrain",
-  },
-  {
-    href: "/questions",
-    label: "Where paths branch",
-    hint: "Questions that stay alive longer than answers",
+    hint: "Books, essays, and visual maps",
   },
   {
     href: "/observatory",
-    label: "Inward",
+    label: "The Observatory",
     hint: "Research before it becomes a map",
   },
 ];
+
+/** Whether a pathway should read as the visitor's current direction */
+export function pathwayIsActive(pathname: string, href: string): boolean {
+  if (pathname === href || pathname.startsWith(`${href}/`)) return true;
+  // Shelves realm: books shelf, essays, visual maps
+  // Individual book plates keep Atlas route identity (`/atlas/[slug]`)
+  if (href === "/inquiry") {
+    return (
+      pathname === "/books" ||
+      pathname.startsWith("/books/") ||
+      pathname === "/essays" ||
+      pathname.startsWith("/essays/") ||
+      pathname.startsWith("/visual-maps")
+    );
+  }
+  return false;
+}
 
 export const PATHWAY_DEEPER: WorldPathway[] = [
   {
@@ -41,13 +53,43 @@ export const PATHWAY_DEEPER: WorldPathway[] = [
     hint: "Structure beneath all structure",
   },
   {
-    href: "/field-notes",
-    label: "The field desk",
-    hint: "Observations taken at the edge of understanding",
-  },
-  {
     href: "/about",
     label: "The guide",
     hint: "Not the subject — the one who built the place",
   },
 ];
+
+/** Quiet Further destinations while the Atlas stays otherwise bare */
+export const ATLAS_QUESTIONS_ACTION = "atlas-questions" as const;
+
+export type AtlasOrientationPathway = WorldPathway & {
+  action?: typeof ATLAS_QUESTIONS_ACTION;
+};
+
+/** @deprecated Prefer TERRAIN_MENU in lib/world/orientation — kept for any residual callers */
+export const ATLAS_ORIENTATION_PATHWAYS: AtlasOrientationPathway[] = [
+  {
+    href: "/atlas",
+    label: "Living questions",
+    hint: "Return to the questions that open this place",
+    action: ATLAS_QUESTIONS_ACTION,
+  },
+  {
+    href: "/",
+    label: "Living Terrain",
+    hint: "Home / orientation",
+  },
+  {
+    href: "/observatory",
+    label: "Observatory",
+    hint: "Still forming.",
+  },
+  {
+    href: "/inquiry",
+    label: "The Shelves",
+    hint: "What has been made.",
+  },
+];
+
+/** Window event — Atlas returns to the question list without remounting the room */
+export const ATLAS_QUESTIONS_EVENT = "living-terrain:atlas-questions";

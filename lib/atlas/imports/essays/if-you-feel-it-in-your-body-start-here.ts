@@ -10,7 +10,7 @@ export const ENTRY: AtlasEntry = {
   "slug": "if-you-feel-it-in-your-body-start-here",
   "type": "essay",
   "title": "If You Feel It in Your Body, Start Here",
-  "description": "On Who My Work Is For — And Why I Wrote These Books",
+  "description": "An Orientation to the Living Terrain",
   "themes": [
     "th-embodiment",
     "th-identity",
@@ -26,8 +26,8 @@ export const ENTRY: AtlasEntry = {
   "route": "/essays/if-you-feel-it-in-your-body-start-here",
   "status": "published",
   "meta": {
-    "subtitle": "On Who My Work Is For — And Why I Wrote These Books",
-    "excerpt": "On Who My Work Is For — And Why I Wrote These Books",
+    "subtitle": "An Orientation to the Living Terrain",
+    "excerpt": "An Orientation to the Living Terrain",
     "topics": [
       "Embodiment",
       "Nervous System",

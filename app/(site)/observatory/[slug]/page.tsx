@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { Room } from "@/components/environment";
 import { InvestigationView } from "@/components/observatory/InvestigationView";
+import { ObservatoryRoomTone } from "@/components/observatory/ObservatoryRoomTone";
 import {
+  DISSOLVED_INVESTIGATIONS,
   getInvestigationBySlug,
   getInvestigations,
 } from "@/lib/observatory/investigations";
@@ -21,7 +23,9 @@ const RESERVED = new Set([
 ]);
 
 export function generateStaticParams() {
-  return getInvestigations().map((i) => ({ slug: i.slug }));
+  return [...getInvestigations(), ...DISSOLVED_INVESTIGATIONS].map((i) => ({
+    slug: i.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -29,8 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const investigation = getInvestigationBySlug(slug);
   if (!investigation) return { title: "Investigation" };
   return {
-    title: investigation.title,
-    description: investigation.description,
+    title: investigation.title ?? "Investigation",
+    description: investigation.description ?? investigation.whisper ?? undefined,
   };
 }
 
@@ -43,8 +47,10 @@ export default async function InvestigationPage({ params }: Props) {
 
   return (
     <Room kind="observatory">
-      <section className="pb-28 pt-10 sm:pb-36 sm:pt-14">
-        <Container narrow>
+      <ObservatoryRoomTone />
+
+      <section className="obs-bench pb-28 pt-10 sm:pb-36 sm:pt-14">
+        <Container className="max-w-[46rem]">
           <InvestigationView investigation={investigation} />
         </Container>
       </section>

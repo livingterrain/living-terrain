@@ -92,7 +92,7 @@ export const WORLD_LOCATIONS: Record<WorldLocationId, WorldLocation> = {
   observatory: {
     id: "observatory",
     place: "The Observatory",
-    whisper: "This is where questions begin.",
+    whisper: "Still forming.",
     depth: 0.62,
     roomKind: "observatory",
   },

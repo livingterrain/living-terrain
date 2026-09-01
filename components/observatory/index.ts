@@ -9,6 +9,8 @@ export {
 /** V1 hub — investigations still forming */
 export { ObservatoryHub } from "./ObservatoryV1";
 export { InvestigationView } from "./InvestigationView";
+/** PHASE 3 — optional Observatory room tone */
+export { ObservatoryRoomTone } from "./ObservatoryRoomTone";
 export { ObservatoryReadingShell } from "./ObservatoryReadingShell";
 export { WaitlistForm } from "./WaitlistForm";
 export { RecordObservationForm } from "./RecordObservationForm";

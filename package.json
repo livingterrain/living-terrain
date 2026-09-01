@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack --hostname 127.0.0.1 --port 3001",
     "dev:fast": "next dev --turbopack --hostname 127.0.0.1 --port 3001",
     "dev:clean": "rm -rf .next && next dev --turbopack --hostname 127.0.0.1 --port 3001",
-    "build": "next build",
+    "build": "tsx scripts/verify-canonical.ts && next build",
     "start": "next start --port 3001",
     "lint": "next lint",
     "content:essay:new": "tsx scripts/content-essay-cli.ts new",
@@ -14,7 +14,8 @@
     "content:essay:apply": "tsx scripts/content-essay-cli.ts apply",
     "content:essay:list": "tsx scripts/content-essay-cli.ts list",
     "content:medium:crawl": "tsx scripts/crawl-medium-profile.ts",
-    "verify:atlas": "tsx scripts/verify-atlas-journey.mjs"
+    "verify:atlas": "tsx scripts/verify-atlas-journey.mjs",
+    "verify:canonical": "tsx scripts/verify-canonical.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",

@@ -15,7 +15,6 @@ import { Thread } from "@/components/thread";
 import {
   getProjectBooks,
   getProjectEssays,
-  getProjectFieldNotes,
   getProjectQuestions,
 } from "@/lib/content";
 import type { Project } from "@/lib/content/types";
@@ -27,10 +26,9 @@ interface ChamberPageProps {
   lead?: string;
 }
 
-export function ChamberPage({ project, lead = "A volume chamber." }: ChamberPageProps) {
+export function ChamberPage({ project, lead = "A book chamber." }: ChamberPageProps) {
   const relatedEssays = getProjectEssays(project);
   const questions = getProjectQuestions(project);
-  const fieldNotes = getProjectFieldNotes(project);
   const relatedBooks = getProjectBooks(project).filter(
     (b) => b.id !== project.bookId,
   );
@@ -77,12 +75,17 @@ export function ChamberPage({ project, lead = "A volume chamber." }: ChamberPage
                 href={`/atlas/${project.slug}`}
                 className="transition-colors duration-[1.2s] hover:text-charcoal"
               >
-                ← Return to the map
+                ← Return to the book
               </a>
               <span className="mx-2 text-charcoal-faint/60" aria-hidden="true">
                 ·
               </span>
-              <span>Continue exploring below</span>
+              <a
+                href="/inquiry"
+                className="transition-colors duration-[1.2s] hover:text-charcoal"
+              >
+                The Shelves
+              </a>
             </p>
           </div>
         </Container>
@@ -111,15 +114,11 @@ export function ChamberPage({ project, lead = "A volume chamber." }: ChamberPage
             <ChamberRelatedEssays essays={relatedEssays} />
             <ChamberConnections
               questions={questions.map((q) => ({
-                href: `/questions/${q.slug}`,
+                href: "/atlas",
                 title: q.title,
                 subtitle: q.description,
               }))}
-              fieldNotes={fieldNotes.map((fn) => ({
-                href: `/field-notes/${fn.slug}`,
-                title: fn.title ?? "Field observation",
-                subtitle: fn.body.slice(0, 100) + (fn.body.length > 100 ? "…" : ""),
-              }))}
+              fieldNotes={[]}
               books={relatedBooks.map((b) => ({
                 href: `/atlas/${b.slug}`,
                 title: b.title,

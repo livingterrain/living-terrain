@@ -11,6 +11,10 @@ import {
   toTheme,
   getLegacyProject,
 } from "../atlas";
+import {
+  MAP_TERRITORY_ALIASES,
+  SUPERSEDED_PUBLIC_MAP_SLUGS,
+} from "../atlas/imports/books/series-catalog";
 import type {
   Book,
   Essay,
@@ -74,6 +78,13 @@ export function getBookBySlug(slug: string): Book | undefined {
 
 /** Published maps in The Atlas */
 export function getAllMaps(): Book[] {
+  return getAllBooks().filter(
+    (b) => b.status === "published" && !SUPERSEDED_PUBLIC_MAP_SLUGS.has(b.slug),
+  );
+}
+
+/** All published maps including superseded editions (routes / static params) */
+export function getAllPublishedMaps(): Book[] {
   return getAllBooks().filter((b) => b.status === "published");
 }
 
@@ -82,7 +93,10 @@ export function getMapBySlug(slug: string): Book | undefined {
 }
 
 export function getTerritoryForMap(slug: string): Project | undefined {
-  return getProjectBySlug(slug);
+  const direct = getProjectBySlug(slug);
+  if (direct) return direct;
+  const territorySlug = MAP_TERRITORY_ALIASES[slug];
+  return territorySlug ? getProjectBySlug(territorySlug) : undefined;
 }
 
 export { resolveMapCoverDimensions, resolveMapCoverSrc } from "./maps";
@@ -142,10 +156,9 @@ export function getProjectBySlug(slug: string): Project | undefined {
 }
 
 export function getProjectEssays(project: Project): Essay[] {
+  // Only essays explicitly linked to this chamber — never a global dump
   const ids = new Set(project.essayIds);
-  return getAllEssays().filter(
-    (e) => ids.has(e.id) || e.projectIds?.includes(project.id),
-  );
+  return getAllEssays().filter((e) => ids.has(e.id));
 }
 
 export function getEssayReadUrl(essay: Essay): string {
@@ -274,17 +287,30 @@ export function getObservationBySlug(slug: string): Observation | undefined {
   return entry ? toObservation(entry, atlas()) : undefined;
 }
 
+function isPublicSearchType(type: string): boolean {
+  return type !== "chamber" && type !== "field-note";
+}
+
+function isPublicSearchItem(item: { type: string; route: string }): boolean {
+  if (!isPublicSearchType(item.type)) return false;
+  if (item.type === "book") {
+    const slug = item.route.replace(/^\/atlas\//, "");
+    if (SUPERSEDED_PUBLIC_MAP_SLUGS.has(slug)) return false;
+  }
+  return true;
+}
+
 export function buildSearchIndex(): SearchResult[] {
   return atlas()
     .buildSearchIndex()
-    .filter((item) => item.type !== "chamber")
+    .filter(isPublicSearchItem)
     .map(atlasSearchToLegacy);
 }
 
 export function searchContent(query: string): SearchResult[] {
   return atlas()
     .search(query)
-    .filter((item) => item.type !== "chamber")
+    .filter(isPublicSearchItem)
     .map(atlasSearchToLegacy);
 }
 

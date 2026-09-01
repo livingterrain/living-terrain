@@ -1,3 +1,4 @@
+export { HomeV2 } from "./HomeV2";
 export { HomeOrientation } from "./HomeOrientation";
 export { ThresholdWorld } from "./ThresholdWorld";
 export { ThresholdEntrance } from "./ThresholdEntrance";

@@ -1,42 +1,28 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PathwayLink } from "@/components/design-system/threshold";
 import { Container } from "@/components/layout/Container";
-import { TerrainLink } from "@/components/navigation";
+import { TerrainOrientation } from "@/components/layout/TerrainOrientation";
 import { SearchDialog } from "@/components/search/SearchDialog";
-import { placeForPath, locationForPath, whisperForPath } from "@/lib/world/location-for-path";
-import { PATHWAYS, PATHWAY_DEEPER } from "@/lib/world/pathways";
+import { placeForPath, locationForPath } from "@/lib/world/location-for-path";
+import { PATHWAYS, pathwayIsActive } from "@/lib/world/pathways";
 import { cn } from "@/lib/utils";
 import { roomForPath } from "@/lib/rooms";
 
+/**
+ * Site header — Living Terrain orientation + quiet pathway echoes.
+ * Primary escape is Menu (via TerrainOrientation), not cryptic Further / ···.
+ */
 export function Header() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const isHome = pathname === "/";
   const room = roomForPath(pathname);
   const inWorld = isHome || room !== null;
   const place = placeForPath(pathname);
-  const whisper = whisperForPath(pathname);
   const location = locationForPath(pathname);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
 
   useEffect(() => {
     function onScroll() {
@@ -47,53 +33,57 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const present = inWorld && (scrolled || open || !isHome);
+  const present = inWorld && (scrolled || !isHome);
+  const homeField = isHome;
 
   return (
     <header
       className={cn(
         "world-presence sticky top-0 z-40 transition-all duration-[1200ms]",
-        present
-          ? "world-presence--awake border-b border-rule/20 bg-[color-mix(in_srgb,#06080c_90%,transparent)] backdrop-blur-[4px]"
-          : "border-b border-transparent bg-transparent",
+        homeField && !scrolled
+          ? "pointer-events-none border-b border-transparent bg-transparent"
+          : present
+            ? "world-presence--awake border-b border-rule/20 bg-[color-mix(in_srgb,#06080c_90%,transparent)] backdrop-blur-[4px]"
+            : "border-b border-transparent bg-transparent",
       )}
       data-world-location={location}
       data-world-place={place}
+      data-home-field={isHome ? "true" : undefined}
     >
       <Container>
         <div
           className={cn(
-            "flex items-center justify-between gap-3 transition-[height,padding] duration-[2400ms]",
-            present ? "h-14 sm:h-16 md:h-[4.25rem]" : "h-14 sm:h-16",
+            "relative flex items-center justify-between gap-3 transition-[height,padding] duration-[2400ms]",
+            homeField && !scrolled
+              ? "h-12 sm:h-14"
+              : present
+                ? "h-14 sm:h-16 md:h-[4.25rem]"
+                : "h-14 sm:h-16",
           )}
         >
-          <TerrainLink
-            href="/"
+          <div
             className={cn(
-              "touch-zone relative flex min-h-11 shrink-0 items-center font-heading tracking-tight transition-colors duration-[1200ms]",
-              present
-                ? "max-w-[7.5rem] truncate text-[0.8125rem] text-ivory/90 sm:max-w-none sm:text-[0.9375rem] md:text-base"
-                : "text-[0.9375rem] text-ivory/75 sm:text-lg",
-              pathname === "/" && present && "text-gold/90",
+              "min-w-0 flex-1",
+              homeField && !scrolled && "pointer-events-auto",
             )}
           >
-            Living Terrain
-          </TerrainLink>
+            <TerrainOrientation homeField={homeField && !scrolled} />
+          </div>
 
-          {present && !isHome && (
-            <p
-              className="world-presence__place pointer-events-none absolute left-1/2 hidden max-w-[10rem] -translate-x-1/2 truncate px-2 text-center font-heading text-[0.75rem] italic text-charcoal-muted/70 sm:block sm:max-w-[12rem] sm:text-[0.8125rem] lg:hidden"
-              aria-hidden
-            >
-              {place}
-            </p>
-          )}
-
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-4 md:gap-6">
+          <div
+            className={cn(
+              "ml-auto flex shrink-0 items-center gap-1.5 sm:gap-4 md:gap-6",
+              homeField && !scrolled && "pointer-events-auto",
+            )}
+          >
             <nav
               className={cn(
-                "hidden items-center gap-8 lg:flex",
-                present ? "opacity-100" : "opacity-0 pointer-events-none",
+                "hidden items-center gap-8 xl:flex",
+                homeField && !scrolled
+                  ? "pointer-events-none opacity-0"
+                  : present
+                    ? "opacity-70"
+                    : "opacity-0",
               )}
               aria-label="Directions"
             >
@@ -101,9 +91,7 @@ export function Header() {
                 <PathwayLink
                   key={p.href}
                   href={p.href}
-                  active={
-                    pathname === p.href || pathname.startsWith(`${p.href}/`)
-                  }
+                  active={pathwayIsActive(pathname, p.href)}
                   className="text-[0.8125rem]"
                 >
                   {p.label}
@@ -114,96 +102,18 @@ export function Header() {
             <div
               className={cn(
                 "[&_button]:relative [&_button]:flex [&_button]:min-h-11 [&_button]:min-w-11 [&_button]:items-center [&_button]:justify-center [&_button]:touch-manipulation",
-                present ? "opacity-100" : "opacity-75",
+                homeField && !scrolled
+                  ? "opacity-35 hover:opacity-70 [&_button]:text-ivory/50"
+                  : present
+                    ? "opacity-100"
+                    : "opacity-75",
               )}
             >
               <SearchDialog />
             </div>
-
-            <button
-              type="button"
-              onClick={() => setOpen(!open)}
-              className={cn(
-                "world-presence__further touch-zone relative flex min-h-11 min-w-11 items-center justify-center font-heading text-lg text-charcoal-muted transition-colors duration-[1200ms] hover:text-ivory active:text-ivory/90 lg:hidden",
-                present && "opacity-100",
-              )}
-              aria-label={open ? "Close" : "Further directions"}
-              aria-expanded={open}
-            >
-              {open ? "×" : "…"}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setOpen(!open)}
-              className={cn(
-                "world-presence__further hidden min-h-10 items-center font-heading text-[0.8125rem] italic text-charcoal-muted transition-colors duration-[1200ms] hover:text-ivory lg:flex",
-                present ? "opacity-100" : "opacity-70",
-              )}
-              aria-label={open ? "Close further directions" : "Further directions"}
-              aria-expanded={open}
-            >
-              {open ? "Close" : "Further…"}
-            </button>
           </div>
         </div>
       </Container>
-
-      {open && (
-        <div
-          className="world-presence__horizon fixed inset-x-0 bottom-0 z-[60]"
-          role="dialog"
-          aria-label="Directions through the terrain"
-        >
-          <Container className="flex min-h-full flex-col justify-center py-12 sm:py-20">
-            {!isHome && (
-              <p className="mx-auto max-w-md text-center font-heading text-lg italic leading-relaxed text-charcoal-muted">
-                {whisper}
-              </p>
-            )}
-
-            <nav
-              className="mx-auto mt-10 flex w-full max-w-sm flex-col gap-8 sm:mt-14 sm:gap-10"
-              aria-label="Pathways"
-            >
-              {PATHWAYS.map((p) => (
-                <PathwayLink
-                  key={p.href}
-                  href={p.href}
-                  active={
-                    pathname === p.href || pathname.startsWith(`${p.href}/`)
-                  }
-                  onClick={() => setOpen(false)}
-                  rich
-                >
-                  <span>{p.label}</span>
-                  <span className="world-pathway-rich__hint">{p.hint}</span>
-                </PathwayLink>
-              ))}
-            </nav>
-
-            <div className="threshold-carved threshold-carved--edge mx-auto my-12 w-full max-w-sm" />
-
-            <nav className="mx-auto flex w-full max-w-sm flex-col gap-8">
-              {PATHWAY_DEEPER.map((p) => (
-                <PathwayLink
-                  key={p.href}
-                  href={p.href}
-                  active={
-                    pathname === p.href || pathname.startsWith(`${p.href}/`)
-                  }
-                  onClick={() => setOpen(false)}
-                  rich
-                  className="text-sm"
-                >
-                  <span>{p.label}</span>
-                  <span className="world-pathway-rich__hint">{p.hint}</span>
-                </PathwayLink>
-              ))}
-            </nav>
-          </Container>
-        </div>
-      )}
     </header>
   );
 }

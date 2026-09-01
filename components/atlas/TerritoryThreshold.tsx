@@ -13,7 +13,6 @@ import type { Project } from "@/lib/content/types";
 import {
   getProjectBooks,
   getProjectEssays,
-  getProjectFieldNotes,
   getProjectQuestions,
 } from "@/lib/content";
 import { refFromBook } from "@/lib/relationships";
@@ -26,9 +25,13 @@ interface TerritoryThresholdProps {
 export function TerritoryThreshold({ map, territory }: TerritoryThresholdProps) {
   const relatedEssays = territory ? getProjectEssays(territory) : [];
   const questions = territory ? getProjectQuestions(territory) : [];
-  const fieldNotes = territory ? getProjectFieldNotes(territory) : [];
   const neighboringMaps = territory
-    ? getProjectBooks(territory).filter((b) => b.id !== territory.bookId)
+    ? getProjectBooks(territory).filter(
+        (b) =>
+          b.id !== territory.bookId &&
+          b.id !== map.id &&
+          b.slug !== "the-biology-of-becoming",
+      )
     : [];
 
   return (
@@ -47,7 +50,7 @@ export function TerritoryThreshold({ map, territory }: TerritoryThresholdProps) 
         </div>
         <div className="mt-14 max-w-xl lg:mt-2">
           <p className="type-folio text-[0.5625rem] uppercase tracking-[0.22em] text-charcoal-faint/90">
-            Charted territory
+            Book
           </p>
           <h1 className="type-display mt-5 text-balance">{map.title}</h1>
           {map.subtitle && (
@@ -78,16 +81,11 @@ export function TerritoryThreshold({ map, territory }: TerritoryThresholdProps) 
           <ChamberRelatedEssays essays={relatedEssays} />
           <ChamberConnections
             questions={questions.map((q) => ({
-              href: `/questions/${q.slug}`,
+              href: "/atlas",
               title: q.title,
               subtitle: q.description,
             }))}
-            fieldNotes={fieldNotes.map((fn) => ({
-              href: `/field-notes/${fn.slug}`,
-              title: fn.title ?? "Field observation",
-              subtitle:
-                fn.body.slice(0, 100) + (fn.body.length > 100 ? "…" : ""),
-            }))}
+            fieldNotes={[]}
             books={neighboringMaps.map((b) => ({
               href: `/atlas/${b.slug}`,
               title: b.title,
@@ -100,12 +98,24 @@ export function TerritoryThreshold({ map, territory }: TerritoryThresholdProps) 
       <Thread
         nodeRef={refFromBook(map)}
         returnHref={`/atlas/${map.slug}`}
-        returnLabel="Return to this map"
+        returnLabel="Return to this book"
       />
 
       <footer className="border-t border-rule/30 pt-12">
+        <TextLink href="/books" muted className="text-sm">
+          ← Books
+        </TextLink>
+        <span className="mx-3 text-charcoal-faint/60" aria-hidden="true">
+          ·
+        </span>
+        <TextLink href="/inquiry" muted className="text-sm">
+          The Shelves
+        </TextLink>
+        <span className="mx-3 text-charcoal-faint/60" aria-hidden="true">
+          ·
+        </span>
         <TextLink href="/atlas" muted className="text-sm">
-          ← Back to The Atlas
+          The Atlas
         </TextLink>
         {territory && (
           <>

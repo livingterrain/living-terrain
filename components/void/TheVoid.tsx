@@ -1,22 +1,30 @@
 "use client";
 
 /**
- * The Void 1.0 — emotional threshold before Atlas.
- * Spec: Creative Direction (frames 1–4, 7–9). Frames 5–6 cut for clarity.
- * Law: Sustained attention changes what becomes available.
+ * Atlas entry field — root territories + living questions.
+ * Phase A: territory inspect (ATTENTION = REVEAL).
+ * OPEN: one territory expands into concepts, questions, charted works.
+ * Does not start journeys from landmarks.
  */
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type PointerEvent as ReactPointerEvent,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { AtlasV1QuestionId } from "@/lib/atlas-v1/content";
-import { VOID_QUESTIONS } from "@/lib/atlas-v1/questions";
+import {
+  ROOT_TERRITORIES,
+  placementsForTerritory,
+  voidQuestionText,
+  type QuestionPlacement,
+  type RootTerritoryId,
+} from "@/lib/atlas/architecture";
+import {
+  getTerritoryMatrix,
+  type TerritoryConceptTrace,
+  type TerritoryWorkTrace,
+} from "@/lib/atlas/territory-landmarks";
+import { TerritoryField } from "@/components/atlas-v1/TerritoryField";
 import { cn } from "@/lib/utils";
+import "@/components/atlas-v1/atlas-field.css";
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -30,384 +38,289 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-/** Recognition remains the hard gate — language opens promptly after */
-const HOLD_MS = 1000;
-const HOLD_MS_REDUCED = 700;
-/** After recognition — overlap language; do not stack long waits */
-const SETTLE_MS = 250;
-const QUESTIONS_AFTER_INQUIRY_MS = 250;
-const QUESTION_STAGGER_MS = 100;
-
-/** Enter / exit radii — hysteresis (M6) */
-const ENTER_STILLNESS_PX = 36;
-const LEAVE_GRACE_MS = 220;
-
-type VoidPhase =
-  | "alone"
-  | "recognized"
-  | "settled"
-  | "inquiry"
-  | "questions";
-
 export type VoidSurface = "threshold" | "questions" | "rest";
 
 type Props = {
   onChoose: (id: AtlasV1QuestionId) => void;
-  /**
-   * threshold — full Void entry
-   * questions — return path: questions immediately
-   * rest — climate only under Atlas journey (M4 continuity)
-   */
   surface?: VoidSurface;
 };
 
+function QuestionLine({
+  placement,
+  onChoose,
+}: {
+  placement: QuestionPlacement;
+  onChoose: (id: AtlasV1QuestionId) => void;
+}) {
+  const text = voidQuestionText(placement.questionId);
+  const open = placement.journeyOpen;
+
+  if (!open) {
+    return (
+      <li className="atlas-territory__question atlas-territory__question--forming">
+        <span className="atlas-territory__q-text">{text}</span>
+        <span className="atlas-territory__q-state">Forming</span>
+      </li>
+    );
+  }
+
+  return (
+    <li className="atlas-territory__question">
+      <button
+        type="button"
+        className="atlas-territory__q-btn"
+        onClick={(e) => {
+          e.stopPropagation();
+          onChoose(placement.questionId);
+        }}
+      >
+        <span className="atlas-territory__q-text">{text}</span>
+        {placement.disposition === "forming" && (
+          <span className="atlas-territory__q-state">Forming</span>
+        )}
+        {placement.disposition === "primary" && (
+          <span className="atlas-territory__q-state atlas-territory__q-state--alive">
+            Open
+          </span>
+        )}
+      </button>
+    </li>
+  );
+}
+
+function ConceptTrace({ concept }: { concept: TerritoryConceptTrace }) {
+  return (
+    <li className="atlas-territory__trace atlas-territory__trace--quiet">
+      <span className="atlas-territory__trace-mark" aria-hidden />
+      <span className="atlas-territory__trace-title">{concept.title}</span>
+    </li>
+  );
+}
+
+function WorkTrace({ work }: { work: TerritoryWorkTrace }) {
+  return (
+    <li className="atlas-territory__trace">
+      <span className="atlas-territory__trace-mark" aria-hidden />
+      <Link
+        href={work.href}
+        className="atlas-territory__trace-link"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <span className="atlas-territory__trace-title">{work.title}</span>
+      </Link>
+    </li>
+  );
+}
+
+function TerritoryOpenInterior({
+  territoryId,
+  placements,
+  onChoose,
+}: {
+  territoryId: RootTerritoryId;
+  placements: readonly QuestionPlacement[];
+  onChoose: (id: AtlasV1QuestionId) => void;
+}) {
+  const matrix = getTerritoryMatrix(territoryId);
+  const hasConcepts = matrix.concepts.length > 0;
+  const hasWorks = matrix.works.length > 0;
+
+  return (
+    <div className="atlas-territory__open">
+      <div className="atlas-territory__open-block">
+        <p className="atlas-territory__traces-eyebrow">Alive here</p>
+        {placements.length > 0 ? (
+          <ul className="atlas-territory__questions">
+            {placements.map((p) => (
+              <QuestionLine
+                key={p.questionId}
+                placement={p}
+                onChoose={onChoose}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p className="atlas-territory__empty">
+            No living question journey here yet — the territory remains.
+          </p>
+        )}
+      </div>
+
+      {hasConcepts && (
+        <div className="atlas-territory__trace-group">
+          <p className="atlas-territory__traces-eyebrow">Held here</p>
+          <ul className="atlas-territory__trace-list">
+            {matrix.concepts.map((concept) => (
+              <ConceptTrace key={concept.id} concept={concept} />
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {hasWorks && (
+        <div className="atlas-territory__trace-group">
+          <p className="atlas-territory__traces-eyebrow">Charted here</p>
+          <ul className="atlas-territory__trace-list">
+            {matrix.works.map((work) => (
+              <WorkTrace key={work.id} work={work} />
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function TerritorySection({
+  territoryId,
+  depth,
+  label,
+  whisper,
+  placements,
+  onChoose,
+  inspected,
+  attended,
+  receded,
+  onAttend,
+  onLeave,
+  onToggleInspect,
+}: {
+  territoryId: RootTerritoryId;
+  depth: string;
+  label: string;
+  whisper: string;
+  placements: readonly QuestionPlacement[];
+  onChoose: (id: AtlasV1QuestionId) => void;
+  inspected: boolean;
+  attended: boolean;
+  receded: boolean;
+  onAttend: () => void;
+  onLeave: () => void;
+  onToggleInspect: () => void;
+}) {
+  const lit = inspected || attended;
+  const openQuestionCount = placements.filter((p) => p.journeyOpen).length;
+  const formingCount = placements.length - openQuestionCount;
+
+  return (
+    <section
+      className={cn("atlas-territory", `atlas-territory--${depth}`)}
+      role="listitem"
+      aria-labelledby={`territory-${territoryId}`}
+      data-territory={territoryId}
+      data-inspected={inspected ? "true" : undefined}
+      data-attended={attended ? "true" : undefined}
+      data-receded={receded ? "true" : undefined}
+      data-lit={lit ? "true" : undefined}
+      onMouseEnter={onAttend}
+      onMouseLeave={onLeave}
+      onFocusCapture={onAttend}
+      onBlurCapture={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+          onLeave();
+        }
+      }}
+    >
+      <TerritoryField territoryId={territoryId} />
+      <div className="atlas-territory__mark" aria-hidden />
+      <div className="atlas-territory__body">
+        <button
+          type="button"
+          className="atlas-territory__inspect"
+          aria-pressed={inspected}
+          aria-label={
+            inspected
+              ? `${label}, open. Activate again to return to the full field.`
+              : `Open ${label}`
+          }
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleInspect();
+          }}
+          onPointerDown={(e) => {
+            // Keep document clear-handler from racing this toggle
+            e.stopPropagation();
+          }}
+        >
+          <h2 id={`territory-${territoryId}`} className="atlas-territory__name">
+            {label}
+          </h2>
+          <p className="atlas-territory__whisper">{whisper}</p>
+          {!inspected && placements.length > 0 && (
+            <p className="atlas-territory__rest-cue" aria-hidden>
+              {openQuestionCount > 0
+                ? openQuestionCount === 1
+                  ? "One living question"
+                  : `${openQuestionCount} living questions`
+                : formingCount === 1
+                  ? "One question forming"
+                  : `${formingCount} questions forming`}
+            </p>
+          )}
+          {!inspected && placements.length === 0 && (
+            <p className="atlas-territory__rest-cue" aria-hidden>
+              Still gathering
+            </p>
+          )}
+        </button>
+
+        {inspected && (
+          <TerritoryOpenInterior
+            territoryId={territoryId}
+            placements={placements}
+            onChoose={onChoose}
+          />
+        )}
+      </div>
+    </section>
+  );
+}
+
 export function TheVoid({ onChoose, surface = "threshold" }: Props) {
   const reduced = usePrefersReducedMotion();
-  const skipThreshold = surface === "questions";
   const isRest = surface === "rest";
-  const surfaceEl = useRef<HTMLDivElement>(null);
-  const holdTimer = useRef<number | null>(null);
-  const settleTimer = useRef<number | null>(null);
-  const leaveTimer = useRef<number | null>(null);
-  const nearRef = useRef(false);
-  const stillOrigin = useRef<{ x: number; y: number } | null>(null);
-  /** Keyboard recognition completed — settle/inquiry may continue after blur (C3) */
-  const attentionLatched = useRef(skipThreshold);
-  const pointerTypeRef = useRef<string>("mouse");
-  const capturedPointerId = useRef<number | null>(null);
-
-  const [near, setNear] = useState(false);
-  const [recognized, setRecognized] = useState(skipThreshold);
-  const [phase, setPhase] = useState<VoidPhase>(
-    skipThreshold ? "questions" : "alone",
-  );
-  const [questionsVisible, setQuestionsVisible] = useState(
-    skipThreshold ? VOID_QUESTIONS.length : 0,
-  );
-
-  /** Field reciprocity only before the question list is available */
-  const listOpen = phase === "questions" || skipThreshold;
-  const interactive = surface === "threshold" && !listOpen;
-
-  useEffect(() => {
-    if (surface === "questions") {
-      attentionLatched.current = true;
-      setRecognized(true);
-      setPhase("questions");
-      setQuestionsVisible(VOID_QUESTIONS.length);
-    }
-  }, [surface]);
-
-  const releaseCapture = useCallback(() => {
-    const id = capturedPointerId.current;
-    if (id != null && surfaceEl.current?.hasPointerCapture?.(id)) {
-      try {
-        surfaceEl.current.releasePointerCapture(id);
-      } catch {
-        /* ignore */
-      }
-    }
-    capturedPointerId.current = null;
-  }, []);
-
-  // When the question list opens, stop field capture so clicks reach the buttons
-  useEffect(() => {
-    if (!listOpen) return;
-    releaseCapture();
-    nearRef.current = false;
-    setNear(false);
-    stillOrigin.current = null;
-  }, [listOpen, releaseCapture]);
-
-  const clearHold = useCallback(() => {
-    if (holdTimer.current) {
-      window.clearTimeout(holdTimer.current);
-      holdTimer.current = null;
-    }
-  }, []);
-
-  const clearSettle = useCallback(() => {
-    if (settleTimer.current) {
-      window.clearTimeout(settleTimer.current);
-      settleTimer.current = null;
-    }
-  }, []);
-
-  const clearLeave = useCallback(() => {
-    if (leaveTimer.current) {
-      window.clearTimeout(leaveTimer.current);
-      leaveTimer.current = null;
-    }
-  }, []);
-
-  const isInsideField = useCallback((clientX: number, clientY: number) => {
-    const el = surfaceEl.current;
-    if (!el) return false;
-    const r = el.getBoundingClientRect();
-    return (
-      clientX >= r.left &&
-      clientX <= r.right &&
-      clientY >= r.top &&
-      clientY <= r.bottom
-    );
-  }, []);
-
-  const beginHold = useCallback(() => {
-    if (recognized || holdTimer.current) return;
-    holdTimer.current = window.setTimeout(() => {
-      setRecognized(true);
-      attentionLatched.current = true;
-      setPhase((p) => (p === "alone" ? "recognized" : p));
-    }, reduced ? HOLD_MS_REDUCED : HOLD_MS);
-  }, [recognized, reduced]);
-
-  const onNearStart = useCallback(() => {
-    clearLeave();
-    if (!nearRef.current) {
-      nearRef.current = true;
-      setNear(true);
-    }
-    if (!recognized) beginHold();
-  }, [clearLeave, recognized, beginHold]);
-
-  const endNearNow = useCallback(() => {
-    if (!nearRef.current) return;
-    nearRef.current = false;
-    setNear(false);
-    stillOrigin.current = null;
-    clearHold();
-  }, [clearHold]);
-
-  /** M6 — grace before ending presence */
-  const onNearEnd = useCallback(() => {
-    clearLeave();
-    leaveTimer.current = window.setTimeout(() => {
-      endNearNow();
-    }, LEAVE_GRACE_MS);
-  }, [clearLeave, endNearNow]);
-
-  const notePointer = useCallback(
-    (clientX: number, clientY: number, pointerType: string) => {
-      pointerTypeRef.current = pointerType;
-      if (!isInsideField(clientX, clientY)) {
-        onNearEnd();
-        return;
-      }
-
-      // C2 — field presence; stillness required so haste still fails
-      if (!stillOrigin.current) {
-        stillOrigin.current = { x: clientX, y: clientY };
-        onNearStart();
-        return;
-      }
-
-      const dx = clientX - stillOrigin.current.x;
-      const dy = clientY - stillOrigin.current.y;
-      if (Math.hypot(dx, dy) > ENTER_STILLNESS_PX) {
-        stillOrigin.current = { x: clientX, y: clientY };
-        clearHold();
-        if (!recognized) {
-          // reset hold from new stillness origin
-          if (nearRef.current) beginHold();
-        }
-        clearLeave();
-        if (!nearRef.current) onNearStart();
-        return;
-      }
-
-      onNearStart();
-    },
-    [
-      isInsideField,
-      onNearEnd,
-      onNearStart,
-      clearHold,
-      clearLeave,
-      recognized,
-      beginHold,
-    ],
-  );
-
-  const handlePointer = useCallback(
-    (e: ReactPointerEvent<HTMLDivElement>) => {
-      if (!interactive) return;
-      const target = e.target as HTMLElement | null;
-      // Never steal gestures from the question list / links
-      if (target?.closest("button, a, .the-void-language")) return;
-
-      // Do not setPointerCapture — capture on the field retargets later taps
-      // away from .the-void-question after recognition (input-routing bug).
-      notePointer(e.clientX, e.clientY, e.pointerType);
-    },
-    [interactive, notePointer],
-  );
-
-  const handlePointerUp = useCallback(
-    (e: ReactPointerEvent<HTMLDivElement>) => {
-      if (!interactive) {
-        releaseCapture();
-        return;
-      }
-      const target = e.target as HTMLElement | null;
-      if (target?.closest("button, a, .the-void-language")) {
-        releaseCapture();
-        return;
-      }
-      // C1 — mouse: pointerup must not abort if still over the field
-      if (e.pointerType === "mouse") {
-        if (isInsideField(e.clientX, e.clientY)) {
-          stillOrigin.current = { x: e.clientX, y: e.clientY };
-          onNearStart();
-          return;
-        }
-        onNearEnd();
-        releaseCapture();
-        return;
-      }
-      // Touch / pen: finger up ends presence (with grace)
-      onNearEnd();
-      releaseCapture();
-    },
-    [interactive, isInsideField, onNearStart, onNearEnd, releaseCapture],
-  );
-
-  const handlePointerLeave = useCallback(
-    (e: ReactPointerEvent<HTMLDivElement>) => {
-      if (!interactive) return;
-      // Related target still inside field — ignore
-      const related = e.relatedTarget as Node | null;
-      if (related && surfaceEl.current?.contains(related)) return;
-      onNearEnd();
-    },
-    [interactive, onNearEnd],
-  );
-
-  const handleContextMenu = useCallback(
-    (e: React.MouseEvent) => {
-      if (!interactive) return;
-      e.preventDefault();
-    },
-    [interactive],
-  );
-
-  // C3 — keyboard: focus begins participation; after recognition blur does not block language
-  const handleAttendFocus = useCallback(() => {
-    if (!interactive) return;
-    stillOrigin.current = null;
-    onNearStart();
-  }, [interactive, onNearStart]);
-
-  const handleAttendBlur = useCallback(() => {
-    if (!interactive) return;
-    if (attentionLatched.current || recognized) {
-      // Presence softens visually but language path continues (C3 / M2)
-      endNearNow();
-      return;
-    }
-    onNearEnd();
-  }, [interactive, recognized, endNearNow, onNearEnd]);
-
-  // After recognition: short settle → inquiry, then questions soon (no long serial stack)
-  useEffect(() => {
-    if (!interactive || skipThreshold) return;
-    if (!recognized) return;
-    if (phase !== "alone" && phase !== "recognized") return;
-
-    const mayProceed = near || attentionLatched.current;
-    if (!mayProceed) {
-      clearSettle();
-      return;
-    }
-
-    clearSettle();
-    settleTimer.current = window.setTimeout(() => {
-      setPhase("inquiry");
-    }, reduced ? 120 : SETTLE_MS);
-
-    return () => clearSettle();
-  }, [
-    interactive,
-    near,
-    recognized,
-    phase,
-    skipThreshold,
-    reduced,
-    clearSettle,
-  ]);
-
-  // Questions begin shortly after inquiry is readable — not after another long fade wait
-  useEffect(() => {
-    if (phase !== "inquiry") return;
-    const t = window.setTimeout(
-      () => setPhase("questions"),
-      reduced ? 40 : QUESTIONS_AFTER_INQUIRY_MS,
-    );
-    return () => window.clearTimeout(t);
-  }, [phase, reduced]);
-
-  // Stagger questions quickly once the list phase opens
-  useEffect(() => {
-    if (phase !== "questions") {
-      if (!skipThreshold) setQuestionsVisible(0);
-      return;
-    }
-    if (skipThreshold || reduced) {
-      setQuestionsVisible(VOID_QUESTIONS.length);
-      return;
-    }
-    let i = 1;
-    setQuestionsVisible(1);
-    const id = window.setInterval(() => {
-      i += 1;
-      setQuestionsVisible(i);
-      if (i >= VOID_QUESTIONS.length) window.clearInterval(id);
-    }, QUESTION_STAGGER_MS);
-    return () => window.clearInterval(id);
-  }, [phase, reduced, skipThreshold]);
-
-  useEffect(() => {
-    return () => {
-      clearHold();
-      clearSettle();
-      clearLeave();
-    };
-  }, [clearHold, clearSettle, clearLeave]);
-
-  // M1 — no pre-recognition glow; ambient life is environmental, not light pulsing
-  const activation = recognized ? (near ? 1 : 0.72) : 0;
-  const fog = recognized ? (near ? 0.35 : 0.5) : 0.85;
-  const showInquiry = !isRest && (phase === "inquiry" || phase === "questions");
-  const showQuestions = !isRest && phase === "questions";
-  const showAttend = interactive;
+  const showLanguage = !isRest;
   const ambient = !reduced && !isRest;
-  /** Inquiry/questions: release threshold lock so the list can scroll */
-  const languageOpen =
-    !isRest && (phase === "inquiry" || phase === "questions" || skipThreshold);
-  const locked = !isRest && !languageOpen;
+  /** Persistent inspect — one territory at a time */
+  const [inspectedId, setInspectedId] = useState<RootTerritoryId | null>(null);
+  /** Transient desktop attention (hover / focus) */
+  const [attentionId, setAttentionId] = useState<RootTerritoryId | null>(null);
+  const fieldRef = useRef<HTMLDivElement>(null);
+
+  const activeId = inspectedId ?? attentionId;
+
+  useEffect(() => {
+    if (!inspectedId) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Element | null;
+      if (!target) return;
+      if (target.closest(".atlas-territory")) return;
+      if (target.closest(".terrain-menu")) return;
+      if (target.closest(".atlas-thread-cue")) return;
+      if (target.closest(".atlas-thread-field")) return;
+      setInspectedId(null);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [inspectedId]);
 
   return (
     <div
-      ref={surfaceEl}
       className={cn(
         "the-void",
         isRest && "the-void--rest",
-        locked && "the-void--locked",
-        languageOpen && "the-void--choosing",
+        showLanguage && "the-void--choosing",
         ambient && "the-void--alive",
       )}
-      onPointerMove={interactive ? handlePointer : undefined}
-      onPointerDown={interactive ? handlePointer : undefined}
-      onPointerUp={interactive ? handlePointerUp : undefined}
-      onPointerCancel={interactive ? onNearEnd : undefined}
-      onPointerLeave={interactive ? handlePointerLeave : undefined}
-      onContextMenu={interactive ? handleContextMenu : undefined}
       role="presentation"
       aria-hidden={isRest || undefined}
     >
       <div className="the-void-climate" aria-hidden>
         <div
           className={cn("the-void-fog", ambient && "the-void-fog--drift")}
-          style={{ opacity: fog }}
+          style={{ opacity: isRest ? 0.85 : 0.5 }}
         />
         <div
           className={cn(
@@ -419,70 +332,74 @@ export function TheVoid({ onChoose, surface = "threshold" }: Props) {
         <div
           className={cn("the-void-light", isRest && "the-void-light--rest")}
           style={{
-            opacity: isRest ? 0.38 : 0.22 + activation * 0.55,
-            transform: `scale(${isRest ? 1 : 0.92 + activation * 0.14})`,
+            opacity: isRest ? 0.38 : 0.62,
+            transform: `scale(${isRest ? 1 : 1.02})`,
           }}
         />
       </div>
 
-      {showAttend && (
-        <button
-          type="button"
-          className="the-void-attend"
-          aria-label="Remain here"
-          onFocus={handleAttendFocus}
-          onBlur={handleAttendBlur}
-          onPointerDown={(e) => {
-            e.preventDefault();
-            notePointer(e.clientX, e.clientY, e.pointerType);
-          }}
-        />
-      )}
-
-      {!isRest && (
-        <div className="the-void-language">
-          {showInquiry && (
-            <p
-              className={cn(
-                "the-void-inquiry",
-                !reduced && "the-void-inquiry--enter",
-              )}
-              aria-live="polite"
-            >
-              What are you trying to understand?
+      {showLanguage && (
+        <div
+          className={cn(
+            "the-void-language the-void-language--territories",
+            !reduced && "the-void-language--enter",
+          )}
+        >
+          <header className="atlas-map-head">
+            <p className="atlas-map-head__eyebrow">Atlas</p>
+            <h1 className="atlas-map-head__title">Root territories</h1>
+            <p className="atlas-map-head__lede">
+              Permanent regions of inquiry. Beneath them, questions forming now.
             </p>
-          )}
+          </header>
 
-          {showQuestions && (
-            <ul className="the-void-questions">
-              {VOID_QUESTIONS.map((q, i) => (
-                <li
-                  key={q.id}
-                  className={cn(
-                    "the-void-question-row",
-                    i < questionsVisible
-                      ? "the-void-question-row--in"
-                      : "the-void-question-row--out",
-                  )}
-                >
-                  <button
-                    type="button"
-                    onClick={() => onChoose(q.id)}
-                    className="the-void-question"
-                    tabIndex={i < questionsVisible ? 0 : -1}
-                  >
-                    {q.text}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+          <div
+            ref={fieldRef}
+            className="atlas-territories"
+            role="list"
+            data-field-active={activeId ? "true" : undefined}
+            data-field-open={inspectedId ? "true" : undefined}
+          >
+            {ROOT_TERRITORIES.map((territory) => {
+              const inspected = inspectedId === territory.id;
+              const attended =
+                !inspectedId && attentionId === territory.id;
+              const lit = inspected || attended;
+              return (
+                <TerritorySection
+                  key={territory.id}
+                  territoryId={territory.id}
+                  depth={territory.depth}
+                  label={territory.label}
+                  whisper={territory.whisper}
+                  placements={placementsForTerritory(territory.id)}
+                  onChoose={onChoose}
+                  inspected={inspected}
+                  attended={attended}
+                  receded={Boolean(inspectedId) && !inspected}
+                  onAttend={() => {
+                    if (inspectedId) return;
+                    setAttentionId(territory.id);
+                  }}
+                  onLeave={() => {
+                    setAttentionId((id) =>
+                      id === territory.id ? null : id,
+                    );
+                  }}
+                  onToggleInspect={() => {
+                    setAttentionId(null);
+                    setInspectedId((id) =>
+                      id === territory.id ? null : territory.id,
+                    );
+                  }}
+                />
+              );
+            })}
+          </div>
 
-          {showQuestions && (
-            <p className="the-void-charts">
-              <Link href="/atlas/charts">Charted maps</Link>
-            </p>
-          )}
+          <p className="the-void-charts">
+            <Link href="/atlas/charts">Mapped investigations</Link>
+          </p>
         </div>
       )}
     </div>

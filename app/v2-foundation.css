@@ -1,0 +1,277 @@
+/* ═══════════════════════════════════════════════════════════
+   Living Terrain — Visual System V2 (shared foundation)
+   Primitives: field · point · line · axis · orbit · layer ·
+               threshold · node · thread · pulse · material · light
+   One world, regional character via [data-lt-region].
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --lt-void: #030405;
+  --lt-void-raised: #070a0e;
+  --lt-void-panel: #0a0e14;
+
+  --lt-bone: #ebe6dc;
+  --lt-bone-dim: color-mix(in srgb, #ebe6dc 42%, transparent);
+  --lt-bone-faint: color-mix(in srgb, #ebe6dc 22%, transparent);
+  --lt-bone-whisper: color-mix(in srgb, #ebe6dc 12%, transparent);
+
+  --lt-mineral: #c4a86a;
+  --lt-mineral-soft: color-mix(in srgb, #c4a86a 55%, transparent);
+  --lt-mineral-faint: color-mix(in srgb, #c4a86a 18%, transparent);
+
+  --lt-cool: #7a8a9a;
+  --lt-cool-dim: color-mix(in srgb, #7a8a9a 35%, transparent);
+
+  --lt-rule: color-mix(in srgb, #ebe6dc 8%, transparent);
+  --lt-rule-strong: color-mix(in srgb, #ebe6dc 14%, transparent);
+
+  --lt-hover: color-mix(in srgb, #c4a86a 70%, #ebe6dc);
+  --lt-focus: color-mix(in srgb, #c4a86a 45%, transparent);
+
+  --lt-atm-opacity: 0.55;
+  --lt-depth-cool: #0c1218;
+  --lt-ease: cubic-bezier(0.38, 0.02, 0.42, 1);
+
+  /* Align legacy theme tokens to V2 field */
+  --color-space: var(--lt-void);
+  --color-space-raised: var(--lt-void-raised);
+  --color-space-panel: var(--lt-void-panel);
+  --color-void: var(--lt-void);
+  --color-ivory: var(--lt-bone);
+  --color-gold: var(--lt-mineral);
+  --color-gold-muted: color-mix(in srgb, #c4a86a 82%, #8a7a52);
+  --color-forest: var(--lt-mineral);
+  --color-forest-muted: var(--color-gold-muted);
+}
+
+/* ——— Shared field (used by PersistentTerrainAtmosphere) ——— */
+
+.lt-field {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: var(--lt-void);
+}
+
+.lt-field__void {
+  position: absolute;
+  inset: 0;
+  background: var(--lt-void);
+}
+
+.lt-field__depth {
+  position: absolute;
+  inset: 0;
+  opacity: var(--lt-atm-opacity);
+  background:
+    radial-gradient(
+      ellipse 68% 48% at 70% 38%,
+      color-mix(in srgb, var(--lt-depth-cool) 48%, transparent) 0%,
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      #020304 0%,
+      transparent 26%,
+      transparent 74%,
+      color-mix(in srgb, #06080c 75%, transparent) 100%
+    );
+}
+
+.lt-field__orbit {
+  position: absolute;
+  top: 48%;
+  left: 62%;
+  width: min(110vw, 58rem);
+  height: min(110vw, 58rem);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--lt-bone) 4.5%, transparent);
+  mask-image: linear-gradient(
+    130deg,
+    transparent 20%,
+    black 40%,
+    black 55%,
+    transparent 78%
+  );
+  opacity: 0;
+  transition: opacity 1.2s var(--lt-ease);
+}
+
+.lt-field__axis {
+  position: absolute;
+  top: 14%;
+  bottom: 16%;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--lt-bone) 8%, transparent) 22%,
+    color-mix(in srgb, var(--lt-bone) 12%, transparent) 50%,
+    color-mix(in srgb, var(--lt-bone) 8%, transparent) 78%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 1.2s var(--lt-ease);
+}
+
+.lt-field__horizon {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 11%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--lt-bone) 10%, transparent) 28%,
+    color-mix(in srgb, var(--lt-bone) 14%, transparent) 50%,
+    color-mix(in srgb, var(--lt-bone) 10%, transparent) 72%,
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 1.2s var(--lt-ease);
+}
+
+.lt-field__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+
+.lt-field__points {
+  position: absolute;
+  inset: 0;
+  color: var(--lt-bone);
+  opacity: 0.22;
+}
+
+.lt-field__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 92% 86% at 50% 45%,
+    transparent 50%,
+    color-mix(in srgb, var(--lt-void) 55%, transparent) 100%
+  );
+  opacity: 0.55;
+}
+
+/* ——— Regional character (grammar, not decoration) ——— */
+
+/* Atlas — cosmological / relational layer */
+.lt-field[data-lt-region="atlas"] {
+  --lt-atm-opacity: 0.62;
+  --lt-depth-cool: #0a1018;
+}
+
+.lt-field[data-lt-region="atlas"] .lt-field__orbit {
+  opacity: 0.7;
+}
+
+.lt-field[data-lt-region="atlas"] .lt-field__points {
+  opacity: 0.32;
+}
+
+/* Shelves — material / archive; quieter so objects carry */
+.lt-field[data-lt-region="shelves"] {
+  --lt-atm-opacity: 0.38;
+  --lt-depth-cool: #0c0e10;
+}
+
+.lt-field[data-lt-region="shelves"] .lt-field__horizon {
+  opacity: 0.55;
+}
+
+.lt-field[data-lt-region="shelves"] .lt-field__points {
+  opacity: 0.08;
+}
+
+.lt-field[data-lt-region="shelves"] .lt-field__grain {
+  opacity: 0.034;
+}
+
+/* Observatory — sparsest; distance / unresolved signal */
+.lt-field[data-lt-region="observatory"] {
+  --lt-atm-opacity: 0.28;
+  --lt-depth-cool: #080c14;
+}
+
+.lt-field[data-lt-region="observatory"] .lt-field__points {
+  opacity: 0.4;
+}
+
+.lt-field[data-lt-region="observatory"] .lt-field__axis {
+  opacity: 0.35;
+  left: 18%;
+}
+
+.lt-field[data-lt-region="observatory"] .lt-field__vignette {
+  opacity: 0.7;
+}
+
+/* Reading — lantern region; content first, soft mineral light only */
+.lt-field[data-lt-region="reading"] {
+  --lt-atm-opacity: 0.22;
+}
+
+.lt-field[data-lt-region="reading"] .lt-field__depth {
+  background:
+    radial-gradient(
+      ellipse 50% 40% at 22% 12%,
+      color-mix(in srgb, var(--lt-mineral) 4.5%, transparent) 0%,
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      #020304 0%,
+      transparent 30%,
+      transparent 78%,
+      color-mix(in srgb, #06080c 60%, transparent) 100%
+    );
+}
+
+.lt-field[data-lt-region="reading"] .lt-field__points {
+  opacity: 0.04;
+}
+
+/* Chamber — vertical centers / thresholds */
+.lt-field[data-lt-region="chamber"] {
+  --lt-atm-opacity: 0.42;
+}
+
+.lt-field[data-lt-region="chamber"] .lt-field__axis {
+  opacity: 0.45;
+}
+
+.lt-field[data-lt-region="chamber"] .lt-field__horizon {
+  opacity: 0.4;
+}
+
+.lt-field[data-lt-region="field"] {
+  --lt-atm-opacity: 0.4;
+}
+
+/* Room surfaces sit on the shared void */
+.threshold-room {
+  background: transparent;
+}
+
+/* Soften room vignettes — no gray fog rings */
+.room-vignette-library,
+.room-vignette-reading,
+.room-vignette-observatory,
+.room-vignette-chamber,
+.room-vignette-archive,
+.room-vignette-guide,
+.room-vignette-pathways,
+.room-vignette-notebook {
+  box-shadow: none;
+}

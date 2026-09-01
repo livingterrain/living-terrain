@@ -1,17 +1,22 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useIsPresent,
+  useReducedMotion,
+} from "framer-motion";
 import {
   useEffect,
   useRef,
   useState,
   type KeyboardEvent,
+  type ReactNode,
 } from "react";
 import {
   getConcept,
   getEssay,
   getQuestion,
-  relationsFor,
   resolveEvidenceEssayId,
   resolveUnfinishedEdge,
   type AtlasV1ConceptId,
@@ -19,6 +24,8 @@ import {
   type AtlasV1QuestionId,
   type AtlasV1Relation,
 } from "@/lib/atlas-v1/content";
+import type { AtlasCanonicalView } from "@/lib/canonical/atlas-view";
+import { atlasBondKey } from "@/lib/canonical/atlas-keys";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -48,6 +55,7 @@ export type NoticeState = {
 };
 
 type Props = {
+  canonical: AtlasCanonicalView;
   view: JourneyViewMode;
   journey: JourneyState;
   notice: NoticeState | null;
@@ -67,6 +75,7 @@ type Props = {
 };
 
 export function AtlasJourneyLayer({
+  canonical,
   view,
   journey,
   notice,
@@ -85,7 +94,6 @@ export function AtlasJourneyLayer({
   onBack,
 }: Props) {
   const reduced = useReducedMotion() ?? false;
-  const crossfade = reduced ? { duration: 0.01 } : CROSSFADE;
   const question = getQuestion(journey.questionId);
   const current = getConcept(journey.currentConceptId);
   const essay = (() => {
@@ -96,10 +104,22 @@ export function AtlasJourneyLayer({
       return null;
     }
   })();
-  const nextRelations = relationsFor(question, journey.currentConceptId);
+  const nextRelations: AtlasV1Relation[] = (() => {
+    const bond =
+      canonical.bonds[atlasBondKey(question.id, journey.currentConceptId)];
+    if (!bond) return [];
+    return [{ to: bond.to, why: bond.why }];
+  })();
   const unfinished = question
     ? resolveUnfinishedEdge(question, journey.trail)
     : null;
+  const unfinishedBond = unfinished
+    ? canonical.bonds[atlasBondKey(question.id, unfinished.from)]
+    : null;
+  const unfinishedView =
+    unfinished && unfinishedBond && unfinishedBond.to === unfinished.to
+      ? { ...unfinished, why: unfinishedBond.why }
+      : unfinished;
 
   // History can restore pause after the unfinished edge is already known —
   // never leave the visitor on an empty pause surface.
@@ -128,12 +148,9 @@ export function AtlasJourneyLayer({
     >
       <AnimatePresence mode="sync">
         {view === "notice" && notice && (
-          <motion.div
+          <JourneyPresencePane
             key={`notice-${notice.from}-${notice.to}`}
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={crossfade}
+            reduced={reduced}
             className="flex flex-1 flex-col justify-center"
           >
             <button
@@ -146,16 +163,13 @@ export function AtlasJourneyLayer({
                 {notice.why}
               </p>
             </button>
-          </motion.div>
+          </JourneyPresencePane>
         )}
 
         {view === "journey" && question && current && (
-          <motion.div
+          <JourneyPresencePane
             key={`journey-${journey.currentConceptId}`}
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={crossfade}
+            reduced={reduced}
             className="flex flex-1 flex-col"
           >
             <JourneyView
@@ -164,8 +178,7 @@ export function AtlasJourneyLayer({
               conceptName={current.name}
               fragment={current.fragment}
               hasEvidence={Boolean(
-                question &&
-                  resolveEvidenceEssayId(question, journey.currentConceptId),
+                resolveEvidenceEssayId(question, journey.currentConceptId),
               )}
               bondNoticed={bondNoticed}
               trail={journey.trail}
@@ -182,16 +195,13 @@ export function AtlasJourneyLayer({
               onBeginAgain={onBeginAgain}
               canRest={Boolean(unfinished)}
             />
-          </motion.div>
+          </JourneyPresencePane>
         )}
 
         {view === "evidence" && question && essay && current && (
-          <motion.div
+          <JourneyPresencePane
             key={`evidence-${essay.id}`}
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={crossfade}
+            reduced={reduced}
             className="flex flex-1 flex-col"
           >
             <EvidenceView
@@ -200,31 +210,56 @@ export function AtlasJourneyLayer({
               fragment={current.fragment}
               noticedWhy={journey.noticedWhy}
               essay={essay}
+              evidenceSource={canonical.evidenceSource[essay.id]}
+              relatedBooks={canonical.relatedBooks[essay.id] ?? []}
               onReturn={onReturn}
             />
-          </motion.div>
+          </JourneyPresencePane>
         )}
 
-        {view === "pause" && question && unfinished && (
-          <motion.div
+        {view === "pause" && question && unfinishedView && (
+          <JourneyPresencePane
             key="pause"
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={crossfade}
+            reduced={reduced}
             className="flex flex-1 flex-col justify-center"
           >
             <PauseView
               questionText={question.text}
               trail={journey.trail}
               essaysOpened={journey.essaysOpened}
-              unfinished={unfinished}
+              unfinished={unfinishedView}
               onBack={onBack}
             />
-          </motion.div>
+          </JourneyPresencePane>
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+/** Exit layers keep painting briefly under mode="sync" — disable hits immediately. */
+function JourneyPresencePane({
+  reduced,
+  className,
+  children,
+}: {
+  reduced: boolean;
+  className?: string;
+  children: ReactNode;
+}) {
+  const isPresent = useIsPresent();
+  const crossfade = reduced ? { duration: 0.01 } : CROSSFADE;
+  return (
+    <motion.div
+      initial={reduced ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={crossfade}
+      className={className}
+      style={{ pointerEvents: isPresent ? "auto" : "none" }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -276,7 +311,7 @@ function LivingBond({
       window.clearTimeout(readyT);
       window.clearTimeout(evidence);
     };
-  }, [reduced]);
+  }, [reduced, relation.to, relation.why]);
 
   return (
     <div className="atlas-bond">
@@ -316,15 +351,15 @@ function LivingBond({
           onClick={() => onFollow(relation.to, relation.why)}
           className={cn(
             "atlas-bond-dest mt-7 text-left transition-opacity duration-[1400ms]",
-            ready ? "opacity-100" : "opacity-0",
+            ready ? "is-ready opacity-100" : "opacity-0",
           )}
           aria-label={
             ready
-              ? `Continue through this relationship toward ${to.name}`
+              ? `Continue toward ${to.name}`
               : `Relationship still forming`
           }
         >
-          <span className="font-heading text-[1.25rem] tracking-[-0.01em] text-ivory/90 transition-colors duration-[1100ms] hover:text-[#d4c4a0] sm:text-[1.375rem]">
+          <span className="atlas-bond-dest-name font-heading text-[1.25rem] tracking-[-0.01em] text-ivory/90 sm:text-[1.375rem]">
             {to.name}
           </span>
         </button>
@@ -546,6 +581,8 @@ function EvidenceView({
   fragment,
   noticedWhy,
   essay,
+  evidenceSource,
+  relatedBooks,
   onReturn,
 }: {
   questionText: string;
@@ -553,9 +590,14 @@ function EvidenceView({
   fragment: string;
   noticedWhy: string | null;
   essay: ReturnType<typeof getEssay>;
+  evidenceSource?: AtlasCanonicalView["evidenceSource"][AtlasV1EssayId];
+  relatedBooks: NonNullable<AtlasCanonicalView["relatedBooks"][AtlasV1EssayId]>;
   onReturn: () => void;
 }) {
   const noticed = noticedWhy ?? fragment;
+  const books = relatedBooks.filter(
+    (book) => book.route !== evidenceSource?.route,
+  );
 
   return (
     <>
@@ -591,6 +633,35 @@ function EvidenceView({
             </p>
           ))}
         </div>
+        {evidenceSource && (
+          <p className="mt-12 font-body text-[0.75rem] leading-[1.7] text-ivory/28 sm:mt-14">
+            <Link
+              href={evidenceSource.route}
+              className="transition-colors duration-[1100ms] hover:text-ivory/48"
+            >
+              Where this came from
+            </Link>
+          </p>
+        )}
+        {books.length > 0 && (
+          <div className="mt-10 space-y-3 sm:mt-12">
+            <p className="font-body text-[0.6875rem] tracking-[0.06em] text-ivory/22">
+              Also connects through
+            </p>
+            <ul className="space-y-2">
+              {books.map((book) => (
+                <li key={book.id}>
+                  <Link
+                    href={book.route}
+                    className="font-heading text-[0.9375rem] text-ivory/40 transition-colors duration-[1100ms] hover:text-[#c9b48a]/85"
+                  >
+                    {book.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </article>
 
       <nav className="mt-16 border-t border-white/[0.06] pt-10 sm:mt-20 sm:pt-12">
@@ -657,7 +728,7 @@ function PauseView({
           href="/atlas/charts"
           className="transition-colors duration-[1100ms] hover:text-ivory/45"
         >
-          Charted maps
+          Mapped investigations
         </Link>
       </p>
     </div>

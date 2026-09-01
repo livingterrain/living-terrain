@@ -22,7 +22,7 @@ export interface TerrainNavSession {
 const STORAGE_KEY = "living-terrain-nav";
 
 const READING_PREFIX =
-  /^\/(essays|questions|field-notes|atlas|library|inquiry|quotations|chambers|structure-beneath-reality)/;
+  /^\/(essays|questions|field-notes|atlas|library|inquiry|books|quotations|chambers|structure-beneath-reality|visual-maps)/;
 
 export function isMapPath(path: string): boolean {
   return (

@@ -19,12 +19,18 @@ import {
   resolveUnfinishedEdge,
 } from "@/lib/atlas-v1/content";
 import { VOID_QUESTIONS } from "@/lib/atlas-v1/questions";
+import { isJourneyOpen } from "@/lib/atlas/architecture";
+import { ATLAS_QUESTIONS_EVENT } from "@/lib/world/pathways";
 import { TheVoid, type VoidSurface } from "@/components/void/TheVoid";
 import type {
   JourneyState,
   NoticeState,
   JourneyViewMode,
 } from "@/components/atlas-v1/AtlasJourneyLayer";
+import type { AtlasCanonicalView } from "@/lib/canonical/atlas-view";
+import { getQuestionPlacement } from "@/lib/atlas/architecture";
+import { appendThreadPoint } from "@/lib/atlas-v1/living-thread";
+import { LivingThread } from "@/components/atlas-v1/LivingThread";
 
 const PRESENCE_MS = 220;
 const LINGER_MS = 280;
@@ -56,7 +62,7 @@ function sanitizeHistory(
       view: "void",
       journey: null,
       relationsVisible: false,
-      voidComplete: false,
+      voidComplete: true,
     };
   }
 
@@ -113,7 +119,7 @@ function sanitizeHistory(
     view: nextView,
     journey,
     relationsVisible: Boolean(state.relationsVisible),
-    voidComplete: nextView !== "void",
+    voidComplete: true,
   };
 }
 
@@ -137,14 +143,14 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-export function AtlasV1() {
+export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
   const reduced = usePrefersReducedMotion();
   const [view, setView] = useState<View>("void");
   const [journey, setJourney] = useState<JourneyState | null>(null);
   const [relationsVisible, setRelationsVisible] = useState(false);
   const [bondNoticed, setBondNoticed] = useState(false);
   const [notice, setNotice] = useState<NoticeState | null>(null);
-  const [voidComplete, setVoidComplete] = useState(false);
+  const [voidComplete, setVoidComplete] = useState(true);
   const lingerTimer = useRef<number | null>(null);
   const noticeTimer = useRef<number | null>(null);
   const bootstrapped = useRef(false);
@@ -207,7 +213,8 @@ export function AtlasV1() {
     if (bootstrapped.current) return;
     bootstrapped.current = true;
     replaceHistory("void", null);
-    // Prefetch journey while the threshold is still open
+    setVoidComplete(true);
+    // Prefetch journey layer while questions are already available
     void import("@/components/atlas-v1/AtlasJourneyLayer");
   }, [replaceHistory]);
 
@@ -268,6 +275,7 @@ export function AtlasV1() {
 
   const settleInto = useCallback(
     (base: JourneyState, to: AtlasV1ConceptId, why: string) => {
+      appendThreadPoint({ kind: "concept", id: to });
       const next: JourneyState = {
         ...base,
         currentConceptId: to,
@@ -287,12 +295,18 @@ export function AtlasV1() {
 
   const startQuestion = useCallback(
     (questionId: AtlasV1QuestionId) => {
+      // Architecture guard: forming-no-journey questions stay catalogued, not opened
+      if (!isJourneyOpen(questionId)) return;
       clearLinger();
       clearNoticeTimer();
       setNotice(null);
       setVoidComplete(true);
       const q = VOID_QUESTIONS.find((item) => item.id === questionId);
       if (!q) return;
+      const placement = getQuestionPlacement(questionId);
+      appendThreadPoint({ kind: "territory", id: placement.territoryId });
+      appendThreadPoint({ kind: "question", id: questionId });
+      appendThreadPoint({ kind: "concept", id: q.startConceptId });
       const next: JourneyState = {
         questionId,
         currentConceptId: q.startConceptId,
@@ -329,8 +343,9 @@ export function AtlasV1() {
       if (!journey || notice) return;
       clearLinger();
       const from = journey.currentConceptId;
-      const held: NoticeState = { why, to, from };
       const base = journey;
+
+      const held: NoticeState = { why, to, from };
       setNotice(held);
       setView("notice");
       setRelationsVisible(false);
@@ -371,6 +386,11 @@ export function AtlasV1() {
     if (!essayId) return;
     // Ensure the essay corpus entry exists before entering evidence view.
     getEssay(essayId);
+    appendThreadPoint({ kind: "evidence", id: essayId });
+    const source = canonical.evidenceSource[essayId];
+    if (source) {
+      appendThreadPoint({ kind: "source", id: source.id, label: source.title });
+    }
     clearLinger();
     const next: JourneyState = {
       ...journey,
@@ -384,7 +404,7 @@ export function AtlasV1() {
     setView("evidence");
     pushHistory("evidence", next, false);
     scrollTop();
-  }, [journey, clearLinger, pushHistory, scrollTop]);
+  }, [journey, canonical.evidenceSource, clearLinger, pushHistory, scrollTop]);
 
   const returnToJourney = useCallback(() => {
     if (!journey) return;
@@ -425,21 +445,26 @@ export function AtlasV1() {
     scrollTop();
   }, [clearLinger, clearNoticeTimer, pushHistory, scrollTop]);
 
+  useEffect(() => {
+    function onReturnToQuestions() {
+      backToQuestions();
+    }
+    window.addEventListener(ATLAS_QUESTIONS_EVENT, onReturnToQuestions);
+    return () =>
+      window.removeEventListener(ATLAS_QUESTIONS_EVENT, onReturnToQuestions);
+  }, [backToQuestions]);
+
   // Render-time guard mirrors the effect — avoids one blank paint if state is invalid.
   const showJourney = view !== "void" && isUsableJourney(journey);
-  // If view is non-void without a journey, never use "rest" (height 0 / blank-events none).
-  const showVoidSurface: VoidSurface = showJourney
-    ? "rest"
-    : view !== "void" || voidComplete
-      ? "questions"
-      : "threshold";
+  // Questions are always available on the void surface; rest is climate under journey.
+  const showVoidSurface: VoidSurface = showJourney ? "rest" : "questions";
   const voidHidden = showJourney;
 
   return (
     <div
       ref={shellRef}
-      className="atlas-v1-realm min-h-[100dvh] bg-[#06080c] text-ivory"
-      style={{ backgroundColor: "#06080c", color: "#ebe6dc", minHeight: "100dvh" }}
+      className="atlas-v1-realm min-h-[100dvh] bg-[#030405] text-ivory"
+      style={{ backgroundColor: "#030405", color: "#ebe6dc", minHeight: "100dvh" }}
     >
       <div
         className="atlas-v1-wash pointer-events-none fixed inset-0"
@@ -451,8 +476,11 @@ export function AtlasV1() {
         <TheVoid onChoose={startQuestion} surface={showVoidSurface} />
       </div>
 
+      <LivingThread canonical={canonical} />
+
       {showJourney && (
         <AtlasJourneyLayer
+          canonical={canonical}
           view={view as JourneyViewMode}
           journey={journey}
           notice={notice}

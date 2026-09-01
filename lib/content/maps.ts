@@ -4,6 +4,7 @@ import type { Book } from "./types";
 export const MAP_COVER_DIMENSIONS: Record<string, { width: number; height: number }> = {
   "the-structure-beneath-reality": { width: 334, height: 500 },
   "the-biology-of-becoming": { width: 313, height: 500 },
+  "the-biology-of-becoming-revised-expanded": { width: 334, height: 500 },
   "the-second-birth": { width: 313, height: 500 },
   "below-criticality": { width: 333, height: 500 },
   "embodied-physics": { width: 334, height: 500 },

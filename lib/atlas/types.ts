@@ -130,7 +130,13 @@ export interface BookMeta {
 export interface EssayMeta {
   subtitle?: string;
   excerpt: string;
+  /**
+   * Full essay prose for on-site Read (paragraphs separated by blank lines).
+   * Optional during migration — Medium remains the mirror when body is absent.
+   */
+  body?: string;
   topics: string[];
+  /** Medium (or other) publication mirror — not the primary Read destination */
   externalUrl?: string;
   /** Public path e.g. /images/essays/my-slug.jpg */
   featuredImage?: string;

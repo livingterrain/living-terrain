@@ -1,32 +1,31 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
-import { InquiryHub } from "@/components/reading/InquiryHub";
-import { getAllEssays, getAllFieldNotes } from "@/lib/content";
+import { ShelvesFoyer } from "@/components/reading/ShelvesFoyer";
+import { getAllMaps, getAllEssays } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "The Shelves",
-  description:
-    "Essays, field notes, and shorter writing from the edges of the terrain.",
+  description: "Books, essays, and visual maps — work made for Living Terrain.",
 };
 
 export default function InquiryPage() {
+  const books = getAllMaps();
   const essays = getAllEssays().filter((e) => e.status === "published");
-  const fieldNotes = getAllFieldNotes();
 
   return (
     <Room kind="library">
       <RoomThreshold
         kind="library"
         title="The Shelves"
-        whisper="Writing from the edges of the terrain."
-        description="Essays, observations, and shorter inquiry — ongoing exploration, not the charted maps."
-        align="center"
+        whisper="What has been made."
+        align="left"
+        className="py-6 sm:py-12 md:py-16"
       />
 
-      <section className="pb-24 pt-4 sm:pb-32">
-        <Container narrow>
-          <InquiryHub essays={essays} fieldNotes={fieldNotes} />
+      <section className="pb-20 pt-0 sm:pb-24">
+        <Container>
+          <ShelvesFoyer books={books} essays={essays} />
         </Container>
       </section>
     </Room>

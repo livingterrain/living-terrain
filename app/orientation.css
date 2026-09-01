@@ -1,0 +1,617 @@
+/* ═══════════════════════════════════════════════════════════
+   Living Terrain — Orientation + Atlas root territories
+   ═══════════════════════════════════════════════════════════ */
+
+/* ——— Orientation bar ——— */
+
+.terrain-orient {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+}
+
+.terrain-orient--bare {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 56;
+  pointer-events: none;
+  padding:
+    max(0.65rem, env(safe-area-inset-top))
+    max(0.85rem, env(safe-area-inset-right))
+    0.5rem
+    max(0.85rem, env(safe-area-inset-left));
+}
+
+.terrain-orient--bare .terrain-orient__inner {
+  pointer-events: auto;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.terrain-orient__inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+}
+
+.terrain-orient__home {
+  flex-shrink: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, #ebe6dc 88%, transparent);
+  text-decoration: none;
+  transition: color 0.7s cubic-bezier(0.38, 0.02, 0.42, 1);
+}
+
+.terrain-orient__home:hover,
+.terrain-orient__home:focus-visible {
+  color: #ebe6dc;
+  outline: none;
+}
+
+.terrain-orient__whisper {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0 0.5rem;
+  text-align: center;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.6875rem;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, #ebe6dc 38%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 639px) {
+  .terrain-orient__whisper {
+    display: none;
+  }
+}
+
+.terrain-orient__menu-btn {
+  margin-left: auto;
+  flex-shrink: 0;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0 0.35rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, #ebe6dc 55%, transparent);
+  transition: color 0.6s cubic-bezier(0.38, 0.02, 0.42, 1);
+}
+
+.terrain-orient__menu-btn:hover,
+.terrain-orient__menu-btn:focus-visible {
+  color: #ebe6dc;
+  outline: none;
+}
+
+.terrain-orient__menu-btn--soft {
+  color: color-mix(in srgb, #ebe6dc 32%, transparent);
+}
+
+/* ——— Menu layer ——— */
+
+.terrain-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}
+
+.terrain-menu__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 70% 50% at 50% 30%,
+      color-mix(in srgb, #0a1018 40%, transparent),
+      transparent 70%
+    ),
+    color-mix(in srgb, #030405 92%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.terrain-menu__field {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 28rem;
+  min-height: 100%;
+  margin: 0 auto;
+  padding:
+    max(1.5rem, env(safe-area-inset-top))
+    1.5rem
+    max(2rem, env(safe-area-inset-bottom));
+}
+
+.terrain-menu__chrome {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.terrain-menu__eyebrow {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 40%, transparent);
+}
+
+.terrain-menu__close {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  color: color-mix(in srgb, #ebe6dc 55%, transparent);
+  min-height: 2.75rem;
+  padding: 0 0.25rem;
+}
+
+.terrain-menu__close:hover,
+.terrain-menu__close:focus-visible {
+  color: #ebe6dc;
+  outline: none;
+}
+
+.terrain-menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-bottom: 15vh;
+}
+
+.terrain-menu__row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+  text-decoration: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.35rem 0;
+  color: inherit;
+}
+
+.terrain-menu__row:focus-visible {
+  outline: none;
+}
+
+.terrain-menu__row:hover .terrain-menu__label,
+.terrain-menu__row:focus-visible .terrain-menu__label {
+  color: #ebe6dc;
+}
+
+.terrain-menu__row--here .terrain-menu__label {
+  color: color-mix(in srgb, #ebe6dc 92%, #c4a86a);
+}
+
+.atlas-map-head {
+  margin-bottom: 2.75rem;
+}
+
+.atlas-map-head__eyebrow {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 42%, transparent);
+}
+
+.atlas-map-head__title {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: clamp(1.65rem, 4vw, 2.1rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, #ebe6dc 90%, transparent);
+}
+
+.atlas-map-head__lede {
+  margin: 0.9rem 0 0;
+  max-width: 26rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: color-mix(in srgb, #ebe6dc 48%, transparent);
+}
+
+.atlas-territory__mark {
+  width: 4px;
+  height: 4px;
+  margin-top: 0.55rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, #ebe6dc 35%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #ebe6dc 8%, transparent);
+}
+
+.atlas-territory--deep .atlas-territory__mark {
+  background: color-mix(in srgb, #c4a86a 55%, #ebe6dc);
+  box-shadow: 0 0 10px color-mix(in srgb, #c4a86a 18%, transparent);
+}
+
+.atlas-territory--forming .atlas-territory__mark {
+  background: color-mix(in srgb, #7a8a9a 45%, #ebe6dc);
+}
+
+.atlas-territory--thin .atlas-territory__mark {
+  background: color-mix(in srgb, #ebe6dc 18%, transparent);
+  opacity: 0.7;
+}
+
+.atlas-territory__empty {
+  margin: 0.85rem 0 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: color-mix(in srgb, #ebe6dc 32%, transparent);
+}
+
+.atlas-territory__q-state--alive {
+  color: color-mix(in srgb, #c4a86a 55%, #ebe6dc);
+}
+
+.terrain-menu__label {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+  color: color-mix(in srgb, #ebe6dc 78%, transparent);
+  transition: color 0.55s cubic-bezier(0.38, 0.02, 0.42, 1);
+}
+
+.terrain-menu__hint {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  font-style: italic;
+  color: color-mix(in srgb, #ebe6dc 38%, transparent);
+}
+
+.terrain-menu__row--action {
+  margin-top: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid color-mix(in srgb, #ebe6dc 8%, transparent);
+}
+
+/* ——— Atlas root territories ——— */
+
+.the-void-language--territories {
+  max-width: 36rem;
+  width: 100%;
+}
+
+/*
+  .the-void-language is pointer-events: none (climate pattern).
+  Old UI restored clicks via .the-void-questions; territory UI must do the same.
+*/
+.the-void-language--territories .atlas-territories,
+.the-void-language--territories .the-void-charts,
+.the-void-language--territories .atlas-territory__inspect,
+.the-void-language--territories .atlas-territory__q-btn,
+.the-void-language--territories .atlas-territory__trace-link {
+  pointer-events: auto;
+}
+
+.atlas-map-head {
+  margin-bottom: 2.75rem;
+}
+
+.atlas-map-head__eyebrow {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 42%, transparent);
+}
+
+.atlas-map-head__title {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: clamp(1.65rem, 4vw, 2.1rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, #ebe6dc 90%, transparent);
+}
+
+.atlas-map-head__lede {
+  margin: 0.9rem 0 0;
+  max-width: 26rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: color-mix(in srgb, #ebe6dc 48%, transparent);
+}
+
+.atlas-territories {
+  display: flex;
+  flex-direction: column;
+  gap: 2.15rem;
+}
+
+.atlas-territory {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.75rem 1fr;
+  gap: 0.85rem;
+  padding-left: 0.15rem;
+}
+
+.atlas-territory__inspect {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+}
+
+.atlas-territory__inspect .atlas-territory__name {
+  pointer-events: none;
+}
+
+.atlas-territory__inspect .atlas-territory__whisper {
+  pointer-events: none;
+}
+
+.atlas-territory__mark {
+  width: 4px;
+  height: 4px;
+  margin-top: 0.55rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, #ebe6dc 35%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #ebe6dc 8%, transparent);
+}
+
+.atlas-territory--deep .atlas-territory__mark {
+  background: color-mix(in srgb, #c4a86a 55%, #ebe6dc);
+  box-shadow: 0 0 10px color-mix(in srgb, #c4a86a 18%, transparent);
+}
+
+.atlas-territory--forming .atlas-territory__mark {
+  background: color-mix(in srgb, #7a8a9a 45%, #ebe6dc);
+}
+
+.atlas-territory--thin .atlas-territory__mark {
+  background: color-mix(in srgb, #ebe6dc 18%, transparent);
+  opacity: 0.7;
+}
+
+.atlas-territory__name {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, #ebe6dc 82%, transparent);
+}
+
+.atlas-territory--thin .atlas-territory__name {
+  color: color-mix(in srgb, #ebe6dc 55%, transparent);
+}
+
+.atlas-territory__whisper {
+  margin: 0.4rem 0 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: color-mix(in srgb, #ebe6dc 36%, transparent);
+}
+
+.atlas-territory__rest-cue {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, #ebe6dc 26%, transparent);
+}
+
+.atlas-territory__questions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.atlas-territory__q-btn {
+  pointer-events: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.85rem;
+  width: 100%;
+  padding: 0.35rem 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+}
+
+.atlas-territory__q-btn:hover .atlas-territory__q-text,
+.atlas-territory__q-btn:focus-visible .atlas-territory__q-text {
+  color: #f2ebe0;
+  text-shadow: 0 0 24px color-mix(in srgb, #c4a86a 16%, transparent);
+}
+
+.atlas-territory__q-btn:focus-visible {
+  outline: none;
+}
+
+.atlas-territory__q-text {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, #ebe6dc 86%, transparent);
+  transition: color 0.55s cubic-bezier(0.38, 0.02, 0.42, 1),
+    text-shadow 0.7s cubic-bezier(0.38, 0.02, 0.42, 1);
+}
+
+.atlas-territory__question--forming .atlas-territory__q-text {
+  color: color-mix(in srgb, #ebe6dc 42%, transparent);
+  font-style: italic;
+}
+
+.atlas-territory__q-state {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 28%, transparent);
+}
+
+.atlas-territory__q-state--alive {
+  color: color-mix(in srgb, #c4a86a 55%, #ebe6dc);
+}
+
+.atlas-territory__empty {
+  margin: 0.85rem 0 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: color-mix(in srgb, #ebe6dc 32%, transparent);
+}
+
+/* OPEN interior — concepts, questions, charted works */
+.atlas-territory__open {
+  margin-top: 1.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.45rem;
+}
+
+.atlas-territory__open-block {
+  margin: 0;
+}
+
+.atlas-territory__open .atlas-territory__questions {
+  margin-top: 0.15rem;
+}
+
+.atlas-territory__open .atlas-territory__empty {
+  margin-top: 0.35rem;
+}
+
+.atlas-territory__open .atlas-territory__q-text {
+  font-size: 1.12rem;
+  color: color-mix(in srgb, #ebe6dc 92%, transparent);
+}
+
+.atlas-territory__trace-group {
+  margin: 0;
+}
+
+.atlas-territory__traces-eyebrow {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 34%, transparent);
+}
+
+.atlas-territory__trace-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.atlas-territory__trace {
+  display: grid;
+  grid-template-columns: 0.4rem 1fr;
+  gap: 0.65rem;
+  align-items: baseline;
+}
+
+.atlas-territory__trace-mark {
+  width: 3px;
+  height: 3px;
+  margin-top: 0.45rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, #ebe6dc 22%, transparent);
+}
+
+.atlas-territory__trace--quiet .atlas-territory__trace-mark {
+  background: color-mix(in srgb, #c4a86a 35%, #ebe6dc);
+  opacity: 0.55;
+}
+
+.atlas-territory__trace-title {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, #ebe6dc 58%, transparent);
+}
+
+.atlas-territory__trace--quiet .atlas-territory__trace-title {
+  font-style: italic;
+  color: color-mix(in srgb, #ebe6dc 50%, transparent);
+}
+
+.atlas-territory__trace-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.atlas-territory__trace-link:hover .atlas-territory__trace-title,
+.atlas-territory__trace-link:focus-visible .atlas-territory__trace-title {
+  color: color-mix(in srgb, #ebe6dc 84%, transparent);
+}
+
+.atlas-territory__trace-link:focus-visible {
+  outline: none;
+}
+
+@media (max-width: 639px) {
+  .atlas-territory__open {
+    margin-top: 1.25rem;
+    gap: 1.2rem;
+  }
+
+  .atlas-territory__trace-title {
+    font-size: 0.9rem;
+  }
+
+  .atlas-territory__open .atlas-territory__q-text {
+    font-size: 1.05rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terrain-menu__label,
+  .atlas-territory__q-text {
+    transition: none !important;
+  }
+}
