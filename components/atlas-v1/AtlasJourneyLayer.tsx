@@ -24,8 +24,11 @@ import {
   type AtlasV1QuestionId,
   type AtlasV1Relation,
 } from "@/lib/atlas-v1/content";
+import type { AtlasBranchOffer } from "@/lib/atlas/branches";
+import { resolveAuthoredBranch } from "@/lib/atlas/branches";
 import type { AtlasCanonicalView } from "@/lib/canonical/atlas-view";
 import { atlasBondKey } from "@/lib/canonical/atlas-keys";
+import { AtlasBranchCue } from "@/components/atlas-v1/AtlasBranchCue";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -72,6 +75,7 @@ type Props = {
   onBeginAgain: () => void;
   onReturn: () => void;
   onBack: () => void;
+  onFollowBranch: (branch: AtlasBranchOffer) => void;
 };
 
 export function AtlasJourneyLayer({
@@ -92,6 +96,7 @@ export function AtlasJourneyLayer({
   onBeginAgain,
   onReturn,
   onBack,
+  onFollowBranch,
 }: Props) {
   const reduced = useReducedMotion() ?? false;
   const question = getQuestion(journey.questionId);
@@ -136,16 +141,27 @@ export function AtlasJourneyLayer({
     }
   }, [view, essay, onReturn]);
 
+  const branch = resolveAuthoredBranch(
+    journey.questionId,
+    journey.currentConceptId,
+  );
+  const pathNextBond =
+    canonical.bonds[atlasBondKey(question.id, journey.currentConceptId)];
+  const isTerminalStop = !pathNextBond;
+  const showBranch =
+    view === "journey" && Boolean(branch) && relationsVisible && !notice;
+
   return (
-    <div
-      className={cn(
-        "relative z-10 mx-auto flex min-h-[100dvh] w-full flex-col",
-        view === "evidence"
-          ? "max-w-[32rem] sm:max-w-[34rem]"
-          : "max-w-[30rem] sm:max-w-[32rem]",
-        "px-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-[max(2.75rem,env(safe-area-inset-top))] sm:px-12 sm:pb-20 sm:pt-24",
-      )}
-    >
+    <div className="atlas-journey-shell relative mx-auto w-full max-w-[min(100%,48rem)]">
+      <div
+        className={cn(
+          "atlas-journey-core relative z-10 mx-auto flex min-h-[100dvh] w-full flex-col",
+          view === "evidence"
+            ? "max-w-[32rem] sm:max-w-[34rem]"
+            : "max-w-[30rem] sm:max-w-[32rem]",
+          "px-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-[max(2.75rem,env(safe-area-inset-top))] sm:px-12 sm:pb-20 sm:pt-24",
+        )}
+      >
       <AnimatePresence mode="sync">
         {view === "notice" && notice && (
           <JourneyPresencePane
@@ -233,6 +249,16 @@ export function AtlasJourneyLayer({
           </JourneyPresencePane>
         )}
       </AnimatePresence>
+      </div>
+
+      {showBranch && branch && (
+        <AtlasBranchCue
+          branch={branch}
+          terminal={isTerminalStop}
+          onFollow={onFollowBranch}
+          className="atlas-branch--journey"
+        />
+      )}
     </div>
   );
 }

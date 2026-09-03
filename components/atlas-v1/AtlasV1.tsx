@@ -31,6 +31,7 @@ import type { AtlasCanonicalView } from "@/lib/canonical/atlas-view";
 import { getQuestionPlacement } from "@/lib/atlas/architecture";
 import { appendThreadPoint } from "@/lib/atlas-v1/living-thread";
 import { LivingThread } from "@/components/atlas-v1/LivingThread";
+import type { AtlasBranchOffer } from "@/lib/atlas/branches";
 
 const PRESENCE_MS = 220;
 const LINGER_MS = 280;
@@ -460,6 +461,38 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
   const showVoidSurface: VoidSurface = showJourney ? "rest" : "questions";
   const voidHidden = showJourney;
 
+  const followBranch = useCallback(
+    (branch: AtlasBranchOffer) => {
+      clearLinger();
+      clearNoticeTimer();
+      setNotice(null);
+      setVoidComplete(true);
+
+      const placement = getQuestionPlacement(branch.entryQuestionId);
+      appendThreadPoint({ kind: "territory", id: placement.territoryId });
+      appendThreadPoint({ kind: "question", id: branch.entryQuestionId });
+      for (const conceptId of branch.trail) {
+        appendThreadPoint({ kind: "concept", id: conceptId });
+      }
+
+      const next: JourneyState = {
+        questionId: branch.entryQuestionId,
+        currentConceptId: branch.toConceptId,
+        trail: [...branch.trail],
+        essaysOpened: [],
+        activeEssayId: null,
+        noticedWhy: null,
+      };
+      setJourney(next);
+      setRelationsVisible(false);
+      setBondNoticed(false);
+      setView("journey");
+      pushHistory("journey", next, false);
+      scrollTop();
+    },
+    [clearLinger, clearNoticeTimer, pushHistory, scrollTop],
+  );
+
   return (
     <div
       ref={shellRef}
@@ -497,6 +530,7 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
           onBeginAgain={backToQuestions}
           onReturn={returnToJourney}
           onBack={backToQuestions}
+          onFollowBranch={followBranch}
         />
       )}
     </div>
