@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { NodeRef } from "@/lib/relationships";
 import { Thread } from "@/components/thread";
-import { CuriosityContinuation } from "@/components/world/CuriosityContinuation";
 import { cn } from "@/lib/utils";
 
 interface LanternReadingShellProps {
@@ -97,8 +96,6 @@ export function LanternReadingShell({
           </Link>
         </nav>
       </article>
-
-      <CuriosityContinuation />
     </div>
   );
 }

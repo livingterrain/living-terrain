@@ -4,7 +4,7 @@ import { AtlasArchive } from "@/components/atlas/AtlasArchive";
 import { Room } from "@/components/environment";
 
 export const metadata: Metadata = {
-  title: "Charted Maps · The Atlas",
+  title: "Mapped investigations",
   description:
     "Domains of inquiry and completed investigations hung as cartographic plates in Living Terrain.",
 };

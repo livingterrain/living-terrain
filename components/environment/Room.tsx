@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import type { RoomKind } from "@/lib/rooms";
 import { rooms } from "@/lib/rooms";
 import { RoomAtmosphere } from "./RoomAtmosphere";
-import { CuriosityContinuation } from "@/components/world/CuriosityContinuation";
 
 interface RoomProps {
   kind: RoomKind;
@@ -40,7 +39,6 @@ export function Room({ kind, children, className }: RoomProps) {
       />
       <div className={cn("relative z-10", profile.vignette)}>
         {children}
-        <CuriosityContinuation />
       </div>
     </div>
   );
