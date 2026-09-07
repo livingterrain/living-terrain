@@ -22,8 +22,10 @@ export const ATLAS_DATA: AtlasData = {
     title: "Living Terrain",
     description:
       "A contemplative space between museum, library, field notebook, and reading room — exploring the questions beneath how we see the world.",
-    url: "https://livingterrain.com",
+    url: "https://chelseathacker.com",
     author: "Chelsea M. Thacker",
+    substackUrl: "https://livingterrain.substack.com",
+    substackSubscribeUrl: "https://livingterrain.substack.com/subscribe",
     mediumUrl: "https://medium.com/@livingterrain",
     amazonBookUrl: STRUCTURE_BENEATH_REALITY_URL,
     seriesUrl: LIVING_TERRAIN_SERIES_URL,
@@ -209,7 +211,7 @@ export const ATLAS_DATA: AtlasData = {
         introduction:
           "Reality appears stable — yet everything within it changes. This book asks what hidden structures allow that stability: the architectures of perception, embodiment, relationship, meaning, and the real that we rarely examine because they work too quietly to notice.",
         whyExists:
-          "Living Terrain began with a question that would not leave: what must already be in place for anything to appear as real? The Structure Beneath Reality is the first full statement of that inquiry — a book, not a conclusion. This website is the ongoing cartography around it: essays on Medium, questions that branch, field notes that record what the book could not hold. The investigation did not end at publication. It opened.",
+          "Living Terrain began with a question that would not leave: what must already be in place for anything to appear as real? The Structure Beneath Reality is the first full statement of that inquiry — a book, not a conclusion. This website is the ongoing cartography around it: essays first published on Substack, questions that branch, field notes that record what the book could not hold. The investigation did not end at publication. It opened.",
         statusLabel: "Published · inquiry continues",
         statusDescription:
           "The volume exists in print and digital. Living Terrain maps what continues — the essays, questions, and observations that extend and complicate the work.",
@@ -243,7 +245,7 @@ export const ATLAS_DATA: AtlasData = {
             date: "Now",
             title: "The network grows",
             description:
-              "Essays on Medium connect to the book. Questions branch. The archive is still being built.",
+              "Essays published through Living Terrain on Substack connect to the book. Questions branch. The archive is still being built.",
           },
         ],
         whereToBegin: [
@@ -256,10 +258,10 @@ export const ATLAS_DATA: AtlasData = {
           },
           {
             id: "w2",
-            title: "Read essays on Medium",
+            title: "Read essays on Substack",
             description:
-              "Shorter writing that orbits the book — published on Medium, mapped here as the inquiry extends.",
-            href: "https://medium.com/@livingterrain",
+              "Shorter writing that orbits the book — first published on Substack, mapped here as the inquiry extends.",
+            href: "https://livingterrain.substack.com",
           },
           {
             id: "w3",

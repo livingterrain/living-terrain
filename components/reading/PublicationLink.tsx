@@ -2,19 +2,19 @@ import { TextLink } from "@/components/design-system";
 import { siteConfig } from "@/lib/content/data";
 import { cn } from "@/lib/utils";
 
-interface MediumPublicationLinkProps {
+interface PublicationLinkProps {
   className?: string;
   prominent?: boolean;
 }
 
-export function MediumPublicationLink({
+export function PublicationLink({
   className,
   prominent,
-}: MediumPublicationLinkProps) {
+}: PublicationLinkProps) {
   if (prominent) {
     return (
       <a
-        href={siteConfig.mediumUrl}
+        href={siteConfig.substackUrl}
         target="_blank"
         rel="noopener noreferrer"
         className={cn(
@@ -22,14 +22,14 @@ export function MediumPublicationLink({
           className,
         )}
       >
-        Read Essays on Medium
+        Read Essays on Substack
       </a>
     );
   }
 
   return (
-    <TextLink href={siteConfig.mediumUrl} external className={className}>
-      Read Essays on Medium
+    <TextLink href={siteConfig.substackUrl} external className={className}>
+      Read Essays on Substack
     </TextLink>
   );
 }

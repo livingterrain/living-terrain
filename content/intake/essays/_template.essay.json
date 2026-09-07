@@ -1,9 +1,12 @@
 {
   "title": "",
-  "mediumUrl": "",
+  "canonicalUrl": "",
+  "substackUrl": "",
+  "mediumUrl": null,
   "subtitle": "",
   "publishedAt": "YYYY-MM-DD",
   "featuredImage": null,
   "status": "draft",
+  "publicationStatus": "draft",
   "overrides": {}
 }

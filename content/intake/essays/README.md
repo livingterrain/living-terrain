@@ -1,78 +1,43 @@
-# Medium essay import
+# Substack-first essay import
 
-Add essays to Living Terrain with **five fields**. The import workflow generates everything else.
+Substack is the canonical first publication for Living Terrain. The website keeps a chamber for each essay with metadata, excerpt, concepts, questions, and relationships. Medium is optional secondary distribution; full essay text is not duplicated here.
 
-## What you provide
+## Intake fields
 
-Create `content/intake/essays/<slug>.essay.json`:
+Create `content/intake/essays/<slug>.essay.json` with:
 
-| Field | Required | Example |
-|-------|----------|---------|
-| `title` | yes | `"Constraint Is Not the Opposite of Freedom"` |
-| `mediumUrl` | yes | `"https://medium.com/illumination/..."` |
-| `subtitle` | yes | One-line description / deck |
-| `publishedAt` | yes | `"2026-06-24"` |
-| `featuredImage` | no | `"./images/my-essay.jpg"` (path relative to intake file) |
+- `title`, `subtitle`, and `publishedAt` (`YYYY-MM-DD`)
+- `canonicalUrl`: the canonical published URL, normally the Substack post
+- `substackUrl`: the same Substack post URL (may be used alone and becomes canonical)
+- `mediumUrl`: optional Medium mirror
+- `publicationStatus`: `draft`, `scheduled`, `published`, or `archived`
+- optional `featuredImage` and curation `overrides`
 
-Optional `overrides` for curation (themes, questions, rationales) — see `_template.essay.json`.
-
-## What gets generated
-
-| Output | Where it lives |
-|--------|----------------|
-| **Chamber page** (lantern reading room) | `/essays/<slug>` — auto from atlas |
-| **Constellation node** | Home sky, orbits major concept at level 3 |
-| **Neighboring concepts** | Theme + echo/parent connections |
-| **"What this touches"** | Relationship panel via `theme`, `pathway`, `chamber`, `volume` edges |
-| **Suggested threads** | Observatory pathway fit scores |
-| **Observatory category** | Major concept cluster |
-| **Return to constellation** | `/?focus=<essay-id>` ("On the map" link) |
-
-Imported essays merge into the atlas via `lib/atlas/imports/` — **no edits to `lib/atlas/data.ts` per essay**.
+During migration, an existing intake containing only `mediumUrl` remains valid. It produces a legacy Medium-only chamber and does not imply that a Substack post exists.
 
 ## Commands
 
 ```bash
-# 1. Create intake file from a title
 npm run content:essay:new -- "My Essay Title"
-
-# 2. Edit the JSON — fill mediumUrl, subtitle, date, optional image
-
-# 3. Preview the full import plan (no writes)
 npm run content:essay:preview -- content/intake/essays/my-essay-title.essay.json
-
-# 4. Apply when the plan looks right
 npm run content:essay:apply -- content/intake/essays/my-essay-title.essay.json
-
-# List pending intakes
 npm run content:essay:list
 ```
 
-After `apply`:
-- Essay module written to `lib/atlas/imports/essays/<slug>.ts`
-- Manifest regenerated at `lib/atlas/imports/index.ts`
-- Intake archived to `content/intake/essays/applied/`
-- Featured image copied to `public/images/essays/<slug>.jpg`
-- Preview saved to `content/intake/essays/preview/<slug>.plan.json`
+Preview before applying. Applying writes the atlas module, regenerates the manifest, archives the intake, and copies an optional image. It does not fetch full prose.
 
-## Working with Cursor
+## Read-only migration inventory
 
-Paste essay details into chat and ask Cursor to:
+```bash
+npm run content:substack:inventory
+npm run content:substack:inventory -- https://livingterrain.substack.com/feed /tmp/substack-inventory.json
+```
 
-1. Create or fill the intake JSON
-2. Run `content:essay:preview` and refine `overrides` if themes or questions need adjustment
-3. Run `content:essay:apply` when you approve
+The inventory compares all website essay titles and dates with the public Substack RSS feed. It reports exact matches, uncertain title matches, feed-missing essays, date conflicts, and duplicate post titles. RSS may expose only a recent window, so “missing” never means confirmed unpublished. The command changes no essay records; an output file is written only when explicitly supplied.
 
-See `.cursor/rules/medium-essay-import.mdc` for agent instructions.
+## Content invariants
 
-## Design principles
-
-- **Intake schema is frozen** — only optional `overrides` extend it
-- **Core atlas stays hand-curated** — imported essays are additive modules
-- **IDs auto-increment** (`e3`, `e4`, …) from existing essays
-- **Slugs auto-generate** from title with collision handling
-- **Inference is overridable** — you curate; the system proposes
-
-## Not imported automatically
-
-This workflow does **not** fetch Medium content. Full essay text stays on Medium; Living Terrain holds metadata, relationships, and the chamber landing page.
+- Preserve existing essay IDs, slugs, routes, and relationships.
+- Do not add inferred Atlas relationships during publication migration.
+- Do not duplicate full Substack prose in the website record.
+- Never infer publication status from a title match.

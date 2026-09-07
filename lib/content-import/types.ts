@@ -1,18 +1,22 @@
 import type { AtlasConnection, AtlasEntry, AtlasStatus } from "../atlas/types";
 
 /**
- * Minimal intake for a Medium essay — stable schema; do not add required fields.
+ * Minimal publication intake. Substack is canonical for new work; legacy
+ * Medium-only records remain valid during migration.
  * Optional `overrides` let you curate inference without changing the workflow.
  */
 export interface EssayIntake {
   title: string;
-  mediumUrl: string;
+  canonicalUrl?: string;
+  substackUrl?: string;
+  mediumUrl?: string;
   subtitle: string;
   /** ISO date YYYY-MM-DD */
   publishedAt: string;
   /** Path relative to intake file, or absolute path on disk */
   featuredImage?: string | null;
   status?: AtlasStatus;
+  publicationStatus?: "draft" | "scheduled" | "published" | "archived";
   /** Signal-style digest vs standard essay — may migrate to field-note later */
   style?: "essay" | "field-digest";
   overrides?: EssayIntakeOverrides;

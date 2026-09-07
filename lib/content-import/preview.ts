@@ -11,7 +11,9 @@ export function formatImportPlanPreview(plan: EssayImportPlan): string {
   lines.push(`Slug:      ${plan.slug}`);
   lines.push(`ID:        ${plan.id}`);
   lines.push(`Route:     ${plan.entry.route}`);
-  lines.push(`Medium:    ${plan.intake.mediumUrl}`);
+  lines.push(`Canonical: ${plan.intake.canonicalUrl ?? plan.intake.substackUrl ?? plan.intake.mediumUrl}`);
+  if (plan.intake.substackUrl) lines.push(`Substack:  ${plan.intake.substackUrl}`);
+  if (plan.intake.mediumUrl) lines.push(`Medium:    ${plan.intake.mediumUrl}`);
   lines.push(`Published: ${plan.intake.publishedAt}`);
   lines.push(`Status:    ${plan.entry.status}`);
   lines.push("");

@@ -1,0 +1,17 @@
+---
+description: Substack-first workflow for adding published essays to Living Terrain
+globs:
+  - content/intake/essays/**
+  - lib/content-import/**
+  - lib/atlas/imports/**
+---
+
+# Substack-first essay import workflow
+
+Substack is canonical. The website stores the essay chamber and relationship metadata; Medium is an optional mirror. Do not copy full publication prose into the website intake.
+
+For new work, provide title, subtitle, publication date, canonical/Substack URL, optional Medium URL, and optional featured image. Run `content:essay:preview` before apply. Apply only after user approval.
+
+Legacy Medium-only intakes remain valid during migration. Do not claim a Substack publication exists until it has been matched and reviewed.
+
+Do not hand-edit generated essay modules, automatically create Atlas relationships, or alter existing IDs and slugs. Use `content:substack:inventory` for read-only matching.

@@ -1,6 +1,6 @@
 /**
  * Display-layer cleanup for essay titles on The Shelves archive.
- * Does not rewrite canonical titles or Medium URLs.
+ * Does not rewrite canonical titles or publication URLs.
  */
 const LEADING_ORNAMENT =
   /^(?:[\s*⭐✨⚡✦🜃🌍✝️\*]|[\uFE0F\u200D\u20E3])+/u;

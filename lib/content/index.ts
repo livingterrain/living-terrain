@@ -27,6 +27,7 @@ import type {
   Quotation,
   Observation,
 } from "./types";
+import { materializeSubstackEssays } from "../content-sync/materialize-essays";
 
 const atlas = () => getAtlas();
 
@@ -47,9 +48,28 @@ export function getQuestionBySlug(slug: string): Question | undefined {
 }
 
 export function getAllEssays(): Essay[] {
-  return atlas()
+  const atlasEssays = atlas()
     .getPublished("essay")
-    .map((e) => toEssay(e, atlas()))
+    .map((e) => toEssay(e, atlas()));
+  const generated = materializeSubstackEssays();
+  const claimed = new Set<string>();
+  const existing = atlasEssays.map((essay) => {
+    const source = generated.find((item) => item.id === essay.id || item.slug === essay.slug);
+    if (!source) return essay;
+    claimed.add(source.id);
+    return {
+      ...essay,
+      canonicalUrl: source.canonicalUrl,
+      substackUrl: source.substackUrl,
+      mediumUrl:
+        essay.mediumUrl ??
+        (essay.externalUrl?.includes("medium.com") ? essay.externalUrl : undefined),
+      publicationStatus: source.publicationStatus,
+      featuredImage: source.featuredImage ?? essay.featuredImage,
+    };
+  });
+  const newUnmapped = generated.filter((essay) => !claimed.has(essay.id));
+  return [...existing, ...newUnmapped]
     .sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
@@ -57,8 +77,7 @@ export function getAllEssays(): Essay[] {
 }
 
 export function getEssayBySlug(slug: string): Essay | undefined {
-  const entry = atlas().getBySlug("essay", slug);
-  return entry ? toEssay(entry, atlas()) : undefined;
+  return getAllEssays().find((essay) => essay.slug === slug);
 }
 
 export function getEssaysByQuestionId(questionId: string): Essay[] {
@@ -162,7 +181,20 @@ export function getProjectEssays(project: Project): Essay[] {
 }
 
 export function getEssayReadUrl(essay: Essay): string {
-  return essay.externalUrl ?? atlas().site.mediumUrl;
+  return (
+    essay.canonicalUrl ??
+    essay.substackUrl ??
+    essay.mediumUrl ??
+    essay.externalUrl ??
+    atlas().site.substackUrl
+  );
+}
+
+export function getEssayReadSource(essay: Essay): "Substack" | "Medium" | "publication" {
+  const url = getEssayReadUrl(essay);
+  if (url.includes("substack.com")) return "Substack";
+  if (url.includes("medium.com")) return "Medium";
+  return "publication";
 }
 
 export function essayHasDirectUrl(essay: Essay): boolean {

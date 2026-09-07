@@ -32,6 +32,26 @@ function validateMediumUrl(url: string): string | null {
   }
 }
 
+function validateUrl(field: string, url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      return `${field} must be an http(s) URL`;
+    }
+    return null;
+  } catch {
+    return `${field} must be a valid URL`;
+  }
+}
+
+function validateSubstackUrl(url: string): string | null {
+  const basic = validateUrl("substackUrl", url);
+  if (basic) return basic;
+  return new URL(url).hostname.endsWith("substack.com")
+    ? null
+    : "substackUrl should be a substack.com link";
+}
+
 function validateDate(date: string): string | null {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return "publishedAt must be YYYY-MM-DD";
@@ -42,11 +62,26 @@ function validateDate(date: string): string | null {
 export function validateIntake(intake: EssayIntake): string[] {
   const errors: string[] = [];
   if (!intake.title?.trim()) errors.push("title is required");
-  if (!intake.mediumUrl?.trim()) errors.push("mediumUrl is required");
+  if (
+    !intake.canonicalUrl?.trim() &&
+    !intake.substackUrl?.trim() &&
+    !intake.mediumUrl?.trim()
+  ) {
+    errors.push(
+      "canonicalUrl or substackUrl is required (legacy mediumUrl is also accepted during migration)",
+    );
+  }
   if (!intake.subtitle?.trim()) errors.push("subtitle is required");
   if (!intake.publishedAt?.trim()) errors.push("publishedAt is required");
   const urlErr = intake.mediumUrl ? validateMediumUrl(intake.mediumUrl) : null;
   if (urlErr) errors.push(urlErr);
+  const canonicalErr = intake.canonicalUrl ? validateUrl("canonicalUrl", intake.canonicalUrl) : null;
+  if (canonicalErr) errors.push(canonicalErr);
+  const substackErr = intake.substackUrl ? validateSubstackUrl(intake.substackUrl) : null;
+  if (substackErr) errors.push(substackErr);
+  if (intake.canonicalUrl && intake.substackUrl && intake.canonicalUrl !== intake.substackUrl) {
+    errors.push("canonicalUrl and substackUrl must match when both are supplied");
+  }
   const dateErr = intake.publishedAt ? validateDate(intake.publishedAt) : null;
   if (dateErr) errors.push(dateErr);
   return errors;
@@ -121,6 +156,8 @@ export async function generateEssayImportPlan(
   const description =
     intake.overrides?.description?.trim() || intake.subtitle.trim();
   const excerpt = intake.overrides?.excerpt?.trim() || description;
+  const canonicalUrl = intake.canonicalUrl?.trim() || intake.substackUrl?.trim();
+  const mediumUrl = intake.mediumUrl?.trim();
 
   const majorConcept = concepts.find((c) => c.id === majorConceptId);
   const chamber = entries.find((e) => e.type === "chamber");
@@ -141,7 +178,15 @@ export async function generateEssayImportPlan(
       subtitle: intake.subtitle.trim(),
       excerpt,
       topics,
-      externalUrl: intake.mediumUrl.trim(),
+      ...(canonicalUrl ? { canonicalUrl } : {}),
+      ...(intake.substackUrl?.trim()
+        ? { substackUrl: intake.substackUrl.trim() }
+        : {}),
+      ...(mediumUrl ? { mediumUrl } : {}),
+      publicationStatus:
+        intake.publicationStatus ??
+        (intake.status === "draft" ? "draft" : "published"),
+      ...(!canonicalUrl && mediumUrl ? { externalUrl: mediumUrl } : {}),
       style: intake.style ?? "essay",
       ...(intake.overrides?.body?.trim()
         ? { body: intake.overrides.body.trim() }

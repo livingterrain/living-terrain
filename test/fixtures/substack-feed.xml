@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+  <item>
+    <title><![CDATA[A Living Test]]></title>
+    <description><![CDATA[An exact &amp; useful subtitle.]]></description>
+    <link>https://livingterrain.substack.com/p/a-living-test?utm_source=publication</link>
+    <guid isPermaLink="false">https://livingterrain.substack.com/p/a-living-test</guid>
+    <dc:creator><![CDATA[Chelsea Thacker]]></dc:creator>
+    <pubDate>Fri, 04 Sep 2026 14:30:58 GMT</pubDate>
+    <enclosure url="https://example.com/cover.jpg" length="0" type="image/jpeg"/>
+    <category><![CDATA[Systems]]></category>
+  </item>
+</channel></rss>

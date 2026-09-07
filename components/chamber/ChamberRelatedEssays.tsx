@@ -1,5 +1,5 @@
 import { ConnectionWeb } from "@/components/network";
-import { MediumPublicationLink } from "@/components/reading/MediumPublicationLink";
+import { PublicationLink } from "@/components/reading/PublicationLink";
 import { TextLink } from "@/components/design-system";
 import type { Essay } from "@/lib/content/types";
 
@@ -61,7 +61,7 @@ export function ChamberRelatedEssays({ essays }: ChamberRelatedEssaysProps) {
           <p className="type-body text-[0.9375rem]">
             Related essays will appear here as they are connected.
           </p>
-          <MediumPublicationLink prominent className="mt-6" />
+          <PublicationLink prominent className="mt-6" />
         </div>
       )}
     </section>

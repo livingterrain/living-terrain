@@ -53,6 +53,8 @@ export interface AtlasSiteConfig {
   description: string;
   url: string;
   author: string;
+  substackUrl: string;
+  substackSubscribeUrl: string;
   mediumUrl: string;
   amazonBookUrl: string;
   seriesUrl?: string;
@@ -132,11 +134,19 @@ export interface EssayMeta {
   excerpt: string;
   /**
    * Full essay prose for on-site Read (paragraphs separated by blank lines).
-   * Optional during migration — Medium remains the mirror when body is absent.
+   * Optional. Publication prose remains at the canonical publication source.
    */
   body?: string;
   topics: string[];
-  /** Medium (or other) publication mirror — not the primary Read destination */
+  /** Canonical publication URL, normally Substack. */
+  canonicalUrl?: string;
+  /** Primary Living Terrain publication URL. */
+  substackUrl?: string;
+  /** Optional secondary Medium distribution URL. */
+  mediumUrl?: string;
+  /** Publication lifecycle, independent of the on-site Atlas entry status. */
+  publicationStatus?: "draft" | "scheduled" | "published" | "archived";
+  /** @deprecated Legacy external publication URL; retained during migration. */
   externalUrl?: string;
   /** Public path e.g. /images/essays/my-slug.jpg */
   featuredImage?: string;

@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const result = await subscribeToWaitlist({ email, source });
 
     return NextResponse.json(result, {
-      status: result.success ? 200 : 400,
+      status: result.success ? 200 : 503,
     });
   } catch {
     return NextResponse.json(

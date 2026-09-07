@@ -3,7 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { TextLink } from "@/components/design-system";
-import { MediumPublicationLink } from "@/components/reading/MediumPublicationLink";
+import { PublicationLink } from "@/components/reading/PublicationLink";
 import type { Essay, FieldNote, Question, Project } from "@/lib/content/types";
 import { AmbientEnvironment } from "./AmbientEnvironment";
 import { CatalogEntry } from "./CatalogEntry";
@@ -98,7 +98,7 @@ export function LivingArchive({
             Essays published on Medium — traced here as they connect to questions
             across the terrain.
           </p>
-          <MediumPublicationLink className="mt-6 inline-block" />
+          <PublicationLink className="mt-6 inline-block" />
           {essays.length > 0 && (
             <ul className="mt-16 space-y-0">
               {essays.slice(0, 3).map((essay, i) => (

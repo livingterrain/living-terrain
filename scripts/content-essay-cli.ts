@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 /**
- * Medium essay content import CLI
+ * Substack-first essay content import CLI
  *
  *   npm run content:essay:new -- "My Essay Title"
  *   npm run content:essay:preview -- content/intake/essays/my-essay.essay.json
@@ -44,7 +44,7 @@ async function main(): Promise<void> {
 
 function printHelp(): void {
   console.log(`
-Medium essay import workflow
+Substack-first essay import workflow
 
   new <title>     Create intake file from template
   preview <file>  Show generated atlas plan (no writes)
@@ -75,16 +75,19 @@ async function cmdNew(title: string): Promise<void> {
 
   const template = {
     title,
-    mediumUrl: "",
+    canonicalUrl: "",
+    substackUrl: "",
+    mediumUrl: null,
     subtitle: "",
     publishedAt: new Date().toISOString().slice(0, 10),
     featuredImage: null,
     status: "draft",
+    publicationStatus: "draft",
   };
 
   fs.writeFileSync(dest, `${JSON.stringify(template, null, 2)}\n`, "utf8");
   console.log(`Created intake: ${dest}`);
-  console.log("Fill in mediumUrl, subtitle, and optional featuredImage path.");
+  console.log("Fill in canonicalUrl/substackUrl, subtitle, and optional Medium mirror or image.");
 }
 
 async function cmdPreview(fileArg?: string): Promise<void> {

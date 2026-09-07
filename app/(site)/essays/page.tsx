@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { EssaysArchive } from "@/components/reading/EssaysArchive";
-import { MediumPublicationLink } from "@/components/reading/MediumPublicationLink";
+import { PublicationLink } from "@/components/reading/PublicationLink";
 import { getAllEssays } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export default function EssaysPage() {
       <section className="pb-24 pt-4 sm:pb-32">
         <Container narrow>
           <div className="mb-10 text-center sm:mb-12">
-            <MediumPublicationLink className="text-[0.8125rem]" />
+            <PublicationLink className="text-[0.8125rem]" />
           </div>
 
           <EssaysArchive essays={essays} />

@@ -67,7 +67,11 @@ export interface Essay {
   childRefs?: ContentRef[];
   quotationIds?: string[];
   observationIds?: string[];
-  /** Medium (or other) publication mirror — not the primary Read destination */
+  canonicalUrl?: string;
+  substackUrl?: string;
+  mediumUrl?: string;
+  publicationStatus?: "draft" | "scheduled" | "published" | "archived";
+  /** @deprecated Legacy external publication URL retained during migration. */
   externalUrl?: string;
   /** Optional chamber/OG image */
   featuredImage?: string;

@@ -7,6 +7,7 @@ import {
   getAllEssays,
   getEssayBySlug,
   getEssayReadUrl,
+  getEssayReadSource,
 } from "@/lib/content";
 import { refFromEssay } from "@/lib/relationships";
 import { formatDate } from "@/lib/utils";
@@ -39,17 +40,18 @@ export default async function EssayPage({ params }: PageProps) {
   if (!essay) notFound();
 
   const hasBody = Boolean(essay.body?.trim());
-  const mediumUrl = getEssayReadUrl(essay);
+  const readUrl = getEssayReadUrl(essay);
+  const readSource = getEssayReadSource(essay);
 
-  const mediumWhisper = (
+  const publicationWhisper = (
     <p className="lantern-meta mt-10 text-[0.8125rem] leading-relaxed">
       Also published on{" "}
       <TextLink
-        href={mediumUrl}
+        href={readUrl}
         external
         className="lantern-link text-[0.8125rem]"
       >
-        Medium
+        {readSource}
       </TextLink>
       .
     </p>
@@ -69,7 +71,7 @@ export default async function EssayPage({ params }: PageProps) {
         </>
       }
       nodeRef={hasBody ? refFromEssay(essay) : undefined}
-      afterThread={hasBody ? mediumWhisper : undefined}
+      afterThread={hasBody ? publicationWhisper : undefined}
       returnHref="/essays"
       variant="library"
     >
@@ -79,15 +81,15 @@ export default async function EssayPage({ params }: PageProps) {
         <>
           <p>{essay.excerpt}</p>
           <p className="lantern-meta mt-8 text-[0.9375rem]">
-            The full essay is published on Medium. Living Terrain holds it here
-            as part of a connected investigation.
+            The full essay is published on {readSource}. Living Terrain holds
+            it here as part of a connected investigation.
           </p>
           <TextLink
-            href={mediumUrl}
+            href={readUrl}
             external
             className="lantern-link mt-8 inline-block"
           >
-            Read on Medium
+            Read on {readSource}
           </TextLink>
         </>
       )}

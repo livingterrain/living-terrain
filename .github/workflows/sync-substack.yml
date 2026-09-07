@@ -1,0 +1,59 @@
+name: Sync Substack publications
+
+on:
+  schedule:
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-substack-publications
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out production branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Read public Substack RSS
+        run: npm run content:substack:sync
+
+      - name: Verify publication registry
+        run: npm run verify:substack-sync
+
+      - name: Verify canonical foundation
+        run: npm run verify:canonical
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Check generated diff
+        run: git diff --check
+
+      - name: Commit validated publication changes
+        shell: bash
+        run: |
+          if git diff --quiet -- data/publications/substack-posts.json; then
+            echo "Substack registry is unchanged."
+            exit 0
+          fi
+          git config user.name "living-terrain-sync[bot]"
+          git config user.email "living-terrain-sync[bot]@users.noreply.github.com"
+          git add -- data/publications/substack-posts.json
+          git commit -m "content: sync Substack publications"
+          git push origin HEAD:main

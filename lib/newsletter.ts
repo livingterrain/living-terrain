@@ -28,11 +28,8 @@ export async function subscribeToWaitlist(
     return { success: false, message: "Please enter a valid email address." };
   }
 
-  // Placeholder: log signup until Resend/Buttondown is configured
-  console.info(`[waitlist:${signup.source}]`, email);
-
   return {
-    success: true,
-    message: "Thank you. We will be in touch when the Observatory opens.",
+    success: false,
+    message: "Email signup is not available yet. Please visit Living Terrain on Substack to subscribe.",
   };
 }

@@ -14,6 +14,12 @@
     "content:essay:apply": "tsx scripts/content-essay-cli.ts apply",
     "content:essay:list": "tsx scripts/content-essay-cli.ts list",
     "content:medium:crawl": "tsx scripts/crawl-medium-profile.ts",
+    "content:substack:inventory": "tsx scripts/inventory-substack.ts",
+    "content:substack:backfill:dry": "tsx scripts/backfill-substack.ts",
+    "content:substack:sync": "tsx scripts/sync-substack.ts",
+    "verify:publication": "tsx scripts/verify-publication-foundation.ts",
+    "verify:substack-sync": "tsx scripts/verify-substack-sync.ts",
+    "test:substack-sync": "tsx scripts/test-substack-sync.ts",
     "verify:atlas": "tsx scripts/verify-atlas-journey.mjs",
     "verify:canonical": "tsx scripts/verify-canonical.ts"
   },

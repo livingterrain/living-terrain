@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { TextLink } from "@/components/design-system";
-import { MediumPublicationLink } from "@/components/reading/MediumPublicationLink";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { siteConfig } from "@/lib/content/data";
 
@@ -34,12 +33,13 @@ export default function AboutPage() {
               <p>
                 This is not a biography. It is an invitation. The work is
                 organized around questions rather than categories, because
-                questions remain alive while categories harden. Essays on{" "}
-                <TextLink href={siteConfig.mediumUrl} external>
-                  Medium
+                questions remain alive while categories harden. Essays are first published through{" "}
+                <TextLink href={siteConfig.substackUrl} external>
+                  Living Terrain on Substack
                 </TextLink>
-                , a published book, field notes, and an archive still being
-                built — all of it exists in relationship, not isolation.
+                , then gathered here alongside books, field notes, and maps — all
+                of it exists in relationship, not isolation. Medium carries
+                selected essays as secondary distribution.
               </p>
               <p>
                 The central chamber is{" "}
@@ -53,7 +53,9 @@ export default function AboutPage() {
               <p>
                 If you are new here, follow a{" "}
                 <TextLink href="/atlas">question</TextLink>, read an{" "}
-                <MediumPublicationLink /> essay, or simply wander until
+                <TextLink href={siteConfig.substackUrl} external>
+                  essay on Substack
+                </TextLink>, or simply wander until
                 something catches your attention. The terrain rewards slow
                 movement.
               </p>

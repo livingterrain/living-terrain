@@ -25,7 +25,7 @@ Companion document: [`LIVING_TERRAIN_ROADMAP.md`](./LIVING_TERRAIN_ROADMAP.md) â
 
 | Layer | Count | Status |
 |---|---|---|
-| Essays | 11 | Published (bodies primarily on Medium; Atlas V1 holds authentic excerpts for 8) |
+| Essays | 120 | Website chambers; Substack is canonical for new publication, Medium records await migration; Atlas V1 holds a curated evidence subset |
 | Books / maps | 7 | Published as physical field journals; chapter text not yet in-repo |
 | Continents (major concepts) | 10 | Live in Constellation |
 | Sub-concepts | 2 | Perception, Structure |
