@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { Room } from "@/components/environment";
-import { ObservatoryRoomTone } from "@/components/observatory/ObservatoryRoomTone";
-import { PassageExperience } from "@/components/observatory/the-text";
+import {
+  InstrumentListen,
+  PassageExperience,
+} from "@/components/observatory/the-text";
 import {
   getPassageBySlug,
   getPassageSummaries,
@@ -36,7 +38,14 @@ export default async function PassagePage({ params }: Props) {
 
   return (
     <Room kind="observatory">
-      <ObservatoryRoomTone />
+      <InstrumentListen
+        reading={{
+          id: passage.id,
+          reference: passage.reference,
+          englishText: passage.englishPrimary.text,
+          englishLabel: passage.englishPrimary.label,
+        }}
+      />
       <section className="obs-bench pb-28 pt-10 sm:pb-36 sm:pt-14">
         <Container className="max-w-[46rem]">
           <PassageExperience passage={passage} />
