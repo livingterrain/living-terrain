@@ -263,6 +263,18 @@ export interface Passage extends PassageSummary {
   /** Publishable-core honesty banner. */
   scholarshipStatus?: ScholarshipStatus;
   semanticRangeNote: string;
+  /** Passage-specific framing above the translation compare. */
+  translationFraming?: string;
+  /** Optional restrained aside below compare (e.g. copyrighted phrase evidence). */
+  translationAside?: string;
+  /**
+   * Inactive / future passage relations — do not render as live links
+   * until the target passage is ready.
+   */
+  futureRelations?: {
+    targetSlug: string;
+    reason: string;
+  }[];
   original: PassageOriginal;
   words: PassageWord[];
   translations: TranslationVariant[];

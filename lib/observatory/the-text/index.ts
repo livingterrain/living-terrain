@@ -80,6 +80,7 @@ export {
   passageStatusLabel,
 } from "./passages";
 
+export { GENESIS_1_1_5 } from "./genesis-1-1-5";
 export { GENESIS_2_7 } from "./genesis-2-7";
 
 export const INSTRUMENT_01 = {

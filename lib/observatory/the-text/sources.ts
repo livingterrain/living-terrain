@@ -63,6 +63,40 @@ export const TEXT_SOURCES: Record<string, TextSource> = {
     shortCitation: "Gen 2:7",
     fullCitation: "Genesis 2:7 (WLC / Leningrad B19A tradition).",
   },
+  "gen-1-1-5": {
+    id: "gen-1-1-5",
+    type: "primary-text-edition",
+    shortCitation: "Gen 1:1–5",
+    fullCitation: "Genesis 1:1–5 (WLC / Leningrad B19A tradition).",
+  },
+  "gen-1-14-18": {
+    id: "gen-1-14-18",
+    type: "primary-text-edition",
+    shortCitation: "Gen 1:14–18",
+    fullCitation:
+      "Genesis 1:14–18 (WLC) — luminaries introduced later than the light of Gen 1:3–5.",
+  },
+  "gen-2-1-3": {
+    id: "gen-2-1-3",
+    type: "primary-text-edition",
+    shortCitation: "Gen 2:1–3",
+    fullCitation:
+      "Genesis 2:1–3 (WLC) — closing of the structured creation account begun in Gen 1:1.",
+  },
+  "deut-32-11": {
+    id: "deut-32-11",
+    type: "primary-text-edition",
+    shortCitation: "Deut 32:11",
+    fullCitation:
+      "Deuteronomy 32:11 (WLC) — related רחף imagery of a bird hovering/fluttering over its young.",
+  },
+  "john-1-1-5": {
+    id: "john-1-1-5",
+    type: "primary-text-edition",
+    shortCitation: "John 1:1–5",
+    fullCitation:
+      "John 1:1–5 — later Christian reuse of beginning / creation / life / light language (reception, not Hebrew lexical evidence).",
+  },
   "gen-2-4": {
     id: "gen-2-4",
     type: "primary-text-edition",
@@ -216,6 +250,91 @@ export const TEXT_SOURCES: Record<string, TextSource> = {
     visitorNote:
       "Secondary aid for translation/grammar discussion; not treated as final scholarly authority.",
     note: "Useful for nephesh hayyah across humans/animals, neshamah uncertainty, and dust/from-the-ground observations.",
+  },
+  "net-notes-gen-1-1-2": {
+    id: "net-notes-gen-1-1-2",
+    type: "other-scholarly",
+    shortCitation: "NET Bible notes (Gen 1:1–2)",
+    fullCitation:
+      "New English Translation (NET) Bible notes on Genesis 1:1–2 — secondary aid for syntactic/translation observations (bereshit; ruach Elohim).",
+    visitorNote:
+      "Secondary aid for grammar/translation discussion; not treated as final scholarly authority.",
+  },
+  "rashi-gen-1-1": {
+    id: "rashi-gen-1-1",
+    type: "jewish-interpretive",
+    shortCitation: "Rashi on Gen 1:1",
+    fullCitation: "Rashi (Rabbi Shlomo Yitzchaki). Commentary on Genesis 1:1.",
+    author: "Rashi",
+    visitorNote:
+      "Named medieval Jewish commentary — grammatical-exegetical reading, not a lexicon entry.",
+  },
+  "rashi-gen-1-2": {
+    id: "rashi-gen-1-2",
+    type: "jewish-interpretive",
+    shortCitation: "Rashi on Gen 1:2",
+    fullCitation: "Rashi (Rabbi Shlomo Yitzchaki). Commentary on Genesis 1:2.",
+    author: "Rashi",
+    visitorNote:
+      "Named medieval Jewish commentary on ruach Elohim — interpretive, not the lexical definition.",
+  },
+  "ibn-ezra-gen-1-1": {
+    id: "ibn-ezra-gen-1-1",
+    type: "jewish-interpretive",
+    shortCitation: "Ibn Ezra on Gen 1:1",
+    fullCitation:
+      "Ibn Ezra (Abraham ibn Ezra). Commentary on Genesis 1:1.",
+    author: "Ibn Ezra",
+    visitorNote: "Named medieval Jewish grammatical interpretation of bereshit.",
+  },
+  "ibn-ezra-gen-1-4-5": {
+    id: "ibn-ezra-gen-1-4-5",
+    type: "jewish-interpretive",
+    shortCitation: "Ibn Ezra on Gen 1:4–5",
+    fullCitation:
+      "Ibn Ezra (Abraham ibn Ezra). Commentary on Genesis 1:4–5.",
+    author: "Ibn Ezra",
+    visitorNote:
+      "Named medieval Jewish reading connecting separation of light/darkness with naming.",
+  },
+  "ramban-gen-1-1": {
+    id: "ramban-gen-1-1",
+    type: "jewish-interpretive",
+    shortCitation: "Ramban on Gen 1:1",
+    fullCitation:
+      "Ramban / Nachmanides (Rabbi Moses ben Nachman). Commentary on Genesis 1:1.",
+    author: "Ramban (Nachmanides)",
+    visitorNote:
+      "Named medieval Jewish commentary engaging grammatical and theological readings of bereshit.",
+  },
+  "ramban-gen-1-3-4": {
+    id: "ramban-gen-1-3-4",
+    type: "jewish-interpretive",
+    shortCitation: "Ramban on Gen 1:3–4",
+    fullCitation:
+      "Ramban / Nachmanides (Rabbi Moses ben Nachman). Commentary on Genesis 1:3–4.",
+    author: "Ramban (Nachmanides)",
+    visitorNote:
+      "Named medieval Jewish commentary distinguishing plain meaning and aggadic/theological readings of light.",
+  },
+  "radak-gen-1-1": {
+    id: "radak-gen-1-1",
+    type: "jewish-interpretive",
+    shortCitation: "Radak on Gen 1:1",
+    fullCitation:
+      "Radak (Rabbi David Kimhi). Commentary on Genesis 1:1 — among Jewish interpreters defending an independent/absolute reading of bereshit.",
+    author: "Radak",
+    visitorNote:
+      "Named medieval Jewish grammatical defense of an absolute reading of bereshit.",
+  },
+  "bereshit-rabbah-1": {
+    id: "bereshit-rabbah-1",
+    type: "jewish-interpretive",
+    shortCitation: "Bereshit Rabbah 1",
+    fullCitation:
+      "Bereshit Rabbah (Genesis Rabbah), section 1 — early rabbinic midrashic reception of Genesis 1.",
+    visitorNote:
+      "Early Jewish reception; preserves disagreement rather than one uncontested chronology.",
   },
   "future-bdb": {
     id: "future-bdb",

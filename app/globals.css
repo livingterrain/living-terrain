@@ -8653,6 +8653,7 @@ button.obs-lens__obs:disabled {
   line-height: 1.65;
   color: var(--obs-ink);
   max-width: 36rem;
+  white-space: pre-wrap;
 }
 
 .obs-text-english__cap {
@@ -8750,6 +8751,7 @@ button.obs-lens__obs:disabled {
   line-height: 2.05;
   color: var(--obs-ink);
   letter-spacing: 0.01em;
+  white-space: pre-wrap;
 }
 
 .obs-text-original__plain {
@@ -9077,6 +9079,7 @@ button.obs-lens__obs:disabled {
   font-size: 1rem;
   line-height: 1.68;
   color: color-mix(in srgb, var(--obs-ink) 94%, transparent);
+  white-space: pre-wrap;
 }
 
 .obs-text-compare__mark {

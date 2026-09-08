@@ -29,6 +29,10 @@ export const GENESIS_2_7: Passage = {
   status: "ready",
   scholarshipStatus: "verified-core",
   whisper: "Dust, breath, and what a human becomes.",
+  translationFraming:
+    "English translations must choose how to carry nephesh hayyah. Older versions often use “living soul”; others use “living creature” or “living being.” The difference matters because modern English “soul” can suggest an immaterial, separable self in ways the Hebrew phrase does not necessarily specify here. “Living being” is not the one correct translation; “soul” is not simply a mistranslation.",
+  translationAside:
+    "JPS / NJPS 1985 renders the closing phrase as “living being” (cited as translation evidence, not as Jewish doctrine; full copyrighted verse text is not reproduced here).",
   englishPrimary: {
     label: "ASV",
     attribution: "American Standard Version (1901), public domain",

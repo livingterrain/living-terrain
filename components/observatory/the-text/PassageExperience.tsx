@@ -154,15 +154,11 @@ export function PassageExperience({ passage }: { passage: Passage }) {
             <h2 id="obs-text-compare" className="obs-studio__folio">
               Compare translations
             </h2>
-            <p className="obs-text-compare__framing mt-5 max-w-xl">
-              English translations must choose how to carry nephesh hayyah.
-              Older versions often use “living soul”; others use “living
-              creature” or “living being.” The difference matters because
-              modern English “soul” can suggest an immaterial, separable self
-              in ways the Hebrew phrase does not necessarily specify here.
-              “Living being” is not the one correct translation; “soul” is not
-              simply a mistranslation.
-            </p>
+            {passage.translationFraming && (
+              <p className="obs-text-compare__framing mt-5 max-w-xl">
+                {passage.translationFraming}
+              </p>
+            )}
             <div className="mt-7 sm:mt-8">
               <TranslationCompare
                 translations={visibleTranslations}
@@ -170,11 +166,11 @@ export function PassageExperience({ passage }: { passage: Passage }) {
                 preferredRightId="ylt"
               />
             </div>
-            <p className="obs-text-compare__jps mt-6 max-w-xl">
-              JPS / NJPS 1985 renders the closing phrase as “living being”
-              (cited as translation evidence, not as Jewish doctrine; full
-              copyrighted verse text is not reproduced here).
-            </p>
+            {passage.translationAside && (
+              <p className="obs-text-compare__jps mt-6 max-w-xl">
+                {passage.translationAside}
+              </p>
+            )}
           </section>
 
           <section

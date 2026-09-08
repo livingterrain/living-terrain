@@ -36,10 +36,6 @@ export function TranslationCompare({
     ]) {
       phrases.add(note.phrase.toLowerCase());
     }
-    // Always surface the soul / being / creature contrast for this verse.
-    phrases.add("living soul");
-    phrases.add("living creature");
-    phrases.add("living being");
     return phrases;
   }, [left, right]);
 

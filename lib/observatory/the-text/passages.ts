@@ -1,19 +1,21 @@
+import { GENESIS_1_1_5 } from "./genesis-1-1-5";
 import { GENESIS_2_7 } from "./genesis-2-7";
 import type { Passage, PassageSummary } from "./types";
 
 /**
  * Curated passage collection for Instrument 01.
- * Genesis 2:7 holds verified-core scholarship; other passages remain forming shells.
+ * Genesis 1:1–5 and Genesis 2:7 hold verified-core scholarship;
+ * other passages remain forming shells.
  */
 export const PASSAGE_SUMMARIES: PassageSummary[] = [
   {
-    id: "gen-1-1-5",
-    slug: "genesis-1-1-5",
-    reference: "Genesis 1:1–5",
-    language: "hebrew",
-    themes: ["beginning", "creation", "speech", "light"],
-    status: "forming",
-    whisper: "Beginning, speech, and light — still being prepared.",
+    id: GENESIS_1_1_5.id,
+    slug: GENESIS_1_1_5.slug,
+    reference: GENESIS_1_1_5.reference,
+    language: GENESIS_1_1_5.language,
+    themes: GENESIS_1_1_5.themes,
+    status: GENESIS_1_1_5.status,
+    whisper: GENESIS_1_1_5.whisper,
   },
   {
     id: GENESIS_2_7.id,
@@ -45,6 +47,7 @@ export const PASSAGE_SUMMARIES: PassageSummary[] = [
 ];
 
 const PASSAGES_BY_SLUG: Record<string, Passage> = {
+  [GENESIS_1_1_5.slug]: GENESIS_1_1_5,
   [GENESIS_2_7.slug]: GENESIS_2_7,
 };
 
