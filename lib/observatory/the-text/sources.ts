@@ -380,6 +380,86 @@ export const TEXT_SOURCES: Record<string, TextSource> = {
       "Public morphology / parsing tables commonly mirrored in open Bible tools.",
     note: "Prefer OSHB morphology where aligned to WLC.",
   },
+  "exod-3-13-15": {
+    id: "exod-3-13-15",
+    type: "primary-text-edition",
+    shortCitation: "Exod 3:13–15",
+    fullCitation: "Exodus 3:13–15 (WLC / Leningrad B19A tradition).",
+  },
+  "exod-3-12": {
+    id: "exod-3-12",
+    type: "primary-text-edition",
+    shortCitation: "Exod 3:12",
+    fullCitation:
+      "Exodus 3:12 (WLC) — same ehyeh form in the promise commonly rendered “I will be with you.”",
+  },
+  "exod-6-2-3": {
+    id: "exod-6-2-3",
+    type: "primary-text-edition",
+    shortCitation: "Exod 6:2–3",
+    fullCitation:
+      "Exodus 6:2–3 (WLC) — later Exodus discussion of divine-name disclosure relative to the ancestors.",
+  },
+  "rashi-exod-3-14": {
+    id: "rashi-exod-3-14",
+    type: "jewish-interpretive",
+    shortCitation: "Rashi on Exod 3:14",
+    fullCitation: "Rashi (Rabbi Shlomo Yitzchaki). Commentary on Exodus 3:14.",
+    author: "Rashi",
+    visitorNote:
+      "Named medieval Jewish commentary — interpretive reading of ehyeh asher ehyeh through presence in distress, not a lexical definition.",
+  },
+  "berakhot-9b": {
+    id: "berakhot-9b",
+    type: "jewish-interpretive",
+    shortCitation: "Berakhot 9b",
+    fullCitation:
+      "Babylonian Talmud, Berakhot 9b — traditional source cited in Rashi’s reading of Exodus 3:14.",
+    visitorNote:
+      "Rabbinic interpretive source underlying the presence-in-distress reading preserved by Rashi.",
+  },
+  "rashbam-exod-3-14": {
+    id: "rashbam-exod-3-14",
+    type: "jewish-interpretive",
+    shortCitation: "Rashbam on Exod 3:14",
+    fullCitation:
+      "Rashbam (Rabbi Samuel ben Meir). Commentary on Exodus 3:14.",
+    author: "Rashbam",
+    visitorNote:
+      "Named medieval Jewish commentary — registered for attributed reading; exact proposition remains research-continues in this pass.",
+    note: "FLAG: exact in-source proposition not fully verified in this pass.",
+  },
+  "ramban-exod-3-13-15": {
+    id: "ramban-exod-3-13-15",
+    type: "jewish-interpretive",
+    shortCitation: "Ramban on Exod 3:13–15",
+    fullCitation:
+      "Ramban / Nachmanides (Rabbi Moses ben Nachman). Commentary on Exodus 3:13–15.",
+    author: "Ramban (Nachmanides)",
+    visitorNote:
+      "Named medieval Jewish theological commentary engaging divine name / being — not flattened to a single lexical gloss in this pass.",
+    note: "FLAG: fuller citation remains research-continues.",
+  },
+  "net-notes-exod-3-12-15": {
+    id: "net-notes-exod-3-12-15",
+    type: "other-scholarly",
+    shortCitation: "NET Bible notes (Exod 3:12–15)",
+    fullCitation:
+      "New English Translation (NET) Bible notes on Exodus 3:12–15 — secondary translation/philological aid.",
+    visitorNote:
+      "Secondary aid for translation/grammar discussion; not treated as final scholarly authority.",
+    note: "Useful for ehyeh morphology, presence context, and name/translation observations — not a substitute for BDB/HALOT/DCH.",
+  },
+  "lxx-exod-3-14-reception": {
+    id: "lxx-exod-3-14-reception",
+    type: "translation",
+    shortCitation: "LXX Exod 3:14 (reception)",
+    fullCitation:
+      "Greek (Septuagint) tradition of Exodus 3:14 — famously associated with ἐγώ εἰμι ὁ ὤν (“I am the one who is” / “I am the Being One”). Registered here as translation-history / reception evidence.",
+    visitorNote:
+      "Translation history / reception — not equivalence to Hebrew grammar. Exact edition-level verification continues.",
+    note: "FLAG: famous rendering noted; edition-level bibliographic verification remains research-continues.",
+  },
 };
 
 export function getSourceById(id: string): TextSource | undefined {
