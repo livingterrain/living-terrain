@@ -30,7 +30,13 @@ export function WordPanel({
           <p
             className="obs-text-panel__surface"
             dir="auto"
-            lang={/[א-ת]/.test(word.surface) ? "he" : undefined}
+            lang={
+              /[א-ת]/.test(word.surface)
+                ? "he"
+                : /[\u0370-\u03FF\u1F00-\u1FFF]/.test(word.surface)
+                  ? "el"
+                  : undefined
+            }
           >
             {word.surface}
           </p>

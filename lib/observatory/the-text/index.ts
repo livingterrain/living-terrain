@@ -83,6 +83,7 @@ export {
 export { EXODUS_3_13_15 } from "./exodus-3-13-15";
 export { GENESIS_1_1_5 } from "./genesis-1-1-5";
 export { GENESIS_2_7 } from "./genesis-2-7";
+export { JOHN_1_1_5 } from "./john-1-1-5";
 
 export type {
   OriginalLanguageRecording,

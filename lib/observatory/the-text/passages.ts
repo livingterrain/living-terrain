@@ -1,12 +1,12 @@
 import { EXODUS_3_13_15 } from "./exodus-3-13-15";
 import { GENESIS_1_1_5 } from "./genesis-1-1-5";
 import { GENESIS_2_7 } from "./genesis-2-7";
+import { JOHN_1_1_5 } from "./john-1-1-5";
 import type { Passage, PassageSummary } from "./types";
 
 /**
  * Curated passage collection for Instrument 01.
- * Genesis 1:1–5, Genesis 2:7, and Exodus 3:13–15 hold verified-core scholarship;
- * other passages remain forming shells.
+ * Genesis 1:1–5, Genesis 2:7, Exodus 3:13–15, and John 1:1–5 hold verified-core scholarship.
  */
 export const PASSAGE_SUMMARIES: PassageSummary[] = [
   {
@@ -37,13 +37,13 @@ export const PASSAGE_SUMMARIES: PassageSummary[] = [
     whisper: EXODUS_3_13_15.whisper,
   },
   {
-    id: "john-1-1-5",
-    slug: "john-1-1-5",
-    reference: "John 1:1–5",
-    language: "greek",
-    themes: ["beginning", "Logos", "life", "light"],
-    status: "forming",
-    whisper: "Beginning and Logos — still being prepared.",
+    id: JOHN_1_1_5.id,
+    slug: JOHN_1_1_5.slug,
+    reference: JOHN_1_1_5.reference,
+    language: JOHN_1_1_5.language,
+    themes: JOHN_1_1_5.themes,
+    status: JOHN_1_1_5.status,
+    whisper: JOHN_1_1_5.whisper,
   },
 ];
 
@@ -51,6 +51,7 @@ const PASSAGES_BY_SLUG: Record<string, Passage> = {
   [GENESIS_1_1_5.slug]: GENESIS_1_1_5,
   [GENESIS_2_7.slug]: GENESIS_2_7,
   [EXODUS_3_13_15.slug]: EXODUS_3_13_15,
+  [JOHN_1_1_5.slug]: JOHN_1_1_5,
 };
 
 export function getPassageSummaries(): PassageSummary[] {

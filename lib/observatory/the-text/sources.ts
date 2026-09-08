@@ -95,7 +95,7 @@ export const TEXT_SOURCES: Record<string, TextSource> = {
     type: "primary-text-edition",
     shortCitation: "John 1:1–5",
     fullCitation:
-      "John 1:1–5 — later Christian reuse of beginning / creation / life / light language (reception, not Hebrew lexical evidence).",
+      "John 1:1–5 (Nestle 1904 Greek New Testament). Also cited elsewhere as later Christian reuse of beginning / creation / life / light language (reception, not Hebrew lexical evidence for Genesis).",
   },
   "gen-2-4": {
     id: "gen-2-4",
@@ -459,6 +459,111 @@ export const TEXT_SOURCES: Record<string, TextSource> = {
     visitorNote:
       "Translation history / reception — not equivalence to Hebrew grammar. Exact edition-level verification continues.",
     note: "FLAG: famous rendering noted; edition-level bibliographic verification remains research-continues.",
+  },
+  "nestle-1904": {
+    id: "nestle-1904",
+    type: "primary-text-edition",
+    shortCitation: "Nestle 1904",
+    fullCitation:
+      "Nestle, Eberhard. Η ΚΑΙΝΗ ΔΙΑΘΗΚΗ Text with Critical Apparatus. British and Foreign Bible Society, 1904.",
+    year: 1904,
+    publicDomain: true,
+    licenseNote:
+      "Public domain worldwide (BFBS Nestle 1904). Free of known copyright restrictions.",
+    visitorNote: "Greek textual base for John 1:1–5 in this instrument.",
+    url: "https://sites.google.com/site/nestle1904/",
+  },
+  "john-1-14": {
+    id: "john-1-14",
+    type: "primary-text-edition",
+    shortCitation: "John 1:14",
+    fullCitation:
+      "John 1:14 (Nestle 1904) — “the Word became flesh”; contextual for Logos identity beyond vv. 1–5.",
+  },
+  "prov-8": {
+    id: "prov-8",
+    type: "primary-text-edition",
+    shortCitation: "Prov 8",
+    fullCitation:
+      "Proverbs 8 — personified Wisdom in creation (scriptural background; not equated with John’s Logos).",
+  },
+  "sirach-24": {
+    id: "sirach-24",
+    type: "primary-text-edition",
+    shortCitation: "Sirach 24",
+    fullCitation:
+      "Sirach (Ecclesiasticus) 24 — Wisdom traditions relevant as conceptual background.",
+  },
+  "wisdom-7-9": {
+    id: "wisdom-7-9",
+    type: "primary-text-edition",
+    shortCitation: "Wis 7–9",
+    fullCitation:
+      "Wisdom of Solomon 7–9 — Wisdom / creation / divine presence themes as conceptual background.",
+  },
+  "philo-logos-background": {
+    id: "philo-logos-background",
+    type: "other-scholarly",
+    shortCitation: "Philo (Logos background)",
+    fullCitation:
+      "Philo of Alexandria — Jewish-Hellenistic uses of λόγος in discourse about God and creation (conceptual environment; dependence not asserted).",
+    visitorNote:
+      "Registered as background comparison. Exact treatise loci not line-verified in this pass.",
+    note: "FLAG: RESEARCH CONTINUES — do not imply specific Philo passages were collated verse-by-verse.",
+  },
+  "origen-john-book-2": {
+    id: "origen-john-book-2",
+    type: "christian-interpretive",
+    shortCitation: "Origen, Comm. John II",
+    fullCitation:
+      "Origen of Alexandria. Commentary on the Gospel of John, Book II (esp. ch. 2 in Ante-Nicene Fathers IX) — distinguishes articular ὁ θεός (Very God / Autotheos) and anarthrous θεός of the Logos by participation.",
+    author: "Origen",
+    visitorNote:
+      "Christian theological reception — not a neutral modern grammar rule.",
+    url: "https://en.wikisource.org/wiki/Ante-Nicene_Fathers/Volume_IX/Origen_on_John/Origen%27s_Commentary_on_the_Gospel_of_John/Book_II/Chapter_2",
+  },
+  "irenaeus-john-1-reception": {
+    id: "irenaeus-john-1-reception",
+    type: "christian-interpretive",
+    shortCitation: "Irenaeus (John 1 reception)",
+    fullCitation:
+      "Irenaeus of Lyons — later cited for reading John 1 in relation to creation through the Word (reception framing; exact locus research continues).",
+    author: "Irenaeus",
+    note: "FLAG: RESEARCH CONTINUES — exact Against Heresies locus not verified in this pass.",
+  },
+  "augustine-john-1-reception": {
+    id: "augustine-john-1-reception",
+    type: "christian-interpretive",
+    shortCitation: "Augustine (Word reception)",
+    fullCitation:
+      "Augustine of Hippo — later Christian reception contrasting eternal Word and human speech (exact locus research continues).",
+    author: "Augustine of Hippo",
+    note: "FLAG: RESEARCH CONTINUES — exact work/locus not verified in this pass.",
+  },
+  "net-notes-john-1-1-5": {
+    id: "net-notes-john-1-1-5",
+    type: "other-scholarly",
+    shortCitation: "NET Bible notes (John 1:1–5)",
+    fullCitation:
+      "New English Translation (NET) Bible notes on John 1:1–5 — secondary aid for grammar/translation observations (article syntax; katelaben; punctuation discussion).",
+    visitorNote:
+      "Secondary aid; not treated as final scholarly authority. Not a substitute for BDAG/LSJ.",
+  },
+  "future-bdag": {
+    id: "future-bdag",
+    type: "lexicon",
+    shortCitation: "BDAG — future",
+    fullCitation:
+      "Bauer, Danker, Arndt, Gingrich. A Greek-English Lexicon of the New Testament… (Future consultation — not cited as consulted for this pass.)",
+    note: "FLAG: not consulted in this verified-core pass.",
+  },
+  "future-lsj": {
+    id: "future-lsj",
+    type: "lexicon",
+    shortCitation: "LSJ — future",
+    fullCitation:
+      "Liddell, Scott, Jones. A Greek-English Lexicon. (Future consultation — not cited as consulted for this pass.)",
+    note: "FLAG: not consulted in this verified-core pass.",
   },
 };
 

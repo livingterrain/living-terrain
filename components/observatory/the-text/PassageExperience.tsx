@@ -5,6 +5,7 @@ import { TextLink } from "@/components/design-system";
 import {
   INSTRUMENT_01,
   confidenceLabel,
+  getPassageBySlug,
   scholarshipStatusLabel,
   type Passage,
 } from "@/lib/observatory/the-text";
@@ -42,6 +43,21 @@ export function PassageExperience({ passage }: { passage: Passage }) {
   const visibleTranslations = passage.translations.filter(
     (t) => t.visibleInCompare !== false,
   );
+
+  const liveTextualRelations = (passage.textualRelations ?? [])
+    .map((relation) => {
+      const target = getPassageBySlug(relation.targetSlug);
+      if (!target || target.status === "forming") return null;
+      return { relation, target };
+    })
+    .filter(
+      (
+        entry,
+      ): entry is {
+        relation: NonNullable<Passage["textualRelations"]>[number];
+        target: Passage;
+      } => entry !== null,
+    );
 
   return (
     <article className="obs-studio obs-studio--file obs-text">
@@ -290,6 +306,34 @@ export function PassageExperience({ passage }: { passage: Passage }) {
               )}
             </ul>
           </section>
+
+          {liveTextualRelations.length > 0 && (
+            <section
+              aria-labelledby="obs-text-relations"
+              className="obs-studio__section obs-text-section obs-text-section--relation"
+              data-stratum="relation"
+            >
+              <p className="obs-text-section__stratum">Textual relation</p>
+              <h2 id="obs-text-relations" className="obs-studio__folio">
+                Related texts
+              </h2>
+              <ul className="obs-text-relations mt-7 sm:mt-8" role="list">
+                {liveTextualRelations.map(({ relation, target }) => (
+                  <li key={relation.targetSlug} className="obs-text-relations__item">
+                    <p className="obs-text-relations__kind">Textual relation</p>
+                    <p className="obs-text-relations__label">{relation.label}</p>
+                    <p className="obs-text-relations__body">{relation.body}</p>
+                    <TextLink
+                      href={`/observatory/the-text/${target.slug}`}
+                      className="obs-text-relations__follow"
+                    >
+                      Follow relation → {target.reference}
+                    </TextLink>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <section
             aria-labelledby="obs-text-terrain"

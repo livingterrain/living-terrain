@@ -8637,6 +8637,7 @@ button.obs-lens__obs:disabled {
 
 .obs-text-root {
   --font-hebrew: var(--font-noto-serif-hebrew), "Noto Serif Hebrew", "Times New Roman", serif;
+  --font-greek: var(--font-noto-serif-greek), "Noto Serif", "Times New Roman", serif;
 }
 
 /* Passage page rhythm — spacious but connected */
@@ -8944,6 +8945,12 @@ button.obs-lens__obs:disabled {
   white-space: pre-wrap;
 }
 
+.obs-text-original__line[dir="ltr"] {
+  font-family: var(--font-greek);
+  letter-spacing: 0.005em;
+  line-height: 1.85;
+}
+
 .obs-text-original__plain {
   white-space: pre-wrap;
 }
@@ -9175,6 +9182,58 @@ button.obs-lens__obs:disabled {
   font-size: 0.98rem;
   line-height: 1.58;
   color: color-mix(in srgb, var(--obs-question) 96%, var(--obs-body));
+}
+
+.obs-text-relations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.obs-text-relations__item {
+  margin: 0;
+  padding-top: 0.35rem;
+  border-top: 1px solid color-mix(in srgb, var(--obs-rule) 55%, transparent);
+  max-width: 36rem;
+}
+
+.obs-text-relations__kind {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--obs-faint) 78%, transparent);
+}
+
+.obs-text-relations__label {
+  margin: 0.45rem 0 0;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--obs-ink);
+}
+
+.obs-text-relations__body {
+  margin: 0.55rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--obs-body) 92%, transparent);
+}
+
+.obs-text-relations__follow {
+  display: inline-block;
+  margin-top: 0.85rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--obs-faint) 88%, var(--obs-accent));
+}
+
+.obs-text-relations__follow:hover,
+.obs-text-relations__follow:focus-visible {
+  color: var(--obs-accent);
+  outline: none;
 }
 
 .obs-text-compare__jps {

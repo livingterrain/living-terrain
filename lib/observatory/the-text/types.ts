@@ -275,6 +275,16 @@ export interface Passage extends PassageSummary {
     targetSlug: string;
     reason: string;
   }[];
+  /**
+   * Supported textual/literary relations to other ready passages.
+   * Rendered quietly before Follow the Terrain — not exploratory terrain.
+   */
+  textualRelations?: {
+    targetSlug: string;
+    kind: "textual-literary";
+    label: string;
+    body: string;
+  }[];
   original: PassageOriginal;
   words: PassageWord[];
   translations: TranslationVariant[];
