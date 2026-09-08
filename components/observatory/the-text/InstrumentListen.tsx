@@ -3,7 +3,7 @@
 /**
  * Instrument 01 — LISTEN control.
  * Single entry point for READ (English passage speech) and AMBIENCE (room tone).
- * Reuses Observatory Listen visual language — not a media-player chrome.
+ * When inside PassageSpeechProvider, full-passage READ uses the shared controller.
  */
 
 import {
@@ -21,16 +21,18 @@ import {
   type PassageReadingSource,
   type PassageSpeechStatus,
 } from "@/lib/observatory/the-text/passage-speech";
+import { usePassageSpeechOptional } from "./PassageSpeechProvider";
 
 const OBS_LISTEN_KEY = "lt-observatory-listen";
 
 export function InstrumentListen({
   reading,
 }: {
-  /** When omitted, only ambience is offered (landing). */
+  /** When omitted, only ambience is offered (landing), unless provider supplies plan. */
   reading?: PassageReadingSource;
 }) {
   const sound = useTerrainSoundOptional();
+  const shared = usePassageSpeechOptional();
   const panelId = useId();
   const hintId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
@@ -38,12 +40,16 @@ export function InstrumentListen({
   const [open, setOpen] = useState(false);
   const [ambienceOn, setAmbienceOn] = useState(false);
   const [prefersReduced, setPrefersReduced] = useState(false);
-  const [speechStatus, setSpeechStatus] =
+  const [localStatus, setLocalStatus] =
     useState<PassageSpeechStatus>("idle");
-  const [speechReady, setSpeechReady] = useState(false);
+  const [localReady, setLocalReady] = useState(false);
 
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const readingIdRef = useRef(reading?.id);
+
+  const useShared = Boolean(shared);
+  const speechStatus = useShared ? shared!.status : localStatus;
+  const speechReady = useShared ? shared!.speechReady : localReady;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -54,14 +60,14 @@ export function InstrumentListen({
   }, []);
 
   useEffect(() => {
+    if (useShared) return;
     if (!speechSynthesisSupported()) {
-      setSpeechReady(false);
-      setSpeechStatus("unsupported");
+      setLocalReady(false);
+      setLocalStatus("unsupported");
       return;
     }
-    setSpeechReady(true);
+    setLocalReady(true);
     const load = () => {
-      // Touch voices list; some browsers populate asynchronously.
       void window.speechSynthesis.getVoices();
     };
     load();
@@ -69,24 +75,27 @@ export function InstrumentListen({
     return () => {
       window.speechSynthesis.removeEventListener("voiceschanged", load);
     };
-  }, []);
+  }, [useShared]);
 
-  const cancelSpeech = useCallback(() => {
+  const cancelLocal = useCallback(() => {
     if (!speechSynthesisSupported()) return;
     window.speechSynthesis.cancel();
     utteranceRef.current = null;
-    setSpeechStatus((s) => (s === "unsupported" ? s : "idle"));
+    setLocalStatus((s) => (s === "unsupported" ? s : "idle"));
   }, []);
 
-  // Stop READ when passage changes or component unmounts (navigation).
   useEffect(() => {
+    if (useShared) return;
     if (readingIdRef.current !== reading?.id) {
-      cancelSpeech();
+      cancelLocal();
       readingIdRef.current = reading?.id;
     }
-  }, [reading?.id, cancelSpeech]);
+  }, [reading?.id, cancelLocal, useShared]);
 
-  useEffect(() => () => cancelSpeech(), [cancelSpeech]);
+  useEffect(() => {
+    if (useShared) return;
+    return () => cancelLocal();
+  }, [cancelLocal, useShared]);
 
   useEffect(() => {
     if (!sound) return;
@@ -142,14 +151,15 @@ export function InstrumentListen({
   }, [sound]);
 
   const silenceAll = useCallback(() => {
-    cancelSpeech();
+    if (shared) shared.cancel();
+    else cancelLocal();
     stopAmbience();
     setOpen(false);
-  }, [cancelSpeech, stopAmbience]);
+  }, [shared, cancelLocal, stopAmbience]);
 
-  const speakEnglish = useCallback(() => {
+  const speakEnglishLocal = useCallback(() => {
     if (!reading || !speechSynthesisSupported()) {
-      setSpeechStatus("unsupported");
+      setLocalStatus("unsupported");
       return;
     }
     const text = normalizePassageSpeechText(reading.englishText);
@@ -164,66 +174,80 @@ export function InstrumentListen({
     if (voice) utter.voice = voice;
     utter.lang = voice?.lang ?? "en-US";
 
-    utter.onstart = () => setSpeechStatus("speaking");
+    utter.onstart = () => setLocalStatus("speaking");
     utter.onend = () => {
       utteranceRef.current = null;
-      setSpeechStatus("idle");
+      setLocalStatus("idle");
     };
     utter.onerror = () => {
       utteranceRef.current = null;
-      setSpeechStatus("idle");
+      setLocalStatus("idle");
     };
-    utter.onpause = () => setSpeechStatus("paused");
-    utter.onresume = () => setSpeechStatus("speaking");
+    utter.onpause = () => setLocalStatus("paused");
+    utter.onresume = () => setLocalStatus("speaking");
 
     utteranceRef.current = utter;
-    setSpeechStatus("speaking");
+    setLocalStatus("speaking");
     window.speechSynthesis.speak(utter);
   }, [reading]);
 
   const playRead = useCallback(() => {
     if (!speechReady || speechStatus === "unsupported") return;
     if (speechStatus === "paused") {
+      if (shared) {
+        shared.resume();
+        return;
+      }
       try {
         window.speechSynthesis.resume();
-        setSpeechStatus("speaking");
+        setLocalStatus("speaking");
         return;
       } catch {
-        /* fall through to restart */
+        /* fall through */
       }
     }
-    speakEnglish();
-  }, [speechReady, speechStatus, speakEnglish]);
+    if (shared) shared.speakFullPassage();
+    else speakEnglishLocal();
+  }, [speechReady, speechStatus, shared, speakEnglishLocal]);
 
   const pauseRead = useCallback(() => {
-    if (!speechSynthesisSupported()) return;
     if (speechStatus !== "speaking") return;
+    if (shared) {
+      shared.pause();
+      return;
+    }
+    if (!speechSynthesisSupported()) return;
     try {
       window.speechSynthesis.pause();
-      // Some browsers ignore pause; detect shortly after.
       window.setTimeout(() => {
         if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-          window.speechSynthesis.cancel();
-          setSpeechStatus("idle");
+          cancelLocal();
         } else {
-          setSpeechStatus("paused");
+          setLocalStatus("paused");
         }
       }, 40);
     } catch {
-      cancelSpeech();
+      cancelLocal();
     }
-  }, [speechStatus, cancelSpeech]);
+  }, [speechStatus, shared, cancelLocal]);
 
   const restartRead = useCallback(() => {
-    speakEnglish();
-  }, [speakEnglish]);
+    if (shared) shared.speakFullPassage();
+    else speakEnglishLocal();
+  }, [shared, speakEnglishLocal]);
 
-  if (!sound && !reading) return null;
+  const hasReading = Boolean(reading || shared);
+  if (!sound && !hasReading) return null;
 
   const ambienceActive = ambienceOn && sound && !sound.muted;
   const readingActive =
     speechStatus === "speaking" || speechStatus === "paused";
   const anythingActive = Boolean(ambienceActive || readingActive);
+
+  const reference =
+    shared?.plan.reference ?? reading?.reference ?? "Passage";
+  const englishLabel =
+    shared?.plan.fullPassage.label ?? reading?.englishLabel ?? "English";
 
   const triggerLabel = open
     ? "Listen — close listening controls"
@@ -263,15 +287,15 @@ export function InstrumentListen({
           role="region"
           aria-label="Listening controls"
         >
-          {reading && (
+          {hasReading && (
             <div className="obs-room-tone__block">
               <p className="obs-room-tone__folio">Read</p>
               <p className="obs-room-tone__meta">
-                {reading.reference}
+                {reference}
                 <span className="obs-studio__status-sep" aria-hidden>
                   ·
                 </span>
-                {reading.englishLabel ?? "English"}
+                {englishLabel}
               </p>
               {speechStatus === "unsupported" || !speechReady ? (
                 <p className="obs-room-tone__note">
@@ -312,17 +336,10 @@ export function InstrumentListen({
                   </button>
                 </div>
               )}
-              {reading.originalRecording ? (
-                <p className="obs-room-tone__note">
-                  Original-language recording: {reading.originalRecording.label}
-                  {/* Slot reserved — do not invent TTS for Hebrew. */}
-                </p>
-              ) : (
-                <p className="obs-room-tone__note">
-                  Original-language reading awaits a labeled recording
-                  tradition — not browser Hebrew speech.
-                </p>
-              )}
+              <p className="obs-room-tone__note">
+                Original-language reading awaits a labeled recording
+                tradition — not browser Hebrew speech.
+              </p>
             </div>
           )}
 

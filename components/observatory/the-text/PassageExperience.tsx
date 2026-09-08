@@ -10,7 +10,14 @@ import {
 } from "@/lib/observatory/the-text";
 import { EvidenceInspect } from "./EvidenceInspect";
 import { OriginalLine, useSelectedWord } from "./OriginalLine";
+import {
+  PassageSpeechUnlock,
+} from "./PassageSpeechProvider";
+import { SectionReadControl } from "./SectionReadControl";
 import { TranslationCompare } from "./TranslationCompare";
+import { PASSAGE_SPEECH_SECTION_ORDER } from "@/lib/observatory/the-text/build-passage-speech";
+
+const TEXT_ONLY_UNLOCK = ["text"] as const;
 
 export function PassageExperience({ passage }: { passage: Passage }) {
   const [revealed, setRevealed] = useState(false);
@@ -38,6 +45,9 @@ export function PassageExperience({ passage }: { passage: Passage }) {
 
   return (
     <article className="obs-studio obs-studio--file obs-text">
+      <PassageSpeechUnlock
+        unlocked={revealed ? PASSAGE_SPEECH_SECTION_ORDER : TEXT_ONLY_UNLOCK}
+      />
       <header className="obs-studio__file-head obs-text__head">
         <TextLink
           href="/observatory/the-text"
@@ -78,9 +88,12 @@ export function PassageExperience({ passage }: { passage: Passage }) {
         data-stratum="text"
       >
         <p className="obs-text-section__stratum">Source · translation</p>
-        <h2 id="obs-text-english" className="obs-studio__folio">
-          Text
-        </h2>
+        <div className="obs-text-section__title-row">
+          <h2 id="obs-text-english" className="obs-studio__folio">
+            Text
+          </h2>
+          <SectionReadControl sectionId="text" />
+        </div>
         <figure className="obs-text-english mt-7 sm:mt-8">
           <blockquote className="obs-text-english__quote">
             {passage.englishPrimary.text}
@@ -129,9 +142,12 @@ export function PassageExperience({ passage }: { passage: Passage }) {
             data-stratum="language"
           >
             <p className="obs-text-section__stratum">Linguistic evidence</p>
-            <h2 id="obs-text-language" className="obs-studio__folio">
-              Language
-            </h2>
+            <div className="obs-text-section__title-row">
+              <h2 id="obs-text-language" className="obs-studio__folio">
+                Language
+              </h2>
+              <SectionReadControl sectionId="language" />
+            </div>
             <ul className="obs-text-notes mt-7 sm:mt-8" role="list">
               {passage.sections.languageNotes.map((note) => (
                 <li key={note.id}>
@@ -151,9 +167,12 @@ export function PassageExperience({ passage }: { passage: Passage }) {
             data-stratum="translation"
           >
             <p className="obs-text-section__stratum">Translation choices</p>
-            <h2 id="obs-text-compare" className="obs-studio__folio">
-              Compare translations
-            </h2>
+            <div className="obs-text-section__title-row">
+              <h2 id="obs-text-compare" className="obs-studio__folio">
+                Compare translations
+              </h2>
+              <SectionReadControl sectionId="translation" />
+            </div>
             {passage.translationFraming && (
               <p className="obs-text-compare__framing mt-5 max-w-xl">
                 {passage.translationFraming}
@@ -181,9 +200,12 @@ export function PassageExperience({ passage }: { passage: Passage }) {
             <p className="obs-text-section__stratum">
               Historical · literary setting
             </p>
-            <h2 id="obs-text-context" className="obs-studio__folio">
-              Context
-            </h2>
+            <div className="obs-text-section__title-row">
+              <h2 id="obs-text-context" className="obs-studio__folio">
+                Context
+              </h2>
+              <SectionReadControl sectionId="context" />
+            </div>
             <div className="obs-text-blocks mt-7 sm:mt-8">
               {passage.sections.context.map((block) => (
                 <div key={block.title} className="obs-text-block">
@@ -211,9 +233,12 @@ export function PassageExperience({ passage }: { passage: Passage }) {
             data-stratum="interpretation"
           >
             <p className="obs-text-section__stratum">Attributed readings</p>
-            <h2 id="obs-text-interp" className="obs-studio__folio">
-              Interpretation
-            </h2>
+            <div className="obs-text-section__title-row">
+              <h2 id="obs-text-interp" className="obs-studio__folio">
+                Interpretation
+              </h2>
+              <SectionReadControl sectionId="interpretation" />
+            </div>
             <p className="obs-text-interp__framing mt-5 max-w-xl">
               Readings below are attributed voices within traditions — not
               linguistic facts, and not a single consensus for each tradition.
@@ -274,9 +299,12 @@ export function PassageExperience({ passage }: { passage: Passage }) {
             <p className="obs-text-section__stratum">
               Exploratory relationships
             </p>
-            <h2 id="obs-text-terrain" className="obs-studio__folio">
-              Follow the terrain
-            </h2>
+            <div className="obs-text-section__title-row">
+              <h2 id="obs-text-terrain" className="obs-studio__folio">
+                Follow the terrain
+              </h2>
+              <SectionReadControl sectionId="terrain" />
+            </div>
             <p className="obs-text-terrain__framing mt-5 max-w-xl">
               The textual evidence ends here. What follows are relationships
               opened by the passage — not equivalences, not destinations that
@@ -303,9 +331,12 @@ export function PassageExperience({ passage }: { passage: Passage }) {
             data-stratum="open"
           >
             <p className="obs-text-section__stratum">Unresolved</p>
-            <h2 id="obs-text-open" className="obs-studio__folio">
-              What remains open
-            </h2>
+            <div className="obs-text-section__title-row">
+              <h2 id="obs-text-open" className="obs-studio__folio">
+                What remains open
+              </h2>
+              <SectionReadControl sectionId="open" />
+            </div>
             <ul className="obs-text-open mt-7 sm:mt-8" role="list">
               {passage.sections.remainsOpen.map((q) => (
                 <li key={q.question} className="obs-text-open__item">

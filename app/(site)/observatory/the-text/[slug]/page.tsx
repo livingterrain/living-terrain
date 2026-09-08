@@ -5,6 +5,7 @@ import { Room } from "@/components/environment";
 import {
   InstrumentListen,
   PassageExperience,
+  PassageSpeechProvider,
 } from "@/components/observatory/the-text";
 import {
   getPassageBySlug,
@@ -38,19 +39,21 @@ export default async function PassagePage({ params }: Props) {
 
   return (
     <Room kind="observatory">
-      <InstrumentListen
-        reading={{
-          id: passage.id,
-          reference: passage.reference,
-          englishText: passage.englishPrimary.text,
-          englishLabel: passage.englishPrimary.label,
-        }}
-      />
-      <section className="obs-bench pb-28 pt-10 sm:pb-36 sm:pt-14">
-        <Container className="max-w-[46rem]">
-          <PassageExperience passage={passage} />
-        </Container>
-      </section>
+      <PassageSpeechProvider passage={passage}>
+        <InstrumentListen
+          reading={{
+            id: passage.id,
+            reference: passage.reference,
+            englishText: passage.englishPrimary.text,
+            englishLabel: passage.englishPrimary.label,
+          }}
+        />
+        <section className="obs-bench pb-28 pt-10 sm:pb-36 sm:pt-14">
+          <Container className="max-w-[46rem]">
+            <PassageExperience passage={passage} />
+          </Container>
+        </section>
+      </PassageSpeechProvider>
     </Room>
   );
 }

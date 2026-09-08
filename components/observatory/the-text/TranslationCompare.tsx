@@ -2,6 +2,7 @@
 
 import { useId, useMemo, useState, type ReactNode } from "react";
 import type { TranslationVariant } from "@/lib/observatory/the-text";
+import { usePassageSpeechOptional } from "./PassageSpeechProvider";
 
 export function TranslationCompare({
   translations,
@@ -13,6 +14,7 @@ export function TranslationCompare({
   preferredRightId?: string;
 }) {
   const groupId = useId();
+  const speech = usePassageSpeechOptional();
   const [leftId, setLeftId] = useState(primaryId);
   const [rightId, setRightId] = useState(() => {
     if (
@@ -85,8 +87,16 @@ export function TranslationCompare({
       </div>
 
       <div className="obs-text-compare__columns">
-        <TranslationColumn translation={left} highlightSet={highlightSet} />
-        <TranslationColumn translation={right} highlightSet={highlightSet} />
+        <TranslationColumn
+          translation={left}
+          highlightSet={highlightSet}
+          speech={speech}
+        />
+        <TranslationColumn
+          translation={right}
+          highlightSet={highlightSet}
+          speech={speech}
+        />
       </div>
 
       <ul className="obs-text-compare__notes" role="list">
@@ -101,18 +111,68 @@ export function TranslationCompare({
   );
 }
 
+function translationAriaName(translation: TranslationVariant): string {
+  if (/american standard/i.test(translation.attribution)) {
+    return "American Standard Version";
+  }
+  if (/young/i.test(translation.attribution)) {
+    return "Young’s Literal Translation";
+  }
+  return translation.label;
+}
+
 function TranslationColumn({
   translation,
   highlightSet,
+  speech,
 }: {
   translation: TranslationVariant;
   highlightSet: Set<string>;
+  speech: ReturnType<typeof usePassageSpeechOptional>;
 }) {
+  const sourceId = `translation:${translation.id}`;
+  const active =
+    Boolean(speech?.isActiveSource(sourceId)) &&
+    (speech?.status === "speaking" || speech?.status === "paused");
+  const canSpeak =
+    Boolean(speech?.speechReady) && speech?.status !== "unsupported";
+
   return (
     <figure className="obs-text-compare__col">
-      <figcaption>
-        <span className="obs-text-compare__label-name">{translation.label}</span>
-        <span className="obs-text-compare__attr">{translation.attribution}</span>
+      <figcaption className="obs-text-compare__caption">
+        <div className="obs-text-compare__caption-copy">
+          <span className="obs-text-compare__label-name">
+            {translation.label}
+          </span>
+          <span className="obs-text-compare__attr">
+            {translation.attribution}
+          </span>
+        </div>
+        {canSpeak && (
+          <button
+            type="button"
+            className="obs-text-read obs-text-read--inline"
+            aria-label={`Read ${translationAriaName(translation)}`}
+            aria-pressed={active}
+            onClick={() => {
+              if (active && speech?.status === "speaking") {
+                speech.pause();
+                return;
+              }
+              if (active && speech?.status === "paused") {
+                speech.resume();
+                return;
+              }
+              speech?.speakTranslation(translation.id);
+            }}
+          >
+            {active && speech?.status === "paused"
+              ? "Resume"
+              : active && speech?.status === "speaking"
+                ? "Pause"
+                : "Read"}
+          </button>
+        )}
       </figcaption>
       <blockquote className="obs-text-compare__text">
         {renderHighlighted(translation.text, highlightSet)}

@@ -95,6 +95,21 @@ export {
   speechSynthesisSupported,
 } from "./passage-speech";
 
+export type {
+  PassageSpeechPlan,
+  PassageSpeechSection,
+  PassageSpeechSectionId,
+  PassageTranslationSpeech,
+} from "./build-passage-speech";
+
+export {
+  PASSAGE_SPEECH_SECTION_ORDER,
+  buildPassageSpeechPlan,
+  speechSectionForStratum,
+  textForSectionOnly,
+  textFromSectionOnward,
+} from "./build-passage-speech";
+
 export const INSTRUMENT_01 = {
   id: "instrument-01",
   number: "01",
