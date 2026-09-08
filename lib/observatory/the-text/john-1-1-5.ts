@@ -36,14 +36,6 @@ export const JOHN_1_1_5: Passage = {
   translationAside:
     "ASV’s “apprehended” and YLT’s “perceive” illustrate two English strategies for κατέλαβεν. Neither crowns a single meaning for the Greek verb.",
   futureRelations: [],
-  textualRelations: [
-    {
-      targetSlug: "genesis-1-1-5",
-      kind: "textual-literary",
-      label: "Genesis 1:1–5",
-      body: "John’s opening strongly echoes Genesis’s language of beginning, creation, light, and darkness. The echo is literary and scriptural — not a claim that John reveals what Genesis secretly meant.",
-    },
-  ],
   englishPrimary: {
     label: "ASV",
     attribution: "American Standard Version (1901), public domain",

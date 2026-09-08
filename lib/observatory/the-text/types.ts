@@ -39,6 +39,71 @@ export type TerrainLinkKind =
   | "atlas"
   | "note";
 
+/**
+ * Evidence-bearing cross-passage relations (Related texts).
+ * Structurally separate from TerrainExploration — never share the visitor list.
+ */
+export type EvidenceRelationType =
+  | "textual"
+  | "linguistic"
+  | "contextual"
+  | "interpretive"
+  | "conceptual";
+
+/**
+ * Relation-layer confidence (visitor/provenance).
+ * Distinct from EpistemicConfidence on lexical claims; map when building inspect claims.
+ */
+export type RelationConfidence =
+  | "widely-recognized"
+  | "well-attested"
+  | "reasonable"
+  | "disputed"
+  | "interpretive"
+  | "research-continues";
+
+/**
+ * Directed evidence relation between ready (or forming) Text passages.
+ * Terrain / exploratory links must not use this type.
+ */
+export interface PassageRelation {
+  id: string;
+  sourceSlug: string;
+  targetSlug: string;
+  type: EvidenceRelationType;
+  /** Short label for the related passage (usually its reference). */
+  title: string;
+  /** Visitor-facing claim when reading from source → target. */
+  claim: string;
+  /**
+   * Optional claim when navigating reverse via symmetricNav.
+   * Use for reception / later-reuse framing — never reverse dependence.
+   */
+  reverseClaim?: string;
+  confidence: RelationConfidence;
+  verificationStatus: "verified" | "research-continues";
+  /** Offer return navigation without claiming reverse literary dependence. */
+  symmetricNav?: boolean;
+  attribution?: {
+    interpreter: string;
+    work?: string;
+    tradition?: string;
+  };
+  /** Reuse EvidenceClaim ids registered with the relation (WHY THIS?). */
+  evidenceClaimIds?: string[];
+  sourceIds?: string[];
+  relatedWordIds?: {
+    passageSlug: string;
+    wordId: string;
+  }[];
+  /**
+   * Conceptual tags only — never imply lexical identity across languages.
+   * Optional; no concept registry required in Phase 2A.
+   */
+  relatedConceptIds?: string[];
+  status: "ready" | "forming";
+}
+
 /** @deprecated Prefer EpistemicConfidence — kept for migration clarity. */
 export type ClaimConfidence = EpistemicConfidence;
 
@@ -268,16 +333,16 @@ export interface Passage extends PassageSummary {
   /** Optional restrained aside below compare (e.g. copyrighted phrase evidence). */
   translationAside?: string;
   /**
-   * Inactive / future passage relations — do not render as live links
-   * until the target passage is ready.
+   * Unfinished / authoring edges — never rendered as ready Related texts.
+   * Use for unbuilt passages or non-promoted reception notes.
    */
   futureRelations?: {
     targetSlug: string;
     reason: string;
   }[];
   /**
-   * Supported textual/literary relations to other ready passages.
-   * Rendered quietly before Follow the Terrain — not exploratory terrain.
+   * @deprecated Phase 2A — evidence relations live in `relations.ts`.
+   * Kept optional only during migration; do not add new entries here.
    */
   textualRelations?: {
     targetSlug: string;

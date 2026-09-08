@@ -28,6 +28,9 @@ export type {
   TranslationMeta,
   TranslationVariant,
   VerificationStatus,
+  EvidenceRelationType,
+  PassageRelation,
+  RelationConfidence,
 } from "./types";
 
 export {
@@ -79,6 +82,16 @@ export {
   PASSAGE_SUMMARIES,
   passageStatusLabel,
 } from "./passages";
+
+export type { ResolvedPassageRelation } from "./relations";
+
+export {
+  EVIDENCE_RELATION_TYPE_LABEL,
+  getEvidenceRelationsForPassage,
+  PASSAGE_RELATIONS,
+  RELATION_CLAIMS,
+  relationConfidenceLabel,
+} from "./relations";
 
 export { EXODUS_3_13_15 } from "./exodus-3-13-15";
 export { GENESIS_1_1_5 } from "./genesis-1-1-5";

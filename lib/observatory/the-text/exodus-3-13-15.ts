@@ -37,14 +37,9 @@ export const EXODUS_3_13_15: Passage = {
     "ASV’s “Jehovah” is a historical English rendering convention for the tetragrammaton — not proof of the ancient pronunciation. Scholarly transliteration often uses YHWH; many English Bibles use LORD. Exact vocalization remains outside the scope of this pass.",
   futureRelations: [
     {
-      targetSlug: "john-1-1-5",
-      reason:
-        "Later Christian beginning / Logos reception history may eventually relate to divine-name and “I am” traditions — not Hebrew lexical evidence for Exodus 3.",
-    },
-    {
       targetSlug: "john-8-58",
       reason:
-        "Later Christian “I am” reception (John 8:58) belongs to reception history. Do not collapse it into Exodus 3:14 Hebrew grammar. Passage not built.",
+        "UNFINISHED EDGE — later Christian “I am” reception (John 8:58) belongs to reception history and is not built as a Text passage. Do not collapse it into Exodus 3:14 Hebrew grammar. Do not promote as a ready evidence relation. John 1:1–5 has no ἐγώ εἰμι and is intentionally not linked here.",
     },
   ],
   englishPrimary: {

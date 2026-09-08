@@ -33,13 +33,7 @@ export const GENESIS_1_1_5: Passage = {
     "English translations must choose among genuine syntactic and lexical decisions in these verses: how to open with bereshit, how to carry tohu va-vohu, and how to render ruach Elohim. The differences are interpretive judgments, not proof that one translator concealed a secret meaning.",
   translationAside:
     "JPS / NJPS 1985 is cited for phrase evidence such as a temporal opening (“When God began to create…”) where relevant — translation evidence, not Jewish doctrine; full copyrighted verse text is not reproduced here.",
-  futureRelations: [
-    {
-      targetSlug: "john-1-1-5",
-      reason:
-        "Later Christian reuse of beginning / creation / life / light language (reception history — not Hebrew lexical evidence).",
-    },
-  ],
+  futureRelations: [],
   englishPrimary: {
     label: "ASV",
     attribution: "American Standard Version (1901), public domain",
@@ -914,7 +908,7 @@ export const GENESIS_1_1_5: Passage = {
             verificationStatus: "verified",
             sourceIds: ["john-1-1-5", "gen-1-1-5"],
             researchFlag:
-              "Future FOLLOW THIS CONNECTION to /observatory/the-text/john-1-1-5 — do not render a live link while that passage remains forming.",
+              "Evidence relation (later reuse) is registered in relations.ts as reverse of John → Genesis textual echo. Interpretation here remains reception — not Hebrew lexical evidence.",
           }),
           namedInterpretation({
             id: "gen-1-ex-nihilo-framing",

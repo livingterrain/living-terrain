@@ -5,7 +5,7 @@ import { TextLink } from "@/components/design-system";
 import {
   INSTRUMENT_01,
   confidenceLabel,
-  getPassageBySlug,
+  getEvidenceRelationsForPassage,
   scholarshipStatusLabel,
   type Passage,
 } from "@/lib/observatory/the-text";
@@ -44,20 +44,7 @@ export function PassageExperience({ passage }: { passage: Passage }) {
     (t) => t.visibleInCompare !== false,
   );
 
-  const liveTextualRelations = (passage.textualRelations ?? [])
-    .map((relation) => {
-      const target = getPassageBySlug(relation.targetSlug);
-      if (!target || target.status === "forming") return null;
-      return { relation, target };
-    })
-    .filter(
-      (
-        entry,
-      ): entry is {
-        relation: NonNullable<Passage["textualRelations"]>[number];
-        target: Passage;
-      } => entry !== null,
-    );
+  const evidenceRelations = getEvidenceRelationsForPassage(passage.slug);
 
   return (
     <article className="obs-studio obs-studio--file obs-text">
@@ -307,30 +294,45 @@ export function PassageExperience({ passage }: { passage: Passage }) {
             </ul>
           </section>
 
-          {liveTextualRelations.length > 0 && (
+          {evidenceRelations.length > 0 && (
             <section
               aria-labelledby="obs-text-relations"
               className="obs-studio__section obs-text-section obs-text-section--relation"
               data-stratum="relation"
             >
-              <p className="obs-text-section__stratum">Textual relation</p>
+              <p className="obs-text-section__stratum">Related texts</p>
               <h2 id="obs-text-relations" className="obs-studio__folio">
                 Related texts
               </h2>
               <ul className="obs-text-relations mt-7 sm:mt-8" role="list">
-                {liveTextualRelations.map(({ relation, target }) => (
-                  <li key={relation.targetSlug} className="obs-text-relations__item">
-                    <p className="obs-text-relations__kind">Textual relation</p>
-                    <p className="obs-text-relations__label">{relation.label}</p>
-                    <p className="obs-text-relations__body">{relation.body}</p>
-                    <TextLink
-                      href={`/observatory/the-text/${target.slug}`}
-                      className="obs-text-relations__follow"
+                {evidenceRelations.map(
+                  ({
+                    relation,
+                    target,
+                    visitorClaim,
+                    kindLabel,
+                    inspectClaim,
+                    fromSource,
+                  }) => (
+                    <li
+                      key={`${relation.id}-${fromSource ? "fwd" : "rev"}`}
+                      className="obs-text-relations__item"
                     >
-                      Follow relation → {target.reference}
-                    </TextLink>
-                  </li>
-                ))}
+                      <p className="obs-text-relations__kind">{kindLabel}</p>
+                      <p className="obs-text-relations__label">
+                        {target.reference}
+                      </p>
+                      <p className="obs-text-relations__body">{visitorClaim}</p>
+                      <EvidenceInspect claim={inspectClaim} />
+                      <TextLink
+                        href={`/observatory/the-text/${target.slug}`}
+                        className="obs-text-relations__follow"
+                      >
+                        Follow relation → {target.reference}
+                      </TextLink>
+                    </li>
+                  ),
+                )}
               </ul>
             </section>
           )}
