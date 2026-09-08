@@ -20,6 +20,7 @@ const RESERVED = new Set([
   "legacy",
   "threads",
   "q",
+  "the-text",
 ]);
 
 export function generateStaticParams() {

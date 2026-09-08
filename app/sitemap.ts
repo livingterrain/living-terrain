@@ -7,6 +7,7 @@ import {
 } from "@/lib/content";
 import { siteConfig } from "@/lib/content/data";
 import { getInvestigations } from "@/lib/observatory/investigations";
+import { getReadyPassageSlugs } from "@/lib/observatory/the-text";
 import { getVisualMapCollections } from "@/lib/visual-maps";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -72,6 +73,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
+  const theText = [
+    {
+      url: `${base}/observatory/the-text`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+    ...getReadyPassageSlugs().map((slug) => ({
+      url: `${base}/observatory/the-text/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.75,
+    })),
+  ];
+
   const visualMaps = getVisualMapCollections().flatMap((c) => [
     {
       url: `${base}/visual-maps/${c.slug}`,
@@ -92,6 +108,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...chambers,
     ...maps,
     ...investigations,
+    ...theText,
     ...essays,
     ...sections,
     ...visualMaps,

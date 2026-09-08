@@ -11,10 +11,11 @@ import {
   observationWhen,
   type Observation,
 } from "@/lib/observatory/observations";
+import { InstrumentEntry } from "@/components/observatory/the-text";
 
 /**
  * Observatory V1 — observations first; investigations rare.
- * Existing typography and pin/case language unchanged.
+ * Instrument 01 (The Text) is a single restrained plate — not a feature grid.
  */
 export function ObservatoryHub() {
   const observations = getBenchObservations();
@@ -22,6 +23,8 @@ export function ObservatoryHub() {
 
   return (
     <div className="obs-studio">
+      <InstrumentEntry />
+
       <section aria-labelledby="obs-field">
         <h2 id="obs-field" className="obs-studio__folio">
           Field observations
