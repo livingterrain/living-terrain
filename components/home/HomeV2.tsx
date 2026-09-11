@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TerrainLink } from "@/components/navigation";
+import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 import { cn } from "@/lib/utils";
 import "./home-v2.css";
 
@@ -118,6 +119,7 @@ export function HomeV2() {
           ))}
         </nav>
       </div>
+      <NewsletterSignup variant="home" />
     </div>
   );
 }

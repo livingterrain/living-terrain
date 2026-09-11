@@ -31,6 +31,7 @@ export const TERRAIN_MENU: readonly MenuDestination[] = [
     label: "Observatory",
     hint: "Still forming.",
   },
+  { href: "/join", label: "Join", hint: "Stay in the field." },
 ] as const;
 
 /**

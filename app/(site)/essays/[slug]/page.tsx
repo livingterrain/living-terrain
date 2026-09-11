@@ -1,3 +1,4 @@
+import { EssayNewsletterCTA } from "@/components/newsletter/EssayNewsletterCTA";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LanternReadingShell } from "@/components/world/LanternReadingShell";
@@ -71,7 +72,7 @@ export default async function EssayPage({ params }: PageProps) {
         </>
       }
       nodeRef={hasBody ? refFromEssay(essay) : undefined}
-      afterThread={hasBody ? publicationWhisper : undefined}
+      afterThread={<>{hasBody && publicationWhisper}<EssayNewsletterCTA hasFullEssay={hasBody} /></>}
       returnHref="/essays"
       variant="library"
     >
