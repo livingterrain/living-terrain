@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 import { roomForPath } from "@/lib/rooms";
 
 /**
- * Site header — Living Terrain · location whisper · Menu only.
- * Global destinations live in Menu; no legacy pathway row or search shell.
+ * Site header — Living Terrain · location whisper · Join · Menu.
+ * Global destinations live in Menu; Join also whispers in the desktop trail.
  */
 export function Header() {
   const pathname = usePathname();

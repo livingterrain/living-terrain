@@ -75,8 +75,45 @@
   }
 }
 
-.terrain-orient__menu-btn {
+.terrain-orient__trail {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.terrain-orient__join {
+  display: none;
+  flex-shrink: 0;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0 0.15rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, #c4a86a 62%, #ebe6dc);
+  text-decoration: none;
+  transition: color 0.6s cubic-bezier(0.38, 0.02, 0.42, 1);
+}
+
+.terrain-orient__join:hover,
+.terrain-orient__join:focus-visible {
+  color: color-mix(in srgb, #c4a86a 78%, #ebe6dc);
+  outline: none;
+}
+
+.terrain-orient__join--soft {
+  color: color-mix(in srgb, #c4a86a 38%, transparent);
+}
+
+@media (min-width: 640px) {
+  .terrain-orient__join {
+    display: inline-flex;
+  }
+}
+
+.terrain-orient__menu-btn {
   flex-shrink: 0;
   min-height: 2.75rem;
   min-width: 2.75rem;

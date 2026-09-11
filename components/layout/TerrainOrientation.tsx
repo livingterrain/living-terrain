@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Persistent orientation: Living Terrain · location whisper · Menu.
+ * Persistent orientation: Living Terrain · location whisper · Join · Menu.
  * Spatially legible without SaaS chrome.
  */
 
@@ -59,18 +59,29 @@ export function TerrainOrientation({
             </p>
           )}
 
-          <button
-            type="button"
-            className={cn(
-              "terrain-orient__menu-btn",
-              dissolve && "terrain-orient__menu-btn--soft",
-            )}
-            onClick={toggleMenu}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? "Close" : "Menu"}
-          </button>
+          <div className="terrain-orient__trail">
+            <TerrainLink
+              href="/join"
+              className={cn(
+                "terrain-orient__join",
+                dissolve && "terrain-orient__join--soft",
+              )}
+            >
+              Join →
+            </TerrainLink>
+            <button
+              type="button"
+              className={cn(
+                "terrain-orient__menu-btn",
+                dissolve && "terrain-orient__menu-btn--soft",
+              )}
+              onClick={toggleMenu}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? "Close" : "Menu"}
+            </button>
+          </div>
         </div>
       </div>
 
