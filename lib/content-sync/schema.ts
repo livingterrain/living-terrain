@@ -73,6 +73,13 @@ export function normalizePublicationTitle(title: string): string {
     .trim();
 }
 
+/** Paid Substack Field Notes stay on Substack; they are not public Living Terrain essays. */
+export function isPaidSubstackFieldNote(post: { title?: string; slug?: string }): boolean {
+  const slug = post.slug?.trim() ?? "";
+  const title = post.title?.trim() ?? "";
+  return /^field-note-\d+/i.test(slug) || /^field note\s+\d+/i.test(title);
+}
+
 export function validateSubstackPost(value: unknown): string[] {
   const errors: string[] = [];
   if (!value || typeof value !== "object") return ["post must be an object"];

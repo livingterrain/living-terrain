@@ -26,7 +26,13 @@ async function main(): Promise<void> {
   const temporaryPath = `${registryPath}.tmp`;
   fs.writeFileSync(temporaryPath, `${JSON.stringify(result.registry, null, 2)}\n`, "utf8");
   fs.renameSync(temporaryPath, registryPath);
-  console.log(JSON.stringify({ changed: true, added: result.added, updated: result.updated, total: result.registry.posts.length }, null, 2));
+  console.log(JSON.stringify({
+    changed: true,
+    added: result.added,
+    updated: result.updated,
+    skipped: result.skipped,
+    total: result.registry.posts.length,
+  }, null, 2));
 }
 
 main().catch((error) => {

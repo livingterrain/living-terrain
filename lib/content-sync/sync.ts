@@ -1,9 +1,11 @@
+import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
-import { isDeepStrictEqual } from "node:util";
+import { promisify, isDeepStrictEqual } from "node:util";
 import type { Essay } from "../content/types";
 import { parseSubstackFeed } from "./substack-feed";
 import { resolveSubstackEssay } from "./resolve-essay";
 import {
+  isPaidSubstackFieldNote,
   normalizeSourceUrl,
   validateSubstackPost,
   type StoredSubstackPost,
@@ -11,11 +13,20 @@ import {
   type SubstackPostRegistry,
 } from "./schema";
 
+const execFileAsync = promisify(execFile);
+
+export const SUBSTACK_RSS_HEADERS = {
+  "user-agent":
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+  accept: "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
+} as const;
+
 export interface SyncResult {
   changed: boolean;
   registry: SubstackPostRegistry;
   added: string[];
   updated: string[];
+  skipped: string[];
 }
 
 function identityKey(guid: string, canonicalUrl: string): string {
@@ -69,14 +80,21 @@ export function syncSubstackRegistry(
   }
   if (parsed.posts.length === 0) throw new Error("RSS feed contained no valid essay items");
 
-  const next: StoredSubstackPost[] = registry.posts.map((post) => ({
-    ...post,
-    ...(post.sourceUrls ? { sourceUrls: [...post.sourceUrls] } : {}),
-  }));
+  const next: StoredSubstackPost[] = registry.posts
+    .filter((post) => !isPaidSubstackFieldNote(post))
+    .map((post) => ({
+      ...post,
+      ...(post.sourceUrls ? { sourceUrls: [...post.sourceUrls] } : {}),
+    }));
   const added: string[] = [];
   const updated: string[] = [];
+  const skipped: string[] = [];
 
   for (const post of parsed.posts) {
+    if (isPaidSubstackFieldNote(post)) {
+      skipped.push(post.slug || post.title);
+      continue;
+    }
     const resolution = resolveSubstackEssay(post, essays, next, aliases);
     if (resolution.kind === "CONFLICT_REVIEW_REQUIRED" || resolution.kind === "ERROR") {
       throw new Error(`${post.title}: ${resolution.kind} — ${resolution.reason}`);
@@ -130,11 +148,44 @@ export function syncSubstackRegistry(
     registry: { version: 1, generatedAt: changed ? generatedAt : registry.generatedAt, posts: next },
     added,
     updated,
+    skipped,
   };
 }
 
-export async function fetchSubstackRss(url: string, fetcher: typeof fetch = fetch): Promise<string> {
-  const response = await fetcher(url, { headers: { "user-agent": "LivingTerrainRssSync/1.0" } });
-  if (!response.ok) throw new Error(`Substack RSS returned ${response.status}`);
-  return response.text();
+export async function fetchSubstackRssWithCurl(url: string): Promise<string> {
+  const { stdout } = await execFileAsync(
+    "curl",
+    [
+      "-sS",
+      "-L",
+      "--fail",
+      "--max-time",
+      "30",
+      "-A",
+      SUBSTACK_RSS_HEADERS["user-agent"],
+      "-H",
+      `Accept: ${SUBSTACK_RSS_HEADERS.accept}`,
+      url,
+    ],
+    { encoding: "utf8", maxBuffer: 12 * 1024 * 1024 },
+  );
+  if (!stdout.includes("<item")) throw new Error("Substack RSS curl fallback returned no essay items");
+  return stdout;
+}
+
+export async function fetchSubstackRss(
+  url: string,
+  fetcher: typeof fetch = fetch,
+  curlFallback: (url: string) => Promise<string> = fetchSubstackRssWithCurl,
+): Promise<string> {
+  const response = await fetcher(url, { headers: { ...SUBSTACK_RSS_HEADERS } });
+  if (response.ok) return response.text();
+  if (response.status === 403) {
+    try {
+      return await curlFallback(url);
+    } catch {
+      throw new Error("Substack RSS returned 403");
+    }
+  }
+  throw new Error(`Substack RSS returned ${response.status}`);
 }

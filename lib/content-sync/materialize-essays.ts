@@ -1,6 +1,7 @@
 import postsRegistry from "../../data/publications/substack-posts.json";
 import type { Essay } from "../content/types";
 import {
+  isPaidSubstackFieldNote,
   type StoredSubstackPost,
   type SubstackPostRegistry,
   validateSubstackPost,
@@ -9,6 +10,7 @@ import {
 const registry = postsRegistry as SubstackPostRegistry;
 
 export function materializeSubstackPost(post: StoredSubstackPost): Essay | null {
+  if (isPaidSubstackFieldNote(post)) return null;
   if (validateSubstackPost(post).length > 0 || !post.essayId || !post.essaySlug) return null;
   return {
     id: post.essayId,

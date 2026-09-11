@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { getEssayReadSource, getEssayReadUrl } from "../lib/content";
 import { materializeSubstackPost } from "../lib/content-sync/materialize-essays";
-import { fetchSubstackRss, syncSubstackRegistry } from "../lib/content-sync/sync";
+import { fetchSubstackRss, SUBSTACK_RSS_HEADERS, syncSubstackRegistry } from "../lib/content-sync/sync";
 import type { Essay } from "../lib/content/types";
 import type { StoredSubstackPost, SubstackPostRegistry } from "../lib/content-sync/schema";
 
@@ -117,7 +117,65 @@ assert.equal(`/essays/${newEssay.slug}`, "/essays/a-new-work");
 assert.equal(getEssayReadUrl(newEssay), "https://livingterrain.substack.com/p/a-new-work");
 assert.equal(getEssayReadSource(newEssay), "Substack");
 
-console.log("test-substack-sync A–J OK");
+// K. Browser RSS headers are sent on a successful fetch.
+let seenHeaders: HeadersInit | undefined;
+const headerXml = feed(item());
+const fetched = await fetchSubstackRss("https://livingterrain.substack.com/feed", async (_url, init) => {
+  seenHeaders = init?.headers;
+  return new Response(headerXml, { status: 200 });
+});
+assert.equal(fetched, headerXml);
+assert.equal((seenHeaders as Record<string, string>)["user-agent"], SUBSTACK_RSS_HEADERS["user-agent"]);
+assert.equal((seenHeaders as Record<string, string>).accept, SUBSTACK_RSS_HEADERS.accept);
+
+// L. A 403 from Node fetch uses the curl fallback instead of failing closed.
+let curlCalled = false;
+const recovered = await fetchSubstackRss(
+  "https://livingterrain.substack.com/feed",
+  async () => new Response("blocked", { status: 403 }),
+  async () => {
+    curlCalled = true;
+    return headerXml;
+  },
+);
+assert.equal(recovered, headerXml);
+assert.ok(curlCalled);
+
+// M. A 403 remains fatal when curl also fails.
+await assert.rejects(
+  () => fetchSubstackRss(
+    "https://livingterrain.substack.com/feed",
+    async () => new Response("blocked", { status: 403 }),
+    async () => {
+      throw new Error("curl failed");
+    },
+  ),
+  /Substack RSS returned 403/,
+);
+
+// N. Paid Field Notes in the RSS window are skipped and do not quarantine public posts.
+const fieldNote = item({
+  title: "FIELD NOTE 001",
+  link: "https://livingterrain.substack.com/p/field-note-001",
+  date: "Fri, 11 Sep 2026 21:17:34 GMT",
+});
+const publicNew = item({
+  title: "The Future Rarely Arrives From Nowhere",
+  link: "https://livingterrain.substack.com/p/the-future-rarely-arrives-from-nowhere",
+  date: "Tue, 08 Sep 2026 13:29:26 GMT",
+});
+const withFieldNotes = syncSubstackRegistry(
+  feed(fieldNote, item({ title: "FIELD NOTE 002", link: "https://livingterrain.substack.com/p/field-note-002" }), publicNew, item()),
+  first.registry,
+  [existing, materializeSubstackPost(rolledOff)!],
+  [],
+  "2026-09-11T00:00:00.000Z",
+);
+assert.deepEqual(withFieldNotes.skipped, ["field-note-001", "field-note-002"]);
+assert.equal(withFieldNotes.registry.posts.some((post) => post.slug.startsWith("field-note-")), false);
+assert.ok(withFieldNotes.registry.posts.some((post) => post.slug === "the-future-rarely-arrives-from-nowhere"));
+
+console.log("test-substack-sync A–N OK");
 }
 
 main().catch((error) => {
