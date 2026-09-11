@@ -3,9 +3,11 @@
 /**
  * Terrain Menu — sparse full-field orientation layer.
  * Replaces cryptic ··· / Further… as the primary escape hatch.
+ * Portaled to document.body so header backdrop-filter cannot trap the overlay.
  */
 
 import { useEffect, useId, useRef } from "react";
+import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { TerrainLink } from "@/components/navigation";
 import {
@@ -59,7 +61,7 @@ export function TerrainMenu({
     onClose();
   }
 
-  return (
+  const menu = (
     <div
       id={dialogId}
       className="terrain-menu"
@@ -117,4 +119,6 @@ export function TerrainMenu({
       </div>
     </div>
   );
+
+  return createPortal(menu, document.body);
 }
