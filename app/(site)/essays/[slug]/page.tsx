@@ -1,6 +1,7 @@
 import { EssayNewsletterCTA } from "@/components/newsletter/EssayNewsletterCTA";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { LanternReadingShell } from "@/components/world/LanternReadingShell";
 import { TextLink } from "@/components/design-system";
 import { renderBody } from "@/components/reading/Prose";
@@ -26,13 +27,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const essay = getEssayBySlug(slug);
   if (!essay) return { title: "Essay Not Found" };
 
-  return {
+  return withCanonical(`/essays/${slug}`, {
     title: essay.title,
     description: essay.excerpt,
     ...(essay.featuredImage
       ? { openGraph: { images: [{ url: essay.featuredImage }] } }
       : {}),
-  };
+  });
 }
 
 export default async function EssayPage({ params }: PageProps) {

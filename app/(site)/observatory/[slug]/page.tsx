@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room } from "@/components/environment";
 import { InvestigationView } from "@/components/observatory/InvestigationView";
@@ -33,10 +34,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const investigation = getInvestigationBySlug(slug);
   if (!investigation) return { title: "Investigation" };
-  return {
+  return withCanonical(`/observatory/${slug}`, {
     title: investigation.title ?? "Investigation",
     description: investigation.description ?? investigation.whisper ?? undefined,
-  };
+  });
 }
 
 export default async function InvestigationPage({ params }: Props) {

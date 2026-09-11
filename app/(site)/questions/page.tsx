@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withCanonical } from "@/lib/seo";
 import dynamic from "next/dynamic";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
@@ -13,11 +14,11 @@ const IdeaStrata = dynamic(
   { loading: () => null },
 );
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withCanonical("/questions", {
   title: "Questions",
   description:
     "Living inquiries — each a hub connecting essays, books, field notes, and ideas across the terrain.",
-};
+});
 
 export default function QuestionsPage() {
   const hubs = getAllQuestionHubs();

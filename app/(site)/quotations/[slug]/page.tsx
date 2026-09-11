@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { Prose, renderBody } from "@/components/reading/Prose";
@@ -22,10 +23,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const quotation = getQuotationBySlug(slug);
   if (!quotation) return { title: "Quotation Not Found" };
 
-  return {
+  return withCanonical(`/quotations/${slug}`, {
     title: quotation.text.slice(0, 60),
     description: quotation.attribution ?? quotation.text,
-  };
+  });
 }
 
 export default async function QuotationPage({ params }: PageProps) {

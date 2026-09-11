@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import {
@@ -23,10 +24,10 @@ export async function generateMetadata({
   const { collection: slug } = await params;
   const collection = getVisualMapCollection(slug);
   if (!collection) return { title: "Visual Map" };
-  return {
+  return withCanonical(`/visual-maps/${slug}`, {
     title: collection.title,
     description: collection.description,
-  };
+  });
 }
 
 export default async function VisualMapCollectionPage({ params }: PageProps) {

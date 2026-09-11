@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { withCanonical } from "@/lib/seo";
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { collectionHref, getVisualMapCollections } from "@/lib/visual-maps";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withCanonical("/visual-maps", {
   title: "Visual Maps",
   description: "Visual reference plates nested under The Shelves.",
-};
+});
 
 export default function VisualMapsPage() {
   const collections = getVisualMapCollections();

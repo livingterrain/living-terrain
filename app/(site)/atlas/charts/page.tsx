@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { withCanonical } from "@/lib/seo";
 import Link from "next/link";
 import { AtlasArchive } from "@/components/atlas/AtlasArchive";
 import { Room } from "@/components/environment";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withCanonical("/atlas/charts", {
   title: "Mapped investigations",
   description:
     "Domains of inquiry and completed investigations hung as cartographic plates in Living Terrain.",
-};
+});
 
 /**
  * Finding aid for charted maps — secondary to the Atlas journey at /atlas.

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { ObservatoryHub } from "@/components/observatory/ObservatoryV1";
 import { ObservatoryRoomTone } from "@/components/observatory/ObservatoryRoomTone";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withCanonical("/observatory", {
   title: "The Observatory",
   description: "Research as it exists before it becomes a map.",
-};
+});
 
 export default function ObservatoryPage() {
   return (

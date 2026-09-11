@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room } from "@/components/environment";
 import {
@@ -26,10 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const summary = getPassageSummaries().find((p) => p.slug === slug);
     return { title: summary?.reference ?? "Passage" };
   }
-  return {
+  return withCanonical(`/observatory/the-text/${slug}`, {
     title: passage.reference,
     description: passage.whisper,
-  };
+  });
 }
 
 export default async function PassagePage({ params }: Props) {

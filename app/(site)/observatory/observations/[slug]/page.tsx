@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { ObservatoryReadingShell } from "@/components/observatory/ObservatoryReadingShell";
 import { renderBody } from "@/components/reading/Prose";
 import {
@@ -27,10 +28,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const observation = getVisitorObservationBySlug(slug);
   if (!observation) return { title: "Observation Not Found" };
 
-  return {
+  return withCanonical(`/observatory/observations/${slug}`, {
     title: displayTitle(observation),
     description: observation.body.slice(0, 160),
-  };
+  });
 }
 
 export default async function ObservationPage({ params }: PageProps) {

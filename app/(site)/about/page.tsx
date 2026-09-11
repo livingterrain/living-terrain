@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { TextLink } from "@/components/design-system";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { siteConfig } from "@/lib/content/data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withCanonical("/about", {
   title: "About",
   description:
     "Chelsea M. Thacker — guide to Living Terrain, an ongoing investigation into the hidden architectures that shape perception, embodiment, relationship, meaning, and reality.",
-};
+});
 
 export default function AboutPage() {
   return (

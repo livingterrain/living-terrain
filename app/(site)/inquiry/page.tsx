@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { ShelvesFoyer } from "@/components/reading/ShelvesFoyer";
 import { getAllMaps, getAllEssays } from "@/lib/content";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withCanonical("/inquiry", {
   title: "The Shelves",
   description: "Books, essays, and visual maps — work made for Living Terrain.",
-};
+});
 
 export default function InquiryPage() {
   const books = getAllMaps();

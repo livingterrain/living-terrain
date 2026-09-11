@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { ObservatoryReadingShell } from "@/components/observatory/ObservatoryReadingShell";
 import {
   getGrowingIdeaBySlug,
@@ -19,10 +20,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const idea = getGrowingIdeaBySlug(slug);
   if (!idea) return { title: "Growing Idea Not Found" };
-  return {
+  return withCanonical(`/observatory/growing/${slug}`, {
     title: idea.title,
     description: idea.body ?? "An idea still becoming.",
-  };
+  });
 }
 
 export default async function GrowingIdeaPage({ params }: PageProps) {

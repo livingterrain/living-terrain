@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { Prose, renderBody } from "@/components/reading/Prose";
@@ -27,10 +28,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const section = getStructureSectionBySlug(slug);
   if (!section) return { title: "Section Not Found" };
 
-  return {
+  return withCanonical(`/structure-beneath-reality/${slug}`, {
     title: `${section.title} · The Structure Beneath Reality`,
     description: section.excerpt,
-  };
+  });
 }
 
 export default async function StructureSectionPage({ params }: PageProps) {

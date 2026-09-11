@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { withCanonical } from "@/lib/seo";
 import Link from "next/link";
 import { TextLink } from "@/components/design-system";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { concepts } from "@/lib/concepts";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withCanonical("/concepts", {
   title: "Instrument Wing",
   description:
     "Prototypes and lenses in the observatory — ways of seeing the same intellectual sky.",
-};
+});
 
 export default function ConceptsPage() {
   return (

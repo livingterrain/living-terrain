@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { TerritoryThreshold } from "@/components/atlas";
 import { Room } from "@/components/environment";
@@ -19,10 +20,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const map = getMapBySlug(slug);
   if (!map) return { title: "Map Not Found" };
 
-  return {
+  return withCanonical(`/atlas/${slug}`, {
     title: map.title,
     description: map.description,
-  };
+  });
 }
 
 export default async function MapTerritoryPage({ params }: PageProps) {

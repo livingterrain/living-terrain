@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { ChamberPage } from "@/components/chamber";
 import { BecomingChamber } from "@/components/chamber/editorial/BecomingChamber";
 import { EditorialChamber } from "@/components/chamber/editorial/EditorialChamber";
@@ -19,10 +20,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const project = getProjectBySlug(slug);
   if (!project) return { title: "Chamber Not Found" };
 
-  return {
+  return withCanonical(`/chambers/${slug}`, {
     title: project.title,
     description: project.introduction,
-  };
+  });
 }
 
 export default async function ChamberRoutePage({ params }: PageProps) {

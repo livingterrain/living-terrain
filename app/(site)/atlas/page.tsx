@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { withCanonical } from "@/lib/seo";
 import { AtlasV1 } from "@/components/atlas-v1/AtlasV1";
 import { getAtlasCanonicalView } from "@/lib/canonical/atlas-view";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withCanonical("/atlas", {
   title: "The Atlas",
   description:
     "Enter Living Terrain through a living question. Think through relationships drawn from the published writing — maps of completed investigations wait beyond.",
-};
+});
 
 /**
  * The Atlas — public entry.

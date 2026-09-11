@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactElement } from "react";
+import { withCanonical } from "@/lib/seo";
 import {
   ConstellationConcept,
   DrawersConcept,
@@ -23,6 +25,16 @@ export function generateStaticParams() {
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const concept = getConcept(slug);
+  if (!concept) return { title: "Instrument Not Found" };
+  return withCanonical(`/concepts/${slug}`, {
+    title: concept.title,
+    description: concept.tagline,
+  });
 }
 
 export default async function ConceptPage({ params }: PageProps) {

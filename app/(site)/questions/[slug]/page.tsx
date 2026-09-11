@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { QuestionHubRoom } from "@/components/rooms";
@@ -23,10 +24,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const question = getQuestionBySlug(slug);
   if (!question) return { title: "Question Not Found" };
 
-  return {
+  return withCanonical(`/questions/${slug}`, {
     title: question.title,
     description: question.description,
-  };
+  });
 }
 
 export default async function QuestionPage({ params }: PageProps) {

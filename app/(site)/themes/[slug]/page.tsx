@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { Thread } from "@/components/thread";
@@ -24,10 +25,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const theme = getThemeBySlug(slug);
   if (!theme) return { title: "Theme Not Found" };
 
-  return {
+  return withCanonical(`/themes/${slug}`, {
     title: theme.title,
     description: theme.description,
-  };
+  });
 }
 
 export default async function ThemePage({ params }: PageProps) {

@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { withCanonical } from "@/lib/seo";
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import { BooksGallery } from "@/components/reading/BooksGallery";
 import { getAllMaps } from "@/lib/content";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withCanonical("/books", {
   title: "Books",
   description: "Longer investigations — the current books of Living Terrain.",
-};
+});
 
 export default function BooksPage() {
   const books = getAllMaps();

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { Container } from "@/components/layout/Container";
 import { Room } from "@/components/environment";
 import { VisualMapLightbox } from "@/components/visual-maps/VisualMapLightbox";
@@ -27,10 +28,10 @@ export async function generateMetadata({
   const { collection: cSlug, plate: pSlug } = await params;
   const found = getVisualMapPlate(cSlug, pSlug);
   if (!found) return { title: "Visual Map" };
-  return {
+  return withCanonical(`/visual-maps/${cSlug}/${pSlug}`, {
     title: `${found.plate.title} · ${found.collection.title}`,
     description: found.collection.description,
-  };
+  });
 }
 
 export default async function VisualMapPlatePage({ params }: PageProps) {

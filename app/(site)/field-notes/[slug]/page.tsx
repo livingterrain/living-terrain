@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { withCanonical } from "@/lib/seo";
 import { LanternReadingShell } from "@/components/world/LanternReadingShell";
 import { renderBody } from "@/components/reading/Prose";
 import { getAllFieldNotes, getFieldNoteBySlug } from "@/lib/content";
@@ -19,10 +20,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const note = getFieldNoteBySlug(slug);
   if (!note) return { title: "Field Note Not Found" };
 
-  return {
+  return withCanonical(`/field-notes/${slug}`, {
     title: note.title ?? "Field Note",
     description: note.body.slice(0, 160),
-  };
+  });
 }
 
 export default async function FieldNotePage({ params }: PageProps) {
