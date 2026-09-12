@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "assignments": [
+    {
+      "slug": "the-body-has-more-than-one-map",
+      "threadIds": ["boundary", "translation"]
+    },
+    {
+      "slug": "resilience-is-not-how-much-you-can",
+      "threadIds": ["boundary", "constraint", "feedback"]
+    },
+    {
+      "slug": "the-silent-epidemic-of-dissolving-barriers",
+      "threadIds": ["boundary", "constraint"]
+    },
+    {
+      "slug": "when-broken-relationship-becomes-physical-1e585280319d",
+      "threadIds": ["relationship", "boundary", "consciousness"]
+    },
+    {
+      "slug": "agi-may-already-be-herejust-not-in",
+      "threadIds": ["intelligence", "constraint", "technology"]
+    },
+    {
+      "slug": "the-ai-we-fear-looks-suspiciously",
+      "threadIds": ["intelligence", "relationship", "technology"]
+    },
+    {
+      "slug": "we-leave-each-other-words",
+      "threadIds": ["logos", "translation", "participation"]
+    },
+    {
+      "slug": "what-taught-you-how-to-see",
+      "threadIds": ["consciousness", "translation", "participation"]
+    },
+    {
+      "slug": "the-future-rarely-arrives-from-nowhere",
+      "threadIds": ["feedback", "constraint", "technology"]
+    },
+    {
+      "slug": "parallel-lives-the-fire-and-the-feedback-loop",
+      "threadIds": ["feedback", "consciousness"]
+    }
+  ]
+}

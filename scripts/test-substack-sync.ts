@@ -72,6 +72,7 @@ assert.ok(newPost.essayId.startsWith("substack-rss-"));
 const newEssay = materializeSubstackPost(newPost)!;
 assert.equal(newEssay.status, "published");
 assert.deepEqual(newEssay.themeIds, []);
+assert.deepEqual(newEssay.threadIds, []);
 
 // C. Repeating the same feed creates no change.
 const repeated = syncSubstackRegistry(feed(item(), newItem), withNew.registry, [existing, materializeSubstackPost(rolledOff)!, newEssay], [], "2026-09-07T02:00:00.000Z");
@@ -111,6 +112,7 @@ assert.deepEqual(newEssay.questionIds, []);
 assert.deepEqual(newEssay.projectIds, []);
 assert.deepEqual(newEssay.bookIds, []);
 assert.deepEqual(newEssay.relatedEssayIds, []);
+assert.deepEqual(newEssay.threadIds, []);
 assert.deepEqual(newEssay.parentRefs, []);
 assert.deepEqual(newEssay.childRefs, []);
 assert.equal(`/essays/${newEssay.slug}`, "/essays/a-new-work");

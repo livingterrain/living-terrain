@@ -72,6 +72,7 @@ assert.ok(newUnmapped.length >= BASELINE_UNMAPPED, "unmapped Substack posts rema
 for (const essay of newUnmapped) {
   assert.deepEqual(essay.questionIds, []);
   assert.deepEqual(essay.themeIds, []);
+  assert.deepEqual(essay.threadIds, []);
   assert.deepEqual(essay.projectIds, []);
   assert.deepEqual(essay.bookIds, []);
   assert.deepEqual(essay.relatedEssayIds, []);
@@ -102,6 +103,7 @@ assert.equal(unmapped.id, "e7");
 assert.equal(unmapped.slug, "a-living-test");
 assert.deepEqual(unmapped.questionIds, []);
 assert.deepEqual(unmapped.themeIds, []);
+assert.deepEqual(unmapped.threadIds, []);
 assert.deepEqual(unmapped.projectIds, []);
 assert.deepEqual(unmapped.bookIds, []);
 assert.deepEqual(unmapped.relatedEssayIds, []);

@@ -28,6 +28,8 @@ import type {
   Observation,
 } from "./types";
 import { materializeSubstackEssays } from "../content-sync/materialize-essays";
+import { applyEssayThreads, getEssayThreadMap } from "../threads";
+import type { ThreadId } from "../threads";
 
 const atlas = () => getAtlas();
 
@@ -69,11 +71,17 @@ export function getAllEssays(): Essay[] {
     };
   });
   const newUnmapped = generated.filter((essay) => !claimed.has(essay.id));
-  return [...existing, ...newUnmapped]
-    .sort(
+  return applyEssayThreads(
+    [...existing, ...newUnmapped].sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-    );
+    ),
+    getEssayThreadMap(),
+  );
+}
+
+export function getEssaysByThreadId(threadId: ThreadId): Essay[] {
+  return getAllEssays().filter((essay) => essay.threadIds?.includes(threadId));
 }
 
 export function getEssayBySlug(slug: string): Essay | undefined {
