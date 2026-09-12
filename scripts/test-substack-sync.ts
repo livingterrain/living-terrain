@@ -141,7 +141,7 @@ const recovered = await fetchSubstackRss(
 assert.equal(recovered, headerXml);
 assert.ok(curlCalled);
 
-// M. A 403 remains fatal when curl also fails.
+// M. A 403 remains fatal when curl also fails and the RSS proxy is unavailable.
 await assert.rejects(
   () => fetchSubstackRss(
     "https://livingterrain.substack.com/feed",
@@ -152,6 +152,19 @@ await assert.rejects(
   ),
   /Substack RSS returned 403/,
 );
+
+// O. After Node fetch and curl both 403, a proxied RSS response can still recover.
+const proxied = await fetchSubstackRss(
+  "https://livingterrain.substack.com/feed",
+  async (reqUrl) => {
+    if (String(reqUrl).includes("allorigins.win")) return new Response(headerXml, { status: 200 });
+    return new Response("blocked", { status: 403 });
+  },
+  async () => {
+    throw new Error("curl failed");
+  },
+);
+assert.equal(proxied, headerXml);
 
 // N. Paid Field Notes in the RSS window are skipped and do not quarantine public posts.
 const fieldNote = item({
@@ -175,7 +188,7 @@ assert.deepEqual(withFieldNotes.skipped, ["field-note-001", "field-note-002"]);
 assert.equal(withFieldNotes.registry.posts.some((post) => post.slug.startsWith("field-note-")), false);
 assert.ok(withFieldNotes.registry.posts.some((post) => post.slug === "the-future-rarely-arrives-from-nowhere"));
 
-console.log("test-substack-sync A–N OK");
+console.log("test-substack-sync A–O OK");
 }
 
 main().catch((error) => {

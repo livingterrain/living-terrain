@@ -152,7 +152,11 @@ export function syncSubstackRegistry(
   };
 }
 
-export async function fetchSubstackRssWithCurl(url: string): Promise<string> {
+function rssProxyUrl(url: string): string {
+  return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+}
+
+async function curlRss(url: string): Promise<string> {
   const { stdout } = await execFileAsync(
     "curl",
     [
@@ -173,6 +177,14 @@ export async function fetchSubstackRssWithCurl(url: string): Promise<string> {
   return stdout;
 }
 
+export async function fetchSubstackRssWithCurl(url: string): Promise<string> {
+  try {
+    return await curlRss(url);
+  } catch {
+    return await curlRss(rssProxyUrl(url));
+  }
+}
+
 export async function fetchSubstackRss(
   url: string,
   fetcher: typeof fetch = fetch,
@@ -184,6 +196,11 @@ export async function fetchSubstackRss(
     try {
       return await curlFallback(url);
     } catch {
+      const proxied = await fetcher(rssProxyUrl(url), { headers: { ...SUBSTACK_RSS_HEADERS } });
+      if (proxied.ok) {
+        const xml = await proxied.text();
+        if (xml.includes("<item")) return xml;
+      }
       throw new Error("Substack RSS returned 403");
     }
   }
