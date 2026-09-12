@@ -15,6 +15,7 @@ export {
   THREAD_IDS,
   THREADS,
   getThreadDefinition,
+  getThreadLabels,
   isThreadId,
   type ThreadDefinition,
   type ThreadId,

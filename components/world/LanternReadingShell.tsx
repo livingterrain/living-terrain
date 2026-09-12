@@ -12,6 +12,8 @@ interface LanternReadingShellProps {
   subtitle?: string;
   meta?: ReactNode;
   children: ReactNode;
+  /** Quiet material immediately after the essay, before follow-on navigation */
+  afterContent?: ReactNode;
   nodeRef?: NodeRef;
   /** Quiet material after Follow the Thread (e.g. publication mirror) */
   afterThread?: ReactNode;
@@ -31,6 +33,7 @@ export function LanternReadingShell({
   subtitle,
   meta,
   children,
+  afterContent,
   nodeRef,
   afterThread,
   returnHref,
@@ -67,6 +70,8 @@ export function LanternReadingShell({
         <div className="type-body lantern-body py-12 text-[0.9375rem] leading-[1.88] sm:text-base sm:leading-[1.92]">
           {children}
         </div>
+
+        {afterContent}
 
         {nodeRef && (
           <div className="threshold-carved threshold-carved--edge pt-12">

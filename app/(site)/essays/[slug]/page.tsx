@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { withCanonical } from "@/lib/seo";
 import { LanternReadingShell } from "@/components/world/LanternReadingShell";
 import { TextLink } from "@/components/design-system";
+import { EssayThreadBelonging } from "@/components/reading/EssayThreadBelonging";
 import { renderBody } from "@/components/reading/Prose";
 import {
   getAllEssays,
@@ -72,6 +73,7 @@ export default async function EssayPage({ params }: PageProps) {
           )}
         </>
       }
+      afterContent={<EssayThreadBelonging threadIds={essay.threadIds} />}
       nodeRef={hasBody ? refFromEssay(essay) : undefined}
       afterThread={<>{hasBody && publicationWhisper}<EssayNewsletterCTA hasFullEssay={hasBody} /></>}
       returnHref="/essays"
