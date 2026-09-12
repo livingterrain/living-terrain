@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TerrainLink } from "@/components/navigation";
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
+import { CurrentlyInvestigating } from "@/components/home/CurrentlyInvestigating";
 import { cn } from "@/lib/utils";
 import "./home-v2.css";
 
@@ -95,10 +96,13 @@ export function HomeV2() {
       </div>
 
       <div className="lt-v2__stage">
-        <header className="lt-v2__identity">
-          <h1 className="lt-v2__title">Living Terrain</h1>
-          <p className="lt-v2__orient">What brought you here?</p>
-        </header>
+        <div className="lt-v2__west">
+          <header className="lt-v2__identity">
+            <h1 className="lt-v2__title">Living Terrain</h1>
+            <p className="lt-v2__orient">What brought you here?</p>
+          </header>
+          <CurrentlyInvestigating />
+        </div>
 
         <nav className="lt-v2__loci" aria-label="Destinations">
           {LOCI.map((l) => (

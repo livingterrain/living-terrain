@@ -229,11 +229,97 @@
     max(1.25rem, env(safe-area-inset-left));
 }
 
+.lt-v2__west {
+  position: relative;
+  z-index: 2;
+}
+
 .lt-v2__identity {
   position: relative;
   z-index: 2;
   max-width: 22rem;
   padding-top: 0.35rem;
+}
+
+/* Live research status — Observatory whisper, not a destination grid */
+.lt-v2__investigating {
+  margin-top: 2.15rem;
+  max-width: 22.5rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid color-mix(in srgb, #ebe6dc 6%, transparent);
+}
+
+.lt-v2__investigating-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.85rem;
+}
+
+.lt-v2__investigating-title {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 40%, transparent);
+}
+
+.lt-v2__investigating-status {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.5625rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #c4a86a 52%, transparent);
+}
+
+.lt-v2__investigating-live::before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  margin-right: 0.45rem;
+  margin-bottom: 0.12rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, #c4a86a 58%, transparent);
+  vertical-align: middle;
+}
+
+.lt-v2__investigating-list {
+  list-style: none;
+  margin: 1.05rem 0 0;
+  padding: 0;
+}
+
+.lt-v2__investigating-list li + li {
+  margin-top: 0.95rem;
+  padding-top: 0.95rem;
+  border-top: 1px solid color-mix(in srgb, #ebe6dc 5%, transparent);
+}
+
+.lt-v2__investigating-q {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.875rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.42;
+  color: color-mix(in srgb, #ebe6dc 64%, transparent);
+  text-wrap: pretty;
+}
+
+.lt-v2__investigating-ctx {
+  margin: 0.32rem 0 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.75rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--lt-v2-bone-faint);
 }
 
 .lt-v2__mark {
@@ -383,11 +469,23 @@
       max(2.5rem, 5vw);
   }
 
-  .lt-v2__identity {
+  .lt-v2__west {
     align-self: center;
     max-width: 26rem;
     padding-top: 0;
-    padding-bottom: 8vh;
+    padding-bottom: 6vh;
+  }
+
+  .lt-v2__identity {
+    align-self: auto;
+    max-width: none;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .lt-v2__investigating {
+    margin-top: 2.6rem;
+    max-width: 23rem;
   }
 
   .lt-v2__title {
@@ -465,6 +563,31 @@
 
 /* Mobile: keep field quiet; loci as vertical threshold list */
 @media (max-width: 899px) {
+  .lt-v2__stage {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lt-v2__west {
+    display: contents;
+  }
+
+  .lt-v2__identity {
+    order: 1;
+  }
+
+  .lt-v2__loci {
+    order: 2;
+  }
+
+  .lt-v2__investigating {
+    order: 3;
+    max-width: 22rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding-top: 1.15rem;
+  }
+
   .lt-v2__orbit {
     width: 140vw;
     height: 140vw;
