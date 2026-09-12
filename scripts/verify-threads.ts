@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
 import { getAtlas, toEssay } from "../lib/atlas";
-import { getAllEssays, getEssayBySlug } from "../lib/content";
+import { getAllEssays, getEssayBySlug, getEssaysByThreadId } from "../lib/content";
 import { materializeSubstackEssays } from "../lib/content-sync/materialize-essays";
 import {
   THREAD_IDS,
+  THREADS,
   findUnknownEssayThreadSlugs,
+  getThreadByParam,
   loadEssayThreadRegistry,
   type ThreadId,
 } from "../lib/threads";
@@ -87,6 +89,24 @@ async function main(): Promise<void> {
       `${slug}: relatedEssayIds unchanged`,
     );
   }
+
+  for (const thread of THREADS) {
+    const listed = getEssaysByThreadId(thread.id);
+    assert.ok(listed.length > 0, `${thread.id}: at least one essay is gathered`);
+    const dates = listed.map((essay) => new Date(essay.publishedAt).getTime());
+    assert.deepEqual(dates, [...dates].sort((a, b) => b - a), `${thread.id}: newest first`);
+    assert.ok(
+      listed.every((essay) => essay.threadIds?.includes(thread.id)),
+      `${thread.id}: listed essays belong to the thread`,
+    );
+  }
+
+  const boundary = getEssaysByThreadId("boundary");
+  assert.ok(boundary.some((essay) => essay.slug === "the-body-has-more-than-one-map"));
+  assert.ok(getEssaysByThreadId("intelligence").some((essay) => essay.slug === "agi-may-already-be-herejust-not-in"));
+  assert.ok(getEssaysByThreadId("translation").some((essay) => essay.slug === "we-leave-each-other-words"));
+  assert.equal(getThreadByParam("not-a-real-thread"), undefined);
+  assert.equal(THREADS.map((thread) => thread.id).join(","), THREAD_IDS.join(","));
 
   console.log("verify-threads OK");
 }

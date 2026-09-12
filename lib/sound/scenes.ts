@@ -33,6 +33,7 @@ export function sceneFromPathname(pathname: string): SoundScene {
 
   if (pathname.startsWith("/themes")) return "reading";
   if (pathname.startsWith("/essays")) return "reading";
+  if (pathname.startsWith("/threads")) return "reading";
   if (pathname.startsWith("/inquiry")) return "reading";
   if (pathname.startsWith("/books")) return "reading";
   if (pathname.startsWith("/visual-maps")) return "reading";

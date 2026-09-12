@@ -1,15 +1,16 @@
-import { getThreadLabels } from "@/lib/threads";
+import Link from "next/link";
+import { getThreadRefs, threadHref } from "@/lib/threads";
 
 interface EssayThreadBelongingProps {
   threadIds?: readonly string[];
 }
 
 /**
- * Quiet belonging mark on an essay — named threads, not destinations.
+ * Quiet belonging mark on an essay — named threads, now destinations.
  */
 export function EssayThreadBelonging({ threadIds }: EssayThreadBelongingProps) {
-  const labels = getThreadLabels(threadIds);
-  if (labels.length === 0) return null;
+  const threads = getThreadRefs(threadIds);
+  if (threads.length === 0) return null;
 
   return (
     <section
@@ -20,8 +21,12 @@ export function EssayThreadBelonging({ threadIds }: EssayThreadBelongingProps) {
         This essay also belongs to
       </h2>
       <ul className="essay-thread-belonging__names lantern-meta">
-        {labels.map((label) => (
-          <li key={label}>{label}</li>
+        {threads.map((thread) => (
+          <li key={thread.id}>
+            <Link href={threadHref(thread.id)} className="essay-thread-belonging__link">
+              {thread.label}
+            </Link>
+          </li>
         ))}
       </ul>
     </section>

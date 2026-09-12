@@ -2739,6 +2739,65 @@
     opacity: 0.42;
   }
 
+  .world-lantern-reading .essay-thread-belonging__link {
+    color: inherit;
+    text-decoration: none;
+    text-underline-offset: 0.18em;
+  }
+
+  .world-lantern-reading .essay-thread-belonging__link:hover,
+  .world-lantern-reading .essay-thread-belonging__link:focus-visible {
+    color: var(--lantern-link);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--lantern-link) 38%, transparent);
+  }
+
+  .world-lantern-reading .thread-gathering .type-chamber {
+    color: color-mix(in srgb, var(--lantern-meta) 68%, transparent);
+  }
+
+  .thread-essay-list {
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .thread-essay-list > li + li {
+    margin-top: 1.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid color-mix(in srgb, var(--lantern-rule) 55%, transparent);
+  }
+
+  .thread-essay-list__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .thread-essay-list__title {
+    margin-top: 0.4rem;
+    font-family: var(--font-heading), ui-serif, Georgia, serif;
+    font-size: 1.1875rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--lantern-title);
+    transition: color 1.2s var(--ease-breath);
+  }
+
+  .thread-essay-list__link:hover .thread-essay-list__title,
+  .thread-essay-list__link:focus-visible .thread-essay-list__title {
+    color: var(--lantern-link-hover);
+  }
+
+  .thread-essay-list__subtitle {
+    margin-top: 0.4rem;
+    font-family: var(--font-heading), ui-serif, Georgia, serif;
+    font-size: 0.9375rem;
+    font-style: italic;
+    line-height: 1.45;
+    color: var(--lantern-subtitle);
+  }
+
   .world-lantern-reading .lantern-body {
     color: var(--lantern-body);
   }

@@ -14,9 +14,13 @@ export {
 export {
   THREAD_IDS,
   THREADS,
+  getThreadByParam,
   getThreadDefinition,
   getThreadLabels,
+  getThreadRefs,
   isThreadId,
+  threadEssayCountLabel,
+  threadHref,
   type ThreadDefinition,
   type ThreadId,
 } from "./vocabulary";

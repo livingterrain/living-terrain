@@ -81,7 +81,9 @@ export function getAllEssays(): Essay[] {
 }
 
 export function getEssaysByThreadId(threadId: ThreadId): Essay[] {
-  return getAllEssays().filter((essay) => essay.threadIds?.includes(threadId));
+  return getAllEssays().filter(
+    (essay) => essay.status === "published" && essay.threadIds?.includes(threadId),
+  );
 }
 
 export function getEssayBySlug(slug: string): Essay | undefined {
