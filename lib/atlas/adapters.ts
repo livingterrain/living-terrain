@@ -144,6 +144,7 @@ export function toEssay(entry: AtlasEntry, atlas: LivingTerrainAtlas): Essay {
     bookIds: refsOfType(atlas, entry.id, "book", ["volume"]),
     relatedEssayIds: refsOfType(atlas, entry.id, "essay", ["echo", "thread"]),
     themeIds: entry.themes,
+    threadIds: [],
     parentRefs,
     childRefs,
     quotationIds: refsOfType(atlas, entry.id, "quotation", ["quotation"]),

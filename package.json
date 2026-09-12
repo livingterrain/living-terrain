@@ -20,6 +20,8 @@
     "verify:publication": "tsx scripts/verify-publication-foundation.ts",
     "verify:substack-sync": "tsx scripts/verify-substack-sync.ts",
     "test:substack-sync": "tsx scripts/test-substack-sync.ts",
+    "test:threads": "tsx scripts/test-threads.ts",
+    "verify:threads": "tsx scripts/verify-threads.ts",
     "verify:atlas": "tsx scripts/verify-atlas-journey.mjs",
     "verify:canonical": "tsx scripts/verify-canonical.ts"
   },

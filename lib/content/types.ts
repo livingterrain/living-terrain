@@ -1,3 +1,5 @@
+import type { ThreadId } from "../threads/vocabulary";
+
 export type ContentStatus = "draft" | "published";
 
 export type ContentKind =
@@ -61,6 +63,11 @@ export interface Essay {
   relatedEssayIds?: string[];
   /** Theme node IDs */
   themeIds?: string[];
+  /**
+   * Named conceptual threads from the controlled vocabulary.
+   * Attached after Atlas + Substack assembly; empty until curated.
+   */
+  threadIds?: ThreadId[];
   /** Parent ideas this grows from */
   parentRefs?: ContentRef[];
   /** Ideas this opens into */

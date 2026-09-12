@@ -25,6 +25,7 @@ export function materializeSubstackPost(post: StoredSubstackPost): Essay | null 
     bookIds: [],
     relatedEssayIds: [],
     themeIds: [],
+    threadIds: [],
     parentRefs: [],
     childRefs: [],
     quotationIds: [],
