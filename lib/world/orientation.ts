@@ -52,6 +52,7 @@ export function locationWhisperForPath(pathname: string): string | null {
   if (pathname === "/essays" || pathname.startsWith("/essays/")) {
     return "The Shelves · Essays";
   }
+  if (pathname.startsWith("/threads/")) return "Thread";
   if (pathname === "/visual-maps" || pathname === "/visual-maps/") {
     return "The Shelves · Visual Maps";
   }

@@ -16,6 +16,8 @@ export function locationForPath(path: string): WorldLocationId {
     return path === "/essays" ? "library" : "lantern-reading";
   }
 
+  if (path.startsWith("/threads/")) return "lantern-reading";
+
   if (path.startsWith("/inquiry")) return "library";
 
   if (path.startsWith("/books")) return "library";

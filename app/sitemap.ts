@@ -14,6 +14,7 @@ import { getInvestigations } from "@/lib/observatory/investigations";
 import { getGrowingIdeas } from "@/lib/observatory/growing-ideas-data";
 import { getAllVisitorObservations } from "@/lib/observatory/visitor-observations.server";
 import { getReadyPassageSlugs } from "@/lib/observatory/the-text";
+import { THREAD_IDS, threadHref } from "@/lib/threads";
 import { getVisualMapCollections } from "@/lib/visual-maps";
 import { absoluteUrl } from "@/lib/seo";
 
@@ -160,6 +161,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
+  const threads = THREAD_IDS.map((id) =>
+    entry(threadHref(id), {
+      changeFrequency: "weekly",
+      priority: 0.55,
+    }),
+  );
+
   return [
     ...staticRoutes,
     ...chambers,
@@ -176,5 +184,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...observations,
     ...growing,
     ...conceptPages,
+    ...threads,
   ];
 }

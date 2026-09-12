@@ -23,6 +23,7 @@ export function ltRegionForPath(pathname: string): LtRegion {
   if (p.startsWith("/chambers/")) return "chamber";
   if (
     p.startsWith("/essays/") ||
+    p.startsWith("/threads/") ||
     p.startsWith("/field-notes/") ||
     p.startsWith("/notebook/")
   ) {
