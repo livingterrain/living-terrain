@@ -44,3 +44,9 @@ export function getThreadDefinition(id: ThreadId): ThreadDefinition {
   }
   return thread;
 }
+
+/** Display names for curated thread IDs, in registry order. Unknown IDs are ignored. */
+export function getThreadLabels(ids: readonly string[] | undefined): string[] {
+  if (!ids?.length) return [];
+  return ids.filter(isThreadId).map((id) => getThreadDefinition(id).label);
+}

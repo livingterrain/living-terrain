@@ -3,6 +3,7 @@ import {
   applyEssayThreads,
   essayThreadMapFromRegistry,
   findUnknownEssayThreadSlugs,
+  getThreadLabels,
   parseEssayThreadRegistry,
   THREAD_IDS,
 } from "../lib/threads";
@@ -65,6 +66,15 @@ async function main(): Promise<void> {
   assert.deepEqual(essays[1]?.threadIds, []);
 
   assert.equal(THREAD_IDS.length, 10);
+  assert.deepEqual(getThreadLabels(["boundary", "translation"]), ["Boundary", "Translation"]);
+  assert.deepEqual(getThreadLabels(["intelligence", "constraint", "technology"]), [
+    "Intelligence",
+    "Constraint",
+    "Technology",
+  ]);
+  assert.deepEqual(getThreadLabels([]), []);
+  assert.deepEqual(getThreadLabels(undefined), []);
+  assert.deepEqual(getThreadLabels(["boundary", "not-a-thread"]), ["Boundary"]);
   console.log("test-threads OK");
 }
 

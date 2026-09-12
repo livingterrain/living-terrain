@@ -2714,6 +2714,31 @@
     color: var(--lantern-meta);
   }
 
+  .world-lantern-reading .essay-thread-belonging {
+    margin-top: 0.25rem;
+  }
+
+  .world-lantern-reading .essay-thread-belonging .type-chamber {
+    color: color-mix(in srgb, var(--lantern-meta) 68%, transparent);
+  }
+
+  .essay-thread-belonging__names {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    margin: 0.7rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+
+  .essay-thread-belonging__names li:not(:last-child)::after {
+    content: "·";
+    margin-inline: 0.55em;
+    opacity: 0.42;
+  }
+
   .world-lantern-reading .lantern-body {
     color: var(--lantern-body);
   }
