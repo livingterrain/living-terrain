@@ -12,23 +12,36 @@ Philosophy is complete. Implementation expresses this world; it does not redefin
 | Room | Route | What it holds |
 |---|---|---|
 | **The Constellation** | `/` | Living relational truth — how everything connects |
-| **The Atlas** | `/atlas` | Completed investigations as **maps** (what remains after the survey) |
+| **The Atlas** | `/atlas` | Relationships among Territories, Threads, Artifacts, and Investigations — including charted **maps** (what remains after the survey) |
 | **The Shelves** | `/inquiry` | Ongoing inquiry — essays, field notes, shorter writing |
 | **The Observatory** | `/observatory` | Investigations still forming |
+
+## Atlas 2.0 working types (Phase 0)
+
+Canonical internal architecture. Full mapping tables: `docs/atlas-2.0-phase-0.md` (proposals until approved). Do not redesign `/atlas` until Phase 2 is approved.
+
+| Type | Meaning | Canonical source |
+|---|---|---|
+| **Territory** | Large-scale geography | Five Root Territories (`lib/atlas/architecture.ts`) |
+| **Thread** | Recurring conceptual path | Ten essay Threads only (`lib/threads/vocabulary.ts`, `/threads/*`) |
+| **Artifact** | Concrete work / evidence | Maps, chambers, essays, plates, quotations, field notes |
+| **Investigation** | Active question / inquiry | Void questions, Observatory, Shelves inquiry |
+
+**Thread disambiguation (required):** Thread = essay Threads only. Session attention path = **Trail**. Legacy `ConnectionKind: "thread"` = **Strand**. Observatory sequences = **Pathway**. Do not invent unsupported relationships.
 
 ## Investigation → record → map
 
 1. **Investigation** — living inquiry (Observatory, Shelves, Questions)
 2. **Record** — the physical book, the completed field journal (off the wall)
-3. **Map** — what endures in Living Terrain; cartography hung in The Atlas
+3. **Map** — what endures in Living Terrain; cartography hung in The Atlas (an Artifact form)
 
 Books are not products. Maps are not publications. The physical book is **historical evidence** of the investigation — a field journal, not a storefront SKU.
 
 ## Language
 
-**Use:** map, territory, charted, cartography, plate, artifact, field journal, scout report (essays), enter the territory
+**Use:** map, territory, charted, cartography, plate, artifact, field journal, scout report (essays), enter the territory, thread (essay Threads only), trail (session path)
 
-**Avoid in visitor UI:** volume, publication, library (as room), archive, shelf (for maps), purchase (as primary CTA), bookstore patterns
+**Avoid in visitor UI:** volume, publication, library (as room), archive, shelf (for maps), purchase (as primary CTA), bookstore patterns; overloaded “thread” for session trails, graph edges, or Observatory pathways
 
 ## Commerce
 
@@ -40,3 +53,4 @@ Do not center commerce. Do not design bookstores. Field journal links are margin
 - Visitor maps: `book` entries, routes `/atlas/[slug]`
 - Territory interior: `/chambers/[slug]`
 - `/library` redirects to `/atlas` (legacy)
+- Preserve journeys, canonical bonds, plates, chambers, essay-threads, and existing redirects until an approved migration
