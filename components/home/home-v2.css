@@ -302,7 +302,24 @@
   border-top: 1px solid color-mix(in srgb, #ebe6dc 5%, transparent);
 }
 
+.lt-v2__investigating-entry {
+  display: block;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0.15rem 0;
+  text-decoration: none;
+  color: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.55s var(--lt-v2-ease);
+}
+
+.lt-v2__investigating-entry:focus-visible {
+  outline: none;
+}
+
 .lt-v2__investigating-q {
+  display: block;
   margin: 0;
   font-family: var(--font-heading), Georgia, serif;
   font-size: 0.875rem;
@@ -311,15 +328,56 @@
   line-height: 1.42;
   color: color-mix(in srgb, #ebe6dc 64%, transparent);
   text-wrap: pretty;
+  transition:
+    color 0.55s var(--lt-v2-ease),
+    text-shadow 0.55s var(--lt-v2-ease);
 }
 
 .lt-v2__investigating-ctx {
+  display: block;
   margin: 0.32rem 0 0;
   font-family: var(--font-heading), Georgia, serif;
   font-size: 0.75rem;
   font-style: italic;
   line-height: 1.4;
   color: var(--lt-v2-bone-faint);
+  transition: color 0.55s var(--lt-v2-ease);
+}
+
+.lt-v2__investigating-follow {
+  display: inline-block;
+  margin-top: 0.42rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.6875rem;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  color: color-mix(in srgb, #c4a86a 38%, transparent);
+  transition:
+    color 0.55s var(--lt-v2-ease),
+    opacity 0.55s var(--lt-v2-ease);
+}
+
+.lt-v2__investigating-entry:hover .lt-v2__investigating-q,
+.lt-v2__investigating-entry:focus-visible .lt-v2__investigating-q {
+  color: #f2ebe0;
+  text-shadow: 0 0 24px color-mix(in srgb, #c4a86a 12%, transparent);
+}
+
+.lt-v2__investigating-entry:hover .lt-v2__investigating-ctx,
+.lt-v2__investigating-entry:focus-visible .lt-v2__investigating-ctx {
+  color: var(--lt-v2-bone-dim);
+}
+
+.lt-v2__investigating-entry:hover .lt-v2__investigating-follow,
+.lt-v2__investigating-entry:focus-visible .lt-v2__investigating-follow {
+  color: color-mix(in srgb, #c4a86a 68%, #ebe6dc);
+}
+
+.lt-v2__investigating-entry:focus-visible .lt-v2__investigating-q {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, #c4a86a 28%, transparent);
+  text-underline-offset: 0.22em;
 }
 
 .lt-v2__mark {
