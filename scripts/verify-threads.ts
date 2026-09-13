@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { getAtlas, toEssay } from "../lib/atlas";
 import { getAllEssays, getEssayBySlug, getEssaysByThreadId } from "../lib/content";
 import { materializeSubstackEssays } from "../lib/content-sync/materialize-essays";
@@ -8,56 +10,77 @@ import {
   findUnknownEssayThreadSlugs,
   getThreadByParam,
   loadEssayThreadRegistry,
+  parseEssayThreadRegistry,
   type ThreadId,
 } from "../lib/threads";
 
-const EXPECTED_SEED: Record<string, readonly ThreadId[]> = {
-  "the-body-has-more-than-one-map": ["boundary", "translation"],
-  "resilience-is-not-how-much-you-can": ["boundary", "constraint", "feedback"],
-  "the-silent-epidemic-of-dissolving-barriers": ["boundary", "constraint"],
-  "when-broken-relationship-becomes-physical-1e585280319d": [
-    "relationship",
-    "boundary",
-    "consciousness",
-  ],
-  "agi-may-already-be-herejust-not-in": ["intelligence", "constraint", "technology"],
-  "the-ai-we-fear-looks-suspiciously": ["intelligence", "relationship", "technology"],
-  "we-leave-each-other-words": ["logos", "translation", "participation"],
-  "what-taught-you-how-to-see": ["consciousness", "translation", "participation"],
-  "the-future-rarely-arrives-from-nowhere": ["feedback", "constraint", "technology"],
-  "parallel-lives-the-fire-and-the-feedback-loop": ["feedback", "consciousness"],
-};
+/** Near-duplicate / intentionally excluded slugs that must not receive assignments. */
+const EXCLUDED_DUPLICATE_SLUGS = [
+  "chronic-illness-is-a-paused-process",
+  "the-signal-everyone-is-trying-to",
+] as const;
 
 async function main(): Promise<void> {
+  const committedPath = join(process.cwd(), "data/publications/essay-threads.json");
+  const committedRaw = JSON.parse(readFileSync(committedPath, "utf8"));
+  const { registry: parsedCommitted, issues: parseIssues } =
+    parseEssayThreadRegistry(committedRaw);
+  assert.equal(parseIssues.length, 0, parseIssues.map((issue) => issue.message).join("\n"));
+  assert.ok(parsedCommitted);
+
   const registry = loadEssayThreadRegistry();
-  assert.equal(registry.assignments.length, 10, "seed set stays at ten essays");
+  assert.deepEqual(
+    registry.assignments,
+    parsedCommitted.assignments,
+    "runtime registry matches committed essay-threads.json",
+  );
+
+  const expected: Record<string, readonly ThreadId[]> = Object.fromEntries(
+    registry.assignments.map((assignment) => [assignment.slug, assignment.threadIds]),
+  );
 
   const essays = getAllEssays();
   const publicSlugs = essays.map((essay) => essay.slug);
   const stale = findUnknownEssayThreadSlugs(registry, publicSlugs);
   assert.deepEqual(stale, [], stale.map((issue) => issue.message).join("\n"));
 
-  const assignedSlugs = new Set(registry.assignments.map((assignment) => assignment.slug));
-  assert.deepEqual(
-    [...assignedSlugs].sort(),
-    Object.keys(EXPECTED_SEED).sort(),
-    "committed slugs match the approved seed set",
-  );
+  for (const slug of EXCLUDED_DUPLICATE_SLUGS) {
+    assert.ok(
+      publicSlugs.includes(slug),
+      `${slug}: excluded duplicate still exists in public registry`,
+    );
+    assert.equal(
+      expected[slug],
+      undefined,
+      `${slug}: duplicate slug must remain unmapped`,
+    );
+  }
 
-  for (const [slug, threadIds] of Object.entries(EXPECTED_SEED)) {
+  for (const [slug, threadIds] of Object.entries(expected)) {
     const assignment = registry.assignments.find((item) => item.slug === slug);
     assert.deepEqual(assignment?.threadIds, [...threadIds], `${slug}: registry mapping`);
 
     const essay = getEssayBySlug(slug);
     assert.ok(essay, `${slug}: public essay exists`);
     assert.deepEqual(essay.threadIds, [...threadIds], `${slug}: assembled essay threads`);
+    assert.ok(threadIds.length >= 1 && threadIds.length <= 3, `${slug}: 1–3 threads`);
   }
 
   const covered = new Set(registry.assignments.flatMap((assignment) => assignment.threadIds));
-  assert.deepEqual([...covered].sort(), [...THREAD_IDS].sort(), "seed set covers the full vocabulary");
+  assert.deepEqual(
+    [...covered].sort(),
+    [...THREAD_IDS].sort(),
+    "approved map covers the full vocabulary",
+  );
 
+  const assignedSlugs = new Set(registry.assignments.map((assignment) => assignment.slug));
   const threaded = essays.filter((essay) => (essay.threadIds?.length ?? 0) > 0);
-  assert.equal(threaded.length, 10, "only the seeded essays receive threads");
+  assert.equal(
+    threaded.length,
+    registry.assignments.length,
+    "only assigned essays receive threads",
+  );
+  assert.equal(threaded.length, assignedSlugs.size);
 
   for (const essay of essays) {
     if (assignedSlugs.has(essay.slug)) continue;
@@ -74,7 +97,7 @@ async function main(): Promise<void> {
     );
   }
 
-  for (const slug of Object.keys(EXPECTED_SEED)) {
+  for (const slug of Object.keys(expected)) {
     const assembled = getEssayBySlug(slug)!;
     const atlasEntry = atlas.getBySlug("essay", slug);
     const source = atlasEntry
@@ -101,13 +124,43 @@ async function main(): Promise<void> {
     );
   }
 
-  const boundary = getEssaysByThreadId("boundary");
-  assert.ok(boundary.some((essay) => essay.slug === "the-body-has-more-than-one-map"));
-  assert.ok(getEssaysByThreadId("intelligence").some((essay) => essay.slug === "agi-may-already-be-herejust-not-in"));
-  assert.ok(getEssaysByThreadId("translation").some((essay) => essay.slug === "we-leave-each-other-words"));
+  assert.ok(
+    getEssaysByThreadId("translation").some(
+      (essay) => essay.slug === "the-body-has-more-than-one-map",
+    ),
+  );
+  assert.ok(
+    getEssaysByThreadId("intelligence").some(
+      (essay) => essay.slug === "agi-may-already-be-herejust-not-in",
+    ),
+  );
+  assert.ok(
+    getEssaysByThreadId("translation").some((essay) => essay.slug === "we-leave-each-other-words"),
+  );
+  assert.ok(
+    getEssaysByThreadId("feedback").some(
+      (essay) => essay.slug === "the-future-rarely-arrives-from-nowhere",
+    ),
+  );
   assert.equal(getThreadByParam("not-a-real-thread"), undefined);
   assert.equal(THREADS.map((thread) => thread.id).join(","), THREAD_IDS.join(","));
 
+  const counts = Object.fromEntries(
+    THREAD_IDS.map((id) => [id, getEssaysByThreadId(id).length]),
+  ) as Record<ThreadId, number>;
+
+  console.log(
+    JSON.stringify(
+      {
+        mapped: registry.assignments.length,
+        unmapped: essays.length - registry.assignments.length,
+        publicEssays: essays.length,
+        counts,
+      },
+      null,
+      2,
+    ),
+  );
   console.log("verify-threads OK");
 }
 

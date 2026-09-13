@@ -2,44 +2,740 @@
   "version": 1,
   "assignments": [
     {
-      "slug": "the-body-has-more-than-one-map",
-      "threadIds": ["boundary", "translation"]
-    },
-    {
-      "slug": "resilience-is-not-how-much-you-can",
-      "threadIds": ["boundary", "constraint", "feedback"]
-    },
-    {
-      "slug": "the-silent-epidemic-of-dissolving-barriers",
-      "threadIds": ["boundary", "constraint"]
-    },
-    {
-      "slug": "when-broken-relationship-becomes-physical-1e585280319d",
-      "threadIds": ["relationship", "boundary", "consciousness"]
-    },
-    {
       "slug": "agi-may-already-be-herejust-not-in",
-      "threadIds": ["intelligence", "constraint", "technology"]
+      "threadIds": [
+        "intelligence",
+        "constraint",
+        "technology"
+      ]
     },
     {
-      "slug": "the-ai-we-fear-looks-suspiciously",
-      "threadIds": ["intelligence", "relationship", "technology"]
+      "slug": "ai-loops-and-the-physics-of-awakening",
+      "threadIds": [
+        "intelligence",
+        "feedback"
+      ]
     },
     {
-      "slug": "we-leave-each-other-words",
-      "threadIds": ["logos", "translation", "participation"]
+      "slug": "becoming-the-template",
+      "threadIds": [
+        "logos",
+        "consciousness"
+      ]
     },
     {
-      "slug": "what-taught-you-how-to-see",
-      "threadIds": ["consciousness", "translation", "participation"]
+      "slug": "before-the-word-became-law",
+      "threadIds": [
+        "logos"
+      ]
     },
     {
-      "slug": "the-future-rarely-arrives-from-nowhere",
-      "threadIds": ["feedback", "constraint", "technology"]
+      "slug": "capacity-is-embodied-individually",
+      "threadIds": [
+        "boundary",
+        "relationship",
+        "constraint"
+      ]
+    },
+    {
+      "slug": "chronic-illness-is-a-paused-process-and-modern-medicine-keeps-hitting-fr",
+      "threadIds": [
+        "constraint",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "coming-online-the-shift-from-survival-mode-to-conscious-creation",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "constraint-is-not-the-opposite-of-freedom",
+      "threadIds": [
+        "constraint"
+      ]
+    },
+    {
+      "slug": "eden-was-a-warning",
+      "threadIds": [
+        "logos",
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "every-living-system-pays-a-maintenance-cost",
+      "threadIds": [
+        "constraint"
+      ]
+    },
+    {
+      "slug": "everyone-thinks-allergy-season-is-getting-stronger-but-what-if-our-barri",
+      "threadIds": [
+        "boundary"
+      ]
+    },
+    {
+      "slug": "everything-you-know-about-the-heart-is-backwards",
+      "threadIds": [
+        "relationship",
+        "translation"
+      ]
+    },
+    {
+      "slug": "fragmentation-is-the-cost-of-symbolic-consciousness",
+      "threadIds": [
+        "logos",
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "healing-is-the-gospel-and-the-body-already-knows-it",
+      "threadIds": [
+        "logos",
+        "participation"
+      ]
+    },
+    {
+      "slug": "human-biology-cannot-match-the-speed",
+      "threadIds": [
+        "constraint",
+        "technology"
+      ]
+    },
+    {
+      "slug": "i-didn-t-write-a-psychedelic-book-i-wrote-an-orientation",
+      "threadIds": [
+        "participation"
+      ]
+    },
+    {
+      "slug": "i-started-saying-no",
+      "threadIds": [
+        "boundary"
+      ]
+    },
+    {
+      "slug": "i-started-with-144-000",
+      "threadIds": [
+        "logos",
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "i-stopped-explaining-myself-and-my-body-finally-exhaled",
+      "threadIds": [
+        "boundary"
+      ]
+    },
+    {
+      "slug": "i-ve-been-paying-attention",
+      "threadIds": [
+        "translation"
+      ]
+    },
+    {
+      "slug": "if-you-feel-it-in-your-body-start-here",
+      "threadIds": [
+        "participation"
+      ]
+    },
+    {
+      "slug": "life-is-energy-in-circulation",
+      "threadIds": [
+        "feedback"
+      ]
+    },
+    {
+      "slug": "love-makes-truth-visible-29d7d9bc21aa",
+      "threadIds": [
+        "relationship"
+      ]
+    },
+    {
+      "slug": "medicine-is-learning-a-new-language",
+      "threadIds": [
+        "relationship",
+        "translation"
+      ]
+    },
+    {
+      "slug": "my-healing-journey-accidentally-turned-into-a-study-of-consciousness",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "nothing-is-outside-the-pattern-only-out-of-sync",
+      "threadIds": [
+        "feedback"
+      ]
+    },
+    {
+      "slug": "optimization-without-nourishment",
+      "threadIds": [
+        "constraint"
+      ]
     },
     {
       "slug": "parallel-lives-the-fire-and-the-feedback-loop",
-      "threadIds": ["feedback", "consciousness"]
+      "threadIds": [
+        "consciousness",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "parasites-programming-and-the-god-frequency",
+      "threadIds": [
+        "logos",
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "preparation-vs-performance-what-happens-when-scarcity-returns",
+      "threadIds": [
+        "constraint"
+      ]
+    },
+    {
+      "slug": "psilocybin-helped-my-gut-as-much-as-diet-and-that-confused-me",
+      "threadIds": [
+        "boundary",
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "real-vs-fake-is-collapsing",
+      "threadIds": [
+        "intelligence"
+      ]
+    },
+    {
+      "slug": "regulation-is-not-calm",
+      "threadIds": [
+        "boundary",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "regulation-is-the-new-rebellion",
+      "threadIds": [
+        "boundary",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "resilience-is-not-how-much-you-can",
+      "threadIds": [
+        "boundary",
+        "constraint"
+      ]
+    },
+    {
+      "slug": "seasonal-change-is-a-cellular-reorganization",
+      "threadIds": [
+        "constraint",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "seeing-humanity-as-a-system-changes-everything",
+      "threadIds": [
+        "relationship",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "structure-is-stabilized-rhythm-across-time",
+      "threadIds": [
+        "constraint",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "technology-was-never-separate-from-nature",
+      "threadIds": [
+        "participation",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-ai-we-fear-looks-suspiciously",
+      "threadIds": [
+        "intelligence",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-algorithmic-hijack-how-programs-and-patterns-replace-our-power",
+      "threadIds": [
+        "feedback",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-ancient-purpose-of-looking-up",
+      "threadIds": [
+        "logos",
+        "participation"
+      ]
+    },
+    {
+      "slug": "the-body-has-more-than-one-map",
+      "threadIds": [
+        "consciousness",
+        "translation"
+      ]
+    },
+    {
+      "slug": "the-body-keeps-rhythm-because-reality-is-rhythmic",
+      "threadIds": [
+        "constraint",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "the-christ-story-moves-like-the-cosmos",
+      "threadIds": [
+        "logos"
+      ]
+    },
+    {
+      "slug": "the-claustrophobia-of-consciousness-when-awareness-becomes-the-hardest-t",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "the-collapse-of-internal-authority",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "the-consciousness-crisis-why-our",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "the-decomposition-response",
+      "threadIds": [
+        "boundary",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "the-difference-between-restraint-and-regulation",
+      "threadIds": [
+        "constraint",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "the-evolution-of-language",
+      "threadIds": [
+        "logos",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-forgotten-structure-of-reality",
+      "threadIds": [
+        "relationship"
+      ]
+    },
+    {
+      "slug": "the-frequency-filter-how-the-brain",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "the-future-rarely-arrives-from-nowhere",
+      "threadIds": [
+        "feedback"
+      ]
+    },
+    {
+      "slug": "the-goal-was-never-restriction",
+      "threadIds": [
+        "participation"
+      ]
+    },
+    {
+      "slug": "the-god-code-why-ai-feels-so-threatening-and-why-it-shouldn-t",
+      "threadIds": [
+        "intelligence",
+        "logos"
+      ]
+    },
+    {
+      "slug": "the-gods-never-disappeared",
+      "threadIds": [
+        "logos"
+      ]
+    },
+    {
+      "slug": "the-great-web-the-hidden-intelligence",
+      "threadIds": [
+        "intelligence",
+        "relationship"
+      ]
+    },
+    {
+      "slug": "the-integration-wave",
+      "threadIds": [
+        "relationship"
+      ]
+    },
+    {
+      "slug": "the-invisible-becomes-embodied",
+      "threadIds": [
+        "consciousness",
+        "translation"
+      ]
+    },
+    {
+      "slug": "the-kingdom-of-god-is-a-regulated-nervous-system",
+      "threadIds": [
+        "boundary",
+        "translation"
+      ]
+    },
+    {
+      "slug": "the-kingdom-was-never-meant-to-be",
+      "threadIds": [
+        "participation"
+      ]
+    },
+    {
+      "slug": "the-kitchen-we-quietly-lost",
+      "threadIds": [
+        "constraint",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-last-20-why-natural-healing-got",
+      "threadIds": [
+        "participation",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-mismatch-era",
+      "threadIds": [
+        "constraint",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-most-addictive-thing-in-your-life-may-be-familiar-stress",
+      "threadIds": [
+        "feedback"
+      ]
+    },
+    {
+      "slug": "the-most-important-thing-you-never-learned-about-reality",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "the-normalization-problem",
+      "threadIds": [
+        "intelligence",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-question-that-changed-everything",
+      "threadIds": [
+        "relationship"
+      ]
+    },
+    {
+      "slug": "the-revolution-after-ai",
+      "threadIds": [
+        "participation",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-second-printing-press",
+      "threadIds": [
+        "intelligence",
+        "technology"
+      ]
+    },
+    {
+      "slug": "the-signal-everyone-is-trying-to-replace",
+      "threadIds": [
+        "feedback"
+      ]
+    },
+    {
+      "slug": "the-silent-epidemic-of-dissolving-barriers",
+      "threadIds": [
+        "boundary"
+      ]
+    },
+    {
+      "slug": "the-smart-loop-why-awakening-isn-t-mystical",
+      "threadIds": [
+        "feedback"
+      ]
+    },
+    {
+      "slug": "the-systems-we-mistake-for-reality",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "the-terrain-remembers",
+      "threadIds": [
+        "relationship",
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "the-valve-is-cracking-the-limits-of-reductionist-medicine",
+      "threadIds": [
+        "translation"
+      ]
+    },
+    {
+      "slug": "the-wall-of-consciousness",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "the-wrong-question-about-transhumanism",
+      "threadIds": [
+        "participation",
+        "technology"
+      ]
+    },
+    {
+      "slug": "there-is-a-cost-to-becoming-an-image",
+      "threadIds": [
+        "boundary",
+        "technology"
+      ]
+    },
+    {
+      "slug": "this-isn-t-polarization-it-s-sorting",
+      "threadIds": [
+        "relationship",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "through-the-smoke-the-anatomy-of",
+      "threadIds": [
+        "relationship",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "uranus-entered-gemini-the-next-era-may-be-hard-on-the-human-nervous-syst",
+      "threadIds": [
+        "constraint",
+        "technology"
+      ]
+    },
+    {
+      "slug": "we-are-not-foreign-to-the-cosmos",
+      "threadIds": [
+        "relationship",
+        "participation"
+      ]
+    },
+    {
+      "slug": "we-are-not-separate-from-the-earth-we-are-the-earth",
+      "threadIds": [
+        "relationship",
+        "participation"
+      ]
+    },
+    {
+      "slug": "we-leave-each-other-words",
+      "threadIds": [
+        "logos",
+        "translation"
+      ]
+    },
+    {
+      "slug": "we-were-taught-not-to-believe-in",
+      "threadIds": [
+        "participation"
+      ]
+    },
+    {
+      "slug": "we-weren-t-eating-we-were-coping",
+      "threadIds": [
+        "boundary",
+        "technology"
+      ]
+    },
+    {
+      "slug": "what-had-to-happen-for-this-to-exist",
+      "threadIds": [
+        "relationship"
+      ]
+    },
+    {
+      "slug": "what-happens-before-the-tragedy",
+      "threadIds": [
+        "relationship",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "what-if-god-did-not-change",
+      "threadIds": [
+        "logos"
+      ]
+    },
+    {
+      "slug": "what-if-numbers-are-a-language",
+      "threadIds": [
+        "logos",
+        "translation"
+      ]
+    },
+    {
+      "slug": "what-philosophers-understood-about-suffering-before-biology-could-explai",
+      "threadIds": [
+        "constraint"
+      ]
+    },
+    {
+      "slug": "what-taught-you-how-to-see",
+      "threadIds": [
+        "participation",
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "when-broken-relationship-becomes-physical-1e585280319d",
+      "threadIds": [
+        "boundary",
+        "relationship",
+        "translation"
+      ]
+    },
+    {
+      "slug": "when-meaning-arrives-too-fast",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "when-optimization-replaced-wisdom",
+      "threadIds": [
+        "intelligence",
+        "technology"
+      ]
+    },
+    {
+      "slug": "when-sacrifice-stops-leading-somewhere",
+      "threadIds": [
+        "constraint"
+      ]
+    },
+    {
+      "slug": "when-structure-outpaces-awareness",
+      "threadIds": [
+        "logos",
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "when-the-internet-gets-too-loud-to-think",
+      "threadIds": [
+        "boundary",
+        "technology"
+      ]
+    },
+    {
+      "slug": "when-the-map-becomes-the-blind-spot",
+      "threadIds": [
+        "translation"
+      ]
+    },
+    {
+      "slug": "when-will-everyone-be-tired",
+      "threadIds": [
+        "boundary",
+        "technology"
+      ]
+    },
+    {
+      "slug": "why-healers-exist-and-why-information-isn-t-enough",
+      "threadIds": [
+        "participation"
+      ]
+    },
+    {
+      "slug": "why-marijuana-feels-like-relief-in-a-world-that-won-t-let-you-rest",
+      "threadIds": [
+        "boundary",
+        "technology"
+      ]
+    },
+    {
+      "slug": "why-modern-life-feels-so-unreal",
+      "threadIds": [
+        "consciousness"
+      ]
+    },
+    {
+      "slug": "why-some-people-want-instructions-instead-of-healing",
+      "threadIds": [
+        "participation"
+      ]
+    },
+    {
+      "slug": "why-the-bible-still-feels-relevant",
+      "threadIds": [
+        "logos"
+      ]
+    },
+    {
+      "slug": "writing-is-coming-back",
+      "threadIds": [
+        "intelligence",
+        "logos"
+      ]
+    },
+    {
+      "slug": "yes-i-am-sensitive",
+      "threadIds": [
+        "boundary"
+      ]
+    },
+    {
+      "slug": "you-cannot-heal-in-the-same-state-that-made-you-sick",
+      "threadIds": [
+        "feedback"
+      ]
+    },
+    {
+      "slug": "you-have-power-how-experience-rewrites-your-biology",
+      "threadIds": [
+        "participation",
+        "feedback"
+      ]
+    },
+    {
+      "slug": "your-body-is-not-a-machine-it-s-an-ecosystem",
+      "threadIds": [
+        "relationship"
+      ]
     }
   ]
 }
