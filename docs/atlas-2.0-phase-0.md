@@ -1,8 +1,8 @@
-# Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (proposal)
+# Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Working canon for internal architecture. **Not implemented in visitor UI.**  
-**Branch:** `cursor/atlas-2.0-phase-0-canon-e793` (docs/canon only).  
-**Approval gate:** Mapping tables below are proposals until Chelsea approves. No data migrations, redirects, route renames, or `/atlas` redesign in this phase.
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Semantic architecture only — **not** implemented in visitor UI.  
+**Branch:** `cursor/atlas-2-0-phase-0-canon-e793` (docs/canon only).  
+**Still out of scope:** data migrations, redirects, route renames, `/atlas` redesign, Phase 2.
 
 ---
 
@@ -16,16 +16,23 @@
 
 ---
 
-## Working canonical model (four types)
+## Canonical model (four types)
 
 Atlas’s distinctive role: **reveal relationships among these four types** without inventing unsupported bonds.
 
 | Type | Definition | Canonical public sources today |
 |---|---|---|
-| **Territory** | Large-scale geography of the work | Five **Root Territories** in `lib/atlas/architecture.ts` |
-| **Thread** | Recurring conceptual path across the work | Ten essay Threads in `lib/threads/vocabulary.ts` + `/threads/{id}` |
+| **Territory** | A **region/domain** of the terrain — large-scale geography | Five **Root Territories** in `lib/atlas/architecture.ts` |
+| **Thread** | A **recurring pattern** that can be followed **across** territories | Ten essay/content Threads in `lib/threads/vocabulary.ts` + `/threads/{id}` |
 | **Artifact** | Concrete work / evidence | Maps (books), chambers, essays, field notes, quotations, plates; Atlas V1 evidence excerpts with provenance |
 | **Investigation** | Active question / inquiry | Void / Atlas V1 living questions; Observatory forming work; Shelves ongoing writing |
+
+### Territory ≠ Thread (required distinction)
+
+- **Territory** = where inquiry sits in the terrain (a region/domain).
+- **Thread** = a pattern that recurs and can be followed across territories.
+- Do **not** infer that every major-concept or Territory requires a corresponding Thread.
+- Refused collapses remain refused (see § Explicit non-mappings).
 
 ### Preservation invariants
 
@@ -39,16 +46,14 @@ Preserve all of the following through any later migration:
 
 ---
 
-## Terminology freeze — eliminate four meanings of “Thread”
+## Terminology freeze
 
-**Public / canonical meaning of Thread:** only the ten essay Threads.
-
-| Current overloaded term | Proposed replacement | Scope | Notes |
-|---|---|---|---|
-| Essay Threads (`lib/threads`, `/threads/*`) | **Thread** (unchanged) | Public + canon | Sole canonical use of the word Thread |
-| Atlas Living Thread / session path (`lib/atlas-v1/living-thread.ts`, UI overlay) | **Trail** (internal: Living Trail / session trail) | Atlas session attention | sessionStorage trail of intentional stops; does not invent relations |
-| `ConnectionKind: "thread"` (legacy atlas graph) | **Strand** (internal edge kind) | Legacy registry edges | Curated “why this touches that” edge; not a Thread entity. Visitor copy that says “Follow the Thread” should later become non-Thread language (e.g. “This also touches…”) — UI change deferred |
-| Observatory pathway “threads” / `kind: "thread"` events | **Pathway** (investigation pathway) | Observatory | Predetermined investigation sequences; routes already redirect to `/observatory` |
+| Term | Frozen meaning |
+|---|---|
+| **Thread** | Essay/content Thread only (`lib/threads`, `/threads/*`) |
+| **Trail** | Atlas visitor/session path (`lib/atlas-v1/living-thread.ts` semantics; code names may lag) |
+| **Strand** | Connection relationship formerly `ConnectionKind: "thread"` |
+| **Pathway** | Observatory pathway only |
 
 ### Related terms that stay (not Thread)
 
@@ -60,11 +65,11 @@ Preserve all of the following through any later migration:
 | **Map / plate / chamber** | Artifact forms for completed or charted investigations |
 | **Continent** (legacy) | Internal nickname for `major-concept` themes — not visitor canon for Atlas 2.0 geography |
 
-Code identifiers may keep old names until an approved rename pass (`LIVING_THREAD_KEY`, `ConnectionKind "thread"`, etc.). This document freezes **semantic** names first.
+Code identifiers may keep old names until an approved rename pass (`LIVING_THREAD_KEY`, `ConnectionKind "thread"`, etc.). Semantics are frozen first; visitor copy that says “Follow the Thread” for Strand edges should later become non-Thread language — UI deferred to Phase 2+.
 
 ---
 
-## Canonical Territories (unchanged)
+## Canonical Territories
 
 Source: `ROOT_TERRITORIES` in `lib/atlas/architecture.ts`.
 
@@ -76,11 +81,11 @@ Source: `ROOT_TERRITORIES` in `lib/atlas/architecture.ts`.
 | `r4-meaning-orientation` | Meaning / orientation | thin | Language, symbol, spirituality — still gathering as Atlas. |
 | `r5-time-emergence` | Time / emergence | forming | Cycles, becoming over time, what forms before a phase turns. |
 
-Living-question placements under roots (`QUESTION_PLACEMENTS`) remain authored truth for journey doors. Phase 0 does not relocate questions.
+Living-question placements under roots (`QUESTION_PLACEMENTS`) remain authored truth for journey doors.
 
 ---
 
-## Canonical Threads (unchanged)
+## Canonical Threads
 
 Source: `THREADS` / `THREAD_IDS` in `lib/threads/vocabulary.ts`. Routes: `/threads/{id}`.
 
@@ -97,36 +102,28 @@ Source: `THREADS` / `THREAD_IDS` in `lib/threads/vocabulary.ts`. Routes: `/threa
 | `feedback` | Feedback |
 | `technology` | Technology |
 
-No new Thread IDs in Phase 0–1. Affinities noted below are **not** Thread membership.
+No new Thread IDs frozen here. Soft affinities noted elsewhere are **not** Thread membership.
 
 ---
 
-## Phase 1 — Atlas V1 concept → Territory / Thread mapping (proposal)
+## Phase 1 frozen — Atlas V1 concept → Territory / Thread
 
-Source concepts: `AtlasV1ConceptId` in `lib/atlas-v1/content.ts` (10).  
-Territory membership today is already listed on roots in `architecture.ts`. Phase 1 **records** that geography and proposes Thread mapping without forcing distortion.
+Source: `AtlasV1ConceptId` in `lib/atlas-v1/content.ts` (10).
 
-Legend:
+| Atlas V1 concept | Name | Territory | Thread | Classification |
+|---|---|---|---|---|
+| `body` | The Body | **Primary:** `r1-living-systems` | — | Territory only |
+| `relationship` | Relationship | **Primary:** `r3-participation` | `relationship` | Both |
+| `feedback` | Feedback | **Primary:** `r1-living-systems` | `feedback` | Both |
+| `technology` | Technology | **Primary:** `r3-participation` | `technology` | Both |
+| `adaptation` | Adaptation | **Primary:** `r1-living-systems`; **Secondary:** `r5-time-emergence` | — | Territory only (dual root) |
+| `constraint` | Constraint | **Primary:** `r2-reality-structure` | `constraint` | Both |
+| `participation` | Participation | **Primary:** `r3-participation`; **Secondary:** `r1-living-systems` | `participation` | Both (dual root) |
+| `time` | Time | **Primary:** `r5-time-emergence` | — | Territory only |
+| `meaning` | Meaning | **Primary:** `r4-meaning-orientation` | — | Territory only |
+| `reality` | Reality | **Primary:** `r2-reality-structure` | — | Territory only |
 
-- **Territory:** primary / secondary from existing `conceptIds` lists
-- **Thread:** exact ID match only for “maps to Thread”; affinities are informational
-- **both** = has Territory placement **and** maps to a canonical Thread
-- **neither (Thread)** = no Thread mapping (Territory may still apply)
-
-| Atlas V1 concept | Name | Territory (existing) | Thread mapping | Classification | Rationale |
-|---|---|---|---|---|---|
-| `body` | The Body | **Primary:** `r1-living-systems` | **Neither** | Territory only | Embodied living-systems geography; no essay Thread named body. Soft affinity only: `boundary`, `feedback` — do not force |
-| `relationship` | Relationship | **Primary:** `r3-participation` | **`relationship`** | **Both** | Exact Thread ID + root membership |
-| `feedback` | Feedback | **Primary:** `r1-living-systems` | **`feedback`** | **Both** | Exact Thread ID + root membership |
-| `technology` | Technology | **Primary:** `r3-participation` | **`technology`** | **Both** | Exact Thread ID + root membership |
-| `adaptation` | Adaptation | **Primary:** `r1-living-systems`; **Secondary:** `r5-time-emergence` | **Neither** | Territory only (dual root) | Authored on two roots; no Thread. Affinity to `feedback` / living process — do not collapse |
-| `constraint` | Constraint | **Primary:** `r2-reality-structure` | **`constraint`** | **Both** | Exact Thread ID + root membership |
-| `participation` | Participation | **Primary:** `r3-participation`; **Secondary:** `r1-living-systems` | **`participation`** | **Both** (dual root) | Exact Thread ID; dual root already authored. Primary = r3 (territory named Participation) |
-| `time` | Time | **Primary:** `r5-time-emergence` | **Neither** | Territory only | Root geography of duration/emergence; no Thread `time`. Do not map to a Thread |
-| `meaning` | Meaning | **Primary:** `r4-meaning-orientation` | **Neither** | Territory only | Thin root still gathering. Affinity to `logos` / `translation` — forcing either would distort |
-| `reality` | Reality | **Primary:** `r2-reality-structure` | **Neither** | Territory only | Structural geography of the real; not a recurring Thread path |
-
-### Summary counts (proposed)
+### Summary
 
 | Outcome | Concepts |
 |---|---|
@@ -135,7 +132,7 @@ Legend:
 | Thread only | — (none) |
 | Neither | — (none; every V1 concept already sits on a Root Territory) |
 
-### Explicit non-mappings (do not invent)
+### Explicit non-mappings (frozen refusals)
 
 | Concept | Tempting collapse | Why refused |
 |---|---|---|
@@ -148,48 +145,41 @@ Legend:
 
 ---
 
-## Phase 1 — major-concept (`th-*`) × canonical Thread (proposal)
+## Phase 1 frozen — major-concept (`th-*`) × Thread
 
-Registry “continents” in `lib/atlas/data.ts` (`type: "major-concept"` + two `concept` children).  
-Routes today: `/themes/{slug}`. **Do not rename or redirect in this phase.**
+Registry entries in `lib/atlas/data.ts`. Routes today: `/themes/{slug}`. **No redirects or renames until a later approved pass.**
 
-| Entry | Slug | Overlap with Thread | Proposal | Notes |
-|---|---|---|---|---|
-| `th-relationship` | `relationship` | **Duplicate slug/name** with Thread `relationship` | **Become alias** of Thread `relationship` | Same public name; theme page should eventually defer to Thread identity (implementation later). Keep entry ID for legacy graph |
-| `th-consciousness` | `consciousness` | **Duplicate slug/name** with Thread `consciousness` | **Become alias** of Thread `consciousness` | Same as above |
-| `th-reality` | `reality` | None | **Remain distinct** | Aligns with Territory `r2` / V1 `reality`, not a Thread |
-| `th-meaning` | `meaning` | Soft: `logos`, `translation` | **Remain distinct** | Aligns with thin Territory `r4`; not an alias |
-| `th-identity` | `identity` | None | **Remain distinct** | No Thread; do not invent |
-| `th-language` | `language` | Soft: `translation` | **Remain distinct** | Language-as-continent ≠ Translation Thread |
-| `th-freedom` | `freedom` | Soft: `constraint` | **Remain distinct** | Freedom theme includes constraint but is not the Constraint Thread |
-| `th-embodiment` | `embodiment` | Soft: V1 `body`; Thread `boundary` | **Remain distinct** | Do not alias to a Thread |
-| `th-information` | `information` | Soft: `intelligence` | **Remain distinct** | Signal/structure ≠ Intelligence Thread |
-| `th-time` | `time` | None (matches V1 `time` / `r5`) | **Remain distinct** | Territory-aligned theme, not Thread |
-| `th-perception` | `perception` | Soft: consciousness | **Remain distinct** (child concept) | Keep under consciousness theme until a later theme pass |
-| `th-structure` | `structure` | Soft: reality / constraint | **Remain distinct** (child concept) | Keep under reality theme |
+| Entry | Slug | Disposition |
+|---|---|---|
+| `th-relationship` | `relationship` | **Alias** → Thread `relationship` (keep entry ID for legacy graph) |
+| `th-consciousness` | `consciousness` | **Alias** → Thread `consciousness` (keep entry ID) |
+| `th-reality` | `reality` | **Remain distinct** |
+| `th-meaning` | `meaning` | **Remain distinct** |
+| `th-identity` | `identity` | **Remain distinct** |
+| `th-language` | `language` | **Remain distinct** |
+| `th-freedom` | `freedom` | **Remain distinct** |
+| `th-embodiment` | `embodiment` | **Remain distinct** |
+| `th-information` | `information` | **Remain distinct** |
+| `th-time` | `time` | **Remain distinct** |
+| `th-perception` | `perception` | **Remain distinct** (child concept) |
+| `th-structure` | `structure` | **Remain distinct** (child concept) |
 
-### Retire?
-
-**No retireals in Phase 0–1.** Alias candidates stay in the registry for graph/search compatibility. A later phase may hide theme pages that are pure Thread aliases behind quiet redirects — **only after approval**, preserving URLs via redirects.
+**No retirements.** Alias entries stay in the registry.
 
 ---
 
-## Artifact & Investigation (placement notes — not a migration)
-
-These types are already present as content; Phase 0 names them in the four-type model.
+## Artifact & Investigation (named, not migrated)
 
 | Type | Includes (existing) | Atlas relationship role |
 |---|---|---|
 | **Artifact** | `book` maps (`/atlas/[slug]`), chambers (`/chambers/[slug]`), essays, field notes, quotations, Atlas V1 evidence + `ATLAS_V1_SOURCE` / canonical `SOURCED_FROM` | Concrete evidence nodes; never invent links between them |
 | **Investigation** | Void questions (`VOID_QUESTIONS` / `QUESTION_PLACEMENTS`), Observatory forming work, Shelves ongoing inquiry | Active doors; journeys remain authored |
 
-Registry questions `q1`–`q4` remain data; visitor routes already resolve/redirect to `/atlas`. No change in this phase.
+Registry questions `q1`–`q4` remain data; visitor routes already resolve/redirect to `/atlas`.
 
 ---
 
 ## URL & redirect freeze (preserve)
-
-Do not alter in Phase 0–1. Documented for migration safety:
 
 | URL pattern | Current behavior | Freeze |
 |---|---|---|
@@ -206,11 +196,11 @@ Do not alter in Phase 0–1. Documented for migration safety:
 | `/observatory/threads/:slug` | → `/observatory` | Keep |
 | Essay / field-note / observatory observation routes | Unchanged | Keep |
 
-sessionStorage key `lt-atlas-living-thread` may keep its string until an explicit rename pass (optional later); semantics = **Trail**.
+sessionStorage key `lt-atlas-living-thread` may keep its string until an explicit rename pass; semantics = **Trail**.
 
 ---
 
-## Layers (reference — active vs legacy)
+## Layers (reference)
 
 ```
 Territory (5 roots) ── architecture.ts
@@ -222,30 +212,29 @@ Investigation       ── Void questions, Observatory, Shelves inquiry
 lib/atlas registry  ── content + LEGACY connections (Strand edges)
 ```
 
-Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds` before merge). Phase 1 mapping does not require wiring them into journeys; it only records where V1 concepts sit relative to Territories/Threads.
+Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds` before merge). Phase 1 mapping records geography/identity only; it does not require wiring Threads into journeys.
 
 ---
 
 ## Phase boundaries
 
-| Phase | Scope | This document |
+| Phase | Scope | Status |
 |---|---|---|
-| **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Done as proposal** |
-| **1** | Concept ↔ Territory/Thread tables; major-concept alias proposals | **Tables above — awaiting approval** |
-| **2** | Atlas room as relationship view among the four types | **Out of scope** |
-| Later | Optional Trail rename in code; Strand edge rename; theme→Thread alias redirects; connective whispers that only use supported bonds | Not started |
+| **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
+| **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
+| **2** | Atlas room as relationship view among the four types | **Not started — do not begin until approved** |
+| Later | Code renames (Trail/Strand); theme→Thread alias redirects; connective UI using only supported bonds | Not started |
 
 ---
 
-## Review checklist (Chelsea)
+## Approval record
 
-Please confirm or correct:
+Frozen 2026-09-16 by Chelsea:
 
-1. Trail / Strand / Pathway terminology replacements.
-2. Five V1 concepts as Territory-only (`body`, `adaptation`, `time`, `meaning`, `reality`).
-3. Five V1 concepts as Both (exact Thread ID matches).
-4. `th-relationship` and `th-consciousness` as **aliases** (not retire).
-5. All other major-concepts **remain distinct**.
-6. Dual-root primaries for `participation` (r3) and `adaptation` (r1).
-
-Until approved: **no data migrations**, no UI changes, no merges required beyond reviewing this canon branch.
+1. Terminology: Thread / Trail / Strand / Pathway as above.
+2. Territory-only V1: `body`, `adaptation`, `time`, `meaning`, `reality`.
+3. Both mappings: `relationship`, `feedback`, `technology`, `constraint`, `participation`.
+4. Aliases: `th-relationship` → `relationship`; `th-consciousness` → `consciousness`.
+5. All other listed major-concepts remain distinct; no retirements.
+6. Dual-root primaries: `participation` → r3 primary / r1 secondary; `adaptation` → r1 primary / r5 secondary.
+7. Territory = region/domain; Thread = recurring pattern across territories; no forced Thread for every Territory or major-concept.
