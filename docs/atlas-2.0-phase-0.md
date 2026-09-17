@@ -1,18 +1,18 @@
 # Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Semantic architecture only — **not** implemented in visitor UI.  
-**Branch:** `cursor/atlas-2-0-phase-0-canon-e793` (docs/canon only).  
-**Still out of scope:** data migrations, redirects, route renames, `/atlas` redesign, Phase 2.
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **implemented** on branch (typed layer + Trail copy + Both whispers). Theme redirects and Phase 3 deferred.  
+**Branch:** `cursor/atlas-2-0-phase-0-canon-e793`.  
+**Still out of scope:** theme redirects, Strand/`ConnectionKind` migration, co-occurrence, Shelves belonging, larger Atlas redesign.
 
 ---
 
-## Non-goals (this document)
+## Non-goals (this document / Phase 2)
 
-- Do not redesign `/atlas`.
+- Do not replace Void → journey with a four-type dashboard.
 - Do not delete legacy data.
-- Do not create redirects or rename routes.
-- Do not implement Phase 2 (relationship surface / connective UI).
+- Do not create theme redirects or rename routes.
 - Do not invent relationships the corpus does not already support.
+- Do not begin Phase 3 (co-occurrence, Shelves belonging, Strand migration, larger redesign).
 
 ---
 
@@ -222,8 +222,8 @@ Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds`
 |---|---|---|
 | **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
 | **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
-| **2** | Atlas room as relationship view among the four types | **Not started — do not begin until approved** |
-| Later | Code renames (Trail/Strand); theme→Thread alias redirects; connective UI using only supported bonds | Not started |
+| **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Implemented** (this branch) |
+| Later | Theme→Thread alias redirects; Strand renames; Thread co-occurrence; Shelves belonging; larger Atlas redesign | Not started |
 
 ---
 
@@ -238,3 +238,12 @@ Frozen 2026-09-16 by Chelsea:
 5. All other listed major-concepts remain distinct; no retirements.
 6. Dual-root primaries: `participation` → r3 primary / r1 secondary; `adaptation` → r1 primary / r5 secondary.
 7. Territory = region/domain; Thread = recurring pattern across territories; no forced Thread for every Territory or major-concept.
+
+### Phase 2 implementation record
+
+Approved with theme redirects deferred. Delivered on this branch:
+
+- Typed layer: `lib/atlas/model.ts` (+ `npm run verify:atlas-model`)
+- Visitor Trail copy on the session overlay; storage keys unchanged
+- Authored whispers at journey stops for Both mappings only (`AtlasThreadWhisper`)
+- Void → journey preserved; no four-type dashboard; no theme redirects

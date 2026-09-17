@@ -1,8 +1,9 @@
 /**
- * Atlas Living Thread — session path of intentional attention.
+ * Atlas Trail — session path of intentional attention.
  *
  * sessionStorage only. No accounts, cookies, or server writes.
  * Does not invent canonical relations.
+ * Visitor-facing name: Trail. Storage key / symbols retained for compatibility.
  */
 
 import {
