@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { TextLink } from "@/components/design-system";
 import { EssayRelationHints } from "@/components/reading/EssayRelations";
 import type { Essay } from "@/lib/content/types";
-import { getEssayReadUrl } from "@/lib/content";
+import { getEssayPublicationCta } from "@/lib/content";
 import { formatDate } from "@/lib/utils";
 
 interface CatalogEntryProps {
@@ -17,6 +17,7 @@ interface CatalogEntryProps {
 export function CatalogEntry({ essay, index }: CatalogEntryProps) {
   const ref = useRef<HTMLLIElement>(null);
   const inView = useInView(ref, { once: true, margin: "-8% 0px" });
+  const publication = getEssayPublicationCta(essay);
 
   return (
     <motion.li
@@ -52,9 +53,15 @@ export function CatalogEntry({ essay, index }: CatalogEntryProps) {
                 {essay.topics.join(" · ")}
               </p>
             )}
-            <TextLink href={getEssayReadUrl(essay)} external className="mt-5">
-              Read on Medium
-            </TextLink>
+            {publication.href && publication.readLabel ? (
+              <TextLink href={publication.href} external className="mt-5">
+                {publication.readLabel}
+              </TextLink>
+            ) : (
+              <TextLink href={`/essays/${essay.slug}`} className="mt-5">
+                Open in Living Terrain
+              </TextLink>
+            )}
           </div>
         </div>
       </article>

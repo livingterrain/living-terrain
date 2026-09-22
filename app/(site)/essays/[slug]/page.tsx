@@ -9,8 +9,7 @@ import { renderBody } from "@/components/reading/Prose";
 import {
   getAllEssays,
   getEssayBySlug,
-  getEssayReadUrl,
-  getEssayReadSource,
+  getEssayPublicationCta,
 } from "@/lib/content";
 import { refFromEssay } from "@/lib/relationships";
 import { formatDate } from "@/lib/utils";
@@ -28,6 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const essay = getEssayBySlug(slug);
   if (!essay) return { title: "Essay Not Found" };
 
+  // SEO canonical stays on Living Terrain — never Medium/Substack.
   return withCanonical(`/essays/${slug}`, {
     title: essay.title,
     description: essay.excerpt,
@@ -43,22 +43,22 @@ export default async function EssayPage({ params }: PageProps) {
   if (!essay) notFound();
 
   const hasBody = Boolean(essay.body?.trim());
-  const readUrl = getEssayReadUrl(essay);
-  const readSource = getEssayReadSource(essay);
+  const publication = getEssayPublicationCta(essay);
 
-  const publicationWhisper = (
-    <p className="lantern-meta mt-10 text-[0.8125rem] leading-relaxed">
-      Also published on{" "}
-      <TextLink
-        href={readUrl}
-        external
-        className="lantern-link text-[0.8125rem]"
-      >
-        {readSource}
-      </TextLink>
-      .
-    </p>
-  );
+  const publicationWhisper =
+    hasBody && publication.href && publication.sourceLabel ? (
+      <p className="lantern-meta mt-10 text-[0.8125rem] leading-relaxed">
+        Also published on{" "}
+        <TextLink
+          href={publication.href}
+          external
+          className="lantern-link text-[0.8125rem]"
+        >
+          {publication.sourceLabel}
+        </TextLink>
+        .
+      </p>
+    ) : null;
 
   return (
     <LanternReadingShell
@@ -75,7 +75,12 @@ export default async function EssayPage({ params }: PageProps) {
       }
       afterContent={<EssayThreadBelonging threadIds={essay.threadIds} />}
       nodeRef={hasBody ? refFromEssay(essay) : undefined}
-      afterThread={<>{hasBody && publicationWhisper}<EssayNewsletterCTA hasFullEssay={hasBody} /></>}
+      afterThread={
+        <>
+          {publicationWhisper}
+          <EssayNewsletterCTA hasFullEssay={hasBody} />
+        </>
+      }
       returnHref="/essays"
       variant="library"
     >
@@ -84,17 +89,26 @@ export default async function EssayPage({ params }: PageProps) {
       ) : (
         <>
           <p>{essay.excerpt}</p>
-          <p className="lantern-meta mt-8 text-[0.9375rem]">
-            The full essay is published on {readSource}. Living Terrain holds
-            it here as part of a connected investigation.
-          </p>
-          <TextLink
-            href={readUrl}
-            external
-            className="lantern-link mt-8 inline-block"
-          >
-            Read on {readSource}
-          </TextLink>
+          {publication.href && publication.sourceLabel && publication.readLabel ? (
+            <>
+              <p className="lantern-meta mt-8 text-[0.9375rem]">
+                The full essay is published on {publication.sourceLabel}. Living
+                Terrain holds it here as part of a connected investigation.
+              </p>
+              <TextLink
+                href={publication.href}
+                external
+                className="lantern-link mt-8 inline-block"
+              >
+                {publication.readLabel}
+              </TextLink>
+            </>
+          ) : (
+            <p className="lantern-meta mt-8 text-[0.9375rem]">
+              Living Terrain holds this piece as part of a connected
+              investigation. The full text is not yet available here.
+            </p>
+          )}
         </>
       )}
     </LanternReadingShell>

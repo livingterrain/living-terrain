@@ -1,7 +1,7 @@
 import { ConnectionWeb } from "@/components/network";
 import { PublicationLink } from "@/components/reading/PublicationLink";
 import { TextLink } from "@/components/design-system";
-import { getEssayReadSource, getEssayReadUrl } from "@/lib/content";
+import { getEssayPublicationCta } from "@/lib/content";
 import type { Essay } from "@/lib/content/types";
 
 interface ChamberRelatedEssaysProps {
@@ -13,14 +13,9 @@ interface ChamberRelatedEssaysProps {
  * External publication remains a quiet secondary link when present.
  */
 export function ChamberRelatedEssays({ essays }: ChamberRelatedEssaysProps) {
-  const withPublication = essays.filter((essay) => {
-    const url = getEssayReadUrl(essay);
-    return (
-      url.includes("substack.com") ||
-      url.includes("medium.com") ||
-      Boolean(essay.externalUrl)
-    );
-  });
+  const withPublication = essays.filter(
+    (essay) => Boolean(getEssayPublicationCta(essay).href),
+  );
 
   return (
     <section aria-labelledby="chamber-essays">
@@ -46,8 +41,7 @@ export function ChamberRelatedEssays({ essays }: ChamberRelatedEssaysProps) {
           {withPublication.length > 0 && (
             <div className="mt-8 space-y-3">
               {withPublication.map((essay) => {
-                const href = getEssayReadUrl(essay);
-                const source = getEssayReadSource(essay);
+                const publication = getEssayPublicationCta(essay);
                 return (
                   <p
                     key={essay.id}
@@ -55,11 +49,11 @@ export function ChamberRelatedEssays({ essays }: ChamberRelatedEssaysProps) {
                   >
                     Also on{" "}
                     <TextLink
-                      href={href}
+                      href={publication.href!}
                       external
                       className="text-[0.8125rem]"
                     >
-                      {source === "publication" ? "publication" : source}
+                      {publication.sourceLabel}
                     </TextLink>
                     {essays.length > 1 ? ` · ${essay.title}` : ""}
                   </p>

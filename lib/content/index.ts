@@ -30,6 +30,19 @@ import type {
 import { materializeSubstackEssays } from "../content-sync/materialize-essays";
 import { applyEssayThreads, getEssayThreadMap } from "../threads";
 import type { ThreadId } from "../threads";
+import {
+  getEssayPublicationHref,
+  getEssayPublicationSource,
+} from "./publication-cta";
+
+export {
+  getEssayPublicationHref,
+  getEssayPublicationSource,
+  getEssayPublicationCta,
+  isSubstackPostUrl,
+  isMediumUrl,
+} from "./publication-cta";
+export type { EssayPublicationCta, EssayPublicationSource } from "./publication-cta";
 
 const atlas = () => getAtlas();
 
@@ -190,25 +203,27 @@ export function getProjectEssays(project: Project): Essay[] {
   return getAllEssays().filter((e) => ids.has(e.id));
 }
 
+/**
+ * External publication URL for CTAs.
+ * Prefers a verified Substack post over Medium; never invents URLs.
+ * @deprecated Prefer getEssayPublicationHref / getEssayPublicationCta for new UI.
+ */
 export function getEssayReadUrl(essay: Essay): string {
   return (
-    essay.canonicalUrl ??
-    essay.substackUrl ??
-    essay.mediumUrl ??
-    essay.externalUrl ??
+    getEssayPublicationHref(essay) ??
+    // Legacy callers: keep a non-null string; homepage only if nothing else exists.
     atlas().site.substackUrl
   );
 }
 
-export function getEssayReadSource(essay: Essay): "Substack" | "Medium" | "publication" {
-  const url = getEssayReadUrl(essay);
-  if (url.includes("substack.com")) return "Substack";
-  if (url.includes("medium.com")) return "Medium";
-  return "publication";
+export function getEssayReadSource(
+  essay: Essay,
+): "Substack" | "Medium" | "publication" {
+  return getEssayPublicationSource(essay) ?? "publication";
 }
 
 export function essayHasDirectUrl(essay: Essay): boolean {
-  return Boolean(essay.externalUrl);
+  return Boolean(getEssayPublicationHref(essay));
 }
 
 export function getProjectQuestions(project: Project): Question[] {
