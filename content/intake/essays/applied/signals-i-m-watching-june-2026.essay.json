@@ -1,7 +1,7 @@
 {
-  "title": "Signals I'm Watching — June 2026",
+  "title": "Signals I'm Watching \u2014 June 2026",
   "mediumUrl": "https://medium.com/@livingterrain/signals-im-watching-june-2026-21299cd7913b",
-  "subtitle": "People are returning to faith, questioning institutions, craving community, and searching for meaning. I don't know exactly what it means…",
+  "subtitle": "People are returning to faith, questioning institutions, craving community, and searching for meaning. I don't know exactly what it means\u2026",
   "publishedAt": "2026-06-09",
   "featuredImage": null,
   "status": "published",
@@ -9,10 +9,29 @@
   "source": "medium-rss",
   "overrides": {
     "id": "e8",
-    "themes": ["th-meaning", "th-relationship", "th-time", "th-information"],
-    "parentConcepts": ["th-meaning", "th-relationship"],
-    "topics": ["Meaning", "Culture", "Signals", "Observation", "Time"],
-    "questionIds": ["q2", "q4"],
+    "themes": [
+      "th-meaning",
+      "th-relationship",
+      "th-time",
+      "th-information"
+    ],
+    "parentConcepts": [
+      "th-meaning",
+      "th-relationship"
+    ],
+    "topics": [
+      "Meaning",
+      "Culture",
+      "Signals",
+      "Observation",
+      "Time"
+    ],
+    "questionIds": [
+      "q2",
+      "q4"
+    ],
     "curatorNotes": "Field-digest style; may migrate to field-note later."
-  }
+  },
+  "canonicalUrl": "https://livingterrain.substack.com/p/signals-im-watching-june-2026",
+  "substackUrl": "https://livingterrain.substack.com/p/signals-im-watching-june-2026"
 }

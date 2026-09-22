@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-17).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -18,6 +18,9 @@ export const ENTRY: AtlasEntry = {
   "status": "published",
   "meta": {
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/my-father-saved-me-now-im-saving",
+    "substackUrl": "https://livingterrain.substack.com/p/my-father-saved-me-now-im-saving",
+    "mediumUrl": "https://medium.com/illumination/my-father-saved-me-now-im-saving-the-lineage-494b0b6e4d5f",
     "externalUrl": "https://medium.com/illumination/my-father-saved-me-now-im-saving-the-lineage-494b0b6e4d5f",
     "style": "essay",
     "subtitle": "My father saved me with one belief in my potential. Now I’m saving the lineage. This is the moment everything shifted.",

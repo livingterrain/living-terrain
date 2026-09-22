@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-12).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -20,6 +20,9 @@ export const ENTRY: AtlasEntry = {
     "subtitle": "Why the coming age of information acceleration may overwhelm the unregulated mind",
     "excerpt": "Why the coming age of information acceleration may overwhelm the unregulated mind",
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/uranus-entered-gemini-the-next-era",
+    "substackUrl": "https://livingterrain.substack.com/p/uranus-entered-gemini-the-next-era",
+    "mediumUrl": "https://medium.com/@livingterrain/uranus-entered-gemini-the-next-era-may-be-hard-on-the-human-nervous-system-b76a0e41fe18",
     "externalUrl": "https://medium.com/@livingterrain/uranus-entered-gemini-the-next-era-may-be-hard-on-the-human-nervous-system-b76a0e41fe18",
     "style": "essay"
   }

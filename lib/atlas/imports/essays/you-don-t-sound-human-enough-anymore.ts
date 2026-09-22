@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-12).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -20,6 +20,9 @@ export const ENTRY: AtlasEntry = {
     "subtitle": "On clarity, control, and the systems trying to keep up",
     "excerpt": "On clarity, control, and the systems trying to keep up",
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/you-dont-sound-human-enough-anymore",
+    "substackUrl": "https://livingterrain.substack.com/p/you-dont-sound-human-enough-anymore",
+    "mediumUrl": "https://medium.com/@livingterrain/you-dont-sound-human-enough-anymore-4c5a09af0a3b",
     "externalUrl": "https://medium.com/@livingterrain/you-dont-sound-human-enough-anymore-4c5a09af0a3b",
     "style": "essay"
   }

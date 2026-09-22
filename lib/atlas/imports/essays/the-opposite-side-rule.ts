@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-17).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -18,6 +18,9 @@ export const ENTRY: AtlasEntry = {
   "status": "published",
   "meta": {
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/the-opposite-side-rule",
+    "substackUrl": "https://livingterrain.substack.com/p/the-opposite-side-rule",
+    "mediumUrl": "https://medium.com/illumination/the-opposite-side-rule-835d5439d325",
     "externalUrl": "https://medium.com/illumination/the-opposite-side-rule-835d5439d325",
     "style": "essay",
     "subtitle": "Why the Left Side of the Body Collapses First —  and How 2,000 Years of Left-Brain Civilization Disconnected Us From Our Own Biology**",

@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-17).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -18,6 +18,9 @@ export const ENTRY: AtlasEntry = {
   "status": "published",
   "meta": {
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/the-normalization-problem",
+    "substackUrl": "https://livingterrain.substack.com/p/the-normalization-problem",
+    "mediumUrl": "https://medium.com/illumination/the-normalization-problem-ca02e295607c",
     "externalUrl": "https://medium.com/illumination/the-normalization-problem-ca02e295607c",
     "style": "essay",
     "subtitle": "Why AI-edited images of children reveal a deeper cultural failure of discernment",

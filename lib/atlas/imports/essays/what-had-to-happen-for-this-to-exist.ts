@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-17).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -18,6 +18,9 @@ export const ENTRY: AtlasEntry = {
   "status": "published",
   "meta": {
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/what-had-to-happen-for-this-to-exist-54a8ee94a4aa",
+    "substackUrl": "https://livingterrain.substack.com/p/what-had-to-happen-for-this-to-exist-54a8ee94a4aa",
+    "mediumUrl": "https://medium.com/illumination/what-had-to-happen-for-this-to-exist-54a8ee94a4aa",
     "externalUrl": "https://medium.com/illumination/what-had-to-happen-for-this-to-exist-54a8ee94a4aa",
     "style": "essay",
     "subtitle": "Why ordinary things stopped feeling ordinary to me.",

@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-12).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -20,6 +20,9 @@ export const ENTRY: AtlasEntry = {
     "subtitle": "Why I think we’re about to witness one of the greatest renaissances of writing in human history.",
     "excerpt": "Why I think we’re about to witness one of the greatest renaissances of writing in human history.",
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/writing-is-coming-back-874752f4a619",
+    "substackUrl": "https://livingterrain.substack.com/p/writing-is-coming-back-874752f4a619",
+    "mediumUrl": "https://medium.com/@livingterrain/writing-is-coming-back-874752f4a619",
     "externalUrl": "https://medium.com/@livingterrain/writing-is-coming-back-874752f4a619",
     "style": "essay"
   }

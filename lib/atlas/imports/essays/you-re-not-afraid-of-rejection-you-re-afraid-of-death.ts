@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-12).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -20,6 +20,9 @@ export const ENTRY: AtlasEntry = {
     "subtitle": "The hidden architecture of fear beneath your life",
     "excerpt": "The hidden architecture of fear beneath your life",
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/youre-not-afraid-of-rejection-youre",
+    "substackUrl": "https://livingterrain.substack.com/p/youre-not-afraid-of-rejection-youre",
+    "mediumUrl": "https://medium.com/illumination/youre-not-afraid-of-rejection-you-re-afraid-of-death-f45bb9c53b57",
     "externalUrl": "https://medium.com/illumination/youre-not-afraid-of-rejection-you-re-afraid-of-death-f45bb9c53b57",
     "style": "essay"
   }

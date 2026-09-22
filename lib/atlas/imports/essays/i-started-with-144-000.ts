@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-12).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -20,6 +20,9 @@ export const ENTRY: AtlasEntry = {
     "subtitle": "A number in Revelation made me wonder whether apocalypse is not the end of the world, but the moment fragmentation finally reveals itself.",
     "excerpt": "A number in Revelation made me wonder whether apocalypse is not the end of the world, but the moment fragmentation finally reveals itself.",
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/i-started-with-144-000-205ed3229e4d",
+    "substackUrl": "https://livingterrain.substack.com/p/i-started-with-144-000-205ed3229e4d",
+    "mediumUrl": "https://medium.com/@livingterrain/i-started-with-144-000-205ed3229e4d",
     "externalUrl": "https://medium.com/@livingterrain/i-started-with-144-000-205ed3229e4d",
     "style": "essay"
   }
