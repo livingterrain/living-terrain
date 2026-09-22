@@ -1,0 +1,705 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-22T19:52:42.650Z",
+  "counts": {
+    "essaysTotal": 159,
+    "mediumOnly": 74,
+    "confirmedNewMatches": 0,
+    "uncertainCandidates": 6,
+    "needsRepublication": 74,
+    "registryPosts": 85
+  },
+  "confirmedNewMatches": [],
+  "uncertainCandidates": [
+    {
+      "id": "e7",
+      "slug": "what-happens-before-the-tragedy",
+      "title": "What Happens Before the Tragedy?",
+      "publishedAt": "2026-06-09",
+      "mediumUrl": "https://medium.com/@livingterrain/what-happens-before-the-tragedy-b07e6c737cd6",
+      "titleCandidates": [],
+      "sameDateCandidates": [
+        {
+          "title": "Signals I’m Watching — June 2026",
+          "slug": "signals-im-watching-june-2026",
+          "url": "https://livingterrain.substack.com/p/signals-im-watching-june-2026"
+        }
+      ]
+    },
+    {
+      "id": "e66",
+      "slug": "the-signal-everyone-is-trying-to-replace",
+      "title": "The Signal Everyone Is Trying to Replace",
+      "publishedAt": "2026-02-01",
+      "mediumUrl": "https://medium.com/illumination/the-signal-everyone-is-trying-to-replace-bfc37e778ace",
+      "titleCandidates": [],
+      "sameDateCandidates": [
+        {
+          "title": "The Missing Signal Isn’t Metabolic",
+          "slug": "the-signal-everyone-is-trying-to",
+          "url": "https://livingterrain.substack.com/p/the-signal-everyone-is-trying-to"
+        }
+      ]
+    },
+    {
+      "id": "e67",
+      "slug": "this-isn-t-polarization-it-s-sorting",
+      "title": "This Isn’t Polarization. It’s Sorting.",
+      "publishedAt": "2026-02-01",
+      "mediumUrl": "https://medium.com/illumination/this-isnt-polarization-it-s-sorting-6f8768fa6e3b",
+      "titleCandidates": [],
+      "sameDateCandidates": [
+        {
+          "title": "The Missing Signal Isn’t Metabolic",
+          "slug": "the-signal-everyone-is-trying-to",
+          "url": "https://livingterrain.substack.com/p/the-signal-everyone-is-trying-to"
+        }
+      ]
+    },
+    {
+      "id": "e71",
+      "slug": "i-didn-t-write-a-psychedelic-book-i-wrote-an-orientation",
+      "title": "I Didn’t Write a Psychedelic Book. I Wrote an Orientation.",
+      "publishedAt": "2026-01-27",
+      "mediumUrl": "https://medium.com/illuminations-mirror/i-didnt-write-a-psychedelic-book-i-wrote-an-orientation-64cb2bfa6492",
+      "titleCandidates": [],
+      "sameDateCandidates": [
+        {
+          "title": "Eden Was a Warning",
+          "slug": "eden-was-a-warning",
+          "url": "https://livingterrain.substack.com/p/eden-was-a-warning"
+        }
+      ]
+    },
+    {
+      "id": "e74",
+      "slug": "seeing-humanity-as-a-system-changes-everything",
+      "title": "Seeing Humanity as a System Changes Everything",
+      "publishedAt": "2026-01-25",
+      "mediumUrl": "https://medium.com/health-science/seeing-humanity-as-a-system-changes-everything-2d4422f895a4",
+      "titleCandidates": [],
+      "sameDateCandidates": [
+        {
+          "title": "Anyone Can Write. Very Few Do.",
+          "slug": "anyone-can-write-very-few-do",
+          "url": "https://livingterrain.substack.com/p/anyone-can-write-very-few-do"
+        }
+      ]
+    },
+    {
+      "id": "e96",
+      "slug": "everything-you-know-about-the-heart-is-backwards",
+      "title": "Everything You Know About the Heart Is Backwards",
+      "publishedAt": "2025-12-02",
+      "mediumUrl": "https://medium.com/@livingterrain/everything-you-know-about-the-heart-is-backwards-ab383d36abd7",
+      "titleCandidates": [],
+      "sameDateCandidates": [
+        {
+          "title": "Chronic Illness Is a Paused Process",
+          "slug": "chronic-illness-is-a-paused-process",
+          "url": "https://livingterrain.substack.com/p/chronic-illness-is-a-paused-process"
+        }
+      ]
+    }
+  ],
+  "needsRepublication": [
+    {
+      "id": "e18",
+      "slug": "medicine-is-learning-a-new-language",
+      "title": "Medicine Is Learning a New Language",
+      "publishedAt": "2026-08-01",
+      "mediumUrl": "https://medium.com/health-science/medicine-is-learning-a-new-language-52af86af3ca9",
+      "readUrl": "https://medium.com/health-science/medicine-is-learning-a-new-language-52af86af3ca9"
+    },
+    {
+      "id": "e20",
+      "slug": "the-wrong-question-about-transhumanism",
+      "title": "The Wrong Question About Transhumanism",
+      "publishedAt": "2026-07-28",
+      "mediumUrl": "https://medium.com/illumination/the-wrong-question-about-transhumanism-5c07197b8d47",
+      "readUrl": "https://medium.com/illumination/the-wrong-question-about-transhumanism-5c07197b8d47"
+    },
+    {
+      "id": "e19",
+      "slug": "technology-was-never-separate-from-nature",
+      "title": "Technology Was Never Separate From Nature",
+      "publishedAt": "2026-07-26",
+      "mediumUrl": "https://medium.com/illumination/technology-was-never-separate-from-nature-9d7aed30a3ab",
+      "readUrl": "https://medium.com/illumination/technology-was-never-separate-from-nature-9d7aed30a3ab"
+    },
+    {
+      "id": "e21",
+      "slug": "talking-into-the-void",
+      "title": "Talking Into the Void",
+      "publishedAt": "2026-07-25",
+      "mediumUrl": "https://medium.com/illumination/talking-into-the-void-e2c9e04737bc",
+      "readUrl": "https://medium.com/illumination/talking-into-the-void-e2c9e04737bc"
+    },
+    {
+      "id": "e22",
+      "slug": "the-aquarius-full-moon-is-asking-us-one-question",
+      "title": "The Aquarius Full Moon Is Asking Us One Question",
+      "publishedAt": "2026-07-24",
+      "mediumUrl": "https://medium.com/illumination/the-aquarius-full-moon-is-asking-us-one-question-a5fca8111332",
+      "readUrl": "https://medium.com/illumination/the-aquarius-full-moon-is-asking-us-one-question-a5fca8111332"
+    },
+    {
+      "id": "e24",
+      "slug": "the-revolution-after-ai",
+      "title": "The Revolution After AI",
+      "publishedAt": "2026-07-21",
+      "mediumUrl": "https://medium.com/readers-digests/the-revolution-after-ai-5c120e56d2a4",
+      "readUrl": "https://medium.com/readers-digests/the-revolution-after-ai-5c120e56d2a4"
+    },
+    {
+      "id": "e23",
+      "slug": "the-systems-we-mistake-for-reality",
+      "title": "The Systems We Mistake for Reality",
+      "publishedAt": "2026-07-21",
+      "mediumUrl": "https://medium.com/illumination/the-systems-we-mistake-for-reality-73f0c6ebe443",
+      "readUrl": "https://medium.com/illumination/the-systems-we-mistake-for-reality-73f0c6ebe443"
+    },
+    {
+      "id": "e25",
+      "slug": "the-evolution-of-language",
+      "title": "The Evolution of Language",
+      "publishedAt": "2026-07-19",
+      "mediumUrl": "https://medium.com/@livingterrain/the-evolution-of-language-0ce03ef47277",
+      "readUrl": "https://medium.com/@livingterrain/the-evolution-of-language-0ce03ef47277"
+    },
+    {
+      "id": "e26",
+      "slug": "optimization-without-nourishment",
+      "title": "Optimization Without Nourishment",
+      "publishedAt": "2026-07-09",
+      "mediumUrl": "https://medium.com/illumination/optimisation-without-nourishment-a3770024b5ab",
+      "readUrl": "https://medium.com/illumination/optimisation-without-nourishment-a3770024b5ab"
+    },
+    {
+      "id": "e27",
+      "slug": "the-kitchen-we-quietly-lost",
+      "title": "The Kitchen We Quietly Lost",
+      "publishedAt": "2026-07-07",
+      "mediumUrl": "https://medium.com/illumination/the-kitchen-we-quietly-lost-d49c1b852638",
+      "readUrl": "https://medium.com/illumination/the-kitchen-we-quietly-lost-d49c1b852638"
+    },
+    {
+      "id": "e3",
+      "slug": "every-living-system-pays-a-maintenance-cost",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "publishedAt": "2026-07-06",
+      "mediumUrl": "https://medium.com/illumination/every-living-system-pays-a-maintenance-cost-7c5f6292dd6d",
+      "readUrl": "https://medium.com/illumination/every-living-system-pays-a-maintenance-cost-7c5f6292dd6d"
+    },
+    {
+      "id": "e4",
+      "slug": "the-ancient-purpose-of-looking-up",
+      "title": "The Ancient Purpose of Looking Up",
+      "publishedAt": "2026-07-02",
+      "mediumUrl": "https://medium.com/readers-digests/the-ancient-purpose-of-looking-up-3429017ac42e",
+      "readUrl": "https://medium.com/readers-digests/the-ancient-purpose-of-looking-up-3429017ac42e"
+    },
+    {
+      "id": "e1",
+      "slug": "constraint-is-not-the-opposite-of-freedom",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "publishedAt": "2026-06-24",
+      "mediumUrl": "https://medium.com/illumination/constraint-is-not-the-opposite-of-freedom-5e0d1b6eac28",
+      "readUrl": "https://medium.com/illumination/constraint-is-not-the-opposite-of-freedom-5e0d1b6eac28"
+    },
+    {
+      "id": "e2",
+      "slug": "you-have-to-go-far-enough-to-make-a-loop",
+      "title": "You Have to Go Far Enough to Make a Loop",
+      "publishedAt": "2026-06-23",
+      "mediumUrl": "https://medium.com/illumination/you-have-to-go-far-enough-to-make-a-loop-f21aec4f8d4f",
+      "readUrl": "https://medium.com/illumination/you-have-to-go-far-enough-to-make-a-loop-f21aec4f8d4f"
+    },
+    {
+      "id": "e5",
+      "slug": "there-is-a-cost-to-becoming-an-image",
+      "title": "There Is a Cost to Becoming an Image",
+      "publishedAt": "2026-06-23",
+      "mediumUrl": "https://medium.com/readers-digests/there-is-a-cost-to-becoming-an-image-0e174fb767cb",
+      "readUrl": "https://medium.com/readers-digests/there-is-a-cost-to-becoming-an-image-0e174fb767cb"
+    },
+    {
+      "id": "e6",
+      "slug": "when-sacrifice-stops-leading-somewhere",
+      "title": "When Sacrifice Stops Leading Somewhere",
+      "publishedAt": "2026-06-15",
+      "mediumUrl": "https://medium.com/@livingterrain/when-sacrifice-stops-leading-somewhere-58142a5a7275",
+      "readUrl": "https://medium.com/@livingterrain/when-sacrifice-stops-leading-somewhere-58142a5a7275"
+    },
+    {
+      "id": "e7",
+      "slug": "what-happens-before-the-tragedy",
+      "title": "What Happens Before the Tragedy?",
+      "publishedAt": "2026-06-09",
+      "mediumUrl": "https://medium.com/@livingterrain/what-happens-before-the-tragedy-b07e6c737cd6",
+      "readUrl": "https://medium.com/@livingterrain/what-happens-before-the-tragedy-b07e6c737cd6"
+    },
+    {
+      "id": "e9",
+      "slug": "the-most-important-thing-you-never-learned-about-reality",
+      "title": "The Most Important Thing You Never Learned About Reality",
+      "publishedAt": "2026-06-04",
+      "mediumUrl": "https://medium.com/@livingterrain/the-most-important-thing-you-never-learned-about-reality-28c1e5968940",
+      "readUrl": "https://medium.com/@livingterrain/the-most-important-thing-you-never-learned-about-reality-28c1e5968940"
+    },
+    {
+      "id": "e31",
+      "slug": "everyone-thinks-allergy-season-is-getting-stronger-but-what-if-our-barri",
+      "title": "Everyone Thinks Allergy Season Is Getting Stronger. But What If Our Barriers Are Getting Weaker?",
+      "publishedAt": "2026-05-26",
+      "mediumUrl": "https://medium.com/@livingterrain/everyone-thinks-allergy-season-is-getting-stronger-but-what-if-our-barriers-are-getting-weaker-f1357e09358a",
+      "readUrl": "https://medium.com/@livingterrain/everyone-thinks-allergy-season-is-getting-stronger-but-what-if-our-barriers-are-getting-weaker-f1357e09358a"
+    },
+    {
+      "id": "e32",
+      "slug": "the-girl-who-watched-tv-upside-down",
+      "title": "The Girl Who Watched TV Upside Down",
+      "publishedAt": "2026-05-26",
+      "mediumUrl": "https://medium.com/@livingterrain/the-girl-who-watched-tv-upside-down-1b8d19bc951f",
+      "readUrl": "https://medium.com/@livingterrain/the-girl-who-watched-tv-upside-down-1b8d19bc951f"
+    },
+    {
+      "id": "e35",
+      "slug": "why-modern-life-feels-so-unreal",
+      "title": "Why Modern Life Feels So Unreal",
+      "publishedAt": "2026-05-06",
+      "mediumUrl": "https://medium.com/@livingterrain/why-modern-life-feels-so-unreal-2955bd3a0e1a",
+      "readUrl": "https://medium.com/@livingterrain/why-modern-life-feels-so-unreal-2955bd3a0e1a"
+    },
+    {
+      "id": "e36",
+      "slug": "regulation-is-not-calm",
+      "title": "Regulation Is Not Calm",
+      "publishedAt": "2026-05-04",
+      "mediumUrl": "https://medium.com/@livingterrain/regulation-is-not-calm-250dc7bab3f6",
+      "readUrl": "https://medium.com/@livingterrain/regulation-is-not-calm-250dc7bab3f6"
+    },
+    {
+      "id": "e40",
+      "slug": "what-philosophers-understood-about-suffering-before-biology-could-explai",
+      "title": "What Philosophers Understood About Suffering Before Biology Could Explain It",
+      "publishedAt": "2026-05-04",
+      "mediumUrl": "https://medium.com/@livingterrain/what-philosophers-understood-about-suffering-before-biology-could-explain-it-256dc834650a",
+      "readUrl": "https://medium.com/@livingterrain/what-philosophers-understood-about-suffering-before-biology-could-explain-it-256dc834650a"
+    },
+    {
+      "id": "e38",
+      "slug": "the-most-addictive-thing-in-your-life-may-be-familiar-stress",
+      "title": "The Most Addictive Thing in Your Life May Be Familiar Stress",
+      "publishedAt": "2026-05-03",
+      "mediumUrl": "https://medium.com/@livingterrain/the-most-addictive-thing-in-your-life-may-be-familiar-stress-05478ef68eee",
+      "readUrl": "https://medium.com/@livingterrain/the-most-addictive-thing-in-your-life-may-be-familiar-stress-05478ef68eee"
+    },
+    {
+      "id": "e37",
+      "slug": "you-cannot-heal-in-the-same-state-that-made-you-sick",
+      "title": "You Cannot Heal in the Same State That Made You Sick",
+      "publishedAt": "2026-05-03",
+      "mediumUrl": "https://medium.com/@livingterrain/you-cannot-heal-in-the-same-state-that-made-you-sick-00164aedca4e",
+      "readUrl": "https://medium.com/@livingterrain/you-cannot-heal-in-the-same-state-that-made-you-sick-00164aedca4e"
+    },
+    {
+      "id": "e39",
+      "slug": "the-christ-story-moves-like-the-cosmos",
+      "title": "The Christ Story Moves Like the Cosmos",
+      "publishedAt": "2026-04-28",
+      "mediumUrl": "https://medium.com/@livingterrain/the-christ-story-moves-like-the-cosmos-8f4fe0f512bd",
+      "readUrl": "https://medium.com/@livingterrain/the-christ-story-moves-like-the-cosmos-8f4fe0f512bd"
+    },
+    {
+      "id": "e44",
+      "slug": "nothing-is-outside-the-pattern-only-out-of-sync",
+      "title": "Nothing Is Outside the Pattern — Only Out of Sync",
+      "publishedAt": "2026-04-20",
+      "mediumUrl": "https://medium.com/@livingterrain/nothing-is-outside-the-pattern-only-out-of-sync-0239cfb599b0",
+      "readUrl": "https://medium.com/@livingterrain/nothing-is-outside-the-pattern-only-out-of-sync-0239cfb599b0"
+    },
+    {
+      "id": "e46",
+      "slug": "the-wall-of-consciousness",
+      "title": "The Wall of Consciousness",
+      "publishedAt": "2026-04-07",
+      "mediumUrl": "https://medium.com/illuminations-mirror/the-wall-of-consciousness-c32e81bc954d",
+      "readUrl": "https://medium.com/illuminations-mirror/the-wall-of-consciousness-c32e81bc954d"
+    },
+    {
+      "id": "e45",
+      "slug": "why-the-bible-still-feels-relevant",
+      "title": "Why the Bible Still Feels Relevant",
+      "publishedAt": "2026-04-07",
+      "mediumUrl": "https://medium.com/illuminations-mirror/why-the-bible-still-feels-relevant-447a85d9ffb5",
+      "readUrl": "https://medium.com/illuminations-mirror/why-the-bible-still-feels-relevant-447a85d9ffb5"
+    },
+    {
+      "id": "e47",
+      "slug": "the-smart-loop-why-awakening-isn-t-mystical",
+      "title": "The Smart Loop: Why Awakening Isn’t Mystical",
+      "publishedAt": "2026-03-17",
+      "mediumUrl": "https://medium.com/illumination/the-smart-loop-why-awakening-isnt-mystical-5ce22f64db1a",
+      "readUrl": "https://medium.com/illumination/the-smart-loop-why-awakening-isnt-mystical-5ce22f64db1a"
+    },
+    {
+      "id": "e48",
+      "slug": "when-the-internet-gets-too-loud-to-think",
+      "title": "When the Internet Gets Too Loud to Think",
+      "publishedAt": "2026-03-17",
+      "mediumUrl": "https://medium.com/illumination/when-the-internet-gets-too-loud-to-think-0fd581509981",
+      "readUrl": "https://medium.com/illumination/when-the-internet-gets-too-loud-to-think-0fd581509981"
+    },
+    {
+      "id": "e49",
+      "slug": "preparation-vs-performance-what-happens-when-scarcity-returns",
+      "title": "Preparation vs Performance: What Happens When Scarcity Returns",
+      "publishedAt": "2026-03-02",
+      "mediumUrl": "https://medium.com/@livingterrain/preparation-vs-performance-what-happens-when-scarcity-returns-f0e92d180c73",
+      "readUrl": "https://medium.com/@livingterrain/preparation-vs-performance-what-happens-when-scarcity-returns-f0e92d180c73"
+    },
+    {
+      "id": "e50",
+      "slug": "the-illusion-of-purity-is-cracking",
+      "title": "The Illusion of Purity Is Cracking",
+      "publishedAt": "2026-03-02",
+      "mediumUrl": "https://medium.com/@livingterrain/the-illusion-of-purity-is-cracking-6d09bd7a2679",
+      "readUrl": "https://medium.com/@livingterrain/the-illusion-of-purity-is-cracking-6d09bd7a2679"
+    },
+    {
+      "id": "e51",
+      "slug": "i-am-for-the-kids",
+      "title": "I Am For the Kids",
+      "publishedAt": "2026-02-28",
+      "mediumUrl": "https://medium.com/@livingterrain/i-am-for-the-kids-c0f2adf63b04",
+      "readUrl": "https://medium.com/@livingterrain/i-am-for-the-kids-c0f2adf63b04"
+    },
+    {
+      "id": "e11",
+      "slug": "if-you-feel-it-in-your-body-start-here",
+      "title": "If You Feel It in Your Body, Start Here",
+      "publishedAt": "2026-02-25",
+      "mediumUrl": "https://medium.com/illumination/if-you-feel-it-in-your-body-start-here-7595993ec1fc",
+      "readUrl": "https://medium.com/illumination/if-you-feel-it-in-your-body-start-here-7595993ec1fc"
+    },
+    {
+      "id": "e54",
+      "slug": "yes-i-am-sensitive",
+      "title": "Yes, I Am Sensitive.",
+      "publishedAt": "2026-02-25",
+      "mediumUrl": "https://medium.com/illumination/yes-i-am-sensitive-f740323aa8d0",
+      "readUrl": "https://medium.com/illumination/yes-i-am-sensitive-f740323aa8d0"
+    },
+    {
+      "id": "e55",
+      "slug": "i-have-nothing-and-i-have-everything",
+      "title": "I Have Nothing. And I Have Everything.",
+      "publishedAt": "2026-02-23",
+      "mediumUrl": "https://medium.com/illumination/i-have-nothing-and-i-have-everything-9c7ae4895162",
+      "readUrl": "https://medium.com/illumination/i-have-nothing-and-i-have-everything-9c7ae4895162"
+    },
+    {
+      "id": "e56",
+      "slug": "when-the-spirit-drags-the-body",
+      "title": "When the Spirit Drags the Body",
+      "publishedAt": "2026-02-23",
+      "mediumUrl": "https://medium.com/illumination/when-the-spirit-drags-the-body-d3f70c6b36cd",
+      "readUrl": "https://medium.com/illumination/when-the-spirit-drags-the-body-d3f70c6b36cd"
+    },
+    {
+      "id": "e58",
+      "slug": "i-thought-i-was-going-to-die-too",
+      "title": "I Thought I Was Going to Die Too",
+      "publishedAt": "2026-02-19",
+      "mediumUrl": "https://medium.com/illumination/i-thought-i-was-going-to-die-too-093f628928e4",
+      "readUrl": "https://medium.com/illumination/i-thought-i-was-going-to-die-too-093f628928e4"
+    },
+    {
+      "id": "e57",
+      "slug": "the-second-time-i-thought-i-was-going-to-die",
+      "title": "The Second Time I Thought I Was Going to Die",
+      "publishedAt": "2026-02-19",
+      "mediumUrl": "https://medium.com/illumination/the-second-time-i-thought-i-was-going-to-die-16013cd707d8",
+      "readUrl": "https://medium.com/illumination/the-second-time-i-thought-i-was-going-to-die-16013cd707d8"
+    },
+    {
+      "id": "e59",
+      "slug": "the-second-printing-press",
+      "title": "The Second Printing Press",
+      "publishedAt": "2026-02-15",
+      "mediumUrl": "https://medium.com/illumination/the-second-printing-press-825f2ca6f990",
+      "readUrl": "https://medium.com/illumination/the-second-printing-press-825f2ca6f990"
+    },
+    {
+      "id": "e64",
+      "slug": "i-ve-been-paying-attention",
+      "title": "I’ve Been Paying Attention",
+      "publishedAt": "2026-02-04",
+      "mediumUrl": "https://medium.com/illumination/ive-been-paying-attention-3620a98549c7",
+      "readUrl": "https://medium.com/illumination/ive-been-paying-attention-3620a98549c7"
+    },
+    {
+      "id": "e65",
+      "slug": "i-tried-mushrooms-and-started-taking-notes",
+      "title": "I Tried Mushrooms and Started Taking Notes",
+      "publishedAt": "2026-02-03",
+      "mediumUrl": "https://medium.com/illumination/i-tried-mushrooms-and-started-taking-notes-2afc166eb1b2",
+      "readUrl": "https://medium.com/illumination/i-tried-mushrooms-and-started-taking-notes-2afc166eb1b2"
+    },
+    {
+      "id": "e66",
+      "slug": "the-signal-everyone-is-trying-to-replace",
+      "title": "The Signal Everyone Is Trying to Replace",
+      "publishedAt": "2026-02-01",
+      "mediumUrl": "https://medium.com/illumination/the-signal-everyone-is-trying-to-replace-bfc37e778ace",
+      "readUrl": "https://medium.com/illumination/the-signal-everyone-is-trying-to-replace-bfc37e778ace"
+    },
+    {
+      "id": "e67",
+      "slug": "this-isn-t-polarization-it-s-sorting",
+      "title": "This Isn’t Polarization. It’s Sorting.",
+      "publishedAt": "2026-02-01",
+      "mediumUrl": "https://medium.com/illumination/this-isnt-polarization-it-s-sorting-6f8768fa6e3b",
+      "readUrl": "https://medium.com/illumination/this-isnt-polarization-it-s-sorting-6f8768fa6e3b"
+    },
+    {
+      "id": "e68",
+      "slug": "why-people-give-up-forgetting-why-they-chose-the-pain",
+      "title": "Why People Give Up: Forgetting Why They Chose the Pain",
+      "publishedAt": "2026-01-31",
+      "mediumUrl": "https://medium.com/illumination/why-people-give-up-forgetting-why-they-chose-the-pain-08b913c00073",
+      "readUrl": "https://medium.com/illumination/why-people-give-up-forgetting-why-they-chose-the-pain-08b913c00073"
+    },
+    {
+      "id": "e70",
+      "slug": "when-optimization-replaced-wisdom",
+      "title": "When Optimization Replaced Wisdom",
+      "publishedAt": "2026-01-30",
+      "mediumUrl": "https://medium.com/illumination/when-optimization-replaced-wisdom-6b71d25f59f4",
+      "readUrl": "https://medium.com/illumination/when-optimization-replaced-wisdom-6b71d25f59f4"
+    },
+    {
+      "id": "e71",
+      "slug": "i-didn-t-write-a-psychedelic-book-i-wrote-an-orientation",
+      "title": "I Didn’t Write a Psychedelic Book. I Wrote an Orientation.",
+      "publishedAt": "2026-01-27",
+      "mediumUrl": "https://medium.com/illuminations-mirror/i-didnt-write-a-psychedelic-book-i-wrote-an-orientation-64cb2bfa6492",
+      "readUrl": "https://medium.com/illuminations-mirror/i-didnt-write-a-psychedelic-book-i-wrote-an-orientation-64cb2bfa6492"
+    },
+    {
+      "id": "e74",
+      "slug": "seeing-humanity-as-a-system-changes-everything",
+      "title": "Seeing Humanity as a System Changes Everything",
+      "publishedAt": "2026-01-25",
+      "mediumUrl": "https://medium.com/health-science/seeing-humanity-as-a-system-changes-everything-2d4422f895a4",
+      "readUrl": "https://medium.com/health-science/seeing-humanity-as-a-system-changes-everything-2d4422f895a4"
+    },
+    {
+      "id": "e78",
+      "slug": "when-structure-outpaces-awareness",
+      "title": "When Structure Outpaces Awareness",
+      "publishedAt": "2026-01-16",
+      "mediumUrl": "https://medium.com/illumination/when-structure-outpaces-awareness-4f6351d2e0ef",
+      "readUrl": "https://medium.com/illumination/when-structure-outpaces-awareness-4f6351d2e0ef"
+    },
+    {
+      "id": "e82",
+      "slug": "psilocybin-helped-my-gut-as-much-as-diet-and-that-confused-me",
+      "title": "Psilocybin Helped My Gut as Much as Diet — and That Confused Me",
+      "publishedAt": "2026-01-13",
+      "mediumUrl": "https://medium.com/illumination/psilocybin-helped-my-gut-as-much-as-diet-and-that-confused-me-4fc1b1f7ca4e",
+      "readUrl": "https://medium.com/illumination/psilocybin-helped-my-gut-as-much-as-diet-and-that-confused-me-4fc1b1f7ca4e"
+    },
+    {
+      "id": "e81",
+      "slug": "the-difference-between-restraint-and-regulation",
+      "title": "The Difference Between Restraint and Regulation",
+      "publishedAt": "2026-01-13",
+      "mediumUrl": "https://medium.com/@livingterrain/the-difference-between-restraint-and-regulation-609186683f27",
+      "readUrl": "https://medium.com/@livingterrain/the-difference-between-restraint-and-regulation-609186683f27"
+    },
+    {
+      "id": "e84",
+      "slug": "the-work-no-one-sees-when-love-is-finally-safe",
+      "title": "The Work No One Sees When Love Is Finally Safe",
+      "publishedAt": "2026-01-09",
+      "mediumUrl": "https://medium.com/illumination/the-work-no-one-sees-when-love-is-finally-safe-d4e6af8fb6b3",
+      "readUrl": "https://medium.com/illumination/the-work-no-one-sees-when-love-is-finally-safe-d4e6af8fb6b3"
+    },
+    {
+      "id": "e86",
+      "slug": "why-healers-exist-and-why-information-isn-t-enough",
+      "title": "Why Healers Exist (and Why Information Isn’t Enough)",
+      "publishedAt": "2026-01-07",
+      "mediumUrl": "https://medium.com/illumination/why-healers-exist-and-why-information-isnt-enough-55f3a1f1e434",
+      "readUrl": "https://medium.com/illumination/why-healers-exist-and-why-information-isnt-enough-55f3a1f1e434"
+    },
+    {
+      "id": "e85",
+      "slug": "why-some-people-want-instructions-instead-of-healing",
+      "title": "Why Some People Want Instructions Instead of Healing",
+      "publishedAt": "2026-01-07",
+      "mediumUrl": "https://medium.com/illumination/why-some-people-want-instructions-instead-of-healing-f34b565b9cf8",
+      "readUrl": "https://medium.com/illumination/why-some-people-want-instructions-instead-of-healing-f34b565b9cf8"
+    },
+    {
+      "id": "e89",
+      "slug": "i-wasn-t-trying-to-write-a-book-i-was-trying-to-save-my-life",
+      "title": "✨ I Wasn’t Trying to Write a Book. I Was Trying to Save My Life.",
+      "publishedAt": "2025-12-29",
+      "mediumUrl": "https://medium.com/illumination/i-wasnt-trying-to-write-a-book-i-was-trying-to-save-my-life-9c25731f53f3",
+      "readUrl": "https://medium.com/illumination/i-wasnt-trying-to-write-a-book-i-was-trying-to-save-my-life-9c25731f53f3"
+    },
+    {
+      "id": "e92",
+      "slug": "chronic-illness-is-a-paused-process-and-modern-medicine-keeps-hitting-fr",
+      "title": "Chronic Illness Is a Paused Process — And Modern Medicine Keeps Hitting “Freeze.”",
+      "publishedAt": "2025-12-18",
+      "mediumUrl": "https://medium.com/@livingterrain/chronic-illness-is-a-paused-process-and-modern-medicine-keeps-hitting-freeze-23a2d01740be",
+      "readUrl": "https://medium.com/@livingterrain/chronic-illness-is-a-paused-process-and-modern-medicine-keeps-hitting-freeze-23a2d01740be"
+    },
+    {
+      "id": "e96",
+      "slug": "everything-you-know-about-the-heart-is-backwards",
+      "title": "Everything You Know About the Heart Is Backwards",
+      "publishedAt": "2025-12-02",
+      "mediumUrl": "https://medium.com/@livingterrain/everything-you-know-about-the-heart-is-backwards-ab383d36abd7",
+      "readUrl": "https://medium.com/@livingterrain/everything-you-know-about-the-heart-is-backwards-ab383d36abd7"
+    },
+    {
+      "id": "e105",
+      "slug": "the-future-of-healthcare-5-predictions",
+      "title": "The Future of Healthcare: 5 Predictions",
+      "publishedAt": "2025-09-21",
+      "mediumUrl": "https://medium.com/health-science/the-future-of-healthcare-5-predictions-85a2c2a56f94",
+      "readUrl": "https://medium.com/health-science/the-future-of-healthcare-5-predictions-85a2c2a56f94"
+    },
+    {
+      "id": "e107",
+      "slug": "the-valve-is-cracking-the-limits-of-reductionist-medicine",
+      "title": "The Valve Is Cracking: The Limits of Reductionist Medicine",
+      "publishedAt": "2025-09-21",
+      "mediumUrl": "https://medium.com/@livingterrain/the-valve-is-cracking-the-limits-of-reductionist-medicine-d10aab86fa71",
+      "readUrl": "https://medium.com/@livingterrain/the-valve-is-cracking-the-limits-of-reductionist-medicine-d10aab86fa71"
+    },
+    {
+      "id": "e106",
+      "slug": "your-body-is-not-a-machine-it-s-an-ecosystem",
+      "title": "Your Body Is Not a Machine — It’s an Ecosystem",
+      "publishedAt": "2025-09-21",
+      "mediumUrl": "https://medium.com/@livingterrain/your-body-is-not-a-machine-its-an-ecosystem-aaa1a2f3c590",
+      "readUrl": "https://medium.com/@livingterrain/your-body-is-not-a-machine-its-an-ecosystem-aaa1a2f3c590"
+    },
+    {
+      "id": "e108",
+      "slug": "you-have-power-how-experience-rewrites-your-biology",
+      "title": "You Have Power: How Experience Rewrites Your Biology",
+      "publishedAt": "2025-09-18",
+      "mediumUrl": "https://medium.com/@livingterrain/you-have-power-how-experience-rewrites-your-biology-3acd1d5d732f",
+      "readUrl": "https://medium.com/@livingterrain/you-have-power-how-experience-rewrites-your-biology-3acd1d5d732f"
+    },
+    {
+      "id": "e109",
+      "slug": "if-the-moon-can-move-oceans-what-do-you-think-it-does-to-you",
+      "title": "If the Moon Can Move Oceans, What Do You Think It Does to You?",
+      "publishedAt": "2025-09-05",
+      "mediumUrl": "https://medium.com/@livingterrain/if-the-moon-can-move-oceans-what-do-you-think-it-does-to-you-950a422d85d7",
+      "readUrl": "https://medium.com/@livingterrain/if-the-moon-can-move-oceans-what-do-you-think-it-does-to-you-950a422d85d7"
+    },
+    {
+      "id": "e111",
+      "slug": "the-claustrophobia-of-consciousness-when-awareness-becomes-the-hardest-t",
+      "title": "The Claustrophobia of Consciousness: When Awareness Becomes the Hardest Truth to Hold",
+      "publishedAt": "2025-07-29",
+      "mediumUrl": "https://medium.com/@livingterrain/the-claustrophobia-of-consciousness-when-awareness-becomes-the-hardest-truth-to-hold-3ef73abf2741",
+      "readUrl": "https://medium.com/@livingterrain/the-claustrophobia-of-consciousness-when-awareness-becomes-the-hardest-truth-to-hold-3ef73abf2741"
+    },
+    {
+      "id": "e110",
+      "slug": "who-buried-the-truth",
+      "title": "✝️ “Who Buried the Truth?”",
+      "publishedAt": "2025-07-29",
+      "mediumUrl": "https://medium.com/@livingterrain/%EF%B8%8F-who-buried-the-truth-da057afe7d30",
+      "readUrl": "https://medium.com/@livingterrain/%EF%B8%8F-who-buried-the-truth-da057afe7d30"
+    },
+    {
+      "id": "e112",
+      "slug": "ai-loops-and-the-physics-of-awakening",
+      "title": "AI, Loops, and the Physics of Awakening",
+      "publishedAt": "2025-07-28",
+      "mediumUrl": "https://medium.com/@livingterrain/ai-loops-and-the-physics-of-awakening-d095af74c98b",
+      "readUrl": "https://medium.com/@livingterrain/ai-loops-and-the-physics-of-awakening-d095af74c98b"
+    },
+    {
+      "id": "e114",
+      "slug": "becoming-the-template",
+      "title": "✦ Becoming the Template",
+      "publishedAt": "2025-07-22",
+      "mediumUrl": "https://medium.com/@livingterrain/becoming-the-template-4fdfe272721d",
+      "readUrl": "https://medium.com/@livingterrain/becoming-the-template-4fdfe272721d"
+    },
+    {
+      "id": "e113",
+      "slug": "energy-systems-101-the-blueprint-behind-everything",
+      "title": "⚡ Energy Systems 101: The Blueprint Behind Everything",
+      "publishedAt": "2025-07-22",
+      "mediumUrl": "https://medium.com/@livingterrain/energy-systems-101-the-blueprint-behind-everything-f8285b8b13da",
+      "readUrl": "https://medium.com/@livingterrain/energy-systems-101-the-blueprint-behind-everything-f8285b8b13da"
+    },
+    {
+      "id": "e115",
+      "slug": "my-body-woke-up-before-i-did",
+      "title": "My Body Woke Up Before I Did",
+      "publishedAt": "2025-07-21",
+      "mediumUrl": "https://medium.com/@livingterrain/my-body-woke-up-before-i-did-507764c63241",
+      "readUrl": "https://medium.com/@livingterrain/my-body-woke-up-before-i-did-507764c63241"
+    },
+    {
+      "id": "e116",
+      "slug": "the-algorithmic-hijack-how-programs-and-patterns-replace-our-power",
+      "title": "🜃 The Algorithmic Hijack: How Programs and Patterns Replace Our Power",
+      "publishedAt": "2025-07-21",
+      "mediumUrl": "https://medium.com/@livingterrain/the-algorithmic-hijack-how-programs-and-patterns-replace-our-power-aa54c2be39c5",
+      "readUrl": "https://medium.com/@livingterrain/the-algorithmic-hijack-how-programs-and-patterns-replace-our-power-aa54c2be39c5"
+    },
+    {
+      "id": "e117",
+      "slug": "healing-is-the-gospel-and-the-body-already-knows-it",
+      "title": "Healing Is the Gospel: And the Body Already Knows It",
+      "publishedAt": "2025-07-19",
+      "mediumUrl": "https://medium.com/illumination/healing-is-the-gospel-and-the-body-already-knows-it-9b94683390dd",
+      "readUrl": "https://medium.com/illumination/healing-is-the-gospel-and-the-body-already-knows-it-9b94683390dd"
+    },
+    {
+      "id": "e119",
+      "slug": "parasites-programming-and-the-god-frequency",
+      "title": "Parasites, Programming, and the God Frequency",
+      "publishedAt": "2025-07-17",
+      "mediumUrl": "https://medium.com/@livingterrain/parasites-programming-and-the-god-frequency-99c4cf061cf0",
+      "readUrl": "https://medium.com/@livingterrain/parasites-programming-and-the-god-frequency-99c4cf061cf0"
+    },
+    {
+      "id": "e118",
+      "slug": "we-are-not-separate-from-the-earth-we-are-the-earth",
+      "title": "We Are Not Separate From the Earth — We Are the Earth",
+      "publishedAt": "2025-07-17",
+      "mediumUrl": "https://medium.com/@livingterrain/we-are-not-separate-from-the-earth-we-are-the-earth-2ab48bd25cc4",
+      "readUrl": "https://medium.com/@livingterrain/we-are-not-separate-from-the-earth-we-are-the-earth-2ab48bd25cc4"
+    },
+    {
+      "id": "e120",
+      "slug": "the-god-code-why-ai-feels-so-threatening-and-why-it-shouldn-t",
+      "title": "✨ The God Code: Why AI Feels So Threatening (And Why It Shouldn’t)",
+      "publishedAt": "2025-06-26",
+      "mediumUrl": "https://medium.com/@livingterrain/the-god-code-why-ai-feels-so-threatening-and-why-it-shouldnt-3ba839b0e584",
+      "readUrl": "https://medium.com/@livingterrain/the-god-code-why-ai-feels-so-threatening-and-why-it-shouldnt-3ba839b0e584"
+    }
+  ],
+  "notes": [
+    "Reconciled against data/publications/substack-posts.json and substack-aliases.json.",
+    "Confirmed matches require exact title, exact slug, registry essayId/essaySlug, or alias — not fuzzy or same-date alone.",
+    "Uncertain candidates are for human review only; do not invent Substack URLs from them.",
+    "needsRepublication essays keep working Medium links until a verified Substack counterpart exists."
+  ]
+}
