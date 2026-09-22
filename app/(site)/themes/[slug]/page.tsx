@@ -7,6 +7,7 @@ import { Thread } from "@/components/thread";
 import { RealmExperience } from "@/components/realms";
 import { TextLink } from "@/components/design-system";
 import { FadeIn } from "@/components/motion/FadeIn";
+import { ThemeThreadContinuation } from "@/components/reading/ThemeThreadContinuation";
 import { getAllThemes, getThemeBySlug } from "@/lib/content";
 import { getThemeHub, isImmersiveRealm } from "@/lib/realms";
 import { NODE_WHISPERS } from "@/lib/concepts/constellation-discovery";
@@ -52,6 +53,7 @@ export default async function ThemePage({ params }: PageProps) {
         {theme.description && (
           <p className="type-lead mt-4 text-base sm:text-lg">{theme.description}</p>
         )}
+        <ThemeThreadContinuation themeSlug={theme.slug} />
       </RoomThreshold>
 
       <section className="pb-32 pt-10 sm:pb-40">

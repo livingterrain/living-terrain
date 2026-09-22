@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-12).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -20,6 +20,9 @@ export const ENTRY: AtlasEntry = {
     "subtitle": "When belief doesn’t erase the ache",
     "excerpt": "When belief doesn’t erase the ache",
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/faithful-and-human",
+    "substackUrl": "https://livingterrain.substack.com/p/faithful-and-human",
+    "mediumUrl": "https://medium.com/@livingterrain/faithful-and-human-c52fdeb0999d",
     "externalUrl": "https://medium.com/@livingterrain/faithful-and-human-c52fdeb0999d",
     "style": "essay"
   }

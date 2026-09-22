@@ -29,6 +29,7 @@ import { resolveAuthoredBranch } from "@/lib/atlas/branches";
 import type { AtlasCanonicalView } from "@/lib/canonical/atlas-view";
 import { atlasBondKey } from "@/lib/canonical/atlas-keys";
 import { AtlasBranchCue } from "@/components/atlas-v1/AtlasBranchCue";
+import { AtlasThreadWhisper } from "@/components/atlas-v1/AtlasThreadWhisper";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -64,6 +65,8 @@ type Props = {
   notice: NoticeState | null;
   relationsVisible: boolean;
   bondNoticed: boolean;
+  /** Restored stop — skip reveal linger and bond intro. */
+  restoreSettled?: boolean;
   onCompleteNotice: () => void;
   onAttendStart: () => void;
   onAttendCancel: () => void;
@@ -76,6 +79,7 @@ type Props = {
   onReturn: () => void;
   onBack: () => void;
   onFollowBranch: (branch: AtlasBranchOffer) => void;
+  onThreadWhisperLeave?: (threadId: string) => void;
 };
 
 export function AtlasJourneyLayer({
@@ -85,6 +89,7 @@ export function AtlasJourneyLayer({
   notice,
   relationsVisible,
   bondNoticed,
+  restoreSettled = false,
   onCompleteNotice,
   onAttendStart,
   onAttendCancel,
@@ -97,6 +102,7 @@ export function AtlasJourneyLayer({
   onReturn,
   onBack,
   onFollowBranch,
+  onThreadWhisperLeave,
 }: Props) {
   const reduced = useReducedMotion() ?? false;
   const question = getQuestion(journey.questionId);
@@ -191,6 +197,7 @@ export function AtlasJourneyLayer({
             <JourneyView
               questionText={question.text}
               closingQuestion={question.closingQuestion}
+              conceptId={journey.currentConceptId}
               conceptName={current.name}
               fragment={current.fragment}
               hasEvidence={Boolean(
@@ -201,6 +208,7 @@ export function AtlasJourneyLayer({
               relation={nextRelations[0] ?? null}
               relationsVisible={relationsVisible}
               reduced={reduced}
+              restoreSettled={restoreSettled}
               onAttendStart={onAttendStart}
               onAttendCancel={onAttendCancel}
               onRevealNow={onRevealNow}
@@ -210,6 +218,7 @@ export function AtlasJourneyLayer({
               onDone={onDone}
               onBeginAgain={onBeginAgain}
               canRest={Boolean(unfinished)}
+              onThreadWhisperLeave={onThreadWhisperLeave}
             />
           </JourneyPresencePane>
         )}
@@ -292,25 +301,29 @@ function JourneyPresencePane({
 function LivingBond({
   relation,
   reduced,
+  settled,
   onComplete,
   onFollow,
 }: {
   relation: AtlasV1Relation;
   reduced: boolean;
+  /** Skip growth animation — restored journey already revealed. */
+  settled?: boolean;
   onComplete: () => void;
   onFollow: (id: AtlasV1ConceptId, why: string) => void;
 }) {
-  const [growing, setGrowing] = useState(reduced);
-  const [whyVisible, setWhyVisible] = useState(reduced);
-  const [ready, setReady] = useState(reduced);
-  const [evidenceReady, setEvidenceReady] = useState(reduced);
+  const startSettled = Boolean(settled || reduced);
+  const [growing, setGrowing] = useState(startSettled);
+  const [whyVisible, setWhyVisible] = useState(startSettled);
+  const [ready, setReady] = useState(startSettled);
+  const [evidenceReady, setEvidenceReady] = useState(startSettled);
   const completed = useRef(false);
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
   const to = getConcept(relation.to);
 
   useEffect(() => {
-    if (reduced) {
+    if (startSettled) {
       if (!completed.current) {
         completed.current = true;
         onCompleteRef.current();
@@ -337,7 +350,7 @@ function LivingBond({
       window.clearTimeout(readyT);
       window.clearTimeout(evidence);
     };
-  }, [reduced, relation.to, relation.why]);
+  }, [startSettled, relation.to, relation.why]);
 
   return (
     <div className="atlas-bond">
@@ -402,6 +415,7 @@ function LivingBond({
 function JourneyView({
   questionText,
   closingQuestion,
+  conceptId,
   conceptName,
   fragment,
   hasEvidence,
@@ -410,6 +424,7 @@ function JourneyView({
   relation,
   relationsVisible,
   reduced,
+  restoreSettled = false,
   onAttendStart,
   onAttendCancel,
   onRevealNow,
@@ -419,9 +434,11 @@ function JourneyView({
   onDone,
   onBeginAgain,
   canRest,
+  onThreadWhisperLeave,
 }: {
   questionText: string;
   closingQuestion: string;
+  conceptId: AtlasV1ConceptId;
   conceptName: string;
   fragment: string;
   hasEvidence: boolean;
@@ -430,6 +447,7 @@ function JourneyView({
   relation: AtlasV1Relation | null;
   relationsVisible: boolean;
   reduced: boolean;
+  restoreSettled?: boolean;
   onAttendStart: () => void;
   onAttendCancel: () => void;
   onRevealNow: () => void;
@@ -439,6 +457,7 @@ function JourneyView({
   onDone: () => void;
   onBeginAgain: () => void;
   canRest: boolean;
+  onThreadWhisperLeave?: (threadId: string) => void;
 }) {
   const onConceptKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -448,7 +467,7 @@ function JourneyView({
   };
 
   const prior = trail.slice(0, -1);
-  const threadComplete = relationsVisible && !relation;
+  const pathComplete = relationsVisible && !relation;
 
   return (
     <>
@@ -479,6 +498,14 @@ function JourneyView({
           </p>
         </div>
 
+        {relationsVisible && (
+          <AtlasThreadWhisper
+            conceptId={conceptId}
+            className="mt-8 sm:mt-9"
+            onLeaveToThread={onThreadWhisperLeave}
+          />
+        )}
+
         {relationsVisible && relation && (
           <div className="atlas-bond-origin mt-12" aria-hidden>
             <span className="atlas-bond-node" />
@@ -508,6 +535,7 @@ function JourneyView({
               <LivingBond
                 relation={relation}
                 reduced={reduced}
+                settled={restoreSettled}
                 onComplete={onBondComplete}
                 onFollow={onFollow}
               />
@@ -538,7 +566,7 @@ function JourneyView({
                 </motion.div>
               )}
             </motion.div>
-          ) : threadComplete ? (
+          ) : pathComplete ? (
             <motion.div
               key="complete"
               initial={reduced ? false : { opacity: 0 }}
@@ -548,7 +576,7 @@ function JourneyView({
               className="mt-14 sm:mt-16"
             >
               <p className="font-heading text-[1.125rem] italic leading-[1.55] text-[#a8b2c2] sm:text-[1.1875rem]">
-                This thread rests here.
+                This path rests here.
               </p>
               <p className="mt-5 max-w-[24rem] font-heading text-[1.0625rem] italic leading-[1.55] text-[#7d8899]">
                 {closingQuestion}
@@ -586,7 +614,7 @@ function JourneyView({
               conceptName
             )}
           </p>
-          {!threadComplete && canRest && (
+          {!pathComplete && canRest && (
             <button
               type="button"
               onClick={onDone}

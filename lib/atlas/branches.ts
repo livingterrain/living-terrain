@@ -7,7 +7,7 @@
  * PATH      = progression within the current living question
  * SOURCE    = evidence / public work beneath a concept
  * BRANCH    = authored lateral opening defined here
- * THREAD    = visitor session route (Living Thread)
+ * TRAIL     = visitor session route (Atlas Trail overlay)
  */
 
 import {

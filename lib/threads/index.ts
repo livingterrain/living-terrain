@@ -12,6 +12,13 @@ export {
   type ThreadRegistryIssueCode,
 } from "./registry";
 export {
+  getThreadCoOccurrence,
+  getThreadCoOccurrenceLinks,
+  sharedEssaySlugsBetween,
+  type ThreadCoOccurrenceLink,
+  type ThreadCoOccurrenceNeighbor,
+} from "./co-occurrence";
+export {
   THREAD_IDS,
   THREADS,
   getThreadByParam,
@@ -24,3 +31,9 @@ export {
   type ThreadDefinition,
   type ThreadId,
 } from "./vocabulary";
+export {
+  THEME_THREAD_ALIASES,
+  getThreadForThemeSlug,
+  getThreadIdForThemeSlug,
+  type ThemeThreadAliasSlug,
+} from "./theme-aliases";

@@ -63,26 +63,57 @@ function unitEvidenceCoverage() {
   console.log("unit: evidence coverage OK");
 }
 
+/** Void entry is territory-first; living questions appear after inspect. */
+async function enterFirstLivingQuestion(page) {
+  await page.waitForSelector(".atlas-territories", { timeout: 8000 });
+  const openLivingSystems = page.getByRole("button", {
+    name: /Open Living systems/i,
+  });
+  await openLivingSystems.click();
+  await page.waitForSelector(".atlas-territory__q-btn", { timeout: 5000 });
+  const openCount = await page.locator(".atlas-territory__q-btn").count();
+  assert.ok(openCount >= 1, "living question available after territory inspect");
+  await page.locator(".atlas-territory__q-btn").first().click();
+}
+
+function voidUsableSnapshot() {
+  return {
+    territories: document.querySelectorAll(".atlas-territory").length,
+    openQuestions: document.querySelectorAll(".atlas-territory__q-btn").length,
+    concept: !!document.querySelector(".atlas-v1-concept"),
+    textLen: (document.body?.innerText || "").trim().length,
+    restSurface: document
+      .querySelector(".the-void")
+      ?.classList.contains("the-void--rest"),
+  };
+}
+
 async function probe(page, label) {
   await page.goto(`${base}/atlas`, { waitUntil: "load", timeout: 45000 });
   await page.waitForSelector(".the-void", { timeout: 15000 });
 
-  const initial = await page.evaluate(() => ({
-    locked: document.querySelector(".the-void")?.classList.contains("the-void--locked"),
-    attend: !!document.querySelector(".the-void-attend"),
-    questions: document.querySelectorAll(".the-void-question").length,
-    inquiry: (document.body?.innerText || "").includes("What are you trying to understand?"),
-    textLen: (document.body?.innerText || "").trim().length,
-  }));
+  const initial = await page.evaluate(() => {
+    const text = document.body?.innerText || "";
+    return {
+      locked: document
+        .querySelector(".the-void")
+        ?.classList.contains("the-void--locked"),
+      attend: !!document.querySelector(".the-void-attend"),
+      territories: document.querySelectorAll(".atlas-territory").length,
+      rootTitle: text.includes("Root territories"),
+      lede: text.includes(
+        "Permanent regions of inquiry. Beneath them, questions forming now.",
+      ),
+      textLen: text.trim().length,
+    };
+  });
   assert.equal(initial.locked, false, `${label}: no threshold lock`);
   assert.equal(initial.attend, false, `${label}: no attend gate`);
-  assert.equal(initial.inquiry, true, `${label}: inquiry on first paint`);
-  assert.ok(initial.questions >= 6, `${label}: questions on first paint`);
+  assert.equal(initial.rootTitle, true, `${label}: Root territories on first paint`);
+  assert.equal(initial.lede, true, `${label}: territory lede on first paint`);
+  assert.ok(initial.territories >= 5, `${label}: root territories on first paint`);
 
-  const questionCount = await page.locator(".the-void-question").count();
-  assert.ok(questionCount >= 6, `${label}: six questions usable immediately`);
-
-  await page.locator(".the-void-question").first().click();
+  await enterFirstLivingQuestion(page);
   await page.waitForSelector(".atlas-v1-concept", { timeout: 10000 });
 
   // Reduced motion → relations auto-visible; wait for Rest here (unfinished open).
@@ -121,8 +152,7 @@ async function probe(page, label) {
 
   // Follow unfinished edge away, then Rest here must disappear.
   await page.getByRole("button", { name: "Begin again" }).click();
-  await page.waitForSelector(".the-void-question", { timeout: 8000 });
-  await page.locator(".the-void-question").first().click();
+  await enterFirstLivingQuestion(page);
   await page.waitForSelector(".atlas-v1-concept", { timeout: 10000 });
   await page.waitForSelector(".atlas-bond-dest:not([disabled])", {
     timeout: 8000,
@@ -151,16 +181,11 @@ async function probe(page, label) {
     window.dispatchEvent(new PopStateEvent("popstate", { state: bad }));
   });
   await page.waitForTimeout(400);
-  const recovered = await page.evaluate(() => ({
-    textLen: (document.body?.innerText || "").trim().length,
-    questions: document.querySelectorAll(".the-void-question").length,
-    restSurface: document
-      .querySelector(".the-void")
-      ?.classList.contains("the-void--rest"),
-    concept: !!document.querySelector(".atlas-v1-concept"),
-  }));
+  const recovered = await page.evaluate(voidUsableSnapshot);
   assert.ok(
-    recovered.questions >= 1 || recovered.concept,
+    recovered.territories >= 1 ||
+      recovered.openQuestions >= 1 ||
+      recovered.concept,
     `${label}: recovered from null-journey history (got usable UI)`,
   );
   assert.equal(
@@ -188,15 +213,23 @@ async function probe(page, label) {
     window.dispatchEvent(new PopStateEvent("popstate", { state: bad }));
   });
   await page.waitForTimeout(500);
-  const pauseRecovered = await page.evaluate(() => ({
-    pause: !!document.querySelector(".atlas-v1-pause"),
-    concept: !!document.querySelector(".atlas-v1-concept"),
-    questions: document.querySelectorAll(".the-void-question").length,
-    textLen: (document.body?.innerText || "").trim().length,
-  }));
+  const pauseRecovered = await page.evaluate(() => {
+    const snap = {
+      territories: document.querySelectorAll(".atlas-territory").length,
+      openQuestions: document.querySelectorAll(".atlas-territory__q-btn").length,
+      concept: !!document.querySelector(".atlas-v1-concept"),
+      textLen: (document.body?.innerText || "").trim().length,
+    };
+    return {
+      pause: !!document.querySelector(".atlas-v1-pause"),
+      ...snap,
+    };
+  });
   assert.equal(pauseRecovered.pause, false, `${label}: empty pause not kept`);
   assert.ok(
-    pauseRecovered.concept || pauseRecovered.questions > 0,
+    pauseRecovered.concept ||
+      pauseRecovered.territories > 0 ||
+      pauseRecovered.openQuestions > 0,
     `${label}: invalid pause recovers to journey or questions`,
   );
   assert.ok(pauseRecovered.textLen > 0, `${label}: invalid pause not blank`);
@@ -219,19 +252,27 @@ async function probe(page, label) {
     window.dispatchEvent(new PopStateEvent("popstate", { state: bad }));
   });
   await page.waitForTimeout(500);
-  const evidenceRecovered = await page.evaluate(() => ({
-    prose: !!document.querySelector(".atlas-v1-prose"),
-    concept: !!document.querySelector(".atlas-v1-concept"),
-    questions: document.querySelectorAll(".the-void-question").length,
-    textLen: (document.body?.innerText || "").trim().length,
-  }));
+  const evidenceRecovered = await page.evaluate(() => {
+    const snap = {
+      territories: document.querySelectorAll(".atlas-territory").length,
+      openQuestions: document.querySelectorAll(".atlas-territory__q-btn").length,
+      concept: !!document.querySelector(".atlas-v1-concept"),
+      textLen: (document.body?.innerText || "").trim().length,
+    };
+    return {
+      prose: !!document.querySelector(".atlas-v1-prose"),
+      ...snap,
+    };
+  });
   assert.equal(
     evidenceRecovered.prose,
     false,
     `${label}: empty evidence view not kept`,
   );
   assert.ok(
-    evidenceRecovered.concept || evidenceRecovered.questions > 0,
+    evidenceRecovered.concept ||
+      evidenceRecovered.territories > 0 ||
+      evidenceRecovered.openQuestions > 0,
     `${label}: invalid evidence recovers to journey or questions`,
   );
   assert.ok(evidenceRecovered.textLen > 0, `${label}: invalid evidence not blank`);

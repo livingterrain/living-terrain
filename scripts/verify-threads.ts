@@ -7,10 +7,14 @@ import { materializeSubstackEssays } from "../lib/content-sync/materialize-essay
 import {
   THREAD_IDS,
   THREADS,
+  THEME_THREAD_ALIASES,
   findUnknownEssayThreadSlugs,
   getThreadByParam,
+  getThreadCoOccurrence,
+  getThreadIdForThemeSlug,
   loadEssayThreadRegistry,
   parseEssayThreadRegistry,
+  sharedEssaySlugsBetween,
   type ThreadId,
 } from "../lib/threads";
 
@@ -144,6 +148,74 @@ async function main(): Promise<void> {
   );
   assert.equal(getThreadByParam("not-a-real-thread"), undefined);
   assert.equal(THREADS.map((thread) => thread.id).join(","), THREAD_IDS.join(","));
+
+  // Co-occurrence: registry-only ranking, shared essays retained, cap of 3.
+  for (const id of THREAD_IDS) {
+    const neighbors = getThreadCoOccurrence(id);
+    assert.ok(neighbors.length <= 3, `${id}: at most three co-occurrence neighbors`);
+    assert.ok(neighbors.length >= 1, `${id}: every Thread has ≥1 co-member today`);
+    for (let i = 1; i < neighbors.length; i++) {
+      const prev = neighbors[i - 1];
+      const next = neighbors[i];
+      assert.ok(
+        prev.sharedCount > next.sharedCount ||
+          (prev.sharedCount === next.sharedCount &&
+            THREAD_IDS.indexOf(prev.threadId) < THREAD_IDS.indexOf(next.threadId)),
+        `${id}: neighbors ranked by sharedCount then THREAD_IDS`,
+      );
+    }
+    for (const neighbor of neighbors) {
+      assert.equal(
+        neighbor.sharedCount,
+        neighbor.sharedEssaySlugs.length,
+        `${id}↔${neighbor.threadId}: sharedCount matches slug list`,
+      );
+      assert.deepEqual(
+        [...neighbor.sharedEssaySlugs].sort(),
+        sharedEssaySlugsBetween(id, neighbor.threadId).sort(),
+        `${id}↔${neighbor.threadId}: sharedEssaySlugsBetween agrees`,
+      );
+      assert.ok(
+        !neighbor.sharedEssaySlugs.includes(""),
+        `${id}↔${neighbor.threadId}: no empty slugs`,
+      );
+    }
+  }
+
+  // Tie-break sample: equal sharedCount uses vocabulary order.
+  const logosNeighbors = getThreadCoOccurrence("logos", 10);
+  const byCount = new Map<number, ThreadId[]>();
+  for (const n of logosNeighbors) {
+    const list = byCount.get(n.sharedCount) ?? [];
+    list.push(n.threadId);
+    byCount.set(n.sharedCount, list);
+  }
+  for (const [, ids] of byCount) {
+    if (ids.length < 2) continue;
+    const ordered = [...ids].sort(
+      (a, b) => THREAD_IDS.indexOf(a) - THREAD_IDS.indexOf(b),
+    );
+    assert.deepEqual(ids, ordered, "logos: THREAD_IDS tie-break within equal counts");
+  }
+
+  // Phase 1 Theme↔Thread aliases — exact slug overlap only (no redirects).
+  assert.deepEqual(
+    THEME_THREAD_ALIASES,
+    { relationship: "relationship", consciousness: "consciousness" },
+    "THEME_THREAD_ALIASES stays at the two Phase 1 exact matches",
+  );
+  assert.equal(getThreadIdForThemeSlug("relationship"), "relationship");
+  assert.equal(getThreadIdForThemeSlug("consciousness"), "consciousness");
+  assert.equal(getThreadIdForThemeSlug("reality"), undefined);
+  assert.equal(getThreadIdForThemeSlug("meaning"), undefined);
+  assert.equal(getThreadIdForThemeSlug("identity"), undefined);
+  assert.equal(getThreadIdForThemeSlug("language"), undefined);
+  assert.equal(getThreadIdForThemeSlug("freedom"), undefined);
+  assert.equal(getThreadIdForThemeSlug("embodiment"), undefined);
+  assert.equal(getThreadIdForThemeSlug("information"), undefined);
+  assert.equal(getThreadIdForThemeSlug("time"), undefined);
+  assert.equal(getThreadIdForThemeSlug("perception"), undefined);
+  assert.equal(getThreadIdForThemeSlug("structure"), undefined);
 
   const counts = Object.fromEntries(
     THREAD_IDS.map((id) => [id, getEssaysByThreadId(id).length]),

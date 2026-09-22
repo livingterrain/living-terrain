@@ -1,8 +1,7 @@
-"use client";
-
 /**
- * Atlas-only Living Thread — attention leaves a quiet path.
+ * Atlas Trail overlay — attention leaves a quiet path (session Trail).
  * Visitor path ≠ canonical structure. Never invents relations.
+ * Component/module names may still say LivingThread; visitor copy uses Trail.
  */
 
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
@@ -88,7 +87,7 @@ export function LivingThread({ canonical }: Props) {
         aria-haspopup="dialog"
         aria-expanded={open}
       >
-        Your thread · {count}
+        Your trail · {count}
       </button>
 
       {open && (
@@ -144,14 +143,14 @@ function LivingThreadField({
       <button
         type="button"
         className="atlas-thread-field__veil"
-        aria-label="Close thread"
+        aria-label="Close trail"
         onClick={onClose}
       />
 
       <div className="atlas-thread-field__stage">
         <header className="atlas-thread-field__head">
           <h2 id={titleId} className="atlas-thread-field__title">
-            The thread you followed
+            The trail you followed
           </h2>
           <p className="atlas-thread-field__lede">
             Your path through this Atlas session. Fainter lines are structure

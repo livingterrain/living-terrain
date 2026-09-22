@@ -1,0 +1,50 @@
+/* Quiet Thread whisper — journey stop only, Both mappings */
+
+.atlas-thread-whisper {
+  margin: 0;
+}
+
+.atlas-thread-whisper__link {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: var(--font-body, inherit);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1.55;
+  color: rgba(245, 240, 232, 0.28);
+  text-decoration: none;
+  transition: color 1100ms cubic-bezier(0.38, 0.02, 0.42, 1);
+}
+
+.atlas-thread-whisper__link:hover,
+.atlas-thread-whisper__link:focus-visible {
+  color: rgba(201, 180, 138, 0.78);
+  outline: none;
+}
+
+.atlas-thread-whisper__name {
+  font-family: var(--font-heading, inherit);
+  font-style: italic;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  color: rgba(201, 180, 138, 0.55);
+  transition: color 1100ms cubic-bezier(0.38, 0.02, 0.42, 1);
+}
+
+.atlas-thread-whisper__link:hover .atlas-thread-whisper__name,
+.atlas-thread-whisper__link:focus-visible .atlas-thread-whisper__name {
+  color: rgba(220, 201, 160, 0.92);
+}
+
+.atlas-thread-whisper__sep {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-thread-whisper__link,
+  .atlas-thread-whisper__name {
+    transition: none;
+  }
+}

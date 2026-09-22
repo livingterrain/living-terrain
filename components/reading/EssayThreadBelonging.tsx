@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getThreadRefs, threadHref } from "@/lib/threads";
+import "./thread-shelf.css";
 
 interface EssayThreadBelongingProps {
   threadIds?: readonly string[];

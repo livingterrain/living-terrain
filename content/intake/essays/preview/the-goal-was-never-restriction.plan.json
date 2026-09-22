@@ -2,7 +2,7 @@
   "intake": {
     "title": "The Goal Was Never Restriction",
     "mediumUrl": "https://medium.com/@livingterrain/the-goal-was-never-restriction-195891c84d6d",
-    "subtitle": "Healing was supposed to help us participate in life — not become afraid of it.",
+    "subtitle": "Healing was supposed to help us participate in life \u2014 not become afraid of it.",
     "publishedAt": "2026-06-03",
     "featuredImage": null,
     "status": "published",
@@ -12,7 +12,9 @@
       "questionIds": [
         "q1"
       ]
-    }
+    },
+    "canonicalUrl": "https://livingterrain.substack.com/p/the-goal-was-never-restriction",
+    "substackUrl": "https://livingterrain.substack.com/p/the-goal-was-never-restriction"
   },
   "slug": "the-goal-was-never-restriction",
   "id": "e10",
@@ -21,7 +23,7 @@
     "slug": "the-goal-was-never-restriction",
     "type": "essay",
     "title": "The Goal Was Never Restriction",
-    "description": "Healing was supposed to help us participate in life — not become afraid of it.",
+    "description": "Healing was supposed to help us participate in life \u2014 not become afraid of it.",
     "themes": [
       "th-freedom",
       "th-embodiment",
@@ -37,8 +39,8 @@
     "route": "/essays/the-goal-was-never-restriction",
     "status": "published",
     "meta": {
-      "subtitle": "Healing was supposed to help us participate in life — not become afraid of it.",
-      "excerpt": "Healing was supposed to help us participate in life — not become afraid of it.",
+      "subtitle": "Healing was supposed to help us participate in life \u2014 not become afraid of it.",
+      "excerpt": "Healing was supposed to help us participate in life \u2014 not become afraid of it.",
       "topics": [
         "Freedom",
         "Embodiment",
@@ -51,7 +53,7 @@
   },
   "connections": [
     {
-      "id": "e10→p1:chamber",
+      "id": "e10\u2192p1:chamber",
       "from": "e10",
       "to": "p1",
       "kind": "chamber",
@@ -60,7 +62,7 @@
       "rationale": "returns to the chamber where this inquiry began."
     },
     {
-      "id": "e10→b1:volume",
+      "id": "e10\u2192b1:volume",
       "from": "e10",
       "to": "b1",
       "kind": "volume",
@@ -69,43 +71,43 @@
       "rationale": "extends the argument first made in the published volume."
     },
     {
-      "id": "e10→th-freedom:theme",
+      "id": "e10\u2192th-freedom:theme",
       "from": "e10",
       "to": "th-freedom",
       "kind": "theme",
       "source": "inferred",
       "weight": 7,
-      "rationale": "this inquiry also touches freedom — constraint, choice, and the shape of a life."
+      "rationale": "this inquiry also touches freedom \u2014 constraint, choice, and the shape of a life."
     },
     {
-      "id": "e10→th-embodiment:theme",
+      "id": "e10\u2192th-embodiment:theme",
       "from": "e10",
       "to": "th-embodiment",
       "kind": "theme",
       "source": "inferred",
       "weight": 7,
-      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+      "rationale": "this inquiry also touches embodiment \u2014 the lived body as participant in the real."
     },
     {
-      "id": "e10→th-identity:theme",
+      "id": "e10\u2192th-identity:theme",
       "from": "e10",
       "to": "th-identity",
       "kind": "theme",
       "source": "inferred",
       "weight": 7,
-      "rationale": "this inquiry also touches identity — the self as ongoing inquiry."
+      "rationale": "this inquiry also touches identity \u2014 the self as ongoing inquiry."
     },
     {
-      "id": "e10→th-consciousness:theme",
+      "id": "e10\u2192th-consciousness:theme",
       "from": "e10",
       "to": "th-consciousness",
       "kind": "theme",
       "source": "inferred",
       "weight": 7,
-      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+      "rationale": "this inquiry also touches consciousness \u2014 the texture of awareness itself."
     },
     {
-      "id": "e10→q1:pathway",
+      "id": "e10\u2192q1:pathway",
       "from": "e10",
       "to": "q1",
       "kind": "pathway",
@@ -114,31 +116,31 @@
       "rationale": "asks the same living question from a different angle: What lies beneath perception."
     },
     {
-      "id": "e10→e6:echo",
+      "id": "e10\u2192e6:echo",
       "from": "e10",
       "to": "e6",
       "kind": "echo",
       "source": "inferred",
       "weight": 6,
-      "rationale": "echoes nearby work — When Sacrifice Stops Leading Somewhere."
+      "rationale": "echoes nearby work \u2014 When Sacrifice Stops Leading Somewhere."
     },
     {
-      "id": "e10→e1:echo",
+      "id": "e10\u2192e1:echo",
       "from": "e10",
       "to": "e1",
       "kind": "echo",
       "source": "inferred",
       "weight": 6,
-      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+      "rationale": "echoes nearby work \u2014 Constraint Is Not the Opposite of Freedom."
     },
     {
-      "id": "e10→e3:echo",
+      "id": "e10\u2192e3:echo",
       "from": "e10",
       "to": "e3",
       "kind": "echo",
       "source": "inferred",
       "weight": 6,
-      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+      "rationale": "echoes nearby work \u2014 Every Living System Pays a Maintenance Cost."
     }
   ],
   "chamber": {
@@ -173,28 +175,28 @@
       "title": "Freedom",
       "kind": "theme",
       "route": "/themes/freedom",
-      "rationale": "this inquiry also touches freedom — constraint, choice, and the shape of a life."
+      "rationale": "this inquiry also touches freedom \u2014 constraint, choice, and the shape of a life."
     },
     {
       "id": "th-embodiment",
       "title": "Embodiment",
       "kind": "theme",
       "route": "/themes/embodiment",
-      "rationale": "this inquiry also touches embodiment — the lived body as participant in the real."
+      "rationale": "this inquiry also touches embodiment \u2014 the lived body as participant in the real."
     },
     {
       "id": "th-identity",
       "title": "Identity",
       "kind": "theme",
       "route": "/themes/identity",
-      "rationale": "this inquiry also touches identity — the self as ongoing inquiry."
+      "rationale": "this inquiry also touches identity \u2014 the self as ongoing inquiry."
     },
     {
       "id": "th-consciousness",
       "title": "Consciousness",
       "kind": "theme",
       "route": "/themes/consciousness",
-      "rationale": "this inquiry also touches consciousness — the texture of awareness itself."
+      "rationale": "this inquiry also touches consciousness \u2014 the texture of awareness itself."
     },
     {
       "id": "q1",
@@ -208,21 +210,21 @@
       "title": "When Sacrifice Stops Leading Somewhere",
       "kind": "echo",
       "route": "/essays/when-sacrifice-stops-leading-somewhere",
-      "rationale": "echoes nearby work — When Sacrifice Stops Leading Somewhere."
+      "rationale": "echoes nearby work \u2014 When Sacrifice Stops Leading Somewhere."
     },
     {
       "id": "e1",
       "title": "Constraint Is Not the Opposite of Freedom",
       "kind": "echo",
       "route": "/essays/constraint-is-not-the-opposite-of-freedom",
-      "rationale": "echoes nearby work — Constraint Is Not the Opposite of Freedom."
+      "rationale": "echoes nearby work \u2014 Constraint Is Not the Opposite of Freedom."
     },
     {
       "id": "e3",
       "title": "Every Living System Pays a Maintenance Cost",
       "kind": "echo",
       "route": "/essays/every-living-system-pays-a-maintenance-cost",
-      "rationale": "echoes nearby work — Every Living System Pays a Maintenance Cost."
+      "rationale": "echoes nearby work \u2014 Every Living System Pays a Maintenance Cost."
     }
   ],
   "neighbors": [
@@ -272,20 +274,20 @@
         "slug": "the-goal-was-never-restriction",
         "title": "The Goal Was Never Restriction"
       },
-      "rationale": "Fits the \"From Identity to Meaning\" pathway — An investigation that moves through the self, the body, relation, and what finally coheres."
+      "rationale": "Fits the \"From Identity to Meaning\" pathway \u2014 An investigation that moves through the self, the body, relation, and what finally coheres."
     },
     {
       "threadId": "thread-perception",
       "threadTitle": "What Organizes Seeing",
       "threadSlug": "reality-perception-consciousness",
-      "premise": "Before interpretation — what must already be in place for anything to appear as real?",
+      "premise": "Before interpretation \u2014 what must already be in place for anything to appear as real?",
       "fitScore": 2,
       "suggestedStep": {
         "kind": "essay",
         "slug": "the-goal-was-never-restriction",
         "title": "The Goal Was Never Restriction"
       },
-      "rationale": "Fits the \"What Organizes Seeing\" pathway — Before interpretation — what must already be in place for anything to appear as real?"
+      "rationale": "Fits the \"What Organizes Seeing\" pathway \u2014 Before interpretation \u2014 what must already be in place for anything to appear as real?"
     }
   ],
   "observatory": {

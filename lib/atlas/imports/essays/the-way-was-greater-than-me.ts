@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-12).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -20,6 +20,9 @@ export const ENTRY: AtlasEntry = {
     "subtitle": "What Elijah Taught Me About Exhaustion, Urgency, and Learning to Be Human",
     "excerpt": "What Elijah Taught Me About Exhaustion, Urgency, and Learning to Be Human",
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/the-way-was-greater-than-me",
+    "substackUrl": "https://livingterrain.substack.com/p/the-way-was-greater-than-me",
+    "mediumUrl": "https://medium.com/@livingterrain/the-way-was-greater-than-me-13e93c508b87",
     "externalUrl": "https://medium.com/@livingterrain/the-way-was-greater-than-me-13e93c508b87",
     "style": "essay"
   }

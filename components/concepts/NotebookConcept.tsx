@@ -109,7 +109,7 @@ export function NotebookConcept() {
                       href={current.href}
                       className="mt-8 inline-block border-b border-[#4a6a5a] pb-0.5 text-sm text-[#3a5a4a]"
                     >
-                      Follow this thread →
+                      Follow this strand →
                     </Link>
                   </motion.div>
                 )}

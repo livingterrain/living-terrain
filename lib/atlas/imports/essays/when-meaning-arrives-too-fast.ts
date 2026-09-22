@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-17).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -18,6 +18,9 @@ export const ENTRY: AtlasEntry = {
   "status": "published",
   "meta": {
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/when-meaning-arrives-too-fast",
+    "substackUrl": "https://livingterrain.substack.com/p/when-meaning-arrives-too-fast",
+    "mediumUrl": "https://medium.com/illumination/when-meaning-arrives-too-fast-edc336ad2c0c",
     "externalUrl": "https://medium.com/illumination/when-meaning-arrives-too-fast-edc336ad2c0c",
     "style": "essay",
     "subtitle": "Why knowing isn’t healing — and why the body must catch up to the mind",

@@ -158,7 +158,7 @@ export function ThreadExperience({ session, onClose }: ThreadExperienceProps) {
       transition={{ duration: 0.6 }}
       role="dialog"
       aria-modal
-      aria-label="Following the thread through the Living Terrain"
+      aria-label="Following this strand through the Living Terrain"
     >
       <motion.div
         className="absolute inset-0 bg-black"
@@ -218,7 +218,7 @@ export function ThreadExperience({ session, onClose }: ThreadExperienceProps) {
             className="pointer-events-none absolute bottom-28 left-1/2 z-30 max-w-lg -translate-x-1/2 px-6 text-center sm:bottom-32"
           >
             <p className="type-chamber text-[0.5625rem] text-ivory/22">
-              The thread unfolds
+              The strand unfolds
             </p>
             <p className="mt-3 font-heading text-lg text-ivory/75 sm:text-xl">
               {currentLabel}

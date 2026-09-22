@@ -1,0 +1,1094 @@
+{
+  "version": 1,
+  "matchedCount": 46,
+  "unmatchedCount": 74,
+  "matched": [
+    {
+      "id": "e90",
+      "slug": "i-ve-been-writing-in-the-dark",
+      "title": "I\u2019ve Been Writing in the Dark",
+      "medium": "https://medium.com/illumination/ive-been-writing-in-the-dark-0d04c7d9780a",
+      "substack": "https://livingterrain.substack.com/p/ive-been-writing-in-the-dark",
+      "method": "registry.essaySlug",
+      "ss_title": "I\u2019ve Been Writing in the Dark"
+    },
+    {
+      "id": "e34",
+      "slug": "the-collapse-of-internal-authority",
+      "title": "The Collapse of Internal Authority",
+      "medium": "https://medium.com/@livingterrain/the-collapse-of-internal-authority-0e81b41046ce",
+      "substack": "https://livingterrain.substack.com/p/the-collapse-of-internal-authority",
+      "method": "registry.essaySlug",
+      "ss_title": "The Collapse of Internal Authority"
+    },
+    {
+      "id": "e94",
+      "slug": "my-father-saved-me-now-i-m-saving-the-lineage",
+      "title": "My Father Saved Me. Now I\u2019m Saving the Lineage.",
+      "medium": "https://medium.com/illumination/my-father-saved-me-now-im-saving-the-lineage-494b0b6e4d5f",
+      "substack": "https://livingterrain.substack.com/p/my-father-saved-me-now-im-saving",
+      "method": "registry.essaySlug",
+      "ss_title": "My Father Saved Me. Now I'm Saving the Lineage."
+    },
+    {
+      "id": "e33",
+      "slug": "my-healing-journey-accidentally-turned-into-a-study-of-consciousness",
+      "title": "My Healing Journey Accidentally Turned Into a Study of Consciousness",
+      "medium": "https://medium.com/@livingterrain/my-healing-journey-accidentally-turned-into-a-study-of-consciousness-ab630ed8e47a",
+      "substack": "https://livingterrain.substack.com/p/my-healing-journey-accidentally-turned",
+      "method": "registry.essaySlug",
+      "ss_title": "My Healing Journey Accidentally Turned Into a Study of Consciousness"
+    },
+    {
+      "id": "e99",
+      "slug": "the-decomposition-response",
+      "title": "THE DECOMPOSITION RESPONSE",
+      "medium": "https://medium.com/@livingterrain/the-decomposition-response-2e4dffd2a562",
+      "substack": "https://livingterrain.substack.com/p/the-decomposition-response",
+      "method": "registry.essaySlug",
+      "ss_title": "THE DECOMPOSITION RESPONSE"
+    },
+    {
+      "id": "e15",
+      "slug": "writing-is-coming-back",
+      "title": "Writing Is Coming Back",
+      "medium": "https://medium.com/@livingterrain/writing-is-coming-back-874752f4a619",
+      "substack": "https://livingterrain.substack.com/p/writing-is-coming-back-874752f4a619",
+      "method": "registry.essaySlug",
+      "ss_title": "Writing Is Coming Back"
+    },
+    {
+      "id": "e104",
+      "slug": "the-integration-wave",
+      "title": "The Integration Wave",
+      "medium": "https://medium.com/@livingterrain/the-integration-wave-d21ef5231ac0",
+      "substack": "https://livingterrain.substack.com/p/the-integration-wave",
+      "method": "registry.essaySlug",
+      "ss_title": "The Integration Wave"
+    },
+    {
+      "id": "e53",
+      "slug": "you-re-not-afraid-of-rejection-you-re-afraid-of-death",
+      "title": "You\u2019re Not Afraid of Rejection. You\u2019re Afraid of Death.",
+      "medium": "https://medium.com/illumination/youre-not-afraid-of-rejection-you-re-afraid-of-death-f45bb9c53b57",
+      "substack": "https://livingterrain.substack.com/p/youre-not-afraid-of-rejection-youre",
+      "method": "registry.essaySlug",
+      "ss_title": "You\u2019re Not Afraid of Rejection. You\u2019re Afraid of Death."
+    },
+    {
+      "id": "e88",
+      "slug": "the-nervous-system-doesn-t-know-it-s-january",
+      "title": "The Nervous System Doesn\u2019t Know It\u2019s January",
+      "medium": "https://medium.com/illumination/the-nervous-system-doesnt-know-it-s-january-9fd74a4f7592",
+      "substack": "https://livingterrain.substack.com/p/the-nervous-system-doesnt-know-its",
+      "method": "registry.essaySlug",
+      "ss_title": "The Nervous System Doesn\u2019t Know It\u2019s January"
+    },
+    {
+      "id": "e69",
+      "slug": "the-normalization-problem",
+      "title": "The Normalization Problem",
+      "medium": "https://medium.com/illumination/the-normalization-problem-ca02e295607c",
+      "substack": "https://livingterrain.substack.com/p/the-normalization-problem",
+      "method": "registry.essaySlug",
+      "ss_title": "The Normalization Problem"
+    },
+    {
+      "id": "e77",
+      "slug": "the-kingdom-of-god-is-a-regulated-nervous-system",
+      "title": "The Kingdom of God Is a Regulated Nervous System",
+      "medium": "https://medium.com/illumination/the-kingdom-of-god-is-a-regulated-nervous-system-eeb55ecab7b1",
+      "substack": "https://livingterrain.substack.com/p/the-kingdom-of-god-is-a-regulated",
+      "method": "registry.essaySlug",
+      "ss_title": "The Kingdom of God Is a Regulated Nervous System"
+    },
+    {
+      "id": "e75",
+      "slug": "writing-without-permission",
+      "title": "Writing Without Permission",
+      "medium": "https://medium.com/illumination/writing-without-permission-689db23da6e9",
+      "substack": "https://livingterrain.substack.com/p/writing-without-permission",
+      "method": "registry.essaySlug",
+      "ss_title": "Writing Without Permission"
+    },
+    {
+      "id": "e72",
+      "slug": "eden-was-a-warning",
+      "title": "Eden Was a Warning",
+      "medium": "https://medium.com/illuminations-mirror/eden-was-a-warning-0bf18c7c2be3",
+      "substack": "https://livingterrain.substack.com/p/eden-was-a-warning",
+      "method": "registry.essaySlug",
+      "ss_title": "Eden Was a Warning"
+    },
+    {
+      "id": "e10",
+      "slug": "the-goal-was-never-restriction",
+      "title": "The Goal Was Never Restriction",
+      "medium": "https://medium.com/@livingterrain/the-goal-was-never-restriction-195891c84d6d",
+      "substack": "https://livingterrain.substack.com/p/the-goal-was-never-restriction",
+      "method": "registry.essaySlug",
+      "ss_title": "The Goal Was Never Restriction"
+    },
+    {
+      "id": "e100",
+      "slug": "the-evolution-of-religions-why-every-age-has-its-messiahs",
+      "title": "The Evolution of Religions & Why Every Age Has Its Messiahs",
+      "medium": "https://medium.com/illuminations-mirror/the-evolution-of-religions-why-every-age-has-its-messiahs-10945bcf0cf9",
+      "substack": "https://livingterrain.substack.com/p/the-evolution-of-religions-and-why",
+      "method": "registry.essaySlug",
+      "ss_title": "The Evolution of Religions & Why Every Age Has Its Messiahs"
+    },
+    {
+      "id": "e97",
+      "slug": "the-opposite-side-rule",
+      "title": "\u2b50 **THE OPPOSITE-SIDE RULE:",
+      "medium": "https://medium.com/illumination/the-opposite-side-rule-835d5439d325",
+      "substack": "https://livingterrain.substack.com/p/the-opposite-side-rule",
+      "method": "registry.essaySlug",
+      "ss_title": "\u2b50 THE OPPOSITE-SIDE RULE:"
+    },
+    {
+      "id": "e83",
+      "slug": "we-weren-t-eating-we-were-coping",
+      "title": "We Weren\u2019t Eating\u200a\u2014\u200aWe Were Coping",
+      "medium": "https://medium.com/illumination/we-werent-eating-we-were-coping-ca92efa5c9e0",
+      "substack": "https://livingterrain.substack.com/p/we-werent-eating-we-were-coping",
+      "method": "registry.essaySlug",
+      "ss_title": "We Weren\u2019t Eating \u2014 We Were Coping"
+    },
+    {
+      "id": "e93",
+      "slug": "nothing-is-new-only-remembered",
+      "title": "Nothing Is New, Only Remembered",
+      "medium": "https://medium.com/@livingterrain/nothing-is-new-only-remembered-1d00fc7ccd92",
+      "substack": "https://livingterrain.substack.com/p/nothing-is-new-only-remembered",
+      "method": "registry.essaySlug",
+      "ss_title": "Nothing Is New, Only Remembered"
+    },
+    {
+      "id": "e101",
+      "slug": "the-planetary-awakening",
+      "title": "\ud83c\udf0d THE PLANETARY AWAKENING",
+      "medium": "https://medium.com/illuminations-mirror/the-planetary-awakening-ecbb662e38fc",
+      "substack": "https://livingterrain.substack.com/p/the-planetary-awakening",
+      "method": "registry.essaySlug",
+      "ss_title": "\ud83c\udf0d THE PLANETARY AWAKENING"
+    },
+    {
+      "id": "e63",
+      "slug": "this-is-not-the-end-of-corruption-this-is-the-end-of-innocence",
+      "title": "This Is Not the End of Corruption. This Is the End of Innocence",
+      "medium": "https://medium.com/illumination/this-is-not-the-end-of-corruption-this-is-the-end-of-innocence-d6ee191526fa",
+      "substack": "https://livingterrain.substack.com/p/this-is-not-the-end-of-corruption",
+      "method": "registry.essaySlug",
+      "ss_title": "This Is Not the End of Corruption. This Is the End of Innocence"
+    },
+    {
+      "id": "e43",
+      "slug": "you-don-t-sound-human-enough-anymore",
+      "title": "You Don\u2019t Sound Human Enough Anymore",
+      "medium": "https://medium.com/@livingterrain/you-dont-sound-human-enough-anymore-4c5a09af0a3b",
+      "substack": "https://livingterrain.substack.com/p/you-dont-sound-human-enough-anymore",
+      "method": "registry.essaySlug",
+      "ss_title": "You Don\u2019t Sound Human Enough Anymore"
+    },
+    {
+      "id": "e17",
+      "slug": "the-silent-epidemic-of-dissolving-barriers",
+      "title": "The Silent Epidemic of Dissolving Barriers",
+      "medium": "https://medium.com/@livingterrain/the-silent-epidemic-of-dissolving-barriers-a488db2c7afb",
+      "substack": "https://livingterrain.substack.com/p/the-silent-epidemic-of-dissolving-barriers-a488db2c7afb",
+      "method": "registry.essaySlug",
+      "ss_title": "The Silent Epidemic of Dissolving Barriers"
+    },
+    {
+      "id": "e8",
+      "slug": "signals-i-m-watching-june-2026",
+      "title": "Signals I'm Watching \u2014 June 2026",
+      "medium": "https://medium.com/@livingterrain/signals-im-watching-june-2026-21299cd7913b",
+      "substack": "https://livingterrain.substack.com/p/signals-im-watching-june-2026",
+      "method": "registry.essaySlug",
+      "ss_title": "Signals I\u2019m Watching \u2014 June 2026"
+    },
+    {
+      "id": "e76",
+      "slug": "i-stopped-explaining-myself-and-my-body-finally-exhaled",
+      "title": "I Stopped Explaining Myself and My Body Finally Exhaled",
+      "medium": "https://medium.com/illumination/i-stopped-explaining-myself-and-my-body-finally-exhaled-ea66f9e7c8fe",
+      "substack": "https://livingterrain.substack.com/p/i-stopped-explaining-myself-and-my",
+      "method": "registry.essaySlug",
+      "ss_title": "I Stopped Explaining Myself and My Body Finally Exhaled"
+    },
+    {
+      "id": "e28",
+      "slug": "the-way-was-greater-than-me",
+      "title": "The Way Was Greater Than Me",
+      "medium": "https://medium.com/@livingterrain/the-way-was-greater-than-me-13e93c508b87",
+      "substack": "https://livingterrain.substack.com/p/the-way-was-greater-than-me",
+      "method": "registry.essaySlug",
+      "ss_title": "The Way Was Greater Than Me"
+    },
+    {
+      "id": "e103",
+      "slug": "parallel-lives-the-fire-and-the-feedback-loop",
+      "title": "Parallel Lives: The Fire and the Feedback Loop",
+      "medium": "https://medium.com/illumination/parallel-lives-the-fire-and-the-feedback-loop-1d68443d1436",
+      "substack": "https://livingterrain.substack.com/p/parallel-lives-the-fire-and-the-feedback",
+      "method": "registry.essaySlug",
+      "ss_title": "Parallel Lives: The Fire and the Feedback Loop"
+    },
+    {
+      "id": "e29",
+      "slug": "fragmentation-is-the-cost-of-symbolic-consciousness",
+      "title": "Fragmentation Is the Cost of Symbolic Consciousness",
+      "medium": "https://medium.com/@livingterrain/fragmentation-is-the-cost-of-symbolic-consciousness-b51cbb5f19b4",
+      "substack": "https://livingterrain.substack.com/p/fragmentation-is-the-cost-of-symbolic",
+      "method": "registry.essaySlug",
+      "ss_title": "Fragmentation Is the Cost of Symbolic Consciousness"
+    },
+    {
+      "id": "e61",
+      "slug": "the-forgotten-structure-of-reality",
+      "title": "The Forgotten Structure of Reality",
+      "medium": "https://medium.com/illumination/the-forgotten-structure-of-reality-b140a93d9895",
+      "substack": "https://livingterrain.substack.com/p/the-forgotten-structure-of-reality-b140a93d9895",
+      "method": "registry.essaySlug",
+      "ss_title": "The Forgotten Structure of Reality"
+    },
+    {
+      "id": "e14",
+      "slug": "the-question-that-changed-everything",
+      "title": "The Question That Changed Everything",
+      "medium": "https://medium.com/@livingterrain/the-question-that-changed-everything-79187646b5f9",
+      "substack": "https://livingterrain.substack.com/p/the-question-that-changed-everything-79187646b5f9",
+      "method": "registry.essaySlug",
+      "ss_title": "The Question That Changed Everything"
+    },
+    {
+      "id": "e87",
+      "slug": "why-marijuana-feels-like-relief-in-a-world-that-won-t-let-you-rest",
+      "title": "Why Marijuana Feels Like Relief in a World That Won\u2019t Let You Rest",
+      "medium": "https://medium.com/@livingterrain/why-marijuana-feels-like-relief-in-a-world-that-wont-let-you-rest-e252ed44f345",
+      "substack": "https://livingterrain.substack.com/p/why-marijuana-feels-like-relief-in",
+      "method": "registry.essaySlug",
+      "ss_title": "Why Marijuana Feels Like Relief in a World That Won\u2019t Let You Rest"
+    },
+    {
+      "id": "e30",
+      "slug": "structure-is-stabilized-rhythm-across-time",
+      "title": "Structure Is Stabilized Rhythm Across Time",
+      "medium": "https://medium.com/@livingterrain/structure-is-stabilized-rhythm-across-time-49dc1ccc0fa7",
+      "substack": "https://livingterrain.substack.com/p/structure-is-stabilized-rhythm-across",
+      "method": "registry.essaySlug",
+      "ss_title": "Structure Is Stabilized Rhythm Across Time"
+    },
+    {
+      "id": "e12",
+      "slug": "what-if-numbers-are-a-language",
+      "title": "What If Numbers Are a Language?",
+      "medium": "https://medium.com/@livingterrain/what-if-numbers-are-a-language-9971ce5a86c7",
+      "substack": "https://livingterrain.substack.com/p/what-if-numbers-are-a-language-9971ce5a86c7",
+      "method": "registry.essaySlug",
+      "ss_title": "What If Numbers Are a Language?"
+    },
+    {
+      "id": "e95",
+      "slug": "what-your-nervous-system-is-doing-leading-up-to-the-full-moon",
+      "title": "What Your Nervous System Is Doing Leading Up to the Full Moon",
+      "medium": "https://medium.com/illumination/what-your-nervous-system-is-doing-leading-up-to-the-full-moon-4b99ecd03207",
+      "substack": "https://livingterrain.substack.com/p/what-your-nervous-system-is-doing",
+      "method": "registry.essaySlug",
+      "ss_title": "What Your Nervous System Is Doing Leading Up to the Full Moon"
+    },
+    {
+      "id": "e79",
+      "slug": "before-the-word-became-law",
+      "title": "Before the Word Became Law",
+      "medium": "https://medium.com/illuminations-mirror/before-the-word-became-law-fdc7730b4a2e",
+      "substack": "https://livingterrain.substack.com/p/before-the-word-became-law",
+      "method": "registry.essaySlug",
+      "ss_title": "Before the Word Became Law"
+    },
+    {
+      "id": "e80",
+      "slug": "when-meaning-arrives-too-fast",
+      "title": "When Meaning Arrives Too Fast",
+      "medium": "https://medium.com/illumination/when-meaning-arrives-too-fast-edc336ad2c0c",
+      "substack": "https://livingterrain.substack.com/p/when-meaning-arrives-too-fast",
+      "method": "registry.essaySlug",
+      "ss_title": "When Meaning Arrives Too Fast"
+    },
+    {
+      "id": "e13",
+      "slug": "i-started-with-144-000",
+      "title": "I Started With 144,000",
+      "medium": "https://medium.com/@livingterrain/i-started-with-144-000-205ed3229e4d",
+      "substack": "https://livingterrain.substack.com/p/i-started-with-144-000-205ed3229e4d",
+      "method": "registry.essaySlug",
+      "ss_title": "I Started With 144,000"
+    },
+    {
+      "id": "e16",
+      "slug": "when-the-map-becomes-the-blind-spot",
+      "title": "When the Map Becomes the Blind Spot",
+      "medium": "https://medium.com/health-science/when-the-map-becomes-the-blind-spot-7c8ce189e394",
+      "substack": "https://livingterrain.substack.com/p/when-the-map-becomes-the-blind-spot-7c8ce189e394",
+      "method": "registry.essaySlug",
+      "ss_title": "When the Map Becomes the Blind Spot"
+    },
+    {
+      "id": "e41",
+      "slug": "uranus-entered-gemini-the-next-era-may-be-hard-on-the-human-nervous-syst",
+      "title": "Uranus Entered Gemini: The Next Era May Be Hard on the Human Nervous System",
+      "medium": "https://medium.com/@livingterrain/uranus-entered-gemini-the-next-era-may-be-hard-on-the-human-nervous-system-b76a0e41fe18",
+      "substack": "https://livingterrain.substack.com/p/uranus-entered-gemini-the-next-era",
+      "method": "registry.essaySlug",
+      "ss_title": "Uranus Entered Gemini: The Next Era May Be Hard on the Human Nervous System"
+    },
+    {
+      "id": "e42",
+      "slug": "the-body-keeps-rhythm-because-reality-is-rhythmic",
+      "title": "The Body Keeps Rhythm Because Reality Is Rhythmic",
+      "medium": "https://medium.com/@livingterrain/the-body-keeps-rhythm-because-reality-is-rhythmic-fa41f3c0dd5b",
+      "substack": "https://livingterrain.substack.com/p/the-body-keeps-rhythm-because-reality",
+      "method": "registry.essaySlug",
+      "ss_title": "The Body Keeps Rhythm Because Reality Is Rhythmic"
+    },
+    {
+      "id": "e62",
+      "slug": "what-had-to-happen-for-this-to-exist",
+      "title": "What Had to Happen for This to Exist?",
+      "medium": "https://medium.com/illumination/what-had-to-happen-for-this-to-exist-54a8ee94a4aa",
+      "substack": "https://livingterrain.substack.com/p/what-had-to-happen-for-this-to-exist-54a8ee94a4aa",
+      "method": "registry.essaySlug",
+      "ss_title": "What Had to Happen for This to Exist?"
+    },
+    {
+      "id": "e73",
+      "slug": "i-don-t-write-self-help-i-write-orientation",
+      "title": "I Don\u2019t Write Self-Help. I Write Orientation.",
+      "medium": "https://medium.com/illumination/i-dont-write-self-help-i-write-orientation-fe4c09ce0600",
+      "substack": "https://livingterrain.substack.com/p/i-dont-write-self-help-i-write-orientation",
+      "method": "registry.essaySlug",
+      "ss_title": "I Don\u2019t Write Self-Help. I Write Orientation."
+    },
+    {
+      "id": "e102",
+      "slug": "coming-online-the-shift-from-survival-mode-to-conscious-creation",
+      "title": "Coming Online: The Shift from Survival Mode to Conscious Creation",
+      "medium": "https://medium.com/illumination/coming-online-the-shift-from-survival-mode-to-conscious-creation-aef51d2759c0",
+      "substack": "https://livingterrain.substack.com/p/coming-online-the-shift-from-survival",
+      "method": "registry.essaySlug",
+      "ss_title": "Coming Online: The Shift from Survival Mode to Conscious Creation"
+    },
+    {
+      "id": "e52",
+      "slug": "faithful-and-human",
+      "title": "Faithful and Human",
+      "medium": "https://medium.com/@livingterrain/faithful-and-human-c52fdeb0999d",
+      "substack": "https://livingterrain.substack.com/p/faithful-and-human",
+      "method": "registry.essaySlug",
+      "ss_title": "Faithful and Human"
+    },
+    {
+      "id": "e60",
+      "slug": "i-lost-my-innocence-a-few-years-ago",
+      "title": "I Lost My Innocence a Few Years Ago",
+      "medium": "https://medium.com/illumination/i-lost-my-innocence-a-few-years-ago-596334c84a72",
+      "substack": "https://livingterrain.substack.com/p/i-lost-my-innocence-a-few-years-ago",
+      "method": "registry.essaySlug",
+      "ss_title": "I Lost My Innocence a Few Years Ago"
+    },
+    {
+      "id": "e91",
+      "slug": "noticing-patterns-isn-t-a-sin-forgetting-your-power-is",
+      "title": "Noticing Patterns Isn\u2019t a Sin\u200a\u2014\u200aForgetting Your Power Is.",
+      "medium": "https://medium.com/illumination/noticing-patterns-isnt-a-sin-forgetting-your-power-is-3d26af386c0f",
+      "substack": "https://livingterrain.substack.com/p/noticing-patterns-isnt-a-sin-forgetting",
+      "method": "registry.essaySlug",
+      "ss_title": "Noticing Patterns Isn't a Sin - Forgetting Your Power Is."
+    },
+    {
+      "id": "e98",
+      "slug": "the-roman-system-the-divine-feminine-and-the-collapse-of-modern-health",
+      "title": "The Roman System, the Divine Feminine, and the Collapse of Modern Health",
+      "medium": "https://medium.com/illuminations-mirror/the-roman-system-the-divine-feminine-and-the-collapse-of-modern-health-5c2da9e9fd35",
+      "substack": "https://livingterrain.substack.com/p/the-roman-system-the-divine-feminine",
+      "method": "registry.essaySlug",
+      "ss_title": "The Roman System, the Divine Feminine, and the Collapse of Modern Health"
+    }
+  ],
+  "unmatched": [
+    {
+      "id": "e49",
+      "slug": "preparation-vs-performance-what-happens-when-scarcity-returns",
+      "title": "Preparation vs Performance: What Happens When Scarcity Returns",
+      "medium": "https://medium.com/@livingterrain/preparation-vs-performance-what-happens-when-scarcity-returns-f0e92d180c73",
+      "fuzzy": "What Happens When Understanding Gets Cheap?",
+      "fuzzy_ratio": 0.485,
+      "fuzzy_url": "https://livingterrain.substack.com/p/what-happens-when-understanding-gets"
+    },
+    {
+      "id": "e78",
+      "slug": "when-structure-outpaces-awareness",
+      "title": "When Structure Outpaces Awareness",
+      "medium": "https://medium.com/illumination/when-structure-outpaces-awareness-4f6351d2e0ef",
+      "fuzzy": "The Forgotten Structure of Reality",
+      "fuzzy_ratio": 0.537,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-forgotten-structure-of-reality-b140a93d9895"
+    },
+    {
+      "id": "e24",
+      "slug": "the-revolution-after-ai",
+      "title": "The Revolution After AI",
+      "medium": "https://medium.com/readers-digests/the-revolution-after-ai-5c120e56d2a4",
+      "fuzzy": "The Integration Wave",
+      "fuzzy_ratio": 0.558,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-integration-wave"
+    },
+    {
+      "id": "e67",
+      "slug": "this-isn-t-polarization-it-s-sorting",
+      "title": "This Isn\u2019t Polarization. It\u2019s Sorting.",
+      "medium": "https://medium.com/illumination/this-isnt-polarization-it-s-sorting-6f8768fa6e3b",
+      "fuzzy": "The Normalization Problem",
+      "fuzzy_ratio": 0.492,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-normalization-problem"
+    },
+    {
+      "id": "e48",
+      "slug": "when-the-internet-gets-too-loud-to-think",
+      "title": "When the Internet Gets Too Loud to Think",
+      "medium": "https://medium.com/illumination/when-the-internet-gets-too-loud-to-think-0fd581509981",
+      "fuzzy": "When the Map Becomes the Blind Spot",
+      "fuzzy_ratio": 0.507,
+      "fuzzy_url": "https://livingterrain.substack.com/p/when-the-map-becomes-the-blind-spot-7c8ce189e394"
+    },
+    {
+      "id": "e3",
+      "slug": "every-living-system-pays-a-maintenance-cost",
+      "title": "Every Living System Pays a Maintenance Cost",
+      "medium": "https://medium.com/illumination/every-living-system-pays-a-maintenance-cost-7c5f6292dd6d",
+      "fuzzy": "My Father Saved Me. Now I'm Saving the Lineage.",
+      "fuzzy_ratio": 0.409,
+      "fuzzy_url": "https://livingterrain.substack.com/p/my-father-saved-me-now-im-saving"
+    },
+    {
+      "id": "e44",
+      "slug": "nothing-is-outside-the-pattern-only-out-of-sync",
+      "title": "Nothing Is Outside the Pattern \u2014 Only Out of Sync",
+      "medium": "https://medium.com/@livingterrain/nothing-is-outside-the-pattern-only-out-of-sync-0239cfb599b0",
+      "fuzzy": "Noticing Patterns Isn't a Sin - Forgetting Your Power Is.",
+      "fuzzy_ratio": 0.475,
+      "fuzzy_url": "https://livingterrain.substack.com/p/noticing-patterns-isnt-a-sin-forgetting"
+    },
+    {
+      "id": "e66",
+      "slug": "the-signal-everyone-is-trying-to-replace",
+      "title": "The Signal Everyone Is Trying to Replace",
+      "medium": "https://medium.com/illumination/the-signal-everyone-is-trying-to-replace-bfc37e778ace",
+      "fuzzy": "When Will Everyone Be Tired?",
+      "fuzzy_ratio": 0.597,
+      "fuzzy_url": "https://livingterrain.substack.com/p/when-will-everyone-be-tired"
+    },
+    {
+      "id": "e57",
+      "slug": "the-second-time-i-thought-i-was-going-to-die",
+      "title": "The Second Time I Thought I Was Going to Die",
+      "medium": "https://medium.com/illumination/the-second-time-i-thought-i-was-going-to-die-16013cd707d8",
+      "fuzzy": "My Father Saved Me. Now I'm Saving the Lineage.",
+      "fuzzy_ratio": 0.539,
+      "fuzzy_url": "https://livingterrain.substack.com/p/my-father-saved-me-now-im-saving"
+    },
+    {
+      "id": "e119",
+      "slug": "parasites-programming-and-the-god-frequency",
+      "title": "Parasites, Programming, and the God Frequency",
+      "medium": "https://medium.com/@livingterrain/parasites-programming-and-the-god-frequency-99c4cf061cf0",
+      "fuzzy": "Parallel Lives: The Fire and the Feedback Loop",
+      "fuzzy_ratio": 0.432,
+      "fuzzy_url": "https://livingterrain.substack.com/p/parallel-lives-the-fire-and-the-feedback"
+    },
+    {
+      "id": "e110",
+      "slug": "who-buried-the-truth",
+      "title": "\u271d\ufe0f \u201cWho Buried the Truth?\u201d",
+      "medium": "https://medium.com/@livingterrain/%EF%B8%8F-who-buried-the-truth-da057afe7d30",
+      "fuzzy": "Strong Enough to Raise Them",
+      "fuzzy_ratio": 0.426,
+      "fuzzy_url": "https://livingterrain.substack.com/p/strong-enough-to-raise-them"
+    },
+    {
+      "id": "e59",
+      "slug": "the-second-printing-press",
+      "title": "The Second Printing Press",
+      "medium": "https://medium.com/illumination/the-second-printing-press-825f2ca6f990",
+      "fuzzy": "THE DECOMPOSITION RESPONSE",
+      "fuzzy_ratio": 0.667,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-decomposition-response"
+    },
+    {
+      "id": "e39",
+      "slug": "the-christ-story-moves-like-the-cosmos",
+      "title": "The Christ Story Moves Like the Cosmos",
+      "medium": "https://medium.com/@livingterrain/the-christ-story-moves-like-the-cosmos-8f4fe0f512bd",
+      "fuzzy": "We Are Not Foreign to the Cosmos",
+      "fuzzy_ratio": 0.514,
+      "fuzzy_url": "https://livingterrain.substack.com/p/we-are-not-foreign-to-the-cosmos"
+    },
+    {
+      "id": "e47",
+      "slug": "the-smart-loop-why-awakening-isn-t-mystical",
+      "title": "The Smart Loop: Why Awakening Isn\u2019t Mystical",
+      "medium": "https://medium.com/illumination/the-smart-loop-why-awakening-isnt-mystical-5ce22f64db1a",
+      "fuzzy": "\ud83c\udf0d THE PLANETARY AWAKENING",
+      "fuzzy_ratio": 0.515,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-planetary-awakening"
+    },
+    {
+      "id": "e82",
+      "slug": "psilocybin-helped-my-gut-as-much-as-diet-and-that-confused-me",
+      "title": "Psilocybin Helped My Gut as Much as Diet\u200a\u2014\u200aand That Confused Me",
+      "medium": "https://medium.com/illumination/psilocybin-helped-my-gut-as-much-as-diet-and-that-confused-me-4fc1b1f7ca4e",
+      "fuzzy": "The Body Has More Than One Map",
+      "fuzzy_ratio": 0.418,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-body-has-more-than-one-map"
+    },
+    {
+      "id": "e58",
+      "slug": "i-thought-i-was-going-to-die-too",
+      "title": "I Thought I Was Going to Die Too",
+      "medium": "https://medium.com/illumination/i-thought-i-was-going-to-die-too-093f628928e4",
+      "fuzzy": "What Taught You How to See?",
+      "fuzzy_ratio": 0.483,
+      "fuzzy_url": "https://livingterrain.substack.com/p/what-taught-you-how-to-see"
+    },
+    {
+      "id": "e65",
+      "slug": "i-tried-mushrooms-and-started-taking-notes",
+      "title": "I Tried Mushrooms and Started Taking Notes",
+      "medium": "https://medium.com/illumination/i-tried-mushrooms-and-started-taking-notes-2afc166eb1b2",
+      "fuzzy": "I Started Saying No",
+      "fuzzy_ratio": 0.557,
+      "fuzzy_url": "https://livingterrain.substack.com/p/i-started-saying-no"
+    },
+    {
+      "id": "e74",
+      "slug": "seeing-humanity-as-a-system-changes-everything",
+      "title": "Seeing Humanity as a System Changes Everything",
+      "medium": "https://medium.com/health-science/seeing-humanity-as-a-system-changes-everything-2d4422f895a4",
+      "fuzzy": "The Question That Changed Everything",
+      "fuzzy_ratio": 0.537,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-question-that-changed-everything-79187646b5f9"
+    },
+    {
+      "id": "e106",
+      "slug": "your-body-is-not-a-machine-it-s-an-ecosystem",
+      "title": "Your Body Is Not a Machine\u200a\u2014\u200aIt\u2019s an Ecosystem",
+      "medium": "https://medium.com/@livingterrain/your-body-is-not-a-machine-its-an-ecosystem-aaa1a2f3c590",
+      "fuzzy": "Resilience Is Not How Much You Can Endure",
+      "fuzzy_ratio": 0.471,
+      "fuzzy_url": "https://livingterrain.substack.com/p/resilience-is-not-how-much-you-can"
+    },
+    {
+      "id": "e70",
+      "slug": "when-optimization-replaced-wisdom",
+      "title": "When Optimization Replaced Wisdom",
+      "medium": "https://medium.com/illumination/when-optimization-replaced-wisdom-6b71d25f59f4",
+      "fuzzy": "The Normalization Problem",
+      "fuzzy_ratio": 0.552,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-normalization-problem"
+    },
+    {
+      "id": "e9",
+      "slug": "the-most-important-thing-you-never-learned-about-reality",
+      "title": "The Most Important Thing You Never Learned About Reality",
+      "medium": "https://medium.com/@livingterrain/the-most-important-thing-you-never-learned-about-reality-28c1e5968940",
+      "fuzzy": "The Last 20%: Why Natural Healing Got Me Far\u2014But Not All the Way",
+      "fuzzy_ratio": 0.475,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-last-20-why-natural-healing-got"
+    },
+    {
+      "id": "e71",
+      "slug": "i-didn-t-write-a-psychedelic-book-i-wrote-an-orientation",
+      "title": "I Didn\u2019t Write a Psychedelic Book. I Wrote an Orientation.",
+      "medium": "https://medium.com/illuminations-mirror/i-didnt-write-a-psychedelic-book-i-wrote-an-orientation-64cb2bfa6492",
+      "fuzzy": "I Don\u2019t Write Self-Help. I Write Orientation.",
+      "fuzzy_ratio": 0.727,
+      "fuzzy_url": "https://livingterrain.substack.com/p/i-dont-write-self-help-i-write-orientation"
+    },
+    {
+      "id": "e38",
+      "slug": "the-most-addictive-thing-in-your-life-may-be-familiar-stress",
+      "title": "The Most Addictive Thing in Your Life May Be Familiar Stress",
+      "medium": "https://medium.com/@livingterrain/the-most-addictive-thing-in-your-life-may-be-familiar-stress-05478ef68eee",
+      "fuzzy": "The Consciousness Crisis: Why Our Brains Are on Fire ",
+      "fuzzy_ratio": 0.432,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-consciousness-crisis-why-our"
+    },
+    {
+      "id": "e113",
+      "slug": "energy-systems-101-the-blueprint-behind-everything",
+      "title": "\u26a1 Energy Systems 101: The Blueprint Behind Everything",
+      "medium": "https://medium.com/@livingterrain/energy-systems-101-the-blueprint-behind-everything-f8285b8b13da",
+      "fuzzy": "The Question That Changed Everything",
+      "fuzzy_ratio": 0.535,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-question-that-changed-everything-79187646b5f9"
+    },
+    {
+      "id": "e85",
+      "slug": "why-some-people-want-instructions-instead-of-healing",
+      "title": "Why Some People Want Instructions Instead of Healing",
+      "medium": "https://medium.com/illumination/why-some-people-want-instructions-instead-of-healing-f34b565b9cf8",
+      "fuzzy": "The Forgotten Structure of Reality",
+      "fuzzy_ratio": 0.465,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-forgotten-structure-of-reality-b140a93d9895"
+    },
+    {
+      "id": "e19",
+      "slug": "technology-was-never-separate-from-nature",
+      "title": "Technology Was Never Separate From Nature",
+      "medium": "https://medium.com/illumination/technology-was-never-separate-from-nature-9d7aed30a3ab",
+      "fuzzy": "The Kingdom Was Never Meant to Be Deferred",
+      "fuzzy_ratio": 0.578,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-kingdom-was-never-meant-to-be"
+    },
+    {
+      "id": "e26",
+      "slug": "optimization-without-nourishment",
+      "title": "Optimization Without Nourishment",
+      "medium": "https://medium.com/illumination/optimisation-without-nourishment-a3770024b5ab",
+      "fuzzy": "Writing Without Permission",
+      "fuzzy_ratio": 0.552,
+      "fuzzy_url": "https://livingterrain.substack.com/p/writing-without-permission"
+    },
+    {
+      "id": "e109",
+      "slug": "if-the-moon-can-move-oceans-what-do-you-think-it-does-to-you",
+      "title": "If the Moon Can Move Oceans, What Do You Think It Does to You?",
+      "medium": "https://medium.com/@livingterrain/if-the-moon-can-move-oceans-what-do-you-think-it-does-to-you-950a422d85d7",
+      "fuzzy": "The Evolution of Religions & Why Every Age Has Its Messiahs",
+      "fuzzy_ratio": 0.41,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-evolution-of-religions-and-why"
+    },
+    {
+      "id": "e68",
+      "slug": "why-people-give-up-forgetting-why-they-chose-the-pain",
+      "title": "Why People Give Up: Forgetting Why They Chose the Pain",
+      "medium": "https://medium.com/illumination/why-people-give-up-forgetting-why-they-chose-the-pain-08b913c00073",
+      "fuzzy": "We Weren\u2019t Eating \u2014 We Were Coping",
+      "fuzzy_ratio": 0.494,
+      "fuzzy_url": "https://livingterrain.substack.com/p/we-werent-eating-we-were-coping"
+    },
+    {
+      "id": "e114",
+      "slug": "becoming-the-template",
+      "title": "\u2726 Becoming the Template",
+      "medium": "https://medium.com/@livingterrain/becoming-the-template-4fdfe272721d",
+      "fuzzy": "Before the Word Became Law",
+      "fuzzy_ratio": 0.511,
+      "fuzzy_url": "https://livingterrain.substack.com/p/before-the-word-became-law"
+    },
+    {
+      "id": "e22",
+      "slug": "the-aquarius-full-moon-is-asking-us-one-question",
+      "title": "The Aquarius Full Moon Is Asking Us One Question",
+      "medium": "https://medium.com/illumination/the-aquarius-full-moon-is-asking-us-one-question-a5fca8111332",
+      "fuzzy": "Chronic Illness Is a Paused Process",
+      "fuzzy_ratio": 0.434,
+      "fuzzy_url": "https://livingterrain.substack.com/p/chronic-illness-is-a-paused-process"
+    },
+    {
+      "id": "e118",
+      "slug": "we-are-not-separate-from-the-earth-we-are-the-earth",
+      "title": "We Are Not Separate From the Earth\u200a\u2014\u200aWe Are the Earth",
+      "medium": "https://medium.com/@livingterrain/we-are-not-separate-from-the-earth-we-are-the-earth-2ab48bd25cc4",
+      "fuzzy": "The Roman System, the Divine Feminine, and the Collapse of Modern Health",
+      "fuzzy_ratio": 0.463,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-roman-system-the-divine-feminine"
+    },
+    {
+      "id": "e111",
+      "slug": "the-claustrophobia-of-consciousness-when-awareness-becomes-the-hardest-t",
+      "title": "The Claustrophobia of Consciousness: When Awareness Becomes the Hardest Truth to Hold",
+      "medium": "https://medium.com/@livingterrain/the-claustrophobia-of-consciousness-when-awareness-becomes-the-hardest-truth-to-hold-3ef73abf2741",
+      "fuzzy": "What Happens When a Society Becomes Difficult to Inhabit?",
+      "fuzzy_ratio": 0.4,
+      "fuzzy_url": "https://livingterrain.substack.com/p/what-happens-when-a-society-becomes"
+    },
+    {
+      "id": "e40",
+      "slug": "what-philosophers-understood-about-suffering-before-biology-could-explai",
+      "title": "What Philosophers Understood About Suffering Before Biology Could Explain It",
+      "medium": "https://medium.com/@livingterrain/what-philosophers-understood-about-suffering-before-biology-could-explain-it-256dc834650a",
+      "fuzzy": "What Happens When Understanding Gets Cheap?",
+      "fuzzy_ratio": 0.458,
+      "fuzzy_url": "https://livingterrain.substack.com/p/what-happens-when-understanding-gets"
+    },
+    {
+      "id": "e56",
+      "slug": "when-the-spirit-drags-the-body",
+      "title": "When the Spirit Drags the Body",
+      "medium": "https://medium.com/illumination/when-the-spirit-drags-the-body-d3f70c6b36cd",
+      "fuzzy": "When the Map Becomes the Blind Spot",
+      "fuzzy_ratio": 0.585,
+      "fuzzy_url": "https://livingterrain.substack.com/p/when-the-map-becomes-the-blind-spot-7c8ce189e394"
+    },
+    {
+      "id": "e115",
+      "slug": "my-body-woke-up-before-i-did",
+      "title": "My Body Woke Up Before I Did",
+      "medium": "https://medium.com/@livingterrain/my-body-woke-up-before-i-did-507764c63241",
+      "fuzzy": "The Body Keeps Rhythm Because Reality Is Rhythmic",
+      "fuzzy_ratio": 0.468,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-body-keeps-rhythm-because-reality"
+    },
+    {
+      "id": "e120",
+      "slug": "the-god-code-why-ai-feels-so-threatening-and-why-it-shouldn-t",
+      "title": "\u2728 The God Code: Why AI Feels So Threatening (And Why It Shouldn\u2019t)",
+      "medium": "https://medium.com/@livingterrain/the-god-code-why-ai-feels-so-threatening-and-why-it-shouldnt-3ba839b0e584",
+      "fuzzy": "The Roman System, the Divine Feminine, and the Collapse of Modern Health",
+      "fuzzy_ratio": 0.427,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-roman-system-the-divine-feminine"
+    },
+    {
+      "id": "e116",
+      "slug": "the-algorithmic-hijack-how-programs-and-patterns-replace-our-power",
+      "title": "\ud83d\udf03 The Algorithmic Hijack: How Programs and Patterns Replace Our Power",
+      "medium": "https://medium.com/@livingterrain/the-algorithmic-hijack-how-programs-and-patterns-replace-our-power-aa54c2be39c5",
+      "fuzzy": "Noticing Patterns Isn't a Sin - Forgetting Your Power Is.",
+      "fuzzy_ratio": 0.45,
+      "fuzzy_url": "https://livingterrain.substack.com/p/noticing-patterns-isnt-a-sin-forgetting"
+    },
+    {
+      "id": "e55",
+      "slug": "i-have-nothing-and-i-have-everything",
+      "title": "I Have Nothing. And I Have Everything.",
+      "medium": "https://medium.com/illumination/i-have-nothing-and-i-have-everything-9c7ae4895162",
+      "fuzzy": "The Question That Changed Everything",
+      "fuzzy_ratio": 0.556,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-question-that-changed-everything-79187646b5f9"
+    },
+    {
+      "id": "e117",
+      "slug": "healing-is-the-gospel-and-the-body-already-knows-it",
+      "title": "Healing Is the Gospel: And the Body Already Knows It",
+      "medium": "https://medium.com/illumination/healing-is-the-gospel-and-the-body-already-knows-it-9b94683390dd",
+      "fuzzy": "Parallel Lives: The Fire and the Feedback Loop",
+      "fuzzy_ratio": 0.458,
+      "fuzzy_url": "https://livingterrain.substack.com/p/parallel-lives-the-fire-and-the-feedback"
+    },
+    {
+      "id": "e5",
+      "slug": "there-is-a-cost-to-becoming-an-image",
+      "title": "There Is a Cost to Becoming an Image",
+      "medium": "https://medium.com/readers-digests/there-is-a-cost-to-becoming-an-image-0e174fb767cb",
+      "fuzzy": "We Were Meant to Resonate",
+      "fuzzy_ratio": 0.492,
+      "fuzzy_url": "https://livingterrain.substack.com/p/we-were-meant-to-resonate"
+    },
+    {
+      "id": "e35",
+      "slug": "why-modern-life-feels-so-unreal",
+      "title": "Why Modern Life Feels So Unreal",
+      "medium": "https://medium.com/@livingterrain/why-modern-life-feels-so-unreal-2955bd3a0e1a",
+      "fuzzy": "When Will Everyone Be Tired?",
+      "fuzzy_ratio": 0.414,
+      "fuzzy_url": "https://livingterrain.substack.com/p/when-will-everyone-be-tired"
+    },
+    {
+      "id": "e21",
+      "slug": "talking-into-the-void",
+      "title": "Talking Into the Void",
+      "medium": "https://medium.com/illumination/talking-into-the-void-e2c9e04737bc",
+      "fuzzy": "I\u2019ve Been Writing in the Dark",
+      "fuzzy_ratio": 0.52,
+      "fuzzy_url": "https://livingterrain.substack.com/p/ive-been-writing-in-the-dark"
+    },
+    {
+      "id": "e36",
+      "slug": "regulation-is-not-calm",
+      "title": "Regulation Is Not Calm",
+      "medium": "https://medium.com/@livingterrain/regulation-is-not-calm-250dc7bab3f6",
+      "fuzzy": "Regulation Is the New Rebellion",
+      "fuzzy_ratio": 0.604,
+      "fuzzy_url": "https://livingterrain.substack.com/p/regulation-is-the-new-rebellion"
+    },
+    {
+      "id": "e20",
+      "slug": "the-wrong-question-about-transhumanism",
+      "title": "The Wrong Question About Transhumanism",
+      "medium": "https://medium.com/illumination/the-wrong-question-about-transhumanism-5c07197b8d47",
+      "fuzzy": "The Question That Changed Everything",
+      "fuzzy_ratio": 0.541,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-question-that-changed-everything-79187646b5f9"
+    },
+    {
+      "id": "e45",
+      "slug": "why-the-bible-still-feels-relevant",
+      "title": "Why the Bible Still Feels Relevant",
+      "medium": "https://medium.com/illuminations-mirror/why-the-bible-still-feels-relevant-447a85d9ffb5",
+      "fuzzy": "\u2b50 THE OPPOSITE-SIDE RULE:",
+      "fuzzy_ratio": 0.5,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-opposite-side-rule"
+    },
+    {
+      "id": "e11",
+      "slug": "if-you-feel-it-in-your-body-start-here",
+      "title": "If You Feel It in Your Body, Start Here",
+      "medium": "https://medium.com/illumination/if-you-feel-it-in-your-body-start-here-7595993ec1fc",
+      "fuzzy": "I\u2019ve Been Writing in the Dark",
+      "fuzzy_ratio": 0.478,
+      "fuzzy_url": "https://livingterrain.substack.com/p/ive-been-writing-in-the-dark"
+    },
+    {
+      "id": "e37",
+      "slug": "you-cannot-heal-in-the-same-state-that-made-you-sick",
+      "title": "You Cannot Heal in the Same State That Made You Sick",
+      "medium": "https://medium.com/@livingterrain/you-cannot-heal-in-the-same-state-that-made-you-sick-00164aedca4e",
+      "fuzzy": "Human Biology Cannot Match the Speed of Synthetic Change",
+      "fuzzy_ratio": 0.444,
+      "fuzzy_url": "https://livingterrain.substack.com/p/human-biology-cannot-match-the-speed"
+    },
+    {
+      "id": "e46",
+      "slug": "the-wall-of-consciousness",
+      "title": "The Wall of Consciousness",
+      "medium": "https://medium.com/illuminations-mirror/the-wall-of-consciousness-c32e81bc954d",
+      "fuzzy": "Fragmentation Is the Cost of Symbolic Consciousness",
+      "fuzzy_ratio": 0.553,
+      "fuzzy_url": "https://livingterrain.substack.com/p/fragmentation-is-the-cost-of-symbolic"
+    },
+    {
+      "id": "e112",
+      "slug": "ai-loops-and-the-physics-of-awakening",
+      "title": "AI, Loops, and the Physics of Awakening",
+      "medium": "https://medium.com/@livingterrain/ai-loops-and-the-physics-of-awakening-d095af74c98b",
+      "fuzzy": "\ud83c\udf0d THE PLANETARY AWAKENING",
+      "fuzzy_ratio": 0.533,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-planetary-awakening"
+    },
+    {
+      "id": "e92",
+      "slug": "chronic-illness-is-a-paused-process-and-modern-medicine-keeps-hitting-fr",
+      "title": "Chronic Illness Is a Paused Process\u200a\u2014\u200aAnd Modern Medicine Keeps Hitting \u201cFreeze.\u201d",
+      "medium": "https://medium.com/@livingterrain/chronic-illness-is-a-paused-process-and-modern-medicine-keeps-hitting-freeze-23a2d01740be",
+      "fuzzy": "Chronic Illness Is a Paused Process",
+      "fuzzy_ratio": 0.631,
+      "fuzzy_url": "https://livingterrain.substack.com/p/chronic-illness-is-a-paused-process"
+    },
+    {
+      "id": "e25",
+      "slug": "the-evolution-of-language",
+      "title": "The Evolution of Language",
+      "medium": "https://medium.com/@livingterrain/the-evolution-of-language-0ce03ef47277",
+      "fuzzy": "The Normalization Problem",
+      "fuzzy_ratio": 0.56,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-normalization-problem"
+    },
+    {
+      "id": "e108",
+      "slug": "you-have-power-how-experience-rewrites-your-biology",
+      "title": "You Have Power: How Experience Rewrites Your Biology",
+      "medium": "https://medium.com/@livingterrain/you-have-power-how-experience-rewrites-your-biology-3acd1d5d732f",
+      "fuzzy": "You\u2019re Not Afraid of Rejection. You\u2019re Afraid of Death.",
+      "fuzzy_ratio": 0.423,
+      "fuzzy_url": "https://livingterrain.substack.com/p/youre-not-afraid-of-rejection-youre"
+    },
+    {
+      "id": "e6",
+      "slug": "when-sacrifice-stops-leading-somewhere",
+      "title": "When Sacrifice Stops Leading Somewhere",
+      "medium": "https://medium.com/@livingterrain/when-sacrifice-stops-leading-somewhere-58142a5a7275",
+      "fuzzy": "We Weren\u2019t Eating \u2014 We Were Coping",
+      "fuzzy_ratio": 0.457,
+      "fuzzy_url": "https://livingterrain.substack.com/p/we-werent-eating-we-were-coping"
+    },
+    {
+      "id": "e81",
+      "slug": "the-difference-between-restraint-and-regulation",
+      "title": "The Difference Between Restraint and Regulation",
+      "medium": "https://medium.com/@livingterrain/the-difference-between-restraint-and-regulation-609186683f27",
+      "fuzzy": "The Distance Between Words",
+      "fuzzy_ratio": 0.548,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-distance-between-words"
+    },
+    {
+      "id": "e84",
+      "slug": "the-work-no-one-sees-when-love-is-finally-safe",
+      "title": "The Work No One Sees When Love Is Finally Safe",
+      "medium": "https://medium.com/illumination/the-work-no-one-sees-when-love-is-finally-safe-d4e6af8fb6b3",
+      "fuzzy": "The Evolution of Religions & Why Every Age Has Its Messiahs",
+      "fuzzy_ratio": 0.447,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-evolution-of-religions-and-why"
+    },
+    {
+      "id": "e86",
+      "slug": "why-healers-exist-and-why-information-isn-t-enough",
+      "title": "Why Healers Exist (and Why Information Isn\u2019t Enough)",
+      "medium": "https://medium.com/illumination/why-healers-exist-and-why-information-isnt-enough-55f3a1f1e434",
+      "fuzzy": "This Is Not the End of Corruption. This Is the End of Innocence",
+      "fuzzy_ratio": 0.446,
+      "fuzzy_url": "https://livingterrain.substack.com/p/this-is-not-the-end-of-corruption"
+    },
+    {
+      "id": "e31",
+      "slug": "everyone-thinks-allergy-season-is-getting-stronger-but-what-if-our-barri",
+      "title": "Everyone Thinks Allergy Season Is Getting Stronger. But What If Our Barriers Are Getting Weaker?",
+      "medium": "https://medium.com/@livingterrain/everyone-thinks-allergy-season-is-getting-stronger-but-what-if-our-barriers-are-getting-weaker-f1357e09358a",
+      "fuzzy": "The Consciousness Crisis: Why Our Brains Are on Fire ",
+      "fuzzy_ratio": 0.386,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-consciousness-crisis-why-our"
+    },
+    {
+      "id": "e32",
+      "slug": "the-girl-who-watched-tv-upside-down",
+      "title": "The Girl Who Watched TV Upside Down",
+      "medium": "https://medium.com/@livingterrain/the-girl-who-watched-tv-upside-down-1b8d19bc951f",
+      "fuzzy": "The Question That Changed Everything",
+      "fuzzy_ratio": 0.479,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-question-that-changed-everything-79187646b5f9"
+    },
+    {
+      "id": "e107",
+      "slug": "the-valve-is-cracking-the-limits-of-reductionist-medicine",
+      "title": "The Valve Is Cracking: The Limits of Reductionist Medicine",
+      "medium": "https://medium.com/@livingterrain/the-valve-is-cracking-the-limits-of-reductionist-medicine-d10aab86fa71",
+      "fuzzy": "This Is Not the End of Corruption. This Is the End of Innocence",
+      "fuzzy_ratio": 0.521,
+      "fuzzy_url": "https://livingterrain.substack.com/p/this-is-not-the-end-of-corruption"
+    },
+    {
+      "id": "e27",
+      "slug": "the-kitchen-we-quietly-lost",
+      "title": "The Kitchen We Quietly Lost",
+      "medium": "https://medium.com/illumination/the-kitchen-we-quietly-lost-d49c1b852638",
+      "fuzzy": "The Distance Between Words",
+      "fuzzy_ratio": 0.491,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-distance-between-words"
+    },
+    {
+      "id": "e23",
+      "slug": "the-systems-we-mistake-for-reality",
+      "title": "The Systems We Mistake for Reality",
+      "medium": "https://medium.com/illumination/the-systems-we-mistake-for-reality-73f0c6ebe443",
+      "fuzzy": "The Frequency Filter: How the Brain Tunes Reality",
+      "fuzzy_ratio": 0.512,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-frequency-filter-how-the-brain"
+    },
+    {
+      "id": "e51",
+      "slug": "i-am-for-the-kids",
+      "title": "I Am For the Kids",
+      "medium": "https://medium.com/@livingterrain/i-am-for-the-kids-c0f2adf63b04",
+      "fuzzy": "We Are Not Foreign to the Cosmos",
+      "fuzzy_ratio": 0.49,
+      "fuzzy_url": "https://livingterrain.substack.com/p/we-are-not-foreign-to-the-cosmos"
+    },
+    {
+      "id": "e7",
+      "slug": "what-happens-before-the-tragedy",
+      "title": "What Happens Before the Tragedy?",
+      "medium": "https://medium.com/@livingterrain/what-happens-before-the-tragedy-b07e6c737cd6",
+      "fuzzy": "What Had to Happen for This to Exist?",
+      "fuzzy_ratio": 0.627,
+      "fuzzy_url": "https://livingterrain.substack.com/p/what-had-to-happen-for-this-to-exist-54a8ee94a4aa"
+    },
+    {
+      "id": "e18",
+      "slug": "medicine-is-learning-a-new-language",
+      "title": "Medicine Is Learning a New Language",
+      "medium": "https://medium.com/health-science/medicine-is-learning-a-new-language-52af86af3ca9",
+      "fuzzy": "Regulation Is the New Rebellion",
+      "fuzzy_ratio": 0.455,
+      "fuzzy_url": "https://livingterrain.substack.com/p/regulation-is-the-new-rebellion"
+    },
+    {
+      "id": "e105",
+      "slug": "the-future-of-healthcare-5-predictions",
+      "title": "The Future of Healthcare: 5 Predictions",
+      "medium": "https://medium.com/health-science/the-future-of-healthcare-5-predictions-85a2c2a56f94",
+      "fuzzy": "The Forgotten Structure of Reality",
+      "fuzzy_ratio": 0.5,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-forgotten-structure-of-reality-b140a93d9895"
+    },
+    {
+      "id": "e50",
+      "slug": "the-illusion-of-purity-is-cracking",
+      "title": "The Illusion of Purity Is Cracking",
+      "medium": "https://medium.com/@livingterrain/the-illusion-of-purity-is-cracking-6d09bd7a2679",
+      "fuzzy": "THE HEALTH EXPLOSION: A PROPHECY ABOUT WHAT\u2019S COMING",
+      "fuzzy_ratio": 0.518,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-health-explosion-a-prophecy-about"
+    },
+    {
+      "id": "e64",
+      "slug": "i-ve-been-paying-attention",
+      "title": "I\u2019ve Been Paying Attention",
+      "medium": "https://medium.com/illumination/ive-been-paying-attention-3620a98549c7",
+      "fuzzy": "I\u2019ve Been Writing in the Dark",
+      "fuzzy_ratio": 0.545,
+      "fuzzy_url": "https://livingterrain.substack.com/p/ive-been-writing-in-the-dark"
+    },
+    {
+      "id": "e89",
+      "slug": "i-wasn-t-trying-to-write-a-book-i-was-trying-to-save-my-life",
+      "title": "\u2728 I Wasn\u2019t Trying to Write a Book. I Was Trying to Save My Life.",
+      "medium": "https://medium.com/illumination/i-wasnt-trying-to-write-a-book-i-was-trying-to-save-my-life-9c25731f53f3",
+      "fuzzy": "We Weren\u2019t Eating \u2014 We Were Coping",
+      "fuzzy_ratio": 0.435,
+      "fuzzy_url": "https://livingterrain.substack.com/p/we-werent-eating-we-were-coping"
+    },
+    {
+      "id": "e4",
+      "slug": "the-ancient-purpose-of-looking-up",
+      "title": "The Ancient Purpose of Looking Up",
+      "medium": "https://medium.com/readers-digests/the-ancient-purpose-of-looking-up-3429017ac42e",
+      "fuzzy": "The Silent Epidemic of Dissolving Barriers",
+      "fuzzy_ratio": 0.533,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-silent-epidemic-of-dissolving-barriers-a488db2c7afb"
+    },
+    {
+      "id": "e96",
+      "slug": "everything-you-know-about-the-heart-is-backwards",
+      "title": "Everything You Know About the Heart Is Backwards",
+      "medium": "https://medium.com/@livingterrain/everything-you-know-about-the-heart-is-backwards-ab383d36abd7",
+      "fuzzy": "I\u2019ve Been Writing in the Dark",
+      "fuzzy_ratio": 0.442,
+      "fuzzy_url": "https://livingterrain.substack.com/p/ive-been-writing-in-the-dark"
+    },
+    {
+      "id": "e54",
+      "slug": "yes-i-am-sensitive",
+      "title": "Yes, I Am Sensitive.",
+      "medium": "https://medium.com/illumination/yes-i-am-sensitive-f740323aa8d0",
+      "fuzzy": "The Integration Wave",
+      "fuzzy_ratio": 0.421,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-integration-wave"
+    },
+    {
+      "id": null,
+      "slug": "constraint-is-not-the-opposite-of-freedom",
+      "title": "Constraint Is Not the Opposite of Freedom",
+      "medium": "https://medium.com/illumination/constraint-is-not-the-opposite-of-freedom-5e0d1b6eac28",
+      "fuzzy": "\u2b50 THE OPPOSITE-SIDE RULE:",
+      "fuzzy_ratio": 0.508,
+      "fuzzy_url": "https://livingterrain.substack.com/p/the-opposite-side-rule"
+    },
+    {
+      "id": null,
+      "slug": "you-have-to-go-far-enough-to-make-a-loop",
+      "title": "You Have to Go Far Enough to Make a Loop",
+      "medium": "https://medium.com/illumination/you-have-to-go-far-enough-to-make-a-loop-f21aec4f8d4f",
+      "fuzzy": "You Don\u2019t Sound Human Enough Anymore",
+      "fuzzy_ratio": 0.5,
+      "fuzzy_url": "https://livingterrain.substack.com/p/you-dont-sound-human-enough-anymore"
+    }
+  ],
+  "notes": [
+    "Matches require registry essaySlug/essayId or exact title/slug against live Substack archive, then HTTP 200.",
+    "Unmatched essays retain Medium externalUrl; never redirected to Substack homepage.",
+    "Reader-facing publication links use getEssayReadUrl (canonical/substack preferred)."
+  ]
+}

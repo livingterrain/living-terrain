@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import type { ThemeHub } from "@/lib/realms/types";
 import { getRealmMetaphor } from "@/lib/realms/metaphors";
 import { TerrainLink } from "@/components/navigation";
+import { ThemeThreadContinuation } from "@/components/reading/ThemeThreadContinuation";
 import { Thread } from "@/components/thread";
 import { refFromTheme } from "@/lib/relationships";
 import { RealmAtmosphere } from "./RealmAtmosphere";
@@ -79,6 +80,14 @@ export function RealmShell({
         >
           {metaphor.line}
         </p>
+        <ThemeThreadContinuation
+          themeSlug={config.slug}
+          palette={{
+            textMuted: config.palette.textMuted,
+            text: config.palette.text,
+            accent: config.palette.accent,
+          }}
+        />
       </motion.div>
 
       <div className="relative z-10 min-h-0 flex-1 overflow-y-auto overflow-x-hidden">

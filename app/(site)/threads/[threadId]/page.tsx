@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { withCanonical } from "@/lib/seo";
 import { LanternReadingShell } from "@/components/world/LanternReadingShell";
+import { AtlasJourneyReturn } from "@/components/reading/AtlasJourneyReturn";
+import { ThreadCoOccurrence } from "@/components/reading/ThreadCoOccurrence";
 import { ThreadEssayList } from "@/components/reading/ThreadEssayList";
 import { getEssaysByThreadId } from "@/lib/content";
 import {
@@ -44,16 +46,20 @@ export default async function ThreadPage({ params }: PageProps) {
       collection="Thread"
       title={thread.label}
       afterContent={
-        <section
-          className="thread-gathering threshold-carved threshold-carved--edge"
-          aria-labelledby="thread-gathering-heading"
-        >
-          <h2 id="thread-gathering-heading" className="type-chamber">
-            {threadEssayCountLabel(essays.length)}
-          </h2>
-          <ThreadEssayList essays={essays} />
-        </section>
+        <>
+          <ThreadCoOccurrence threadId={thread.id} />
+          <section
+            className="thread-gathering threshold-carved threshold-carved--edge"
+            aria-labelledby="thread-gathering-heading"
+          >
+            <h2 id="thread-gathering-heading" className="type-chamber">
+              {threadEssayCountLabel(essays.length)}
+            </h2>
+            <ThreadEssayList essays={essays} />
+          </section>
+        </>
       }
+      navBefore={<AtlasJourneyReturn />}
       returnHref="/essays"
       variant="library"
     >

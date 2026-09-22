@@ -278,7 +278,7 @@ function buildInquiryForConcept(centerId: string): AtlasInquiry {
     question: `What is ${title.toLowerCase()}?`,
     premise:
       node?.description ??
-      "Follow the thread. Each idea opens into another.",
+      "Follow this strand. Each idea opens into another.",
     centerId,
   };
 }

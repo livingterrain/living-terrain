@@ -15,11 +15,13 @@ interface LanternReadingShellProps {
   /** Quiet material immediately after the essay, before follow-on navigation */
   afterContent?: ReactNode;
   nodeRef?: NodeRef;
-  /** Quiet material after Follow the Thread (e.g. publication mirror) */
+  /** Quiet material after Follow this strand (e.g. publication mirror) */
   afterThread?: ReactNode;
   returnHref: string;
   threadHref?: string;
   threadTitle?: string;
+  /** Quiet extras above the shelf return (e.g. journey-return). */
+  navBefore?: ReactNode;
   /** Field desk vs library shelf */
   variant?: "library" | "notebook";
 }
@@ -39,6 +41,7 @@ export function LanternReadingShell({
   returnHref,
   threadHref,
   threadTitle,
+  navBefore,
   variant = "library",
 }: LanternReadingShellProps) {
   return (
@@ -93,6 +96,7 @@ export function LanternReadingShell({
               ↓ Continue thread: {threadTitle}
             </Link>
           )}
+          {navBefore}
           <Link
             href={returnHref}
             className="lantern-link flex min-h-11 items-center text-[0.875rem]"

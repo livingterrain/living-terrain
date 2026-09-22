@@ -13,7 +13,7 @@ interface ThreadProps {
 }
 
 /**
- * Follow the Thread — curated connections that explain why they exist.
+ * Follow this strand — curated connections that explain why they exist.
  * One relationship engine; every page participates the same way.
  */
 export function Thread({
@@ -35,7 +35,7 @@ export function Thread({
         dark ? "border-[var(--obs-border)]" : "border-rule/40",
         className,
       )}
-      aria-label="Follow the thread"
+      aria-label="Follow this strand"
     >
       <h2
         className={cn(
@@ -43,7 +43,7 @@ export function Thread({
           dark ? "text-[var(--obs-amber-dim)]" : "text-charcoal-faint",
         )}
       >
-        Follow the Thread
+        Follow this strand
       </h2>
 
       <ol className="mt-8 space-y-7">

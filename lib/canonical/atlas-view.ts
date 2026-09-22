@@ -42,7 +42,7 @@ export type AtlasCanonicalView = {
   relatedBooks: Partial<Record<AtlasV1EssayId, AtlasBookView[]>>;
   /**
    * Trusted AUTHORED / SOURCE_GROUNDED edges among Atlas-relevant objects.
-   * For Living Thread overlay only — never invents relations.
+   * For Trail overlay only — never invents relations.
    */
   threadRelations: ThreadRelationEdge[];
 };
@@ -148,7 +148,7 @@ export function getAtlasCanonicalView(): AtlasCanonicalView {
   };
 }
 
-/** IDs the Living Thread may encounter while traveling Atlas. */
+/** IDs the Trail overlay may encounter while traveling Atlas. */
 function atlasThreadIdUniverse(
   evidenceSource: Partial<Record<AtlasV1EssayId, CanonicalRef>>,
 ): Set<string> {

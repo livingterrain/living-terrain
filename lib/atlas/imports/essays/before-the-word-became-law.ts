@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-17).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -18,6 +18,9 @@ export const ENTRY: AtlasEntry = {
   "status": "published",
   "meta": {
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/before-the-word-became-law",
+    "substackUrl": "https://livingterrain.substack.com/p/before-the-word-became-law",
+    "mediumUrl": "https://medium.com/illuminations-mirror/before-the-word-became-law-fdc7730b4a2e",
     "externalUrl": "https://medium.com/illuminations-mirror/before-the-word-became-law-fdc7730b4a2e",
     "style": "essay",
     "subtitle": "The feminine lineage that healed through descent — and the story that hardened into control",

@@ -23,6 +23,7 @@
     "test:threads": "tsx scripts/test-threads.ts",
     "verify:threads": "tsx scripts/verify-threads.ts",
     "verify:atlas": "tsx scripts/verify-atlas-journey.mjs",
+    "verify:atlas-model": "tsx scripts/verify-atlas-model.ts",
     "verify:canonical": "tsx scripts/verify-canonical.ts"
   },
   "dependencies": {

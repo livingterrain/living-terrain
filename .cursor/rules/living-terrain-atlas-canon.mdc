@@ -12,23 +12,54 @@ Philosophy is complete. Implementation expresses this world; it does not redefin
 | Room | Route | What it holds |
 |---|---|---|
 | **The Constellation** | `/` | Living relational truth — how everything connects |
-| **The Atlas** | `/atlas` | Completed investigations as **maps** (what remains after the survey) |
+| **The Atlas** | `/atlas` | Relationships among Territories, Threads, Artifacts, and Investigations — including charted **maps** (what remains after the survey) |
 | **The Shelves** | `/inquiry` | Ongoing inquiry — essays, field notes, shorter writing |
 | **The Observatory** | `/observatory` | Investigations still forming |
+
+## Atlas 2.0 types (Phase 0–1 frozen; Phase 2 complete)
+
+Canonical internal architecture. Full tables: `docs/atlas-2.0-phase-0.md`. Typed layer: `lib/atlas/model.ts`. Do not begin Phase 3 without approval.
+
+| Type | Meaning | Canonical source |
+|---|---|---|
+| **Territory** | A region/domain of the terrain | Five Root Territories (`lib/atlas/architecture.ts`) |
+| **Thread** | A recurring pattern followed across territories | Ten essay/content Threads only (`lib/threads/vocabulary.ts`, `/threads/*`) |
+| **Artifact** | Concrete work / evidence | Maps, chambers, essays, plates, quotations, field notes |
+| **Investigation** | Active question / inquiry | Void questions, Observatory, Shelves inquiry |
+
+**Territory ≠ Thread:** Do not infer that every Territory or major-concept requires a Thread.
+
+**Disambiguation (required):** Thread = essay/content Thread only. **Trail** = Atlas visitor/session path. **Strand** = former `ConnectionKind: "thread"`. **Pathway** = Observatory pathway only. Do not invent unsupported relationships.
+
+**Phase 1 freeze:** V1 Territory-only = `body`, `adaptation`, `time`, `meaning`, `reality`. Both = `relationship`, `feedback`, `technology`, `constraint`, `participation`. Aliases = `th-relationship` → Thread `relationship`, `th-consciousness` → Thread `consciousness` (semantic only; `/themes/*` URLs unchanged in Phase 2). All other listed major-concepts remain distinct; no retirements.
+
+**Phase 2 (complete 2026-09-22):** Authored Thread whispers at journey stops for Both mappings only; Trail visitor copy; Void→journey preserved; visual review PASS. Theme redirects deferred at the time.
+
+**Phase 3 Thread co-occurrence (complete 2026-09-22):** Quiet co-membership on `/threads/[id]` from `essay-threads.json`; visual review PASS. Styles in `components/reading/thread-shelf.css`.
+
+**Phase 3 essay archive Thread belonging (complete 2026-09-22):** Quiet Thread labels on `/essays` archive rows from `essay-threads.json`; links to `/threads/[id]`; visual review PASS.
+
+**Phase 3 Theme→Thread continuation (complete 2026-09-22):** Quiet contextual links on `/themes/relationship` and `/themes/consciousness` only → matching `/threads/*`; no automatic redirects; other Themes unchanged.
+
+**Phase 3 Strand visitor terminology (complete 2026-09-22):** Graph-edge UI says Strand (“Follow this strand”, etc.); essay Thread / Trail / Pathway preserved; identifiers and storage keys untouched.
+
+**Phase 3 Theme redirect policy (decided 2026-09-22):** Keep all twelve `/themes/*` active with existing canonicals and immersive experiences; retain Relationship/Consciousness continuation links; **no automatic redirects**; other ten Themes stay distinct; reconsider only if a Theme is explicitly retired.
+
+**Phase 3 remaining (not started):** `ConnectionKind` identifier rename; further Shelves belonging (foyer Thread belonging not recommended); larger Atlas redesign — requires explicit approval.
 
 ## Investigation → record → map
 
 1. **Investigation** — living inquiry (Observatory, Shelves, Questions)
 2. **Record** — the physical book, the completed field journal (off the wall)
-3. **Map** — what endures in Living Terrain; cartography hung in The Atlas
+3. **Map** — what endures in Living Terrain; cartography hung in The Atlas (an Artifact form)
 
 Books are not products. Maps are not publications. The physical book is **historical evidence** of the investigation — a field journal, not a storefront SKU.
 
 ## Language
 
-**Use:** map, territory, charted, cartography, plate, artifact, field journal, scout report (essays), enter the territory
+**Use:** map, territory, charted, cartography, plate, artifact, field journal, scout report (essays), enter the territory, thread (essay Threads only), trail (session path)
 
-**Avoid in visitor UI:** volume, publication, library (as room), archive, shelf (for maps), purchase (as primary CTA), bookstore patterns
+**Avoid in visitor UI:** volume, publication, library (as room), archive, shelf (for maps), purchase (as primary CTA), bookstore patterns; overloaded “thread” for session trails, graph edges, or Observatory pathways
 
 ## Commerce
 
@@ -40,3 +71,4 @@ Do not center commerce. Do not design bookstores. Field journal links are margin
 - Visitor maps: `book` entries, routes `/atlas/[slug]`
 - Territory interior: `/chambers/[slug]`
 - `/library` redirects to `/atlas` (legacy)
+- Preserve journeys, canonical bonds, plates, chambers, essay-threads, and existing redirects until an approved migration

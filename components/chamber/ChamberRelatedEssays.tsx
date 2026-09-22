@@ -1,6 +1,7 @@
 import { ConnectionWeb } from "@/components/network";
 import { PublicationLink } from "@/components/reading/PublicationLink";
 import { TextLink } from "@/components/design-system";
+import { getEssayReadSource, getEssayReadUrl } from "@/lib/content";
 import type { Essay } from "@/lib/content/types";
 
 interface ChamberRelatedEssaysProps {
@@ -9,9 +10,18 @@ interface ChamberRelatedEssaysProps {
 
 /**
  * Related essays stay inside Living Terrain by default.
- * Medium remains a quiet secondary publication link when present.
+ * External publication remains a quiet secondary link when present.
  */
 export function ChamberRelatedEssays({ essays }: ChamberRelatedEssaysProps) {
+  const withPublication = essays.filter((essay) => {
+    const url = getEssayReadUrl(essay);
+    return (
+      url.includes("substack.com") ||
+      url.includes("medium.com") ||
+      Boolean(essay.externalUrl)
+    );
+  });
+
   return (
     <section aria-labelledby="chamber-essays">
       <h2 id="chamber-essays" className="type-folio">
@@ -33,26 +43,28 @@ export function ChamberRelatedEssays({ essays }: ChamberRelatedEssaysProps) {
             }))}
             className="mt-10"
           />
-          {essays.some((e) => e.externalUrl) && (
+          {withPublication.length > 0 && (
             <div className="mt-8 space-y-3">
-              {essays
-                .filter((e) => e.externalUrl)
-                .map((essay) => (
+              {withPublication.map((essay) => {
+                const href = getEssayReadUrl(essay);
+                const source = getEssayReadSource(essay);
+                return (
                   <p
                     key={essay.id}
                     className="type-meta text-[0.8125rem] text-charcoal-faint"
                   >
                     Also on{" "}
                     <TextLink
-                      href={essay.externalUrl!}
+                      href={href}
                       external
                       className="text-[0.8125rem]"
                     >
-                      Medium
+                      {source === "publication" ? "publication" : source}
                     </TextLink>
                     {essays.length > 1 ? ` · ${essay.title}` : ""}
                   </p>
-                ))}
+                );
+              })}
             </div>
           )}
         </>

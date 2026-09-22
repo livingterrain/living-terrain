@@ -1,6 +1,6 @@
 /**
  * Imported Medium essay — Medium-backed record (profile audit 2026-08-17).
- * Do not invent themes/relationships; Medium remains the publication source.
+ * Substack is the preferred publication source; Medium retained historically. Do not invent themes/relationships.
  */
 import type { AtlasConnection, AtlasEntry } from "../../types";
 
@@ -18,6 +18,9 @@ export const ENTRY: AtlasEntry = {
   "status": "published",
   "meta": {
     "topics": [],
+    "canonicalUrl": "https://livingterrain.substack.com/p/noticing-patterns-isnt-a-sin-forgetting",
+    "substackUrl": "https://livingterrain.substack.com/p/noticing-patterns-isnt-a-sin-forgetting",
+    "mediumUrl": "https://medium.com/illumination/noticing-patterns-isnt-a-sin-forgetting-your-power-is-3d26af386c0f",
     "externalUrl": "https://medium.com/illumination/noticing-patterns-isnt-a-sin-forgetting-your-power-is-3d26af386c0f",
     "style": "essay",
     "subtitle": "Why Numerology and Astrology Aren’t the Problem — Our Dependency Is.",

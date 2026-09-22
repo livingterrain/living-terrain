@@ -5,7 +5,7 @@ export const GROUP_PHRASES: Record<EdgeKind, string> = {
   parent: "Rooted in",
   child: "Opens into",
   pathway: "Neighboring paths",
-  thread: "Threads alongside",
+  thread: "Related strands",
   echo: "Echoes elsewhere",
   volume: "In the archive",
   observation: "Field observations",

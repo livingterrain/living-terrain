@@ -54,3 +54,26 @@ export {
   getLegacyObservations,
   getLegacyProject,
 } from "./adapters";
+
+export {
+  V1_CONCEPT_PLACEMENTS,
+  BOTH_CONCEPT_IDS,
+  MAJOR_CONCEPT_THREAD_ALIASES,
+  getV1ConceptPlacement,
+  primaryTerritoryForConcept,
+  authoredThreadWhisperForConcept,
+  authoredThreadHrefForConcept,
+  investigationForQuestion,
+  artifactFromEvidenceSource,
+  threadAliasForMajorConceptId,
+  assertAtlasModelIntegrity,
+} from "./model";
+export type {
+  AtlasEntityKind,
+  V1ConceptClassification,
+  V1ConceptPlacement,
+  BothConceptId,
+  InvestigationRef,
+  ArtifactForm,
+  ArtifactRef,
+} from "./model";
