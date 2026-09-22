@@ -1,6 +1,6 @@
 # Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22). Phase 3 **Theme redirect policy decided** (2026-09-22) — keep all `/themes/*` active; no automatic redirects.  
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22). Phase 3 **Theme redirect policy decided** (2026-09-22) — keep all `/themes/*` active; no automatic redirects. Phase 3 **Atlas journey-return v1 complete** (2026-09-22).  
 **Branch:** `cursor/atlas-2-0-phase-0-canon-e793`.  
 **Still out of scope (remaining Phase 3 / later):** `ConnectionKind` identifier rename, further Shelves belonging surfaces, larger Atlas redesign.
 
@@ -224,7 +224,7 @@ Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds`
 | **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
 | **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
 | **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Complete** (2026-09-22; visual review PASS) |
-| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** + **Theme redirect policy** complete/decided (2026-09-22). Remaining build items require approval; do not begin without Chelsea |
+| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; journey-return; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** + **Theme redirect policy** + **journey-return v1** complete/decided (2026-09-22). Remaining build items require approval; do not begin without Chelsea |
 
 ---
 
@@ -319,6 +319,24 @@ Surfaces: `Thread.tsx`, `FollowTheThread`, `ThreadTrace`, `ThreadExperience`, `C
 | Future reconsideration | Only if a Theme experience is **explicitly retired** |
 
 This closes the open redirect-policy decision. Continuation links remain the approved navigation between the two exact slug overlaps.
+
+### Phase 3 — Atlas journey-return v1 (complete 2026-09-22)
+
+**Problem:** Following an authored Thread whisper leaves the Atlas journey. Trail (`lt-atlas-living-thread`) records attention only and cannot restore stop/reveal state. Remounting `/atlas` always booted Void.
+
+**Contract:**
+1. On Thread whisper activation only → write versioned short-lived `sessionStorage` snapshot (`lt-atlas-journey-return-v1`, TTL 2h).
+2. Thread pages show **Return to the Atlas** only when the snapshot validates → `/atlas?resume=journey`.
+3. Resume validates authored trail order (not merely known concept IDs), filters `essaysOpened` against the current essay corpus (stale IDs dropped, journey kept), forces `activeEssayId: null`, restores the same stop with relations revealed, no bond replay, no Trail re-append.
+4. Bare `/atlas` without resume → Void. Snapshot key stays separate from Trail.
+
+**Intentional limits (documented):**
+- **Back-to-Void:** Browser Back without `?resume=journey` remounts Void; the snapshot is **preserved** so the Thread return link still works.
+- **Strict Mode handshake (dev):** After stripping `?resume=`, a module handshake + `setTimeout(0)` covers synchronous React Strict Mode remount. A remount after that tick can miss handshake and Void on bare `/atlas` (development-only).
+
+**Surfaces:** `lib/atlas-v1/journey-return.ts`, `AtlasV1`, `AtlasJourneyLayer` / `LivingBond` settled restore, `AtlasThreadWhisper` save, `AtlasJourneyReturn` + Thread page / `LanternReadingShell` `navBefore`.
+
+**Tests:** `scripts/test-journey-return.ts` (authored path, TTL, stale/valid `essaysOpened`); browser regression for return-link visibility + history preservation.
 
 ### Phase 3 / Later (remaining — not approved to build)
 
