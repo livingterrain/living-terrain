@@ -37,7 +37,9 @@ Canonical internal architecture. Full tables: `docs/atlas-2.0-phase-0.md`. Typed
 
 **Phase 3 Thread co-occurrence (complete 2026-09-22):** Quiet co-membership on `/threads/[id]` from `essay-threads.json`; visual review PASS. Styles in `components/reading/thread-shelf.css`.
 
-**Phase 3 remaining (not started):** Theme→Thread redirects; Strand renames; Shelves belonging; larger Atlas redesign — requires explicit approval.
+**Phase 3 essay archive Thread belonging (complete 2026-09-22):** Quiet Thread labels on `/essays` archive rows from `essay-threads.json`; links to `/threads/[id]`; visual review PASS.
+
+**Phase 3 remaining (not started):** Theme→Thread redirects; Strand renames; further Shelves belonging; larger Atlas redesign — requires explicit approval.
 
 ## Investigation → record → map
 
