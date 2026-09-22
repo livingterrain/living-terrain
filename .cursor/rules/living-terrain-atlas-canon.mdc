@@ -47,6 +47,8 @@ Canonical internal architecture. Full tables: `docs/atlas-2.0-phase-0.md`. Typed
 
 **Phase 3 remaining (not started):** `ConnectionKind` identifier rename; further Shelves belonging (foyer Thread belonging not recommended); larger Atlas redesign — requires explicit approval.
 
+**Phase 3 journey evidence diversification A+D (complete 2026-09-22):** Revised `technology-change`, `relationships-difficult`, and `inhabit-time` with distinct evidence per stop and bond copy that turns at each transition. `relationships-difficult` reality stop offers *The Structure Beneath Reality* as further-reading (optional philosophical orientation, not proof of the bond). Cross-journey essay reuse allowed; no repeated evidence within a single revised journey. Tests: `scripts/test-atlas-journey-editorial.ts`. Browser QA PASS (desktop + mobile).
+
 ## Investigation → record → map
 
 1. **Investigation** — living inquiry (Observatory, Shelves, Questions)

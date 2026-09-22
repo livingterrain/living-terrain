@@ -14,13 +14,16 @@ import {
   type ReactNode,
 } from "react";
 import {
+  evidenceReadingLabel,
   getConcept,
   getEssay,
   getQuestion,
   resolveEvidenceEssayId,
+  resolveEvidenceRole,
   resolveUnfinishedEdge,
   type AtlasV1ConceptId,
   type AtlasV1EssayId,
+  type AtlasV1EvidenceRole,
   type AtlasV1QuestionId,
   type AtlasV1Relation,
 } from "@/lib/atlas-v1/content";
@@ -203,6 +206,9 @@ export function AtlasJourneyLayer({
               hasEvidence={Boolean(
                 resolveEvidenceEssayId(question, journey.currentConceptId),
               )}
+              evidenceLabel={evidenceReadingLabel(
+                resolveEvidenceRole(question, journey.currentConceptId),
+              )}
               bondNoticed={bondNoticed}
               trail={journey.trail}
               relation={nextRelations[0] ?? null}
@@ -235,6 +241,10 @@ export function AtlasJourneyLayer({
               fragment={current.fragment}
               noticedWhy={journey.noticedWhy}
               essay={essay}
+              evidenceRole={resolveEvidenceRole(
+                question,
+                journey.currentConceptId,
+              )}
               evidenceSource={canonical.evidenceSource[essay.id]}
               relatedBooks={canonical.relatedBooks[essay.id] ?? []}
               onReturn={onReturn}
@@ -419,6 +429,7 @@ function JourneyView({
   conceptName,
   fragment,
   hasEvidence,
+  evidenceLabel,
   bondNoticed,
   trail,
   relation,
@@ -442,6 +453,7 @@ function JourneyView({
   conceptName: string;
   fragment: string;
   hasEvidence: boolean;
+  evidenceLabel: string;
   bondNoticed: boolean;
   trail: AtlasV1ConceptId[];
   relation: AtlasV1Relation | null;
@@ -560,7 +572,7 @@ function JourneyView({
                       onClick={onRead}
                       className="font-heading text-[1.0625rem] italic text-[#c9b48a]/85 transition-colors duration-[1100ms] hover:text-[#dcc9a0]"
                     >
-                      This lives in the writing
+                      {evidenceLabel}
                     </button>
                   )}
                 </motion.div>
@@ -587,7 +599,7 @@ function JourneyView({
                   onClick={onRead}
                   className="mt-10 block font-heading text-[1.0625rem] italic text-[#c9b48a]/85 transition-colors duration-[1100ms] hover:text-[#dcc9a0]"
                 >
-                  This lives in the writing
+                  {evidenceLabel}
                 </button>
               )}
               <button
@@ -635,6 +647,7 @@ function EvidenceView({
   fragment,
   noticedWhy,
   essay,
+  evidenceRole,
   evidenceSource,
   relatedBooks,
   onReturn,
@@ -644,6 +657,7 @@ function EvidenceView({
   fragment: string;
   noticedWhy: string | null;
   essay: ReturnType<typeof getEssay>;
+  evidenceRole: AtlasV1EvidenceRole;
   evidenceSource?: AtlasCanonicalView["evidenceSource"][AtlasV1EssayId];
   relatedBooks: NonNullable<AtlasCanonicalView["relatedBooks"][AtlasV1EssayId]>;
   onReturn: () => void;
@@ -652,6 +666,7 @@ function EvidenceView({
   const books = relatedBooks.filter(
     (book) => book.route !== evidenceSource?.route,
   );
+  const isFurtherReading = evidenceRole === "further-reading";
 
   return (
     <>
@@ -666,6 +681,12 @@ function EvidenceView({
       </p>
 
       <article className="atlas-v1-prose mt-12 flex-1 sm:mt-14">
+        {isFurtherReading && (
+          <p className="mb-8 max-w-[28rem] font-body text-[0.8125rem] leading-[1.7] text-ivory/35 sm:mb-10">
+            A wider philosophical reading — orientation for this stop, not proof
+            of the bond above.
+          </p>
+        )}
         <p className="font-body text-[0.6875rem] tracking-[0.06em] text-ivory/28">
           {conceptName}
         </p>

@@ -21,6 +21,7 @@
     "verify:substack-sync": "tsx scripts/verify-substack-sync.ts",
     "test:substack-sync": "tsx scripts/test-substack-sync.ts",
     "test:publication-cta": "tsx scripts/test-publication-cta.ts",
+    "test:atlas-journey-editorial": "tsx scripts/test-atlas-journey-editorial.ts",
     "test:threads": "tsx scripts/test-threads.ts",
     "content:medium:reconcile": "tsx scripts/reconcile-medium-substack.ts",
     "verify:threads": "tsx scripts/verify-threads.ts",

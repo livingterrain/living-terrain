@@ -224,7 +224,7 @@ Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds`
 | **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
 | **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
 | **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Complete** (2026-09-22; visual review PASS) |
-| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; journey-return; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** + **Theme redirect policy** + **journey-return v1** complete/decided (2026-09-22). Remaining build items require approval; do not begin without Chelsea |
+| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; journey-return; evidence diversification; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** + **Theme redirect policy** + **journey-return v1** + **journey evidence diversification A+D** complete/decided (2026-09-22). Remaining build items require approval; do not begin without Chelsea |
 
 ---
 
@@ -337,6 +337,31 @@ This closes the open redirect-policy decision. Continuation links remain the app
 **Surfaces:** `lib/atlas-v1/journey-return.ts`, `AtlasV1`, `AtlasJourneyLayer` / `LivingBond` settled restore, `AtlasThreadWhisper` save, `AtlasJourneyReturn` + Thread page / `LanternReadingShell` `navBefore`.
 
 **Tests:** `scripts/test-journey-return.ts` (authored path, TTL, stale/valid `essaysOpened`); browser regression for return-link visibility + history preservation.
+
+### Phase 3 — Journey evidence diversification A+D (complete 2026-09-22)
+
+**Problem:** Three living journeys reused one evidence pack at every stop, and several bond “why” lines restated the core reframe instead of turning the relationship.
+
+**Editorial contract (approved):**
+1. Keep existing questions, concept sequences, core reframes, and closing questions.
+2. Distinct evidence per stop within each revised journey; cross-journey reuse allowed.
+3. Bond copy must add a conceptual turn at every transition (not reframe echo).
+4. On `relationships-difficult` at **reality**, *The Structure Beneath Reality* is offered as **further-reading** — optional philosophical orientation, not direct evidence for relational-truth claims. Visitor cue: “A wider reading”; evidence view states the distinction.
+5. Do not expand Meaning territory, resolve `before-collapse`, or reconcile site questions in this pass.
+
+**Revised journeys:**
+
+| Journey | Evidence sequence | Notes |
+|---|---|---|
+| `technology-change` | `cost-of-image` → `before-tragedy` → `make-a-loop` | First bond broadened to attention → relation |
+| `relationships-difficult` | `before-tragedy` → `constraint-freedom` → `structure-beneath` | Reality = further-reading |
+| `inhabit-time` | `make-a-loop` → `looking-up` → `never-restriction` | As proposed |
+
+**Surfaces:** `lib/atlas-v1/content.ts` (`evidenceRole`, bond/evidence maps); `AtlasJourneyLayer` further-reading cue + framing.
+
+**Tests:** `scripts/test-atlas-journey-editorial.ts`; `npm run verify:atlas` / journey-return; desktop + mobile browser QA through closing questions.
+
+**Publication:** Nine Atlas-linked Medium-only essays remain in the republication backlog. Atlas evidence packs treated as potentially abbreviated until compared with original full text. No republication in this pass.
 
 ### Phase 3 / Later (remaining — not approved to build)
 
