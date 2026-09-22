@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Essay } from "@/lib/content/types";
 import { displayEssayTitle } from "@/lib/content/essay-display";
 import { formatDate } from "@/lib/utils";
+import "./thread-shelf.css";
 
 interface ThreadEssayListProps {
   essays: Essay[];

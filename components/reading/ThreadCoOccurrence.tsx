@@ -4,6 +4,7 @@ import {
   threadHref,
   type ThreadId,
 } from "@/lib/threads";
+import "./thread-shelf.css";
 
 type Props = {
   threadId: ThreadId;
