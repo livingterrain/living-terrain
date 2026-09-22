@@ -1,8 +1,8 @@
 # Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22). Phase 3 **Theme redirect policy decided** (2026-09-22) — keep all `/themes/*` active; no automatic redirects. Phase 3 **Atlas journey-return v1 complete** (2026-09-22). Phase 3 **journey evidence diversification A+D complete** (2026-09-22).  
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22). Phase 3 **Theme redirect policy decided** (2026-09-22) — keep all `/themes/*` active; no automatic redirects. Phase 3 **Atlas journey-return v1 complete** (2026-09-22). Phase 3 **journey evidence diversification A+D complete** (2026-09-22). Phase 3 **Meaning territory living question complete** (2026-09-22).  
 **Branch:** `cursor/atlas-2-0-phase-0-canon-e793`.  
-**Still out of scope (remaining Phase 3 / later):** `ConnectionKind` identifier rename, further Shelves belonging surfaces, larger Atlas redesign. Meaning territory living question — proposal only until approved.
+**Still out of scope (remaining Phase 3 / later):** `ConnectionKind` identifier rename, further Shelves belonging surfaces, larger Atlas redesign.
 
 ---
 
@@ -224,7 +224,7 @@ Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds`
 | **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
 | **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
 | **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Complete** (2026-09-22; visual review PASS) |
-| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; journey-return; evidence diversification; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** + **Theme redirect policy** + **journey-return v1** + **journey evidence diversification A+D** complete/decided (2026-09-22). Remaining build items require approval; do not begin without Chelsea |
+| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; journey-return; evidence diversification; Meaning living question; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** + **Theme redirect policy** + **journey-return v1** + **journey evidence diversification A+D** + **Meaning territory living question** complete/decided (2026-09-22). Remaining build items require approval; do not begin without Chelsea |
 
 ---
 
@@ -362,6 +362,28 @@ This closes the open redirect-policy decision. Continuation links remain the app
 **Tests:** `scripts/test-atlas-journey-editorial.ts`; `npm run verify:atlas` / journey-return; desktop + mobile browser QA through closing questions.
 
 **Publication:** Nine Atlas-linked Medium-only essays remain in the republication backlog. Atlas evidence packs treated as potentially abbreviated until compared with original full text. No republication in this pass.
+
+### Phase 3 — Meaning territory living question (complete 2026-09-22)
+
+**Problem:** Meaning had no living Void question; the territory opened without a first path into the survey.
+
+**Editorial contract (approved):**
+1. New question under Meaning / orientation: *When do our symbols stop helping us live?*
+2. Path: **meaning → constraint → participation**.
+3. Core reframe: *Symbols help us share a world — and can quietly replace contact with it.*
+4. Closing: *Where am I still living inside a name instead of a life?*
+5. Distinct evidence per stop; bond copy turns at each transition (not reframe echo).
+6. Do not substitute *The Fragmentation of Attention* for Constraint evidence without a separate editorial pass (Constraint pack retained after Substack comparison).
+
+**Journey:**
+
+| Journey | Evidence sequence | Bonds |
+|---|---|---|
+| `symbols-stop-helping` | `looking-up` → `constraint-freedom` → `never-restriction` | Meaning→Constraint: distinctions that bound what we're willing to see; Constraint→Participation: leave the map and enter the territory |
+
+**Surfaces:** `lib/atlas-v1/content.ts`, `lib/atlas-v1/questions.ts`, `lib/atlas/architecture.ts` (`QUESTION_PLACEMENTS`); Void count 7; authored bonds 16.
+
+**Tests:** `scripts/test-atlas-journey-editorial.ts`; `verify-canonical` QUESTION=7; desktop + mobile browser QA (1280 / 390) through closing, evidence round-trip, Thread whisper restore, Trail uniqueness; regression on `technology-change` PASS.
 
 ### Phase 3 / Later (remaining — not approved to build)
 
