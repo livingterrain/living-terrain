@@ -7,9 +7,11 @@ import { materializeSubstackEssays } from "../lib/content-sync/materialize-essay
 import {
   THREAD_IDS,
   THREADS,
+  THEME_THREAD_ALIASES,
   findUnknownEssayThreadSlugs,
   getThreadByParam,
   getThreadCoOccurrence,
+  getThreadIdForThemeSlug,
   loadEssayThreadRegistry,
   parseEssayThreadRegistry,
   sharedEssaySlugsBetween,
@@ -195,6 +197,25 @@ async function main(): Promise<void> {
     );
     assert.deepEqual(ids, ordered, "logos: THREAD_IDS tie-break within equal counts");
   }
+
+  // Phase 1 Theme↔Thread aliases — exact slug overlap only (no redirects).
+  assert.deepEqual(
+    THEME_THREAD_ALIASES,
+    { relationship: "relationship", consciousness: "consciousness" },
+    "THEME_THREAD_ALIASES stays at the two Phase 1 exact matches",
+  );
+  assert.equal(getThreadIdForThemeSlug("relationship"), "relationship");
+  assert.equal(getThreadIdForThemeSlug("consciousness"), "consciousness");
+  assert.equal(getThreadIdForThemeSlug("reality"), undefined);
+  assert.equal(getThreadIdForThemeSlug("meaning"), undefined);
+  assert.equal(getThreadIdForThemeSlug("identity"), undefined);
+  assert.equal(getThreadIdForThemeSlug("language"), undefined);
+  assert.equal(getThreadIdForThemeSlug("freedom"), undefined);
+  assert.equal(getThreadIdForThemeSlug("embodiment"), undefined);
+  assert.equal(getThreadIdForThemeSlug("information"), undefined);
+  assert.equal(getThreadIdForThemeSlug("time"), undefined);
+  assert.equal(getThreadIdForThemeSlug("perception"), undefined);
+  assert.equal(getThreadIdForThemeSlug("structure"), undefined);
 
   const counts = Object.fromEntries(
     THREAD_IDS.map((id) => [id, getEssaysByThreadId(id).length]),

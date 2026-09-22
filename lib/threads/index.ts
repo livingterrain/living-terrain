@@ -31,3 +31,9 @@ export {
   type ThreadDefinition,
   type ThreadId,
 } from "./vocabulary";
+export {
+  THEME_THREAD_ALIASES,
+  getThreadForThemeSlug,
+  getThreadIdForThemeSlug,
+  type ThemeThreadAliasSlug,
+} from "./theme-aliases";

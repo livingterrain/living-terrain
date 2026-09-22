@@ -167,3 +167,41 @@
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--color-forest) 38%, transparent);
 }
+
+/* Theme → Thread alias continuation (immersive realms + Theme page fallback) */
+.theme-thread-continuation {
+  --theme-thread-muted: color-mix(in srgb, var(--color-charcoal-faint) 88%, transparent);
+  --theme-thread-text: var(--color-charcoal-muted);
+  --theme-thread-accent: var(--color-forest);
+  margin: 1.35rem auto 0;
+  max-width: 28rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: var(--theme-thread-muted);
+}
+
+.theme-thread-continuation__cue {
+  font-style: italic;
+}
+
+.theme-thread-continuation__link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  font-family: var(--font-heading), ui-serif, Georgia, serif;
+  font-size: 0.9375rem;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  color: var(--theme-thread-text);
+  text-decoration: none;
+  text-underline-offset: 0.18em;
+  transition: color 0.7s var(--ease-breath), text-decoration-color 0.7s var(--ease-breath);
+}
+
+.theme-thread-continuation__link:hover,
+.theme-thread-continuation__link:focus-visible {
+  color: var(--theme-thread-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--theme-thread-accent) 42%, transparent);
+}
