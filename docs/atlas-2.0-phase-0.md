@@ -1,8 +1,8 @@
 # Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22) — quiet labels on `/essays` archive rows; visual review accepted.  
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22) — quiet contextual links on `/themes/relationship` and `/themes/consciousness` only; no automatic redirects.  
 **Branch:** `cursor/atlas-2-0-phase-0-canon-e793`.  
-**Still out of scope (remaining Phase 3 / later):** theme redirects, Strand/`ConnectionKind` migration, further Shelves belonging surfaces, larger Atlas redesign.
+**Still out of scope (remaining Phase 3 / later):** automatic theme redirects, Strand/`ConnectionKind` migration, further Shelves belonging surfaces, larger Atlas redesign.
 
 ---
 
@@ -12,7 +12,7 @@
 - Do not delete legacy data.
 - Do not create theme redirects or rename routes.
 - Do not invent relationships the corpus does not already support.
-- Do not begin remaining Phase 3 items (further Shelves belonging, Strand migration, theme redirects, larger redesign) without approval.
+- Do not begin remaining Phase 3 items (further Shelves belonging, Strand migration, automatic theme redirects, larger redesign) without approval.
 
 ---
 
@@ -223,7 +223,7 @@ Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds`
 | **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
 | **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
 | **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Complete** (2026-09-22; visual review PASS) |
-| **3** / Later | Theme→Thread alias redirects; Strand renames; Thread co-occurrence; Shelves belonging; larger Atlas redesign | **Thread co-occurrence** + **essay archive Thread belonging** complete (2026-09-22). Remaining items require approval; do not begin without Chelsea |
+| **3** / Later | Theme→Thread navigation; Strand renames; Thread co-occurrence; Shelves belonging; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation links** complete (2026-09-22). Automatic redirects still deferred. Remaining items require approval; do not begin without Chelsea |
 
 ---
 
@@ -272,22 +272,34 @@ Approved after Thread co-occurrence. Delivered on this branch (`EssaysArchive` +
 
 **Pre-commit QA (2026-09-22):** real keyboard Tab → Intelligence Thread received `:focus-visible` (underline + forest); negative margin left ~39px gap before next essay — no overlapping click targets — **PASS**.
 
+### Phase 3 — Theme→Thread continuation links (complete 2026-09-22)
+
+Approved after essay archive belonging. **Contextual links only — no automatic redirects.** Theme URLs, canonical metadata, and immersive realm content preserved.
+
+- Exact Phase 1 aliases only: `/themes/relationship` → `/threads/relationship`, `/themes/consciousness` → `/threads/consciousness`
+- Quiet line in `RealmShell` title block (both aliases are immersive realms): “This pattern also continues as {Thread}”
+- Alias map: `lib/threads/theme-aliases.ts`; UI: `ThemeThreadContinuation`; styles in `thread-shelf.css`
+- Other ten Themes unchanged (component returns null); Theme page fallback also wired for hub-miss path
+- `npm run verify:threads` asserts the two aliases and non-matches
+
+**Pre-commit QA (2026-09-22):** desktop + mobile navigation to correct Thread pages; Tab `:focus-visible` underline; 44px touch targets; continuation below metaphor / clear of title; Attachment graph click still on Theme; ten control Themes have no continuation — **PASS**.
+
 ### Phase 3 / Later (remaining — not approved to build)
 
 Bundled deferred work. **Do not implement without explicit approval.**
 
 | Item | Intent | Depends on |
 |---|---|---|
-| Theme→Thread alias redirects | Soft-redirect `/themes/relationship` and `/themes/consciousness` (and peers if approved) toward canonical `/threads/*` | Phase 1 aliases frozen; URL freeze currently keeps `/themes/*` as-is |
+| Automatic Theme→Thread redirects | Soft-redirect `/themes/relationship` and `/themes/consciousness` (and peers if approved) toward canonical `/threads/*` | Continuation links complete; URL freeze currently keeps `/themes/*` as parallel surfaces |
 | Strand rename migration | Visitor + code language: former `ConnectionKind: "thread"` → **Strand**; retire “Follow the Thread” for graph edges | Terminology freeze; may touch `lib/atlas` LEGACY connections and relationship-engine copy |
 | Further Shelves belonging | Any belonging beyond `/essays` archive rows (e.g. `/inquiry`, louder essay-page treatment) | Archive belonging complete; requires new scope approval |
 | Larger Atlas redesign | Any four-type relationship surface beyond journey whispers; not a dashboard | Phase 0–2 canon; must preserve Void→journey, bonds, plates, chambers |
 
 **Unresolved design decisions (gate remaining Phase 3):**
 
-1. Redirect policy: when (if ever) to alias `/themes/*` → `/threads/*` vs keep themes as permanent parallel surfaces.
+1. Redirect policy: when (if ever) to soft-redirect `/themes/*` → `/threads/*` vs keep themes as permanent parallel surfaces with continuation links only.
 2. Strand scope: visitor-copy-only vs identifier/`ConnectionKind` rename pass (storage keys and risky IDs were explicitly preserved in Phase 2).
 3. Further Shelves belonging: which additional Shelves routes (if any) and how loud vs whisper.
 4. Observatory Pathways: `/observatory/threads/*` still redirects to `/observatory` — restore Pathway destinations or leave collapsed?
 5. Questions hubs: `/questions` → `/atlas` freeze — rebuild Investigation hubs or keep Void as sole living-question door?
-6. Sequencing: further Shelves belonging vs Strand/theme hygiene vs larger Atlas redesign next.
+6. Sequencing: Strand terminology hygiene vs further Shelves belonging vs larger Atlas redesign next.

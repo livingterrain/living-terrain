@@ -39,7 +39,9 @@ Canonical internal architecture. Full tables: `docs/atlas-2.0-phase-0.md`. Typed
 
 **Phase 3 essay archive Thread belonging (complete 2026-09-22):** Quiet Thread labels on `/essays` archive rows from `essay-threads.json`; links to `/threads/[id]`; visual review PASS.
 
-**Phase 3 remaining (not started):** Theme→Thread redirects; Strand renames; further Shelves belonging; larger Atlas redesign — requires explicit approval.
+**Phase 3 Theme→Thread continuation (complete 2026-09-22):** Quiet contextual links on `/themes/relationship` and `/themes/consciousness` only → matching `/threads/*`; no automatic redirects; other Themes unchanged.
+
+**Phase 3 remaining (not started):** Automatic Theme→Thread redirects; Strand renames; further Shelves belonging; larger Atlas redesign — requires explicit approval.
 
 ## Investigation → record → map
 
