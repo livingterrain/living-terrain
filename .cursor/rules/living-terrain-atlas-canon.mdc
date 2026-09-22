@@ -16,7 +16,7 @@ Philosophy is complete. Implementation expresses this world; it does not redefin
 | **The Shelves** | `/inquiry` | Ongoing inquiry — essays, field notes, shorter writing |
 | **The Observatory** | `/observatory` | Investigations still forming |
 
-## Atlas 2.0 types (Phase 0–1 frozen; Phase 2 in code)
+## Atlas 2.0 types (Phase 0–1 frozen; Phase 2 complete)
 
 Canonical internal architecture. Full tables: `docs/atlas-2.0-phase-0.md`. Typed layer: `lib/atlas/model.ts`. Do not begin Phase 3 without approval.
 
@@ -33,7 +33,9 @@ Canonical internal architecture. Full tables: `docs/atlas-2.0-phase-0.md`. Typed
 
 **Phase 1 freeze:** V1 Territory-only = `body`, `adaptation`, `time`, `meaning`, `reality`. Both = `relationship`, `feedback`, `technology`, `constraint`, `participation`. Aliases = `th-relationship` → Thread `relationship`, `th-consciousness` → Thread `consciousness` (semantic only; `/themes/*` URLs unchanged in Phase 2). All other listed major-concepts remain distinct; no retirements.
 
-**Phase 2:** Authored Thread whispers at journey stops for Both mappings only; Trail visitor copy; Void→journey preserved.
+**Phase 2 (complete 2026-09-22):** Authored Thread whispers at journey stops for Both mappings only; Trail visitor copy; Void→journey preserved; visual review PASS. Theme redirects deferred.
+
+**Phase 3 (not started):** Theme→Thread redirects; Strand renames; Thread co-occurrence; Shelves belonging; larger Atlas redesign — requires explicit approval.
 
 ## Investigation → record → map
 

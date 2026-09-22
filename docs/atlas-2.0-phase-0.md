@@ -1,8 +1,8 @@
 # Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **implemented** on branch (typed layer + Trail copy + Both whispers). Theme redirects and Phase 3 deferred.  
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22) — typed layer + Trail copy + Both whispers; visual review accepted (5/5 PASS). Theme redirects and Phase 3 deferred.  
 **Branch:** `cursor/atlas-2-0-phase-0-canon-e793`.  
-**Still out of scope:** theme redirects, Strand/`ConnectionKind` migration, co-occurrence, Shelves belonging, larger Atlas redesign.
+**Still out of scope (Phase 3 / later):** theme redirects, Strand/`ConnectionKind` migration, Thread co-occurrence, Shelves belonging, larger Atlas redesign.
 
 ---
 
@@ -222,8 +222,8 @@ Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds`
 |---|---|---|
 | **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
 | **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
-| **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Implemented** (this branch) |
-| Later | Theme→Thread alias redirects; Strand renames; Thread co-occurrence; Shelves belonging; larger Atlas redesign | Not started |
+| **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Complete** (2026-09-22; visual review PASS) |
+| **3** / Later | Theme→Thread alias redirects; Strand renames; Thread co-occurrence; Shelves belonging; larger Atlas redesign | Not started — requires approval; do not begin without Chelsea |
 
 ---
 
@@ -241,9 +241,33 @@ Frozen 2026-09-16 by Chelsea:
 
 ### Phase 2 implementation record
 
-Approved with theme redirects deferred. Delivered on this branch:
+Approved with theme redirects deferred. Delivered on this branch (`8fb9602` and docs finalize):
 
 - Typed layer: `lib/atlas/model.ts` (+ `npm run verify:atlas-model`)
 - Visitor Trail copy on the session overlay; storage keys unchanged
 - Authored whispers at journey stops for Both mappings only (`AtlasThreadWhisper`)
 - Void → journey preserved; no four-type dashboard; no theme redirects
+
+**Visual review (2026-09-22):** Both-stop before/after relations; Thread whisper timing; Thread link → `/threads/*`; Trail overlay + session history; journey end; mobile 390×844 — all **PASS**.
+
+### Phase 3 / Later (specification only — not approved to build)
+
+Bundled deferred work from Phase 2 scope cuts and the held room-connection recommendations. **Do not implement without explicit approval.**
+
+| Item | Intent | Depends on |
+|---|---|---|
+| Theme→Thread alias redirects | Soft-redirect `/themes/relationship` and `/themes/consciousness` (and peers if approved) toward canonical `/threads/*` | Phase 1 aliases frozen; URL freeze currently keeps `/themes/*` as-is |
+| Strand rename migration | Visitor + code language: former `ConnectionKind: "thread"` → **Strand**; retire “Follow the Thread” for graph edges | Terminology freeze; may touch `lib/atlas` LEGACY connections and relationship-engine copy |
+| Thread co-occurrence | Quiet co-membership whispers on `/threads/[id]` from existing `essay-threads.json` | 112 mapped essays; held until Atlas resolved (now unblocked by Phase 2 complete) |
+| Shelves belonging | Quiet Thread belonging on The Shelves / essay surfaces | Same Thread substrate; secondary to co-occurrence in earlier priority |
+| Larger Atlas redesign | Any four-type relationship surface beyond journey whispers; not a dashboard | Phase 0–2 canon; must preserve Void→journey, bonds, plates, chambers |
+
+**Unresolved design decisions (gate Phase 3):**
+
+1. Redirect policy: when (if ever) to alias `/themes/*` → `/threads/*` vs keep themes as permanent parallel surfaces.
+2. Strand scope: visitor-copy-only vs identifier/`ConnectionKind` rename pass (storage keys and risky IDs were explicitly preserved in Phase 2).
+3. Co-occurrence UX: whisper density, ordering, and whether Atlas journey stops also surface co-occurring Threads beyond the five Both mappings.
+4. Shelves belonging: which Shelves routes (`/inquiry`, essay pages, lists) and how loud vs whisper.
+5. Observatory Pathways: `/observatory/threads/*` still redirects to `/observatory` — restore Pathway destinations or leave collapsed?
+6. Questions hubs: `/questions` → `/atlas` freeze — rebuild Investigation hubs or keep Void as sole living-question door?
+7. Sequencing: co-occurrence → Shelves belonging vs Strand/theme hygiene vs larger Atlas redesign first.
