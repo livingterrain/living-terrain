@@ -5,7 +5,9 @@ import Link from "next/link";
 import type { Essay } from "@/lib/content/types";
 import { displayEssayTitle } from "@/lib/content/essay-display";
 import { essayBodyLines } from "@/lib/content/shelves";
+import { getThreadRefs, threadHref } from "@/lib/threads";
 import { formatDate } from "@/lib/utils";
+import "./thread-shelf.css";
 
 const INITIAL_COUNT = 12;
 
@@ -16,6 +18,7 @@ interface EssaysArchiveProps {
 function EssayRow({ essay }: { essay: Essay }) {
   const { subtitle, excerpt } = essayBodyLines(essay);
   const title = displayEssayTitle(essay.title);
+  const threads = getThreadRefs(essay.threadIds);
 
   return (
     <li>
@@ -40,6 +43,23 @@ function EssayRow({ essay }: { essay: Essay }) {
           </p>
         )}
       </Link>
+      {threads.length > 0 && (
+        <ul
+          className="shelf-essay-threads"
+          aria-label="Threads this essay belongs to"
+        >
+          {threads.map((thread) => (
+            <li key={thread.id}>
+              <Link
+                href={threadHref(thread.id)}
+                className="shelf-essay-threads__link"
+              >
+                {thread.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </li>
   );
 }
