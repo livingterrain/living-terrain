@@ -1,8 +1,8 @@
 # Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22) — graph-edge copy says Strand; essay Thread / Trail / Pathway preserved; identifiers unchanged.  
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22). Phase 3 **Theme redirect policy decided** (2026-09-22) — keep all `/themes/*` active; no automatic redirects.  
 **Branch:** `cursor/atlas-2-0-phase-0-canon-e793`.  
-**Still out of scope (remaining Phase 3 / later):** automatic theme redirects, `ConnectionKind` identifier rename, further Shelves belonging surfaces, larger Atlas redesign.
+**Still out of scope (remaining Phase 3 / later):** `ConnectionKind` identifier rename, further Shelves belonging surfaces, larger Atlas redesign.
 
 ---
 
@@ -12,7 +12,8 @@
 - Do not delete legacy data.
 - Do not create theme redirects or rename routes.
 - Do not invent relationships the corpus does not already support.
-- Do not begin remaining Phase 3 items (further Shelves belonging, `ConnectionKind` identifier rename, automatic theme redirects, larger redesign) without approval.
+- Do not begin remaining Phase 3 items (further Shelves belonging, `ConnectionKind` identifier rename, larger redesign) without approval.
+- Do not introduce automatic `/themes/*` → `/threads/*` redirects (policy decided 2026-09-22).
 
 ---
 
@@ -187,7 +188,7 @@ Registry questions `q1`–`q4` remain data; visitor routes already resolve/redir
 | `/atlas/[slug]` | Map plate | Keep |
 | `/atlas/charts` | Charts finding aid | Keep |
 | `/chambers/[slug]` | Territory interior | Keep |
-| `/themes/[slug]` | major-concept / concept pages | Keep (alias UX later, not now) |
+| `/themes/[slug]` | major-concept / concept pages (immersive realms where applicable) | **Keep active** — no automatic redirects to `/threads/*` (policy 2026-09-22) |
 | `/threads/[id]` | Canonical Threads | Keep — sole Thread URLs |
 | `/library`, `/library/[slug]` | Soft redirect → atlas | Keep |
 | `/questions`, `/questions/:slug` | Permanent → `/atlas` | Keep |
@@ -223,7 +224,7 @@ Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds`
 | **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
 | **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
 | **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Complete** (2026-09-22; visual review PASS) |
-| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** complete (2026-09-22). Automatic redirects and `ConnectionKind` rename still deferred. Remaining items require approval; do not begin without Chelsea |
+| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** + **Theme redirect policy** complete/decided (2026-09-22). Remaining build items require approval; do not begin without Chelsea |
 
 ---
 
@@ -304,22 +305,46 @@ Surfaces: `Thread.tsx`, `FollowTheThread`, `ThreadTrace`, `ThreadExperience`, `C
 
 **Pre-commit QA (2026-09-22):** rendered `aside[aria-label="Follow this strand"]` matches CSS selectors; lantern heading/meta/focus-within colors apply; Theme + chamber accessible names + link destinations — **PASS**.
 
+### Phase 3 — Theme redirect policy (decided 2026-09-22)
+
+**Decision: no automatic redirects.** Themes and Threads remain parallel surfaces.
+
+| Rule | Detail |
+|---|---|
+| Keep all 12 `/themes/*` routes active | Including immersive realm experiences |
+| Preserve canonical metadata | `withCanonical(/themes/{slug})` unchanged |
+| Retain continuation links | Relationship + Consciousness only → matching `/threads/*` |
+| Do not soft-redirect | No `/themes/*` → `/threads/*` automatic redirects |
+| Keep other ten Themes distinct | No invented Thread equivalents |
+| Future reconsideration | Only if a Theme experience is **explicitly retired** |
+
+This closes the open redirect-policy decision. Continuation links remain the approved navigation between the two exact slug overlaps.
+
 ### Phase 3 / Later (remaining — not approved to build)
 
 Bundled deferred work. **Do not implement without explicit approval.**
 
 | Item | Intent | Depends on |
 |---|---|---|
-| Automatic Theme→Thread redirects | Soft-redirect `/themes/relationship` and `/themes/consciousness` (and peers if approved) toward canonical `/threads/*` | Continuation links complete; URL freeze currently keeps `/themes/*` as parallel surfaces |
 | `ConnectionKind` / identifier Strand rename | Rename serialized `ConnectionKind: "thread"` → `"strand"` and related symbols | Visitor terminology complete; high-risk data migration — separate approval |
-| Further Shelves belonging | Any belonging beyond `/essays` archive rows (e.g. `/inquiry`, louder essay-page treatment) | Archive belonging complete; requires new scope approval |
+| Further Shelves belonging | Any belonging beyond `/essays` archive rows | Archive belonging complete; `/inquiry` foyer audit below — requires new scope approval |
 | Larger Atlas redesign | Any four-type relationship surface beyond journey whispers; not a dashboard | Phase 0–2 canon; must preserve Void→journey, bonds, plates, chambers |
+
+### Audit — `/inquiry` foyer Thread belonging (proposal only; not approved)
+
+**Surface today:** `ShelvesFoyer` — three type doors (Books → `/books`, Essays → `/essays`, Visual Maps → `/visual-maps`). Essays door shows newest title/date only. No Thread list. Quiet Thread labels already live on `/essays` archive rows.
+
+**Possible treatments considered (not built):**
+1. Thread labels under the foyer’s newest-essay whisper  
+2. A fourth “Threads” door on the foyer  
+3. Thread chips beside the Essays signal  
+
+**Recommendation: do not add Thread belonging to the foyer.** It would mostly duplicate the one-step-away `/essays` archive treatment and either nest links inside the Essays door or change the foyer from media-type orientation into pattern navigation. Discovery of Threads is already served by archive belonging, `/threads/*`, Theme continuation, and home “Currently Investigating.” Prefer leaving `/inquiry` as a quiet threshold into those rooms.
 
 **Unresolved design decisions (gate remaining Phase 3):**
 
-1. Redirect policy: when (if ever) to soft-redirect `/themes/*` → `/threads/*` vs keep themes as permanent parallel surfaces with continuation links only.
-2. Whether to ever rename `ConnectionKind: "thread"` / storage keys / component names (visitor Strand copy is done).
-3. Further Shelves belonging: which additional Shelves routes (if any) and how loud vs whisper.
-4. Observatory Pathways: `/observatory/threads/*` still redirects to `/observatory` — restore Pathway destinations or leave collapsed?
-5. Questions hubs: `/questions` → `/atlas` freeze — rebuild Investigation hubs or keep Void as sole living-question door?
-6. Sequencing: further Shelves belonging vs automatic redirects vs larger Atlas redesign next.
+1. Whether to ever rename `ConnectionKind: "thread"` / storage keys / component names (visitor Strand copy is done; Theme redirects decided).
+2. Further Shelves belonging: essay-page loudness only, or other Shelves lists — foyer Thread belonging **not recommended**.
+3. Observatory Pathways: `/observatory/threads/*` still redirects to `/observatory` — restore Pathway destinations or leave collapsed?
+4. Questions hubs: `/questions` → `/atlas` freeze — rebuild Investigation hubs or keep Void as sole living-question door?
+5. Sequencing: further Shelves belonging (if any) vs identifier rename vs larger Atlas redesign next.
