@@ -20,6 +20,8 @@ interface LanternReadingShellProps {
   returnHref: string;
   threadHref?: string;
   threadTitle?: string;
+  /** Quiet extras above the shelf return (e.g. journey-return). */
+  navBefore?: ReactNode;
   /** Field desk vs library shelf */
   variant?: "library" | "notebook";
 }
@@ -39,6 +41,7 @@ export function LanternReadingShell({
   returnHref,
   threadHref,
   threadTitle,
+  navBefore,
   variant = "library",
 }: LanternReadingShellProps) {
   return (
@@ -93,6 +96,7 @@ export function LanternReadingShell({
               ↓ Continue thread: {threadTitle}
             </Link>
           )}
+          {navBefore}
           <Link
             href={returnHref}
             className="lantern-link flex min-h-11 items-center text-[0.875rem]"

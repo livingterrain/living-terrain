@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { withCanonical } from "@/lib/seo";
 import { LanternReadingShell } from "@/components/world/LanternReadingShell";
+import { AtlasJourneyReturn } from "@/components/reading/AtlasJourneyReturn";
 import { ThreadCoOccurrence } from "@/components/reading/ThreadCoOccurrence";
 import { ThreadEssayList } from "@/components/reading/ThreadEssayList";
 import { getEssaysByThreadId } from "@/lib/content";
@@ -58,6 +59,7 @@ export default async function ThreadPage({ params }: PageProps) {
           </section>
         </>
       }
+      navBefore={<AtlasJourneyReturn />}
       returnHref="/essays"
       variant="library"
     >

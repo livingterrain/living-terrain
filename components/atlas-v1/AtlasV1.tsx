@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -32,6 +33,12 @@ import { getQuestionPlacement } from "@/lib/atlas/architecture";
 import { appendThreadPoint } from "@/lib/atlas-v1/living-thread";
 import { LivingThread } from "@/components/atlas-v1/LivingThread";
 import type { AtlasBranchOffer } from "@/lib/atlas/branches";
+import {
+  clearJourneyReturnSnapshot,
+  clearResumeHandshake,
+  resolveJourneyResume,
+  saveJourneyReturnSnapshot,
+} from "@/lib/atlas-v1/journey-return";
 
 const PRESENCE_MS = 220;
 const LINGER_MS = 280;
@@ -152,6 +159,8 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
   const [bondNoticed, setBondNoticed] = useState(false);
   const [notice, setNotice] = useState<NoticeState | null>(null);
   const [voidComplete, setVoidComplete] = useState(true);
+  /** Restored via ?resume=journey — skip bond replay / reveal linger. */
+  const [restoreSettled, setRestoreSettled] = useState(false);
   const lingerTimer = useRef<number | null>(null);
   const noticeTimer = useRef<number | null>(null);
   const bootstrapped = useRef(false);
@@ -196,12 +205,16 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
   );
 
   const replaceHistory = useCallback(
-    (nextView: View, nextJourney: JourneyState | null) => {
+    (
+      nextView: View,
+      nextJourney: JourneyState | null,
+      nextRelations = false,
+    ) => {
       window.history.replaceState(
         {
           view: nextView,
           journey: nextJourney,
-          relationsVisible: false,
+          relationsVisible: nextRelations,
         } satisfies HistoryPayload,
         "",
         "/atlas",
@@ -210,9 +223,25 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
     [],
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (bootstrapped.current) return;
     bootstrapped.current = true;
+
+    const resume = resolveJourneyResume(window.location.search);
+    if (resume) {
+      setJourney(resume.journey);
+      setRelationsVisible(true);
+      setBondNoticed(true);
+      setRestoreSettled(true);
+      setNotice(null);
+      setVoidComplete(true);
+      setView("journey");
+      // Strip ?resume= while preserving journey history state (never Void).
+      replaceHistory("journey", resume.journey, true);
+      void import("@/components/atlas-v1/AtlasJourneyLayer");
+      return;
+    }
+
     replaceHistory("void", null);
     setVoidComplete(true);
     // Prefetch journey layer while questions are already available
@@ -261,6 +290,8 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
 
   useEffect(() => {
     if (view !== "journey" || !journey?.currentConceptId) return;
+    // Restored stop stays revealed; Strict Mode may re-run this effect.
+    if (restoreSettled) return;
     setBondNoticed(false);
     setRelationsVisible(false);
     setNotice(null);
@@ -272,7 +303,39 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
       setRelationsVisible(true);
     }, PRESENCE_MS);
     return () => window.clearTimeout(auto);
-  }, [journey?.currentConceptId, view, reduced]);
+  }, [journey?.currentConceptId, view, reduced, restoreSettled]);
+
+  // Accessible focus after explicit journey restore (layer may load async).
+  useEffect(() => {
+    if (!restoreSettled || view !== "journey") return;
+    let cancelled = false;
+    let tries = 0;
+    const tryFocus = () => {
+      if (cancelled) return;
+      const el = shellRef.current?.querySelector(
+        ".atlas-v1-concept",
+      ) as HTMLElement | null;
+      if (el) {
+        el.focus({ preventScroll: true });
+        return;
+      }
+      if (tries++ < 40) {
+        window.requestAnimationFrame(tryFocus);
+      }
+    };
+    tryFocus();
+    return () => {
+      cancelled = true;
+    };
+  }, [restoreSettled, view, journey?.currentConceptId]);
+
+  const onThreadWhisperLeave = useCallback(
+    (threadId: string) => {
+      if (!journey) return;
+      saveJourneyReturnSnapshot({ journey, threadId });
+    },
+    [journey],
+  );
 
   const settleInto = useCallback(
     (base: JourneyState, to: AtlasV1ConceptId, why: string) => {
@@ -285,6 +348,7 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
         noticedWhy: why,
       };
       setNotice(null);
+      setRestoreSettled(false);
       setJourney(next);
       setRelationsVisible(false);
       setBondNoticed(false);
@@ -298,9 +362,12 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
     (questionId: AtlasV1QuestionId) => {
       // Architecture guard: forming-no-journey questions stay catalogued, not opened
       if (!isJourneyOpen(questionId)) return;
+      clearJourneyReturnSnapshot();
+      clearResumeHandshake();
       clearLinger();
       clearNoticeTimer();
       setNotice(null);
+      setRestoreSettled(false);
       setVoidComplete(true);
       const q = VOID_QUESTIONS.find((item) => item.id === questionId);
       if (!q) return;
@@ -434,12 +501,15 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
   }, [journey, clearLinger, pushHistory, scrollTop]);
 
   const backToQuestions = useCallback(() => {
+    clearJourneyReturnSnapshot();
+    clearResumeHandshake();
     clearLinger();
     clearNoticeTimer();
     setNotice(null);
     setJourney(null);
     setRelationsVisible(false);
     setBondNoticed(false);
+    setRestoreSettled(false);
     setVoidComplete(true);
     setView("void");
     pushHistory("void", null, false);
@@ -463,9 +533,12 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
 
   const followBranch = useCallback(
     (branch: AtlasBranchOffer) => {
+      clearJourneyReturnSnapshot();
+      clearResumeHandshake();
       clearLinger();
       clearNoticeTimer();
       setNotice(null);
+      setRestoreSettled(false);
       setVoidComplete(true);
 
       const placement = getQuestionPlacement(branch.entryQuestionId);
@@ -519,6 +592,7 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
           notice={notice}
           relationsVisible={relationsVisible}
           bondNoticed={bondNoticed}
+          restoreSettled={restoreSettled}
           onCompleteNotice={completeNoticeNow}
           onAttendStart={beginLinger}
           onAttendCancel={cancelLinger}
@@ -531,6 +605,7 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
           onReturn={returnToJourney}
           onBack={backToQuestions}
           onFollowBranch={followBranch}
+          onThreadWhisperLeave={onThreadWhisperLeave}
         />
       )}
     </div>

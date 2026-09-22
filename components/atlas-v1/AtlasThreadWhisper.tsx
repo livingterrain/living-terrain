@@ -16,9 +16,15 @@ import "./atlas-thread-whisper.css";
 type Props = {
   conceptId: AtlasV1ConceptId;
   className?: string;
+  /** Fired when the visitor activates the Thread link (save journey-return snapshot). */
+  onLeaveToThread?: (threadId: string) => void;
 };
 
-export function AtlasThreadWhisper({ conceptId, className }: Props) {
+export function AtlasThreadWhisper({
+  conceptId,
+  className,
+  onLeaveToThread,
+}: Props) {
   const thread = authoredThreadWhisperForConcept(conceptId);
   const href = authoredThreadHrefForConcept(conceptId);
   if (!thread || !href) return null;
@@ -29,6 +35,7 @@ export function AtlasThreadWhisper({ conceptId, className }: Props) {
         href={href}
         className="atlas-thread-whisper__link"
         aria-label={`This pattern continues as ${thread.label}`}
+        onClick={() => onLeaveToThread?.(thread.id)}
       >
         <span className="atlas-thread-whisper__cue">This pattern continues</span>
         <span className="atlas-thread-whisper__sep" aria-hidden>
