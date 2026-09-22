@@ -1,8 +1,8 @@
 # Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22). Phase 3 **Theme redirect policy decided** (2026-09-22) — keep all `/themes/*` active; no automatic redirects. Phase 3 **Atlas journey-return v1 complete** (2026-09-22).  
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22). Phase 3 **Theme redirect policy decided** (2026-09-22) — keep all `/themes/*` active; no automatic redirects. Phase 3 **Atlas journey-return v1 complete** (2026-09-22). Phase 3 **journey evidence diversification A+D complete** (2026-09-22).  
 **Branch:** `cursor/atlas-2-0-phase-0-canon-e793`.  
-**Still out of scope (remaining Phase 3 / later):** `ConnectionKind` identifier rename, further Shelves belonging surfaces, larger Atlas redesign.
+**Still out of scope (remaining Phase 3 / later):** `ConnectionKind` identifier rename, further Shelves belonging surfaces, larger Atlas redesign. Meaning territory living question — proposal only until approved.
 
 ---
 
