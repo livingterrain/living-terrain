@@ -12,6 +12,13 @@ export {
   type ThreadRegistryIssueCode,
 } from "./registry";
 export {
+  getThreadCoOccurrence,
+  getThreadCoOccurrenceLinks,
+  sharedEssaySlugsBetween,
+  type ThreadCoOccurrenceLink,
+  type ThreadCoOccurrenceNeighbor,
+} from "./co-occurrence";
+export {
   THREAD_IDS,
   THREADS,
   getThreadByParam,

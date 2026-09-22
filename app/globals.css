@@ -2756,6 +2756,43 @@
     color: color-mix(in srgb, var(--lantern-meta) 68%, transparent);
   }
 
+  .world-lantern-reading .thread-co-occurrence {
+    margin-bottom: 2.5rem;
+  }
+
+  .world-lantern-reading .thread-co-occurrence .type-chamber {
+    color: color-mix(in srgb, var(--lantern-meta) 68%, transparent);
+  }
+
+  .thread-co-occurrence__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin: 0.85rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .thread-co-occurrence__link {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    font-family: var(--font-heading), ui-serif, Georgia, serif;
+    font-size: 1.0625rem;
+    line-height: 1.35;
+    color: var(--lantern-title);
+    text-decoration: none;
+    text-underline-offset: 0.18em;
+    transition: color 1.2s var(--ease-breath);
+  }
+
+  .thread-co-occurrence__link:hover,
+  .thread-co-occurrence__link:focus-visible {
+    color: var(--lantern-link);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--lantern-link) 38%, transparent);
+  }
+
   .thread-essay-list {
     margin: 1.25rem 0 0;
     padding: 0;
