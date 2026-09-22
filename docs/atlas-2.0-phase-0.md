@@ -1,8 +1,8 @@
 # Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22) — quiet contextual links on `/themes/relationship` and `/themes/consciousness` only; no automatic redirects.  
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22) — graph-edge copy says Strand; essay Thread / Trail / Pathway preserved; identifiers unchanged.  
 **Branch:** `cursor/atlas-2-0-phase-0-canon-e793`.  
-**Still out of scope (remaining Phase 3 / later):** automatic theme redirects, Strand/`ConnectionKind` migration, further Shelves belonging surfaces, larger Atlas redesign.
+**Still out of scope (remaining Phase 3 / later):** automatic theme redirects, `ConnectionKind` identifier rename, further Shelves belonging surfaces, larger Atlas redesign.
 
 ---
 
@@ -12,7 +12,7 @@
 - Do not delete legacy data.
 - Do not create theme redirects or rename routes.
 - Do not invent relationships the corpus does not already support.
-- Do not begin remaining Phase 3 items (further Shelves belonging, Strand migration, automatic theme redirects, larger redesign) without approval.
+- Do not begin remaining Phase 3 items (further Shelves belonging, `ConnectionKind` identifier rename, automatic theme redirects, larger redesign) without approval.
 
 ---
 
@@ -65,7 +65,7 @@ Preserve all of the following through any later migration:
 | **Map / plate / chamber** | Artifact forms for completed or charted investigations |
 | **Continent** (legacy) | Internal nickname for `major-concept` themes — not visitor canon for Atlas 2.0 geography |
 
-Code identifiers may keep old names until an approved rename pass (`LIVING_THREAD_KEY`, `ConnectionKind "thread"`, etc.). Semantics are frozen first; visitor copy that says “Follow the Thread” for Strand edges should later become non-Thread language — UI deferred to Phase 2+.
+Code identifiers may keep old names until an approved rename pass (`LIVING_THREAD_KEY`, `ConnectionKind "thread"`, etc.). Semantics are frozen first. **Visitor Strand terminology** for graph edges is complete (2026-09-22); identifier/`ConnectionKind` rename remains deferred.
 
 ---
 
@@ -223,7 +223,7 @@ Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds`
 | **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
 | **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
 | **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Complete** (2026-09-22; visual review PASS) |
-| **3** / Later | Theme→Thread navigation; Strand renames; Thread co-occurrence; Shelves belonging; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation links** complete (2026-09-22). Automatic redirects still deferred. Remaining items require approval; do not begin without Chelsea |
+| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** complete (2026-09-22). Automatic redirects and `ConnectionKind` rename still deferred. Remaining items require approval; do not begin without Chelsea |
 
 ---
 
@@ -284,6 +284,26 @@ Approved after essay archive belonging. **Contextual links only — no automatic
 
 **Pre-commit QA (2026-09-22):** desktop + mobile navigation to correct Thread pages; Tab `:focus-visible` underline; 44px touch targets; continuation below metaphor / clear of title; Attachment graph click still on Theme; ten control Themes have no continuation — **PASS**.
 
+### Phase 3 — Strand visitor terminology (complete 2026-09-22)
+
+Approved terminology-only pass (Phase A + relevant Phase B CTAs). **No identifier / storage / CSS-class renames. No redirects.**
+
+Approved phrases applied where copy meant graph/Strand edges (not essay Threads):
+
+| From | To |
+|---|---|
+| Follow the Thread | Follow this strand |
+| Follow this thread | Follow this strand |
+| Trace this thread on the map | Trace this connection on the map |
+| Threads alongside | Related strands |
+| Along the same thread as | Connected with |
+
+Surfaces: `Thread.tsx`, `FollowTheThread`, `ThreadTrace`, `ThreadExperience`, `ConnectionWeb`, relationship `phrases`/`rationale`, NotebookConcept CTA, ConceptualMap premise, chamber begin-copy + authored Strand rationales in `data.ts`; lantern `globals.css` aria-label selectors paired.
+
+**Preserved:** essay Thread UI; Trail overlay; Pathway terminology; home “Follow this thread →” (links to `/threads/*`); poetic/newsletter language; inactive legacy ObservatoryHub Pathway CTAs; all `ConnectionKind` values and storage keys.
+
+**Pre-commit QA (2026-09-22):** rendered `aside[aria-label="Follow this strand"]` matches CSS selectors; lantern heading/meta/focus-within colors apply; Theme + chamber accessible names + link destinations — **PASS**.
+
 ### Phase 3 / Later (remaining — not approved to build)
 
 Bundled deferred work. **Do not implement without explicit approval.**
@@ -291,15 +311,15 @@ Bundled deferred work. **Do not implement without explicit approval.**
 | Item | Intent | Depends on |
 |---|---|---|
 | Automatic Theme→Thread redirects | Soft-redirect `/themes/relationship` and `/themes/consciousness` (and peers if approved) toward canonical `/threads/*` | Continuation links complete; URL freeze currently keeps `/themes/*` as parallel surfaces |
-| Strand rename migration | Visitor + code language: former `ConnectionKind: "thread"` → **Strand**; retire “Follow the Thread” for graph edges | Terminology freeze; may touch `lib/atlas` LEGACY connections and relationship-engine copy |
+| `ConnectionKind` / identifier Strand rename | Rename serialized `ConnectionKind: "thread"` → `"strand"` and related symbols | Visitor terminology complete; high-risk data migration — separate approval |
 | Further Shelves belonging | Any belonging beyond `/essays` archive rows (e.g. `/inquiry`, louder essay-page treatment) | Archive belonging complete; requires new scope approval |
 | Larger Atlas redesign | Any four-type relationship surface beyond journey whispers; not a dashboard | Phase 0–2 canon; must preserve Void→journey, bonds, plates, chambers |
 
 **Unresolved design decisions (gate remaining Phase 3):**
 
 1. Redirect policy: when (if ever) to soft-redirect `/themes/*` → `/threads/*` vs keep themes as permanent parallel surfaces with continuation links only.
-2. Strand scope: visitor-copy-only vs identifier/`ConnectionKind` rename pass (storage keys and risky IDs were explicitly preserved in Phase 2).
+2. Whether to ever rename `ConnectionKind: "thread"` / storage keys / component names (visitor Strand copy is done).
 3. Further Shelves belonging: which additional Shelves routes (if any) and how loud vs whisper.
 4. Observatory Pathways: `/observatory/threads/*` still redirects to `/observatory` — restore Pathway destinations or leave collapsed?
 5. Questions hubs: `/questions` → `/atlas` freeze — rebuild Investigation hubs or keep Void as sole living-question door?
-6. Sequencing: Strand terminology hygiene vs further Shelves belonging vs larger Atlas redesign next.
+6. Sequencing: further Shelves belonging vs automatic redirects vs larger Atlas redesign next.
