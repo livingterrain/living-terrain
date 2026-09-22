@@ -35,7 +35,8 @@ export type AtlasV1QuestionId =
   | "relationships-difficult"
   | "inhabit-time"
   | "before-collapse"
-  | "beneath-perception";
+  | "beneath-perception"
+  | "symbols-stop-helping";
 
 export type AtlasV1Concept = {
   id: AtlasV1ConceptId;
@@ -585,6 +586,38 @@ export const ATLAS_V1_QUESTIONS: AtlasV1Question[] = [
       from: "reality",
       to: "constraint",
       why: "Your perception does not simply observe reality. It helps create the reality you experience.",
+    },
+  },
+  {
+    id: "symbols-stop-helping",
+    text: "When do our symbols stop helping us live?",
+    startConceptId: "meaning",
+    coreReframe:
+      "Symbols help us share a world — and can quietly replace contact with it.",
+    closingQuestion: "Where am I still living inside a name instead of a life?",
+    relations: {
+      meaning: [
+        {
+          to: "constraint",
+          why: "We need distinctions to make sense of the world. But the categories that help us understand something can also become the boundaries of what we're willing to see.",
+        },
+      ],
+      constraint: [
+        {
+          to: "participation",
+          why: "A map can help us find our way. But eventually, we have to leave the map and enter the territory.",
+        },
+      ],
+    },
+    evidence: {
+      meaning: "looking-up",
+      constraint: "constraint-freedom",
+      participation: "never-restriction",
+    },
+    unfinishedHint: {
+      from: "meaning",
+      to: "constraint",
+      why: "We need distinctions to make sense of the world. But the categories that help us understand something can also become the boundaries of what we're willing to see.",
     },
   },
 ];

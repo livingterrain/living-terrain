@@ -192,6 +192,50 @@ check("authored paths still validate for revised journeys", () => {
   );
 });
 
+check("symbols-stop-helping: Meaning territory journey", () => {
+  const q = getQuestion("symbols-stop-helping");
+  assert.equal(q.text, "When do our symbols stop helping us live?");
+  assert.deepEqual(pathOf("symbols-stop-helping"), [
+    "meaning",
+    "constraint",
+    "participation",
+  ]);
+  assert.equal(
+    q.coreReframe,
+    "Symbols help us share a world — and can quietly replace contact with it.",
+  );
+  assert.equal(
+    q.closingQuestion,
+    "Where am I still living inside a name instead of a life?",
+  );
+  const stops = evidenceAlongPath("symbols-stop-helping");
+  assert.deepEqual(
+    stops.map((s) => s.evidenceId),
+    ["looking-up", "constraint-freedom", "never-restriction"],
+  );
+  assert.equal(
+    stops[0].outgoingWhy,
+    "We need distinctions to make sense of the world. But the categories that help us understand something can also become the boundaries of what we're willing to see.",
+  );
+  assert.equal(
+    stops[1].outgoingWhy,
+    "A map can help us find our way. But eventually, we have to leave the map and enter the territory.",
+  );
+  assert.equal(q.unfinishedHint.why, stops[0].outgoingWhy);
+  const ids = stops
+    .map((s) => s.evidenceId)
+    .filter((id): id is NonNullable<typeof id> => Boolean(id));
+  assert.equal(ids.length, new Set(ids).size);
+  assert.equal(
+    isAuthoredJourneyTrail(
+      "symbols-stop-helping",
+      ["meaning", "constraint", "participation"],
+      "participation",
+    ),
+    true,
+  );
+});
+
 check("default evidence label unchanged", () => {
   assert.equal(evidenceReadingLabel("evidence"), "This lives in the writing");
 });

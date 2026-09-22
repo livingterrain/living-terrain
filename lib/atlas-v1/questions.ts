@@ -42,4 +42,9 @@ export const VOID_QUESTIONS: VoidQuestion[] = [
     text: "What lies beneath perception?",
     startConceptId: "reality",
   },
+  {
+    id: "symbols-stop-helping",
+    text: "When do our symbols stop helping us live?",
+    startConceptId: "meaning",
+  },
 ];
