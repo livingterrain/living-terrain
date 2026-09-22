@@ -253,7 +253,7 @@ export const ATLAS_DATA: AtlasData = {
             id: "w1",
             title: "Begin with the central question",
             description:
-              "What lies beneath perception? Follow this thread through connected questions, notes, and essays.",
+              "What lies beneath perception? Follow this strand through connected questions, notes, and essays.",
             href: "/atlas",
           },
           {
@@ -712,8 +712,8 @@ function buildConnections(): AtlasConnection[] {
   }
 
   // Questions
-  c.push(conn("q1", "e1", "thread", "explicit", 7, "threads through the essay on constraint and freedom."));
-  c.push(conn("q1", "e2", "thread", "explicit", 7, "threads through how meaning is made, not merely found."));
+  c.push(conn("q1", "e1", "thread", "explicit", 7, "continues through the essay on constraint and freedom."));
+  c.push(conn("q1", "e2", "thread", "explicit", 7, "continues through how meaning is made, not merely found."));
   c.push(conn("q1", "b1", "volume", "explicit", 7, "lives inside the published volume."));
   c.push(conn("q1", "fn1", "observation", "explicit", 6, "grounded in a field note from the walk."));
   c.push(conn("q1", "fn4", "observation", "explicit", 6, "grounded in what the body noticed before words arrived."));
@@ -729,7 +729,7 @@ function buildConnections(): AtlasConnection[] {
     ),
   );
 
-  c.push(conn("q2", "e2", "thread", "explicit", 7, "threads through the essay on meaning and time."));
+  c.push(conn("q2", "e2", "thread", "explicit", 7, "continues through the essay on meaning and time."));
   c.push(conn("q2", "fn2", "observation", "explicit", 6, "grounded in a note from the field."));
   c.push(
     conn(
@@ -755,7 +755,7 @@ function buildConnections(): AtlasConnection[] {
     ),
   );
 
-  c.push(conn("q4", "e1", "thread", "explicit", 7, "threads through the essay on constraint."));
+  c.push(conn("q4", "e1", "thread", "explicit", 7, "continues through the essay on constraint."));
   c.push(conn("q4", "b1", "volume", "explicit", 7, "belongs to the same volume of inquiry."));
   c.push(
     conn(

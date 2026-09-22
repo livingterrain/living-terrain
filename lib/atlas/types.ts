@@ -41,7 +41,7 @@ export interface AtlasConnection {
   kind: ConnectionKind;
   source: ConnectionSource;
   weight?: number;
-  /** Why this connection exists — shown in Follow the Thread */
+  /** Why this connection exists — shown in Follow this strand */
   rationale?: string;
   /** Optional margin voice carried along the thread */
   quote?: string;

@@ -2747,25 +2747,25 @@
     color: var(--lantern-body);
   }
 
-  .world-lantern-reading aside[aria-label="Follow the thread"] {
+  .world-lantern-reading aside[aria-label="Follow this strand"] {
     border-top-color: color-mix(in srgb, var(--lantern-rule) 45%, transparent);
   }
 
-  .world-lantern-reading aside[aria-label="Follow the thread"] .font-heading {
+  .world-lantern-reading aside[aria-label="Follow this strand"] .font-heading {
     color: var(--lantern-title);
   }
 
-  .world-lantern-reading aside[aria-label="Follow the thread"] .group:hover .font-heading,
-  .world-lantern-reading aside[aria-label="Follow the thread"] .group:focus-within .font-heading {
+  .world-lantern-reading aside[aria-label="Follow this strand"] .group:hover .font-heading,
+  .world-lantern-reading aside[aria-label="Follow this strand"] .group:focus-within .font-heading {
     color: var(--lantern-link-hover);
   }
 
-  .world-lantern-reading aside[aria-label="Follow the thread"] .type-body {
+  .world-lantern-reading aside[aria-label="Follow this strand"] .type-body {
     color: var(--lantern-meta);
   }
 
-  .world-lantern-reading aside[aria-label="Follow the thread"] .border-rule\/50,
-  .world-lantern-reading aside[aria-label="Follow the thread"] [class*="border-rule"] {
+  .world-lantern-reading aside[aria-label="Follow this strand"] .border-rule\/50,
+  .world-lantern-reading aside[aria-label="Follow this strand"] [class*="border-rule"] {
     border-color: color-mix(in srgb, var(--lantern-rule) 50%, transparent);
   }
 

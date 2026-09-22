@@ -65,7 +65,7 @@ export function composeRationale(
       if (direction === "incoming") {
         return originLine
           ? `arrives here from ${origin.title} — ${lowerFirst(originLine)}`
-          : `arrives here along the same thread as ${origin.title}.`;
+          : `arrives here connected with ${origin.title}.`;
       }
       return targetLine
         ? `continues through ${target.title} — ${lowerFirst(targetLine)}`

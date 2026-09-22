@@ -61,7 +61,7 @@ export interface ThreadView {
   node: ThreadNode;
   incoming: ThreadConnection[];
   outgoing: ThreadConnection[];
-  /** Curated 3–6 links for the Follow the Thread section */
+  /** Curated 3–6 links for the Follow this strand section */
   followLinks: ThreadConnection[];
 }
 

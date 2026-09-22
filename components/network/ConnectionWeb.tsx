@@ -22,7 +22,7 @@ const kindLabels: Record<ConnectionKind, string> = {
   connects: "This idea connects to",
   continues: "This path continues through",
   explore: "You may also want to explore",
-  thread: "Follow this thread",
+  thread: "Follow this strand",
 };
 
 export function ConnectionWeb({

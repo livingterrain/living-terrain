@@ -15,7 +15,7 @@ interface LanternReadingShellProps {
   /** Quiet material immediately after the essay, before follow-on navigation */
   afterContent?: ReactNode;
   nodeRef?: NodeRef;
-  /** Quiet material after Follow the Thread (e.g. publication mirror) */
+  /** Quiet material after Follow this strand (e.g. publication mirror) */
   afterThread?: ReactNode;
   returnHref: string;
   threadHref?: string;

@@ -42,7 +42,7 @@ export function ThreadTrace({
         className,
       )}
     >
-      Trace this thread on the map →
+      Trace this connection on the map →
     </button>
   );
 }
