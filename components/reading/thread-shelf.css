@@ -4,12 +4,64 @@
  * present, live LINK CSSOM missing these selectors).
  */
 
-.world-lantern-reading .essay-thread-belonging {
+/* Essay record — "Where this sits". Each relationship keeps its own form:
+ * Atlas evidence and chambers as sentences, Threads as a quiet name list. */
+.world-lantern-reading .essay-where {
   margin-top: 0.25rem;
 }
 
-.world-lantern-reading .essay-thread-belonging .type-chamber {
+.world-lantern-reading .essay-where .type-chamber {
   color: color-mix(in srgb, var(--lantern-meta) 68%, transparent);
+}
+
+.essay-where__atlas,
+.essay-where__chamber,
+.essay-where__threads {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.essay-where__atlas p + p {
+  margin-top: 0.5rem;
+}
+
+.essay-where__atlas em {
+  font-family: var(--font-heading), ui-serif, Georgia, serif;
+  color: var(--lantern-title);
+}
+
+/* Quieter than the gold publication link above — that stays the primary action. */
+.world-lantern-reading .essay-where__link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  color: var(--lantern-title);
+  text-decoration: none;
+  text-underline-offset: 0.18em;
+}
+
+.world-lantern-reading .essay-where__inline-link {
+  color: var(--lantern-title);
+  text-decoration: none;
+  text-underline-offset: 0.18em;
+}
+
+.world-lantern-reading .essay-where__link:hover,
+.world-lantern-reading .essay-where__link:focus-visible,
+.world-lantern-reading .essay-where__inline-link:hover,
+.world-lantern-reading .essay-where__inline-link:focus-visible {
+  color: var(--lantern-link);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--lantern-link) 38%, transparent);
+}
+
+.essay-where__threads-cue {
+  margin: 0;
+}
+
+.essay-where__threads .essay-thread-belonging__names {
+  margin-top: 0.15rem;
 }
 
 .essay-thread-belonging__names {
@@ -52,6 +104,41 @@
 
 .world-lantern-reading .thread-co-occurrence .type-chamber {
   color: color-mix(in srgb, var(--lantern-meta) 68%, transparent);
+}
+
+.world-lantern-reading .thread-atlas-bridge {
+  margin-bottom: 2.5rem;
+}
+
+.world-lantern-reading .thread-atlas-bridge .type-chamber {
+  color: color-mix(in srgb, var(--lantern-meta) 68%, transparent);
+}
+
+.thread-atlas-bridge__text {
+  margin: 0.85rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.thread-atlas-bridge__text em {
+  font-family: var(--font-heading), ui-serif, Georgia, serif;
+  color: var(--lantern-title);
+}
+
+.world-lantern-reading .thread-atlas-bridge__link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  font-size: 0.9375rem;
+  color: var(--lantern-link);
+  text-decoration: none;
+  text-underline-offset: 0.18em;
+}
+
+.world-lantern-reading .thread-atlas-bridge__link:hover,
+.world-lantern-reading .thread-atlas-bridge__link:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--lantern-link) 38%, transparent);
 }
 
 .thread-co-occurrence__list {

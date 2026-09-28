@@ -6,7 +6,8 @@ import { siteConfig } from "@/lib/content/data";
 import type { EssayPublicationSource } from "@/lib/content/publication-cta";
 import { LanternReadingShell } from "@/components/world/LanternReadingShell";
 import { TextLink } from "@/components/design-system";
-import { EssayThreadBelonging } from "@/components/reading/EssayThreadBelonging";
+import { EssayWhereThisSits } from "@/components/reading/EssayWhereThisSits";
+import { AtlasJourneyReturn } from "@/components/reading/AtlasJourneyReturn";
 import { renderBody } from "@/components/reading/Prose";
 import {
   getAllEssays,
@@ -121,7 +122,7 @@ export default async function EssayPage({ params }: PageProps) {
           )}
         </>
       }
-      afterContent={<EssayThreadBelonging threadIds={essay.threadIds} />}
+      afterContent={<EssayWhereThisSits essay={essay} />}
       nodeRef={hasBody ? refFromEssay(essay) : undefined}
       afterThread={
         <>
@@ -129,6 +130,7 @@ export default async function EssayPage({ params }: PageProps) {
           <EssayNewsletterCTA hasFullEssay={hasBody} />
         </>
       }
+      navBefore={<AtlasJourneyReturn evidenceRoute={`/essays/${essay.slug}`} />}
       returnHref="/essays"
       variant="library"
     >
