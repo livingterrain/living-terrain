@@ -265,10 +265,10 @@ const REFERENCES: ReadonlyArray<{
     href: "/atlas/the-biology-of-becoming",
   },
   {
-    kind: "Constellation",
-    invitation: "Open the systems map",
-    title: "How everything here connects",
-    href: "/",
+    kind: "Atlas",
+    invitation: "Follow relationships across the work",
+    title: "Enter through a living question",
+    href: "/atlas",
   },
   {
     kind: "Observatory",

@@ -44,7 +44,7 @@ export default async function ChamberRoutePage({ params }: PageProps) {
   const lead =
     slug === "the-structure-beneath-reality"
       ? "The deepest room."
-      : "A volume chamber in Living Terrain.";
+      : "A chamber in Living Terrain.";
 
   return <ChamberPage project={project} lead={lead} />;
 }

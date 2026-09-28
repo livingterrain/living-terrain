@@ -87,7 +87,7 @@ export function EssaysArchive({ essays }: EssaysArchiveProps) {
             className="type-meta min-h-11 text-left text-[0.8125rem] tracking-[0.04em] text-forest-faint transition-colors duration-700 hover:text-forest"
             onClick={() => setExpanded(true)}
           >
-            Continue through the archive ↓
+            Continue through earlier essays ↓
           </button>
         </p>
       )}
