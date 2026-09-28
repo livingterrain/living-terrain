@@ -6,13 +6,14 @@ import { peekAtlasJourneyReturn } from "@/lib/atlas-v1/journey-return";
 
 /**
  * Quiet return into an in-progress Atlas journey when a valid snapshot exists.
+ * With `evidenceRoute`, appears only if the visitor left through that essay's evidence.
  */
-export function AtlasJourneyReturn() {
+export function AtlasJourneyReturn({ evidenceRoute }: { evidenceRoute?: string } = {}) {
   const [ret, setRet] = useState<{ href: string; label: string } | null>(null);
 
   useEffect(() => {
-    setRet(peekAtlasJourneyReturn());
-  }, []);
+    setRet(peekAtlasJourneyReturn(evidenceRoute ? { evidenceRoute } : undefined));
+  }, [evidenceRoute]);
 
   if (!ret) return null;
 

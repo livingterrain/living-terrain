@@ -37,6 +37,7 @@ import {
   clearJourneyReturnSnapshot,
   clearResumeHandshake,
   resolveJourneyResume,
+  isEvidenceEssayRoute,
   saveJourneyReturnSnapshot,
 } from "@/lib/atlas-v1/journey-return";
 
@@ -337,6 +338,14 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
     [journey],
   );
 
+  const onEvidenceSourceLeave = useCallback(
+    (route: string) => {
+      if (!journey || !isEvidenceEssayRoute(route)) return;
+      saveJourneyReturnSnapshot({ journey, evidenceRoute: route });
+    },
+    [journey],
+  );
+
   const settleInto = useCallback(
     (base: JourneyState, to: AtlasV1ConceptId, why: string) => {
       appendThreadPoint({ kind: "concept", id: to });
@@ -606,6 +615,7 @@ export function AtlasV1({ canonical }: { canonical: AtlasCanonicalView }) {
           onBack={backToQuestions}
           onFollowBranch={followBranch}
           onThreadWhisperLeave={onThreadWhisperLeave}
+          onEvidenceSourceLeave={onEvidenceSourceLeave}
         />
       )}
     </div>

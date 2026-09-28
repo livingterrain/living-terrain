@@ -83,6 +83,8 @@ type Props = {
   onBack: () => void;
   onFollowBranch: (branch: AtlasBranchOffer) => void;
   onThreadWhisperLeave?: (threadId: string) => void;
+  /** Fired when the visitor follows "Where this came from" (save journey-return snapshot). */
+  onEvidenceSourceLeave?: (route: string) => void;
 };
 
 export function AtlasJourneyLayer({
@@ -106,6 +108,7 @@ export function AtlasJourneyLayer({
   onBack,
   onFollowBranch,
   onThreadWhisperLeave,
+  onEvidenceSourceLeave,
 }: Props) {
   const reduced = useReducedMotion() ?? false;
   const question = getQuestion(journey.questionId);
@@ -248,6 +251,7 @@ export function AtlasJourneyLayer({
               evidenceSource={canonical.evidenceSource[essay.id]}
               relatedBooks={canonical.relatedBooks[essay.id] ?? []}
               onReturn={onReturn}
+              onSourceLeave={onEvidenceSourceLeave}
             />
           </JourneyPresencePane>
         )}
@@ -651,6 +655,7 @@ function EvidenceView({
   evidenceSource,
   relatedBooks,
   onReturn,
+  onSourceLeave,
 }: {
   questionText: string;
   conceptName: string;
@@ -661,6 +666,7 @@ function EvidenceView({
   evidenceSource?: AtlasCanonicalView["evidenceSource"][AtlasV1EssayId];
   relatedBooks: NonNullable<AtlasCanonicalView["relatedBooks"][AtlasV1EssayId]>;
   onReturn: () => void;
+  onSourceLeave?: (route: string) => void;
 }) {
   const noticed = noticedWhy ?? fragment;
   const books = relatedBooks.filter(
@@ -712,6 +718,7 @@ function EvidenceView({
           <p className="mt-12 font-body text-[0.75rem] leading-[1.7] text-ivory/28 sm:mt-14">
             <Link
               href={evidenceSource.route}
+              onClick={() => onSourceLeave?.(evidenceSource.route)}
               className="transition-colors duration-[1100ms] hover:text-ivory/48"
             >
               Where this came from
