@@ -6,7 +6,7 @@ import { getAtlasCanonicalView } from "@/lib/canonical/atlas-view";
 export const metadata: Metadata = withCanonical("/atlas", {
   title: "The Atlas",
   description:
-    "Enter Living Terrain through a living question. Think through relationships drawn from the published writing — maps of completed investigations wait beyond.",
+    "Follow relationships across the work of Living Terrain. Enter through a living question — maps of completed investigations wait beyond.",
 });
 
 /**

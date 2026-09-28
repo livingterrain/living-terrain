@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { TerrainLink } from "@/components/navigation";
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 import { CurrentlyInvestigating } from "@/components/home/CurrentlyInvestigating";
+import { siteConfig } from "@/lib/content/data";
 import { cn } from "@/lib/utils";
 import "./home-v2.css";
 
@@ -21,13 +22,13 @@ const LOCI: Locus[] = [
   {
     href: "/observatory",
     label: "Observatory",
-    hint: "Where ideas are still forming.",
+    hint: "Ideas and investigations still forming.",
     region: "observatory",
   },
   {
     href: "/atlas",
     label: "Atlas",
-    hint: "Follow what connects.",
+    hint: "Follow relationships across the work.",
     region: "atlas",
   },
   {
@@ -99,6 +100,10 @@ export function HomeV2() {
         <div className="lt-v2__west">
           <header className="lt-v2__identity">
             <h1 className="lt-v2__title">Living Terrain</h1>
+            <p className="lt-v2__author">
+              The evolving body of work of{" "}
+              <TerrainLink href="/about">{siteConfig.author}</TerrainLink>
+            </p>
             <p className="lt-v2__orient">What brought you here?</p>
           </header>
           <CurrentlyInvestigating />

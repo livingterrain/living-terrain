@@ -412,6 +412,29 @@
   text-wrap: pretty;
 }
 
+.lt-v2__author {
+  margin: 0.7rem 0 0;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--lt-v2-bone-dim);
+}
+
+.lt-v2__author a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 0.2em;
+  transition: color 0.5s ease, text-decoration-color 0.5s ease;
+}
+
+.lt-v2__author a:hover,
+.lt-v2__author a:focus-visible {
+  color: color-mix(in srgb, #ebe6dc 88%, transparent);
+  text-decoration-color: currentColor;
+}
+
 /* Loci — places/states along the axis, not cards */
 .lt-v2__loci {
   position: relative;

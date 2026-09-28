@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Persistent orientation: Living Terrain · location whisper · Join · Menu.
+ * Persistent orientation: Living Terrain · location whisper · Follow on Substack · Menu.
  * Spatially legible without SaaS chrome.
  */
 
@@ -67,7 +67,7 @@ export function TerrainOrientation({
                 dissolve && "terrain-orient__join--soft",
               )}
             >
-              Join →
+              Follow on Substack →
             </TerrainLink>
             <button
               type="button"

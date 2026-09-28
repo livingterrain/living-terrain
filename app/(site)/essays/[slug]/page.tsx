@@ -1,7 +1,9 @@
 import { EssayNewsletterCTA } from "@/components/newsletter/EssayNewsletterCTA";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { withCanonical } from "@/lib/seo";
+import { absoluteUrl, withCanonical } from "@/lib/seo";
+import { siteConfig } from "@/lib/content/data";
+import type { EssayPublicationSource } from "@/lib/content/publication-cta";
 import { LanternReadingShell } from "@/components/world/LanternReadingShell";
 import { TextLink } from "@/components/design-system";
 import { EssayThreadBelonging } from "@/components/reading/EssayThreadBelonging";
@@ -31,10 +33,51 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return withCanonical(`/essays/${slug}`, {
     title: essay.title,
     description: essay.excerpt,
-    ...(essay.featuredImage
-      ? { openGraph: { images: [{ url: essay.featuredImage }] } }
-      : {}),
+    authors: [{ name: siteConfig.author, url: absoluteUrl("/about") }],
+    openGraph: {
+      type: "article",
+      title: essay.title,
+      description: essay.excerpt,
+      url: absoluteUrl(`/essays/${slug}`),
+      siteName: siteConfig.name,
+      locale: "en_US",
+      publishedTime: essay.publishedAt,
+      authors: [siteConfig.author],
+      ...(essay.featuredImage ? { images: [{ url: essay.featuredImage }] } : {}),
+    },
   });
+}
+
+function essayJsonLd(essay: NonNullable<ReturnType<typeof getEssayBySlug>>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: essay.title,
+    description: essay.excerpt,
+    datePublished: essay.publishedAt,
+    url: absoluteUrl(`/essays/${essay.slug}`),
+    ...(essay.featuredImage ? { image: essay.featuredImage } : {}),
+    author: {
+      "@type": "Person",
+      name: siteConfig.author,
+      url: absoluteUrl("/about"),
+    },
+    isPartOf: {
+      "@type": "WebSite",
+      name: siteConfig.name,
+      url: absoluteUrl("/"),
+    },
+  };
+}
+
+function fullEssayNotice(source: EssayPublicationSource): string {
+  if (source === "Substack") {
+    return "The full essay is published on Substack. This page holds its place in Living Terrain, where it connects to the rest of the work.";
+  }
+  if (source === "Medium") {
+    return "This earlier essay is still published on Medium. This page holds its place in Living Terrain, where it connects to the rest of the work.";
+  }
+  return "The full essay is published elsewhere. This page holds its place in Living Terrain, where it connects to the rest of the work.";
 }
 
 export default async function EssayPage({ params }: PageProps) {
@@ -61,13 +104,18 @@ export default async function EssayPage({ params }: PageProps) {
     ) : null;
 
   return (
+    <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(essayJsonLd(essay)).replace(/</g, "\\u003c") }}
+    />
     <LanternReadingShell
       collection="Essay"
       title={essay.title}
       subtitle={essay.subtitle}
       meta={
         <>
-          {formatDate(essay.publishedAt)}
+          {siteConfig.author} · {formatDate(essay.publishedAt)}
           {essay.topics.length > 0 && (
             <span className="mt-1 block">{essay.topics.join(" · ")}</span>
           )}
@@ -89,18 +137,17 @@ export default async function EssayPage({ params }: PageProps) {
       ) : (
         <>
           <p>{essay.excerpt}</p>
-          {publication.href && publication.sourceLabel && publication.readLabel ? (
+          {publication.href && publication.source && publication.sourceLabel ? (
             <>
               <p className="lantern-meta mt-8 text-[0.9375rem]">
-                The full essay is published on {publication.sourceLabel}. Living
-                Terrain holds it here as part of a connected investigation.
+                {fullEssayNotice(publication.source)}
               </p>
               <TextLink
                 href={publication.href}
                 external
                 className="lantern-link mt-8 inline-block"
               >
-                {publication.readLabel}
+                Read the full essay on {publication.sourceLabel}
               </TextLink>
             </>
           ) : (
@@ -112,5 +159,6 @@ export default async function EssayPage({ params }: PageProps) {
         </>
       )}
     </LanternReadingShell>
+    </>
   );
 }
