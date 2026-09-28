@@ -21,7 +21,7 @@ export const ATLAS_DATA: AtlasData = {
     name: "Living Terrain",
     title: "Living Terrain",
     description:
-      "A contemplative space between museum, library, field notebook, and reading room — exploring the questions beneath how we see the world.",
+      "Living Terrain is the evolving body of work of Chelsea M. Thacker — essays, books, and visual maps, and the relationships that connect them.",
     url: "https://chelseathacker.com",
     author: "Chelsea M. Thacker",
     substackUrl: "https://livingterrain.substack.com",
@@ -214,7 +214,7 @@ export const ATLAS_DATA: AtlasData = {
           "Living Terrain began with a question that would not leave: what must already be in place for anything to appear as real? The Structure Beneath Reality is the first full statement of that inquiry — a book, not a conclusion. This website is the ongoing cartography around it: essays first published on Substack, questions that branch, field notes that record what the book could not hold. The investigation did not end at publication. It opened.",
         statusLabel: "Published · inquiry continues",
         statusDescription:
-          "The volume exists in print and digital. Living Terrain maps what continues — the essays, questions, and observations that extend and complicate the work.",
+          "The book exists in print and digital. Living Terrain maps what continues — the essays, questions, and observations that extend and complicate the work.",
         centralQuestion:
           "What are the hidden structures that allow reality to remain itself while everything within it changes?",
         purchaseUrl: STRUCTURE_BENEATH_REALITY_URL,
@@ -245,7 +245,7 @@ export const ATLAS_DATA: AtlasData = {
             date: "Now",
             title: "The network grows",
             description:
-              "Essays published through Living Terrain on Substack connect to the book. Questions branch. The archive is still being built.",
+              "Essays published through Living Terrain on Substack connect to the book. Questions branch. The terrain is still being charted.",
           },
         ],
         whereToBegin: [

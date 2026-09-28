@@ -7,7 +7,7 @@ export const GROUP_PHRASES: Record<EdgeKind, string> = {
   pathway: "Neighboring paths",
   thread: "Related strands",
   echo: "Echoes elsewhere",
-  volume: "In the archive",
+  volume: "Within the book",
   observation: "Field observations",
   quotation: "Voices in the margin",
   theme: "This inquiry also touches",
@@ -17,7 +17,7 @@ export const GROUP_PHRASES: Record<EdgeKind, string> = {
 export const PANEL_HEADINGS: Record<string, string> = {
   question: "This inquiry also touches",
   essay: "This inquiry also touches",
-  book: "This volume also touches",
+  book: "This book also touches",
   "field-note": "This observation also touches",
   quotation: "This voice also touches",
   observation: "This signal also touches",

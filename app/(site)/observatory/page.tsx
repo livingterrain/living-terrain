@@ -7,7 +7,7 @@ import { ObservatoryRoomTone } from "@/components/observatory/ObservatoryRoomTon
 
 export const metadata: Metadata = withCanonical("/observatory", {
   title: "The Observatory",
-  description: "Research as it exists before it becomes a map.",
+  description: "Ideas and investigations still forming — research as it exists before it becomes a map.",
 });
 
 export default function ObservatoryPage() {

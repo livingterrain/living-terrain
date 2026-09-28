@@ -4,7 +4,7 @@ import type { RelationshipEdge, ResolvedNode } from "./types";
 const TYPE_LABELS: Record<ContentKind, string> = {
   question: "Question",
   essay: "Essay",
-  book: "Volume",
+  book: "Book",
   "book-chapter": "Chapter",
   "field-note": "Field note",
   quotation: "Voice",
@@ -91,8 +91,8 @@ export function composeRationale(
 
     case "volume":
       return targetLine
-        ? `held in the archive of ${target.title} — ${lowerFirst(targetLine)}`
-        : `belongs to the volume ${target.title}.`;
+        ? `held within ${target.title} — ${lowerFirst(targetLine)}`
+        : `belongs to the book ${target.title}.`;
 
     case "observation":
       return targetLine

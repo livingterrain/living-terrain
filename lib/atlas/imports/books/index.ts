@@ -38,7 +38,7 @@ function buildChamberMeta(book: SeriesBookCatalogEntry) {
     whyExists: book.whyExists,
     statusLabel: "Published · inquiry continues",
     statusDescription:
-      "The volume exists in print and digital. Living Terrain maps what continues — essays, questions, and Observatory themes that gather around this inquiry.",
+      "The book exists in print and digital. Living Terrain maps what continues — essays, questions, and Observatory themes that gather around this inquiry.",
     centralQuestion: book.centralQuestion,
     purchaseUrl: book.purchaseUrl,
     timeline: [

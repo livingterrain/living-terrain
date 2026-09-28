@@ -61,7 +61,7 @@ export function DrawersConcept() {
     {
       id: "unfiled",
       label: "Recent Discoveries",
-      sublabel: "Essays on Medium",
+      sublabel: "Essays on Substack",
       items: essays.map((e) => ({
         title: e.title,
         href: `/essays/${e.slug}`,

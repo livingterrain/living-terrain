@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/content/data";
 import "./newsletter.css";
 
 const invitations = {
-  home: { title: "Follow the thread.", body: "Essays and field notes exploring the relationships between intelligence, health, faith, technology, and what it means to be human.", action: "Join Living Terrain", note: "No noise. Just new writing and occasional field notes." },
-  join: { title: "Stay in the field.", body: "Living Terrain is an ongoing investigation.", detail: "New essays, observations, and field notes delivered as the work develops.", action: "Enter the field", note: "Free to join. Unsubscribe anytime." },
-  excerpt: { title: "The investigation continues.", body: "Follow the thread for new essays and field notes as the work develops.", action: "Join Living Terrain", note: "No noise. Just new writing and occasional field notes." },
-  essay: { title: "The investigation continues.", body: "If this changed the way you see something, follow the thread.", action: "Join Living Terrain", note: "No noise. Just new writing and occasional field notes." },
+  home: { title: "Follow Living Terrain on Substack.", body: "New essays and field notes as the work develops — exploring intelligence, health, faith, technology, and what it means to be human.", action: "Subscribe on Substack", note: "No noise. Just new writing and occasional field notes." },
+  join: { title: "Follow Living Terrain on Substack.", body: "Essays are published first on Substack. Subscribing there brings new essays and field notes as the work develops.", detail: "This site holds the work in relationship — the Atlas, The Shelves, and the Observatory.", action: "Subscribe on Substack", note: "Free on Substack. Unsubscribe anytime." },
+  excerpt: { title: "The investigation continues on Substack.", body: "Follow Living Terrain on Substack for new essays and field notes as the work develops.", action: "Subscribe on Substack", note: "No noise. Just new writing and occasional field notes." },
+  essay: { title: "The investigation continues on Substack.", body: "If this changed the way you see something, follow Living Terrain on Substack.", action: "Subscribe on Substack", note: "No noise. Just new writing and occasional field notes." },
 };
 export function NewsletterSignup({ variant = "home" }: { variant?: keyof typeof invitations }) {
   const id = useId();
@@ -29,7 +29,7 @@ export function NewsletterSignup({ variant = "home" }: { variant?: keyof typeof 
         {copy.action} →
       </a>
       <p id={`${id}-disclosure`} className="newsletter-small">
-        Signup opens in a new tab. Living Terrain will stay open here.
+        Opens Substack in a new tab. Living Terrain will stay open here.
       </p>
       <p className="newsletter-small">{copy.note}</p>
     </section>

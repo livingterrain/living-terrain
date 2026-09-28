@@ -2,7 +2,8 @@
  * Atlas journey-return snapshot (v1).
  *
  * Short-lived sessionStorage only — separate from Trail (`lt-atlas-living-thread`).
- * Saved when a visitor activates a Thread whisper; restored only via `/atlas?resume=journey`.
+ * Saved when a visitor activates a Thread whisper or follows an evidence essay's
+ * "Where this came from"; restored only via `/atlas?resume=journey`.
  * Does not invent bonds or rewrite authored journeys.
  *
  * Intentional limits:
@@ -14,6 +15,7 @@
  */
 
 import {
+  ATLAS_V1_SOURCE,
   getConcept,
   getEssay,
   getQuestion,
@@ -36,15 +38,42 @@ export const JOURNEY_RETURN_VERSION = 1 as const;
 /** Same browser session; discard after this age. */
 export const JOURNEY_RETURN_TTL_MS = 2 * 60 * 60 * 1000;
 
+/** Where the visitor left the journey — exactly one is present. Provenance only. */
+export type JourneyReturnOrigin =
+  | { threadId: string; evidenceRoute?: undefined }
+  | { evidenceRoute: string; threadId?: undefined };
+
 export type AtlasJourneyReturnSnapshot = {
   v: typeof JOURNEY_RETURN_VERSION;
   savedAt: number;
-  /** Thread whisper destination — provenance only. */
-  threadId: string;
   journey: JourneyState;
-  /** Always true when saved from a whisper (post-reveal). */
+  /** Restore always settles the stop with its bond visible. */
   relationsVisible: true;
-};
+} & JourneyReturnOrigin;
+
+const EVIDENCE_ESSAY_ROUTES = new Set(
+  Object.values(ATLAS_V1_SOURCE)
+    .filter((source) => source.kind === "essay")
+    .map((source) => source.href),
+);
+
+export function isEvidenceEssayRoute(value: unknown): value is string {
+  return typeof value === "string" && EVIDENCE_ESSAY_ROUTES.has(value);
+}
+
+function validOrigin(data: Record<string, unknown>): JourneyReturnOrigin | null {
+  const hasThread = data.threadId !== undefined;
+  const hasEvidence = data.evidenceRoute !== undefined;
+  if (hasThread === hasEvidence) return null;
+  if (hasThread) {
+    return typeof data.threadId === "string" && isThreadId(data.threadId)
+      ? { threadId: data.threadId }
+      : null;
+  }
+  return isEvidenceEssayRoute(data.evidenceRoute)
+    ? { evidenceRoute: data.evidenceRoute }
+    : null;
+}
 
 /** Module handshake — survives React Strict Mode remount after query strip. */
 let resumeHandshake: {
@@ -194,9 +223,8 @@ export function validateJourneyReturnSnapshot(
   if (now - data.savedAt > JOURNEY_RETURN_TTL_MS || data.savedAt > now + 60_000) {
     return null;
   }
-  if (typeof data.threadId !== "string" || !isThreadId(data.threadId)) {
-    return null;
-  }
+  const origin = validOrigin(data);
+  if (!origin) return null;
   if (data.relationsVisible !== true) return null;
   const journey = sanitizeJourneyState(data.journey);
   if (!journey) return null;
@@ -204,7 +232,7 @@ export function validateJourneyReturnSnapshot(
   return {
     v: JOURNEY_RETURN_VERSION,
     savedAt: data.savedAt,
-    threadId: data.threadId,
+    ...origin,
     journey,
     relationsVisible: true,
   };
@@ -240,15 +268,17 @@ export function clearJourneyReturnSnapshot(): void {
 }
 
 /**
- * Save only on Thread whisper activation. Overwrites any prior snapshot.
+ * Save on Thread whisper activation or evidence-source exit. Overwrites any prior snapshot.
  */
-export function saveJourneyReturnSnapshot(input: {
-  journey: JourneyState;
-  threadId: string;
-  savedAt?: number;
-}): boolean {
+export function saveJourneyReturnSnapshot(
+  input: {
+    journey: JourneyState;
+    savedAt?: number;
+  } & JourneyReturnOrigin,
+): boolean {
   if (typeof window === "undefined") return false;
-  if (!isThreadId(input.threadId)) return false;
+  const origin = validOrigin(input);
+  if (!origin) return false;
   const journey = sanitizeJourneyState({
     ...input.journey,
     activeEssayId: null,
@@ -258,7 +288,7 @@ export function saveJourneyReturnSnapshot(input: {
   const snapshot: AtlasJourneyReturnSnapshot = {
     v: JOURNEY_RETURN_VERSION,
     savedAt: input.savedAt ?? Date.now(),
-    threadId: input.threadId,
+    ...origin,
     journey,
     relationsVisible: true,
   };
@@ -271,17 +301,30 @@ export function saveJourneyReturnSnapshot(input: {
   }
 }
 
-/** Thread page: peek without consuming. */
-export function peekAtlasJourneyReturn(): {
-  href: string;
-  label: string;
-} | null {
-  const snap = loadJourneyReturnSnapshot();
+/**
+ * Peek without consuming. Thread pages accept any valid snapshot; an essay
+ * record passes its route and shows the return only when the visitor left
+ * the journey through that essay's evidence.
+ */
+export function returnForSnapshot(
+  snap: AtlasJourneyReturnSnapshot | null,
+  options?: { evidenceRoute?: string },
+): { href: string; label: string } | null {
   if (!snap) return null;
+  if (options?.evidenceRoute !== undefined && snap.evidenceRoute !== options.evidenceRoute) {
+    return null;
+  }
   return {
     href: JOURNEY_RETURN_HREF,
     label: "Return to the Atlas",
   };
+}
+
+export function peekAtlasJourneyReturn(options?: { evidenceRoute?: string }): {
+  href: string;
+  label: string;
+} | null {
+  return returnForSnapshot(loadJourneyReturnSnapshot(), options);
 }
 
 export function setResumeHandshake(snapshot: AtlasJourneyReturnSnapshot): void {

@@ -40,7 +40,7 @@ assert.equal(counts.VISUAL_MAP_COLLECTION, 1);
 assert.equal(counts.VISUAL_MAP_PLATE, 7);
 assert.equal(counts.CHAMBER, 7);
 assert.equal(counts.CONCEPT, 10, "Atlas V1 concepts only");
-assert.equal(counts.QUESTION, 6, "Atlas V1 questions only");
+assert.equal(counts.QUESTION, 7, "Atlas V1 questions only");
 assert.equal(counts.EVIDENCE, 11);
 
 assert.equal(getCanonicalObject("b8")?.visibility, "public");
@@ -129,7 +129,7 @@ for (const question of ATLAS_V1_QUESTIONS) {
     bondCount += 1;
   }
 }
-assert.equal(bondCount, 14, "fourteen authored V1 bonds");
+assert.equal(bondCount, 16, "sixteen authored V1 bonds");
 
 const biologySource = atlasView.evidenceSource["biology-of-becoming"];
 assert.equal(biologySource?.id, "b2");

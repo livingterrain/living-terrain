@@ -35,7 +35,8 @@ export type AtlasV1QuestionId =
   | "relationships-difficult"
   | "inhabit-time"
   | "before-collapse"
-  | "beneath-perception";
+  | "beneath-perception"
+  | "symbols-stop-helping";
 
 export type AtlasV1Concept = {
   id: AtlasV1ConceptId;
@@ -115,6 +116,13 @@ export type AtlasV1Relation = {
   why: string;
 };
 
+/**
+ * How a stop’s reading is offered to the visitor.
+ * - evidence: confirms / deepens the bond (“This lives in the writing”)
+ * - further-reading: optional wider philosophical reading — not proof of the bond
+ */
+export type AtlasV1EvidenceRole = "evidence" | "further-reading";
+
 export type AtlasV1Question = {
   id: AtlasV1QuestionId;
   text: string;
@@ -124,8 +132,13 @@ export type AtlasV1Question = {
   /** Quieter return of the opening question — not a conclusion */
   closingQuestion: string;
   relations: Partial<Record<AtlasV1ConceptId, AtlasV1Relation[]>>;
-  /** Evidence that confirms this journey's reframe at each concept */
+  /** Reading offered at each concept stop (essay or book pack) */
   evidence: Partial<Record<AtlasV1ConceptId, AtlasV1EssayId>>;
+  /**
+   * Optional role per stop. Defaults to “evidence”.
+   * Use further-reading when the pack orients without proving the bond.
+   */
+  evidenceRole?: Partial<Record<AtlasV1ConceptId, AtlasV1EvidenceRole>>;
   unfinishedHint: { from: AtlasV1ConceptId; to: AtlasV1ConceptId; why: string };
 };
 
@@ -415,25 +428,25 @@ export const ATLAS_V1_QUESTIONS: AtlasV1Question[] = [
       technology: [
         {
           to: "relationship",
-          why: "Little by little the question shifts from “Who am I becoming?” to “Who do they want me to be?”",
+          why: "Technology changes what receives attention. Over time, what receives attention can begin to shape how we relate to ourselves and each other.",
         },
       ],
       relationship: [
         {
           to: "time",
-          why: "An image cannot evolve naturally. It must remain coherent long after the human being underneath has changed.",
+          why: "An image must stay coherent for an audience. A person must be allowed to change when no one is watching.",
         },
       ],
     },
     evidence: {
       technology: "cost-of-image",
-      relationship: "cost-of-image",
-      time: "cost-of-image",
+      relationship: "before-tragedy",
+      time: "make-a-loop",
     },
     unfinishedHint: {
       from: "technology",
       to: "relationship",
-      why: "Little by little the question shifts from “Who am I becoming?” to “Who do they want me to be?”",
+      why: "Technology changes what receives attention. Over time, what receives attention can begin to shape how we relate to ourselves and each other.",
     },
   },
   {
@@ -447,25 +460,29 @@ export const ATLAS_V1_QUESTIONS: AtlasV1Question[] = [
       relationship: [
         {
           to: "constraint",
-          why: "When relationship becomes disconnected from reality, it becomes control.",
+          why: "Connection without limits does not stay connection. It drifts into enabling, performance, or control.",
         },
       ],
       constraint: [
         {
           to: "reality",
-          why: "When connection becomes disconnected from truth, it becomes manipulation.",
+          why: "The right constraints are not the enemy of love. They are what keep love in contact with what is true.",
         },
       ],
     },
     evidence: {
       relationship: "before-tragedy",
-      constraint: "before-tragedy",
-      reality: "before-tragedy",
+      constraint: "constraint-freedom",
+      // Wider philosophical orientation — not direct proof of relational claims above.
+      reality: "structure-beneath",
+    },
+    evidenceRole: {
+      reality: "further-reading",
     },
     unfinishedHint: {
       from: "relationship",
       to: "constraint",
-      why: "When relationship becomes disconnected from reality, it becomes control.",
+      why: "Connection without limits does not stay connection. It drifts into enabling, performance, or control.",
     },
   },
   {
@@ -479,25 +496,25 @@ export const ATLAS_V1_QUESTIONS: AtlasV1Question[] = [
       time: [
         {
           to: "meaning",
-          why: "I came back to the same questions. But I wasn’t the same person asking them.",
+          why: "A loop is not an answer. It is the chance to ask the same question with a steadier orientation.",
         },
       ],
       meaning: [
         {
           to: "participation",
-          why: "Maybe the real transformation wasn’t finding answers. Maybe it was discovering that I could live inside the mystery without being consumed by it.",
+          why: "Orientation is not something you finish thinking. It is something you re-enter with your life.",
         },
       ],
     },
     evidence: {
       time: "make-a-loop",
-      meaning: "make-a-loop",
-      participation: "make-a-loop",
+      meaning: "looking-up",
+      participation: "never-restriction",
     },
     unfinishedHint: {
       from: "time",
       to: "meaning",
-      why: "I came back to the same questions. But I wasn’t the same person asking them.",
+      why: "A loop is not an answer. It is the chance to ask the same question with a steadier orientation.",
     },
   },
   {
@@ -571,6 +588,38 @@ export const ATLAS_V1_QUESTIONS: AtlasV1Question[] = [
       why: "Your perception does not simply observe reality. It helps create the reality you experience.",
     },
   },
+  {
+    id: "symbols-stop-helping",
+    text: "When do our symbols stop helping us live?",
+    startConceptId: "meaning",
+    coreReframe:
+      "Symbols help us share a world — and can quietly replace contact with it.",
+    closingQuestion: "Where am I still living inside a name instead of a life?",
+    relations: {
+      meaning: [
+        {
+          to: "constraint",
+          why: "We need distinctions to make sense of the world. But the categories that help us understand something can also become the boundaries of what we're willing to see.",
+        },
+      ],
+      constraint: [
+        {
+          to: "participation",
+          why: "A map can help us find our way. But eventually, we have to leave the map and enter the territory.",
+        },
+      ],
+    },
+    evidence: {
+      meaning: "looking-up",
+      constraint: "constraint-freedom",
+      participation: "never-restriction",
+    },
+    unfinishedHint: {
+      from: "meaning",
+      to: "constraint",
+      why: "We need distinctions to make sense of the world. But the categories that help us understand something can also become the boundaries of what we're willing to see.",
+    },
+  },
 ];
 
 export function getQuestion(id: AtlasV1QuestionId): AtlasV1Question {
@@ -599,12 +648,27 @@ export function getEssaySource(id: AtlasV1EssayId): AtlasV1Source {
   return ATLAS_V1_SOURCE[id];
 }
 
-/** Essay shown by “This lives in the writing” for a concept on a journey. */
+/** Essay/book pack shown for a concept on a journey. */
 export function resolveEvidenceEssayId(
   question: AtlasV1Question,
   conceptId: AtlasV1ConceptId,
 ): AtlasV1EssayId | null {
   return question.evidence[conceptId] ?? ATLAS_V1_CONCEPTS[conceptId]?.essayId ?? null;
+}
+
+/** How the stop’s reading is framed for the visitor. */
+export function resolveEvidenceRole(
+  question: AtlasV1Question,
+  conceptId: AtlasV1ConceptId,
+): AtlasV1EvidenceRole {
+  return question.evidenceRole?.[conceptId] ?? "evidence";
+}
+
+/** Visitor CTA for opening the stop’s reading. */
+export function evidenceReadingLabel(role: AtlasV1EvidenceRole): string {
+  return role === "further-reading"
+    ? "A wider reading"
+    : "This lives in the writing";
 }
 
 /**

@@ -8,7 +8,7 @@ import { DiscoveryNode } from "@/components/discovery";
 import { TextLink } from "@/components/design-system";
 import { EssayRelationHints } from "@/components/reading/EssayRelations";
 import type { EssayCluster } from "@/lib/content";
-import { getEssayPeerIds, getEssayReadUrl } from "@/lib/content";
+import { getEssayPeerIds, getEssayPublicationCta } from "@/lib/content";
 import { formatDate } from "@/lib/utils";
 
 interface EssayLandscapeProps {
@@ -68,7 +68,9 @@ export function EssayLandscape({ clusters }: EssayLandscapeProps) {
               )}
 
               <ul className="mt-8 space-y-6">
-                {cluster.essays.map((essay, essayIndex) => (
+                {cluster.essays.map((essay, essayIndex) => {
+                  const publication = getEssayPublicationCta(essay);
+                  return (
                   <motion.li
                     key={essay.id}
                     initial={{ opacity: 0, x: isMobile ? 0 : essayIndex % 2 === 0 ? -6 : 6 }}
@@ -113,18 +115,28 @@ export function EssayLandscape({ clusters }: EssayLandscapeProps) {
                               {essay.topics.slice(0, 3).join(" · ")}
                             </p>
                           )}
-                          <TextLink
-                            href={getEssayReadUrl(essay)}
-                            external
-                            className="mt-4"
-                          >
-                            Read on Medium
-                          </TextLink>
+                          {publication.href && publication.readLabel ? (
+                            <TextLink
+                              href={publication.href}
+                              external
+                              className="mt-4"
+                            >
+                              {publication.readLabel}
+                            </TextLink>
+                          ) : (
+                            <TextLink
+                              href={`/essays/${essay.slug}`}
+                              className="mt-4"
+                            >
+                              Open in Living Terrain
+                            </TextLink>
+                          )}
                         </div>
                       </div>
                     </DiscoveryNode>
                   </motion.li>
-                ))}
+                  );
+                })}
               </ul>
             </div>
           </motion.div>

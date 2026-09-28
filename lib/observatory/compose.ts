@@ -84,11 +84,11 @@ function pickInvitation(
   const nextRealm = unvisitedRealmSlug(journey.events);
 
   if (path === "/observatory") {
-    return { text: "Return to the constellation.", href: "/" };
+    return { text: "Return to the threshold.", href: "/" };
   }
 
   if (tracedThread && path !== "/") {
-    return { text: "Trace another thread.", href: path };
+    return { text: "Trace another strand.", href: path };
   }
 
   if (path === "/" && nextRealm) {
@@ -100,7 +100,7 @@ function pickInvitation(
   }
 
   if (path !== "/") {
-    return { text: "Return to the constellation.", href: "/" };
+    return { text: "Return to the threshold.", href: "/" };
   }
 
   return { text: "Continue deeper.", href: nextRealm ? `/themes/${nextRealm}` : "/inquiry" };
@@ -159,10 +159,10 @@ export function composeReflection(
   } else if (threadCount > 0) {
     const lastThread = [...events].reverse().find((e) => e.kind === "thread");
     if (lastThread?.themes[0]) {
-      observation = `You traced a thread through ${lastThread.themes[0]}.`;
+      observation = `You traced a strand through ${lastThread.themes[0]}.`;
       id = `traced-${lastThread.themes[0]}`.toLowerCase().replace(/\s+/g, "-");
     } else {
-      observation = "You traced a thread across the terrain.";
+      observation = "You traced a strand across the terrain.";
       id = "traced-thread";
     }
   } else if (realms.length === 1 && stopsAtRealms(events) >= 2) {

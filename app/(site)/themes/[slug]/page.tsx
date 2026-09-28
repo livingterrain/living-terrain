@@ -45,7 +45,7 @@ export default async function ThemePage({ params }: PageProps) {
   }
 
   const whisper =
-    NODE_WHISPERS[theme.id] ?? "A thread through the terrain";
+    NODE_WHISPERS[theme.id] ?? "A path through the terrain";
 
   return (
     <Room kind="reading">
@@ -67,7 +67,7 @@ export default async function ThemePage({ params }: PageProps) {
 
           <div className="mt-16 border-t border-rule/50 pt-8">
             <TextLink href="/" className="type-body text-sm">
-              ← Back to the map
+              ← Return to the threshold
             </TextLink>
           </div>
         </Container>

@@ -95,8 +95,8 @@ export function LivingArchive({
         <div className="mx-auto max-w-4xl px-6 pt-16 sm:px-10 lg:px-12">
           <h2 className="type-room">Essay index</h2>
           <p className="type-body mt-4 max-w-lg">
-            Essays published on Medium — traced here as they connect to questions
-            across the terrain.
+            Essays from Living Terrain’s publications — primarily Substack —
+            traced here as they connect to questions across the terrain.
           </p>
           <PublicationLink className="mt-6 inline-block" />
           {essays.length > 0 && (

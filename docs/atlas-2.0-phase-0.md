@@ -1,6 +1,6 @@
 # Atlas 2.0 — Phase 0 terminology + Phase 1 mapping (frozen)
 
-**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22). Phase 3 **Theme redirect policy decided** (2026-09-22) — keep all `/themes/*` active; no automatic redirects. Phase 3 **Atlas journey-return v1 complete** (2026-09-22).  
+**Status:** Phase 0 + Phase 1 **canon frozen** (2026-09-16). Phase 2 **complete** (2026-09-22). Phase 3 **Thread co-occurrence complete** (2026-09-22). Phase 3 **essay archive Thread belonging complete** (2026-09-22). Phase 3 **Theme→Thread continuation links complete** (2026-09-22). Phase 3 **Strand visitor terminology complete** (2026-09-22). Phase 3 **Theme redirect policy decided** (2026-09-22) — keep all `/themes/*` active; no automatic redirects. Phase 3 **Atlas journey-return v1 complete** (2026-09-22). Phase 3 **journey evidence diversification A+D complete** (2026-09-22). Phase 3 **Meaning territory living question complete** (2026-09-22).  
 **Branch:** `cursor/atlas-2-0-phase-0-canon-e793`.  
 **Still out of scope (remaining Phase 3 / later):** `ConnectionKind` identifier rename, further Shelves belonging surfaces, larger Atlas redesign.
 
@@ -224,7 +224,7 @@ Essay Threads do **not** feed Atlas journeys today (`toEssay` clears `threadIds`
 | **0** | Terminology freeze; four-type model; eliminate Thread ambiguity | **Frozen** |
 | **1** | Concept ↔ Territory/Thread tables; major-concept aliases | **Frozen** (this document) |
 | **2** | Typed relationship layer; Trail copy; authored Both-mapping whispers at journey stops. No theme redirects; Void→journey preserved | **Complete** (2026-09-22; visual review PASS) |
-| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; journey-return; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** + **Theme redirect policy** + **journey-return v1** complete/decided (2026-09-22). Remaining build items require approval; do not begin without Chelsea |
+| **3** / Later | Theme→Thread navigation; Strand terminology; Thread co-occurrence; Shelves belonging; journey-return; evidence diversification; Meaning living question; larger Atlas redesign | **Thread co-occurrence** + **essay archive belonging** + **Theme→Thread continuation** + **Strand visitor terminology** + **Theme redirect policy** + **journey-return v1** + **journey evidence diversification A+D** + **Meaning territory living question** complete/decided (2026-09-22). Remaining build items require approval; do not begin without Chelsea |
 
 ---
 
@@ -338,6 +338,53 @@ This closes the open redirect-policy decision. Continuation links remain the app
 
 **Tests:** `scripts/test-journey-return.ts` (authored path, TTL, stale/valid `essaysOpened`); browser regression for return-link visibility + history preservation.
 
+### Phase 3 — Journey evidence diversification A+D (complete 2026-09-22)
+
+**Problem:** Three living journeys reused one evidence pack at every stop, and several bond “why” lines restated the core reframe instead of turning the relationship.
+
+**Editorial contract (approved):**
+1. Keep existing questions, concept sequences, core reframes, and closing questions.
+2. Distinct evidence per stop within each revised journey; cross-journey reuse allowed.
+3. Bond copy must add a conceptual turn at every transition (not reframe echo).
+4. On `relationships-difficult` at **reality**, *The Structure Beneath Reality* is offered as **further-reading** — optional philosophical orientation, not direct evidence for relational-truth claims. Visitor cue: “A wider reading”; evidence view states the distinction.
+5. Do not expand Meaning territory, resolve `before-collapse`, or reconcile site questions in this pass.
+
+**Revised journeys:**
+
+| Journey | Evidence sequence | Notes |
+|---|---|---|
+| `technology-change` | `cost-of-image` → `before-tragedy` → `make-a-loop` | First bond broadened to attention → relation |
+| `relationships-difficult` | `before-tragedy` → `constraint-freedom` → `structure-beneath` | Reality = further-reading |
+| `inhabit-time` | `make-a-loop` → `looking-up` → `never-restriction` | As proposed |
+
+**Surfaces:** `lib/atlas-v1/content.ts` (`evidenceRole`, bond/evidence maps); `AtlasJourneyLayer` further-reading cue + framing.
+
+**Tests:** `scripts/test-atlas-journey-editorial.ts`; `npm run verify:atlas` / journey-return; desktop + mobile browser QA through closing questions.
+
+**Publication:** Nine Atlas-linked Medium-only essays remain in the republication backlog. Atlas evidence packs treated as potentially abbreviated until compared with original full text. No republication in this pass.
+
+### Phase 3 — Meaning territory living question (complete 2026-09-22)
+
+**Problem:** Meaning had no living Void question; the territory opened without a first path into the survey.
+
+**Editorial contract (approved):**
+1. New question under Meaning / orientation: *When do our symbols stop helping us live?*
+2. Path: **meaning → constraint → participation**.
+3. Core reframe: *Symbols help us share a world — and can quietly replace contact with it.*
+4. Closing: *Where am I still living inside a name instead of a life?*
+5. Distinct evidence per stop; bond copy turns at each transition (not reframe echo).
+6. Do not substitute *The Fragmentation of Attention* for Constraint evidence without a separate editorial pass (Constraint pack retained after Substack comparison).
+
+**Journey:**
+
+| Journey | Evidence sequence | Bonds |
+|---|---|---|
+| `symbols-stop-helping` | `looking-up` → `constraint-freedom` → `never-restriction` | Meaning→Constraint: distinctions that bound what we're willing to see; Constraint→Participation: leave the map and enter the territory |
+
+**Surfaces:** `lib/atlas-v1/content.ts`, `lib/atlas-v1/questions.ts`, `lib/atlas/architecture.ts` (`QUESTION_PLACEMENTS`); Void count 7; authored bonds 16.
+
+**Tests:** `scripts/test-atlas-journey-editorial.ts`; `verify-canonical` QUESTION=7; desktop + mobile browser QA (1280 / 390) through closing, evidence round-trip, Thread whisper restore, Trail uniqueness; regression on `technology-change` PASS.
+
 ### Phase 3 / Later (remaining — not approved to build)
 
 Bundled deferred work. **Do not implement without explicit approval.**
@@ -366,3 +413,72 @@ Bundled deferred work. **Do not implement without explicit approval.**
 3. Observatory Pathways: `/observatory/threads/*` still redirects to `/observatory` — restore Pathway destinations or leave collapsed?
 4. Questions hubs: `/questions` → `/atlas` freeze — rebuild Investigation hubs or keep Void as sole living-question door?
 5. Sequencing: further Shelves belonging (if any) vs identifier rename vs larger Atlas redesign next.
+
+---
+
+## Site cohesion program (release checkpoint 2026-09-28)
+
+Numbered separately from the Atlas 2.0 phases above. "Cohesion Phase 1/2/3" refers to this program only.
+
+### Cohesion Phase 1 — Identity + Substack (complete, approved)
+
+Commits `eb27111`, `e6fd618`, `526caee`.
+
+- **Identity:** Chelsea M. Thacker is the author; Living Terrain is the evolving body of work; chelseathacker.com is the durable home. Quiet byline on essay records, homepage author line, author metadata + Article / WebSite JSON-LD.
+- **Substack named before subscription:** "Follow on Substack", "Subscribe on Substack", new-tab disclosure. `/join` titled "Follow Living Terrain on Substack".
+- **Publication CTA:** verified Substack `/p/` post → Medium (earlier essays, stated as such) → other. Never falls back to the Substack homepage. SEO canonicals stay on chelseathacker.com.
+- **Live stale terminology** replaced (archive / volume / constellation) where copy was reader-facing.
+- **Indexing:** sitemap no longer lists `/questions*` or `/concepts*`; `/concepts/*` prototypes are `noindex, nofollow`. No routes deleted.
+
+### Cohesion Phase 2 — Authored circulation (complete, approved)
+
+Commits `9ae7ca1`, `ec4cbbb`, `cbb28f5`. Governing rule: **only expose relationships that have actually been authored.**
+
+**Threads are the primary broad circulation layer.** They are the only authored layer with breadth (112 of 159 essays; every Thread holds 10–23 essays). Other authored essay-level relationships are sparse (8 evidence, 5 chamber, 2 explicit essay pairs). The legacy strand graph is mostly inferred and is not used for circulation; "Follow this strand" remains on full-body essays only.
+
+**Essay record — "Where this sits"** (`lib/reading/essay-context.ts`, `EssayWhereThisSits`). Sits below the primary "Read the full essay on Substack/Medium" link and above subscription. Relationship-specific sentences, strongest first:
+
+1. Atlas evidence — "Charted in the Atlas as evidence in *[living question]* — at [stop]." Open journeys only; per-question authored evidence (no concept-default fallback); route from canonical `SOURCED_FROM`.
+2. Chamber — "Held within the chamber(s) of [chamber]." Explicit chamber links only, symmetric with chamber pages.
+3. Threads — "Also belongs to [Threads]." From `essay-threads.json`.
+
+Essays with no authored relationship show no section, no empty state, no exploration CTA — they end with subscription and "Return to the shelf". The generic "Continue exploring →" link to `/atlas` was removed from every essay.
+
+**Essay context counts (159 essays at `cbb28f5`):**
+
+| Context | Essays |
+|---|---|
+| Atlas evidence | 8 |
+| Chamber | 5 |
+| Thread | 112 (104 Thread-only) |
+| No authored context | 46 |
+
+One essay without a Thread (*You Have to Go Far Enough to Make a Loop*) still shows evidence + chamber. Substack posts added later by the automatic sync appear with no authored context until explicitly classified; that is intentional, not a gap to fill.
+
+**Thread → Atlas** (`atlasBridgeForThread` in `lib/atlas/model.ts`, `ThreadAtlasBridge`). The frozen Both placement read in reverse: "This pattern is also charted in the Atlas — through [concept], within [Territory]." Link lands at the Atlas threshold (no deep link).
+
+| Connected to Atlas (Both) | Charted through / within |
+|---|---|
+| relationship | Relationship / Participation |
+| feedback | Feedback / Living systems |
+| technology | Technology / Participation |
+| constraint | Constraint / Reality / structure |
+| participation | Participation / Participation + Living systems |
+
+**Not connected (legitimately):** boundary, intelligence, logos, consciousness, translation — no Atlas section.
+
+**Thread → Atlas does NOT place essays in Territories.** A Thread's Both mapping says where the *pattern* is charted. It does not mean every essay in that Thread belongs to that Territory, and no essay page infers Territory membership from its Threads. Only the 8 evidence essays name the Atlas, because each is authored evidence at a specific stop.
+
+**Evidence → essay → journey return.** Following "Where this came from" from Atlas evidence saves the existing journey-return snapshot (`lt-atlas-journey-return-v1`) with an evidence-route origin; a snapshot records exactly one origin (Thread whisper or evidence essay). The essay record shows "Return to the Atlas" in its footer only when the visitor left through that essay's evidence → `/atlas?resume=journey` restores the same question, stop, and trail; the snapshot is consumed. Thread pages still accept any valid snapshot. Unrelated essays, fresh sessions, and Thread-whisper snapshots never show the return on essay records. Limits: restore always settles the stop with its bond revealed; book evidence sources (`/atlas/[slug]`) do not save a snapshot.
+
+**Tests:** `npm run test:circulation`; `scripts/test-journey-return.ts`; browser QA 1280 / 390 PASS.
+
+### Cohesion Phase 3 — Deferred (not started; requires approval)
+
+- Integrate the 39 Substack-only essays and newer (September) writing into authored relationships; classify newer essays.
+- 74 Medium-only essays in the republication backlog; 6 uncertain Substack candidates unresolved.
+- Meaning / Time density; Territory status labels.
+- Swapped concept-default evidence for `time` / `meaning` (not reader-visible: every open journey authors its own evidence).
+- Deep links from Threads / essays into Territory, concept, or question positions in the Atlas.
+- Journey return from book evidence sources.
+- Plus the Atlas 2.0 remaining items above (`ConnectionKind` rename, further Shelves belonging, larger Atlas redesign).

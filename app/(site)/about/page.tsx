@@ -9,7 +9,7 @@ import { siteConfig } from "@/lib/content/data";
 export const metadata: Metadata = withCanonical("/about", {
   title: "About",
   description:
-    "Chelsea M. Thacker — guide to Living Terrain, an ongoing investigation into the hidden architectures that shape perception, embodiment, relationship, meaning, and reality.",
+    "Chelsea M. Thacker — author of Living Terrain, an evolving body of work on the hidden architectures that shape perception, embodiment, relationship, meaning, and reality.",
 });
 
 export default function AboutPage() {
@@ -39,8 +39,8 @@ export default function AboutPage() {
                   Living Terrain on Substack
                 </TextLink>
                 , then gathered here alongside books, field notes, and maps — all
-                of it exists in relationship, not isolation. Medium carries
-                selected essays as secondary distribution.
+                of it exists in relationship, not isolation. Some earlier essays
+                remain on Medium until they find their way to Substack.
               </p>
               <p>
                 The central chamber is{" "}
@@ -53,7 +53,7 @@ export default function AboutPage() {
               </p>
               <p>
                 If you are new here, follow a{" "}
-                <TextLink href="/atlas">question</TextLink>, read an{" "}
+                <TextLink href="/atlas">living question</TextLink>, read an{" "}
                 <TextLink href={siteConfig.substackUrl} external>
                   essay on Substack
                 </TextLink>, or simply wander until

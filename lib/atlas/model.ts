@@ -14,10 +14,11 @@ import {
   type RootTerritory,
   type RootTerritoryId,
 } from "@/lib/atlas/architecture";
-import type {
-  AtlasV1ConceptId,
-  AtlasV1EssayId,
-  AtlasV1QuestionId,
+import {
+  getConcept,
+  type AtlasV1ConceptId,
+  type AtlasV1EssayId,
+  type AtlasV1QuestionId,
 } from "@/lib/atlas-v1/content";
 import type { CanonicalRef } from "@/lib/canonical/resolve";
 import {
@@ -189,6 +190,36 @@ export function authoredThreadHrefForConcept(
 ): string | null {
   const thread = authoredThreadWhisperForConcept(conceptId);
   return thread ? threadHref(thread.id) : null;
+}
+
+export type ThreadAtlasBridge = {
+  conceptId: BothConceptId;
+  conceptName: string;
+  /** Primary first; secondary only when frozen in Phase 1. */
+  territories: RootTerritory[];
+};
+
+/**
+ * Thread → Atlas: the frozen Both mapping read in reverse.
+ * Names where the pattern is charted — never claims the Thread is a Territory,
+ * and says nothing about which Territory its essays belong to.
+ */
+export function atlasBridgeForThread(threadId: string): ThreadAtlasBridge | null {
+  const conceptId = BOTH_CONCEPT_IDS.find(
+    (id) => V1_CONCEPT_PLACEMENTS[id].threadId === threadId,
+  );
+  if (!conceptId) return null;
+  const placement = V1_CONCEPT_PLACEMENTS[conceptId];
+  return {
+    conceptId,
+    conceptName: getConcept(conceptId).name,
+    territories: [
+      getRootTerritory(placement.primaryTerritoryId),
+      ...(placement.secondaryTerritoryId
+        ? [getRootTerritory(placement.secondaryTerritoryId)]
+        : []),
+    ],
+  };
 }
 
 export function investigationForQuestion(

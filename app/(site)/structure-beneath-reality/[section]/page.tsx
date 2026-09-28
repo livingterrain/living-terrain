@@ -113,7 +113,7 @@ export default async function StructureSectionPage({ params }: PageProps) {
       <nav className="border-t border-rule/50 py-12">
         <Container narrow>
           <TextLink
-            href="/structure-beneath-reality"
+            href="/chambers/the-structure-beneath-reality"
             className="mt-8 inline-block type-body text-sm"
           >
             ← Back to the chamber

@@ -91,7 +91,7 @@ export const ROOT_TERRITORIES: readonly RootTerritory[] = [
 ] as const;
 
 /**
- * Disposition of the six existing question IDs.
+ * Disposition of living question IDs under root territories.
  * IDs and journeys preserved; before-collapse is not an independent journey door.
  */
 export const QUESTION_PLACEMENTS: readonly QuestionPlacement[] = [
@@ -117,6 +117,12 @@ export const QUESTION_PLACEMENTS: readonly QuestionPlacement[] = [
     questionId: "relationships-difficult",
     territoryId: "r3-participation",
     disposition: "active",
+    journeyOpen: true,
+  },
+  {
+    questionId: "symbols-stop-helping",
+    territoryId: "r4-meaning-orientation",
+    disposition: "primary",
     journeyOpen: true,
   },
   {

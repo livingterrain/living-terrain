@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Tag } from "@/components/ui/Tag";
 import { SiteLink } from "@/components/ui/SiteLink";
 import type { Essay } from "@/lib/content/types";
-import { getEssayReadUrl, getQuestionById } from "@/lib/content";
+import { getEssayPublicationCta, getQuestionById } from "@/lib/content";
 import { formatDate } from "@/lib/utils";
 
 interface EssayCardProps {
@@ -14,6 +14,8 @@ export function EssayCard({
   essay,
   showRelatedQuestions = false,
 }: EssayCardProps) {
+  const publication = getEssayPublicationCta(essay);
+
   return (
     <article className="group">
       <div className="border border-transparent py-6 transition-all duration-300 group-hover:border-border group-hover:bg-cream-dark/50 group-hover:px-6">
@@ -71,15 +73,17 @@ export function EssayCard({
           </div>
         )}
 
-        <a
-          href={getEssayReadUrl(essay)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 inline-flex items-center gap-2 border border-ink bg-ink px-5 py-2 font-body text-sm text-cream transition-colors duration-300 hover:bg-ink-muted"
-        >
-          Read on Medium
-          <ExternalIcon />
-        </a>
+        {publication.href && publication.readLabel && (
+          <a
+            href={publication.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-flex items-center gap-2 border border-ink bg-ink px-5 py-2 font-body text-sm text-cream transition-colors duration-300 hover:bg-ink-muted"
+          >
+            {publication.readLabel}
+            <ExternalIcon />
+          </a>
+        )}
       </div>
     </article>
   );

@@ -19,19 +19,23 @@ export const TERRAIN_MENU: readonly MenuDestination[] = [
   {
     href: "/atlas",
     label: "Atlas",
-    hint: "Follow what connects.",
+    hint: "Follow relationships across the work.",
   },
   {
     href: "/inquiry",
     label: "The Shelves",
-    hint: "What has been made.",
+    hint: "Books, essays, and visual maps.",
   },
   {
     href: "/observatory",
     label: "Observatory",
-    hint: "Still forming.",
+    hint: "Ideas and investigations still forming.",
   },
-  { href: "/join", label: "Join", hint: "Stay in the field." },
+  {
+    href: "/join",
+    label: "Follow on Substack",
+    hint: "New essays and field notes as the work develops.",
+  },
 ] as const;
 
 /**

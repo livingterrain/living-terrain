@@ -4,10 +4,14 @@
  */
 
 import assert from "node:assert/strict";
+import { ATLAS_V1_SOURCE } from "../lib/atlas-v1/content";
 import {
+  JOURNEY_RETURN_HREF,
   JOURNEY_RETURN_TTL_MS,
   JOURNEY_RETURN_VERSION,
   isAuthoredJourneyTrail,
+  isEvidenceEssayRoute,
+  returnForSnapshot,
   sanitizeJourneyState,
   validateJourneyReturnSnapshot,
 } from "../lib/atlas-v1/journey-return";
@@ -229,6 +233,100 @@ check("validateJourneyReturnSnapshot: unknown question", () => {
     }),
     null,
   );
+});
+
+const evidenceSnapshot = {
+  v: JOURNEY_RETURN_VERSION,
+  savedAt: Date.now(),
+  evidenceRoute: "/essays/there-is-a-cost-to-becoming-an-image",
+  journey: {
+    ...validJourney,
+    currentConceptId: "technology",
+    trail: ["technology"],
+    essaysOpened: ["cost-of-image"],
+    activeEssayId: "cost-of-image",
+  },
+  relationsVisible: true,
+};
+
+check("evidence origin: known evidence essay route validates at the stop", () => {
+  const snap = validateJourneyReturnSnapshot(evidenceSnapshot);
+  assert.ok(snap);
+  assert.equal(snap!.evidenceRoute, "/essays/there-is-a-cost-to-becoming-an-image");
+  assert.equal(snap!.threadId, undefined);
+  assert.equal(snap!.journey.questionId, "technology-change");
+  assert.equal(snap!.journey.currentConceptId, "technology");
+  assert.equal(snap!.journey.activeEssayId, null);
+});
+
+check("evidence origin: non-evidence routes rejected", () => {
+  for (const evidenceRoute of [
+    "/essays/not-an-evidence-essay",
+    "/atlas/the-second-birth",
+    "https://example.com/essays/there-is-a-cost-to-becoming-an-image",
+  ]) {
+    assert.equal(validateJourneyReturnSnapshot({ ...evidenceSnapshot, evidenceRoute }), null);
+  }
+});
+
+check("origin: exactly one of threadId / evidenceRoute", () => {
+  assert.equal(
+    validateJourneyReturnSnapshot({ ...evidenceSnapshot, threadId: "relationship" }),
+    null,
+  );
+  const { evidenceRoute: _omit, ...neither } = evidenceSnapshot;
+  assert.equal(validateJourneyReturnSnapshot(neither), null);
+});
+
+check("every Atlas evidence essay route is accepted", () => {
+  for (const source of Object.values(ATLAS_V1_SOURCE)) {
+    assert.equal(isEvidenceEssayRoute(source.href), source.kind === "essay");
+  }
+});
+
+check("return scoping: essay record shows return only for its own evidence exit", () => {
+  const snap = validateJourneyReturnSnapshot(evidenceSnapshot);
+  assert.ok(returnForSnapshot(snap, { evidenceRoute: "/essays/there-is-a-cost-to-becoming-an-image" }));
+  assert.equal(
+    returnForSnapshot(snap, { evidenceRoute: "/essays/what-happens-before-the-tragedy" }),
+    null,
+  );
+  assert.equal(
+    returnForSnapshot(snap, { evidenceRoute: "/essays/some-unrelated-essay" }),
+    null,
+  );
+});
+
+check("return scoping: Thread-whisper snapshot never appears on essay records", () => {
+  const snap = validateJourneyReturnSnapshot({
+    v: JOURNEY_RETURN_VERSION,
+    savedAt: Date.now(),
+    threadId: "relationship",
+    journey: validJourney,
+    relationsVisible: true,
+  });
+  assert.ok(snap);
+  assert.equal(
+    returnForSnapshot(snap, { evidenceRoute: "/essays/there-is-a-cost-to-becoming-an-image" }),
+    null,
+  );
+});
+
+check("return scoping: Thread pages keep accepting any valid snapshot", () => {
+  const evidence = validateJourneyReturnSnapshot(evidenceSnapshot);
+  const thread = validateJourneyReturnSnapshot({
+    v: JOURNEY_RETURN_VERSION,
+    savedAt: Date.now(),
+    threadId: "relationship",
+    journey: validJourney,
+    relationsVisible: true,
+  });
+  assert.deepEqual(returnForSnapshot(thread), {
+    href: JOURNEY_RETURN_HREF,
+    label: "Return to the Atlas",
+  });
+  assert.ok(returnForSnapshot(evidence));
+  assert.equal(returnForSnapshot(null), null);
 });
 
 if (failed) {

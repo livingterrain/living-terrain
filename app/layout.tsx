@@ -32,6 +32,8 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  authors: [{ name: siteConfig.author, url: `${siteConfig.url}/about` }],
+  creator: siteConfig.author,
   metadataBase: new URL(siteConfig.url),
   openGraph: {
     title: siteConfig.title,
@@ -40,6 +42,19 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     locale: "en_US",
     type: "website",
+  },
+};
+
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteConfig.name,
+  url: siteConfig.url,
+  description: siteConfig.description,
+  author: {
+    "@type": "Person",
+    name: siteConfig.author,
+    url: `${siteConfig.url}/about`,
   },
 };
 
@@ -54,6 +69,12 @@ export default function RootLayout({
         className="min-h-screen bg-[#030405] antialiased text-ivory"
         style={{ backgroundColor: "#030405", color: "#ebe6dc" }}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(siteJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         <TerrainSoundProvider>
           <TerrainNavigationProvider>
             <ObservatoryProvider>
