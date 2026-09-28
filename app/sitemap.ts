@@ -3,13 +3,11 @@ import {
   getAllMaps,
   getAllEssays,
   getAllProjects,
-  getAllQuestions,
   getAllThemes,
   getAllQuotations,
   getAllFieldNotes,
   getStructureSections,
 } from "@/lib/content";
-import { concepts } from "@/lib/concepts";
 import { getInvestigations } from "@/lib/observatory/investigations";
 import { getGrowingIdeas } from "@/lib/observatory/growing-ideas-data";
 import { getAllVisitorObservations } from "@/lib/observatory/visitor-observations.server";
@@ -48,10 +46,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry("/books", { changeFrequency: "weekly", priority: 0.8 }),
     entry("/essays", { changeFrequency: "weekly", priority: 0.85 }),
     entry("/visual-maps", { changeFrequency: "monthly", priority: 0.7 }),
-    entry("/questions", { changeFrequency: "weekly", priority: 0.8 }),
     entry("/join", { changeFrequency: "monthly", priority: 0.65 }),
     entry("/about", { changeFrequency: "monthly", priority: 0.6 }),
-    entry("/concepts", { changeFrequency: "monthly", priority: 0.5 }),
   ];
 
   const essays = getAllEssays().map((e) =>
@@ -110,13 +106,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ),
   ]);
 
-  const questions = getAllQuestions().map((q) =>
-    entry(`/questions/${q.slug}`, {
-      changeFrequency: "monthly",
-      priority: 0.7,
-    }),
-  );
-
   const themes = getAllThemes().map((t) =>
     entry(`/themes/${t.slug}`, {
       changeFrequency: "monthly",
@@ -154,13 +143,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  const conceptPages = concepts.map((c) =>
-    entry(`/concepts/${c.slug}`, {
-      changeFrequency: "monthly",
-      priority: 0.45,
-    }),
-  );
-
   const threads = THREAD_IDS.map((id) =>
     entry(threadHref(id), {
       changeFrequency: "weekly",
@@ -177,13 +159,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...essays,
     ...sections,
     ...visualMaps,
-    ...questions,
     ...themes,
     ...quotations,
     ...fieldNotes,
     ...observations,
     ...growing,
-    ...conceptPages,
     ...threads,
   ];
 }
