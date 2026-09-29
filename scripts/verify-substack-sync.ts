@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import aliasesRegistry from "../data/publications/substack-aliases.json";
+import identityDecisions from "../data/publications/identity-decisions.json";
+import { validateIdentityDecisions, type IdentityDecisionRegistry } from "../lib/content-sync/identity-decisions";
 import postsRegistry from "../data/publications/substack-posts.json";
 import { getAllEssays } from "../lib/content";
 import { parseSubstackFeed } from "../lib/content-sync/substack-feed";
@@ -98,6 +100,14 @@ for (const essay of allEssays.filter((item) => existingIds.has(item.id) && item.
   assert.ok(essay.mediumUrl?.includes("medium.com"), `${essay.id}: historical Medium URL remains explicit`);
   assert.equal(essay.externalUrl, essay.mediumUrl, `${essay.id}: legacy external source remains compatible`);
 }
+const atlasRecordIds = new Set(allEssays.filter((essay) => existingIds.has(essay.id)).map((essay) => essay.id));
+const identityErrors = validateIdentityDecisions(
+  identityDecisions as IdentityDecisionRegistry,
+  atlasRecordIds,
+  new Set(runtimePosts.map((item) => item.essayId)),
+);
+assert.deepEqual(identityErrors, [], identityErrors.join("\n"));
+
 const unmapped = materializeSubstackPost(exactStored)!;
 assert.equal(unmapped.id, "e7");
 assert.equal(unmapped.slug, "a-living-test");
