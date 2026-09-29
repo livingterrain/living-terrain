@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-29T13:46:44.416Z",
+  "archivePublicPosts": 95,
+  "archiveExcluded": [
+    {
+      "title": "FIELD NOTE 002",
+      "errors": [
+        "post is not public"
+      ]
+    },
+    {
+      "title": "FIELD NOTE 001",
+      "errors": [
+        "post is not public"
+      ]
+    }
+  ],
+  "missingBefore": 13,
+  "backfilled": [
+    {
+      "essayId": "substack-rss-c231535396db",
+      "essaySlug": "sometimes-my-world-has-to-get-smaller",
+      "title": "Sometimes My World Has to Get Smaller",
+      "postId": "217824064"
+    },
+    {
+      "essayId": "substack-rss-74dd5280baa1",
+      "essaySlug": "the-languages-we-separated",
+      "title": "The Languages We Separated",
+      "postId": "216983005"
+    },
+    {
+      "essayId": "substack-rss-adf093b2faf1",
+      "essaySlug": "the-spiritual-war-on-relationships",
+      "title": "The Spiritual War on Relationships",
+      "postId": "216898174"
+    },
+    {
+      "essayId": "substack-rss-c9105159fe8f",
+      "essaySlug": "the-things-we-built-to-help-us-remember",
+      "title": "The Things We Built to Help Us Remember",
+      "postId": "216894172"
+    },
+    {
+      "essayId": "substack-rss-a7f7eadabf7e",
+      "essaySlug": "what-are-we-becoming-in-relationship",
+      "title": "What Are We Becoming in Relationship With AI?",
+      "postId": "216746248"
+    },
+    {
+      "essayId": "substack-rss-60e88987679b",
+      "essaySlug": "what-happens-when-understanding-gets",
+      "title": "What Happens When Understanding Gets Cheap?",
+      "postId": "216334903"
+    },
+    {
+      "essayId": "substack-rss-60fefaa846f4",
+      "essaySlug": "the-distance-between-words",
+      "title": "The Distance Between Words",
+      "postId": "216145806"
+    },
+    {
+      "essayId": "substack-rss-ed5b9d91682e",
+      "essaySlug": "strong-enough-to-raise-them",
+      "title": "Strong Enough to Raise Them",
+      "postId": "215993079"
+    },
+    {
+      "essayId": "substack-rss-401da77b075a",
+      "essaySlug": "what-happens-when-a-society-becomes",
+      "title": "What Happens When a Society Becomes Difficult to Inhabit?",
+      "postId": "215651940"
+    },
+    {
+      "essayId": "substack-rss-3dd3c359a827",
+      "essaySlug": "the-ai-we-fear-looks-suspiciously",
+      "title": "The AI We Fear Looks Suspiciously Like Us",
+      "postId": "215139103"
+    },
+    {
+      "essayId": "substack-rss-0f3e9e49efe5",
+      "essaySlug": "we-leave-each-other-words",
+      "title": "We Leave Each Other Words",
+      "postId": "215056384"
+    },
+    {
+      "essayId": "substack-rss-483699e4b8f6",
+      "essaySlug": "what-taught-you-how-to-see",
+      "title": "What Taught You How to See?",
+      "postId": "215051671"
+    },
+    {
+      "essayId": "substack-rss-c76a967ef9a1",
+      "essaySlug": "the-future-rarely-arrives-from-nowhere",
+      "title": "The Future Rarely Arrives From Nowhere",
+      "postId": "214727216"
+    }
+  ],
+  "unresolved": [],
+  "written": true
+}
