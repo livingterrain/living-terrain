@@ -45,13 +45,14 @@ function normalizeArchivePost(source: PublicArchivePost): SubstackFeedPost {
 export async function fetchCompleteSubstackArchive(
   publicationUrl: string,
   fetcher: typeof fetch = fetch,
+  maxPages = 100,
 ): Promise<ArchiveFetchResult> {
   const posts: SubstackFeedPost[] = [];
   const errors: ArchiveFetchResult["errors"] = [];
   const seen = new Set<string>();
   const limit = 12;
 
-  for (let page = 0; page < 100; page += 1) {
+  for (let page = 0; page < maxPages; page += 1) {
     const endpoint = new URL("/api/v1/archive", publicationUrl);
     endpoint.searchParams.set("sort", "new");
     endpoint.searchParams.set("search", "");

@@ -473,10 +473,38 @@ One essay without a Thread (*You Have to Go Far Enough to Make a Loop*) still sh
 
 **Tests:** `npm run test:circulation`; `scripts/test-journey-return.ts`; browser QA 1280 / 390 PASS.
 
+### Corpus model (Cohesion Phase 3A audit, 2026-09-29)
+
+Three layers, named precisely. "Site registry" is retired as ambiguous.
+
+| Layer | Source | Nature | Count (2026-09-29) |
+|---|---|---|---|
+| **Atlas essay records** | `lib/atlas` imports (e1–e120) + `lib/canonical` ESSAY objects | Hand-authored conceptual/editorial layer | 120 |
+| **Publication registry** | `data/publications/substack-posts.json` | Generated Substack publication layer (sync bot on `main`) | 95 |
+| **Rendered corpus** | `getAllEssays()` | Atlas records + registry posts not claimed by an Atlas record (by essay id or slug) | 169 = 120 + 49 |
+
+- Every verified public Substack post (95 as of 2026-10-01; paid "FIELD NOTE" posts excluded) is in the registry and rendered. The 49 **registry-only** essays are not missing from the site; they have no Atlas or canonical record.
+- Destinations: Substack 95 (46 Atlas records + 49 registry-only), Medium 120 (every Atlas record), Medium-only 74, neither 0.
+- **Publication does not imply** a canonical relation, Atlas membership, an evidence role, a chamber role, or Territory membership. A registry-only essay renders with none of these until an explicit, approved editorial step authors them.
+- **Thread assignments are locally authored editorial metadata** (`essay-threads.json`, keyed by rendered route slug). The sync never writes them; 30 registry-only essays carry authored Threads, 19 carry none.
+
+**Field authority.** Publication metadata may follow Substack: external Substack URL, Substack post ID, cover image, and (for registry-only essays) title, date, excerpt. Locally authored metadata is never overwritten by publication sync: route slug (`essaySlug` / Atlas slug), essay id, Atlas titles/dates/excerpts, Medium URL, Thread assignments, evidence roles, chamber relationships, canonical relations. Differences between Atlas-authored and Substack publication metadata are reported (`npm run report:publication-drift`), never applied automatically.
+
+### Cohesion Phase 3B — Publication data integrity (implemented 2026-09-29; pending review)
+
+Data integrity only; no Atlas, Thread, canonical, or page changes.
+
+- **Route identity is separate from publication identity.** A registered post's `essayId` and `essaySlug` never change; the sync updates the verified Substack URL, Substack slug, title, and cover while keeping prior URLs in `sourceUrls`. `assertRouteStability` (`lib/content-sync/post-identity.ts`) fails the sync if a registered post disappears, changes route slug, or changes Substack post ID.
+- **Stable Substack post IDs.** All 95 registry records carry a post ID (13 RSS-created records backfilled by exact URL from the public archive; *The Shape a Relationship Makes Around Truth*, 2026-09-29, received post ID `217999790` from the sync itself; `npm run content:substack:backfill-post-ids`, dry run unless `--write`; evidence in `reports/substack-backfill/post-id-backfill.json`). The sync attaches post IDs to RSS items from the archive when an exact URL identifies one post, so a known post that changes both URL and title keeps its identity. If the archive is unreachable the sync proceeds by URL, as before. A resolved record whose post ID disagrees fails as `CONFLICT_REVIEW_REQUIRED`.
+- **Thread slug integrity.** `npm run verify:thread-slugs` fails if any `essay-threads.json` slug does not resolve to a rendered essay (it never edits assignments). Runs in the Substack sync workflow before the registry is committed.
+- **Publication drift report.** `npm run report:publication-drift` → `reports/publication-drift.{json,md}`: 46 Atlas records with a Substack counterpart; 36 in sync, 10 publication evolution (date differences under human-reviewed aliases), 0 identity-review-suggested.
+- **Identity decisions.** `data/publications/identity-decisions.json` records pairs awaiting a human `same-work` / `distinct-work` decision. Pending: e66 ↔ `substack-186514312` (*The Signal Everyone Is Trying to Replace* / *The Missing Signal Isn't Metabolic*) and e92 ↔ `substack-180506588` (*Chronic Illness Is a Paused Process*). A decision is validated by `verify:substack-sync` but does not merge, alias, or re-route anything; acting on it is a separate reviewed step. The five older date-only candidates (e7, e67, e71, e74, e96) have no identity evidence and are not recorded as matches.
+- **Tests:** `npm run test:publication-integrity`, `test:substack-sync`, `verify:substack-sync`, `verify:thread-slugs`.
+
 ### Cohesion Phase 3 — Deferred (not started; requires approval)
 
-- Integrate the 39 Substack-only essays and newer (September) writing into authored relationships; classify newer essays.
-- 74 Medium-only essays in the republication backlog; 6 uncertain Substack candidates unresolved.
+- Editorial integration of the 49 registry-only essays (canonical records, Threads for the 19 without, any Atlas role); classify newer writing.
+- Human decisions on the two pending identity pairs; 74 Medium-only essays in the republication backlog.
 - Meaning / Time density; Territory status labels.
 - Swapped concept-default evidence for `time` / `meaning` (not reader-visible: every open journey authors its own evidence).
 - Deep links from Threads / essays into Territory, concept, or question positions in the Atlas.

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "pending": [
+    {
+      "atlasEssayId": "e66",
+      "registryEssayId": "substack-186514312",
+      "evidenceFor": [
+        "Same publication date (2026-02-01)",
+        "Substack slug \"the-signal-everyone-is-trying-to\" is the leading prefix of the Atlas title and slug"
+      ],
+      "evidenceAgainst": [
+        "Titles differ: \"The Signal Everyone Is Trying to Replace\" vs \"The Missing Signal Isn’t Metabolic\"",
+        "No shared URL or post ID"
+      ]
+    },
+    {
+      "atlasEssayId": "e92",
+      "registryEssayId": "substack-180506588",
+      "evidenceFor": [
+        "Substack title \"Chronic Illness Is a Paused Process\" is the leading prefix of the Atlas title",
+        "Substack slug \"chronic-illness-is-a-paused-process\" is the leading prefix of the Atlas slug"
+      ],
+      "evidenceAgainst": [
+        "Dates differ by 16 days (Substack 2025-12-02, Atlas 2025-12-18)",
+        "No shared URL or post ID"
+      ]
+    }
+  ],
+  "decisions": []
+}

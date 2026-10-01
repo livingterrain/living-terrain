@@ -42,6 +42,9 @@ jobs:
       - name: Verify publication registry
         run: npm run verify:substack-sync
 
+      - name: Verify Thread assignments resolve
+        run: npm run verify:thread-slugs
+
       - name: Verify canonical foundation
         run: npm run verify:canonical
 

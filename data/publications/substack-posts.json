@@ -1,7 +1,25 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-29T01:57:34.780Z",
+  "generatedAt": "2026-10-01T13:05:50.770Z",
   "posts": [
+    {
+      "guid": "https://livingterrain.substack.com/p/the-shape-a-relationship-makes-around",
+      "canonicalUrl": "https://livingterrain.substack.com/p/the-shape-a-relationship-makes-around",
+      "slug": "the-shape-a-relationship-makes-around",
+      "title": "The Shape a Relationship Makes Around Truth",
+      "subtitle": "On what happens between two people",
+      "description": "On what happens between two people",
+      "excerpt": "On what happens between two people",
+      "publishedAt": "2026-09-29",
+      "publishedTimestamp": "Tue, 29 Sep 2026 13:08:45 GMT",
+      "author": "Chelsea Thacker",
+      "coverImage": "https://substackcdn.com/image/fetch/$s_!23qq!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4b7cf63a-17cf-4950-946a-7efa1e869640_1456x816.png",
+      "tags": [],
+      "publicationStatus": "published",
+      "postId": "217999790",
+      "essayId": "substack-rss-732451ed3d61",
+      "essaySlug": "the-shape-a-relationship-makes-around"
+    },
     {
       "guid": "https://livingterrain.substack.com/p/sometimes-my-world-has-to-get-smaller",
       "canonicalUrl": "https://livingterrain.substack.com/p/sometimes-my-world-has-to-get-smaller",
@@ -17,7 +35,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-c231535396db",
-      "essaySlug": "sometimes-my-world-has-to-get-smaller"
+      "essaySlug": "sometimes-my-world-has-to-get-smaller",
+      "postId": "217824064"
     },
     {
       "guid": "https://livingterrain.substack.com/p/the-languages-we-separated",
@@ -34,7 +53,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-74dd5280baa1",
-      "essaySlug": "the-languages-we-separated"
+      "essaySlug": "the-languages-we-separated",
+      "postId": "216983005"
     },
     {
       "guid": "https://livingterrain.substack.com/p/the-spiritual-war-on-relationships",
@@ -51,7 +71,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-adf093b2faf1",
-      "essaySlug": "the-spiritual-war-on-relationships"
+      "essaySlug": "the-spiritual-war-on-relationships",
+      "postId": "216898174"
     },
     {
       "guid": "https://livingterrain.substack.com/p/the-things-we-built-to-help-us-remember",
@@ -68,7 +89,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-c9105159fe8f",
-      "essaySlug": "the-things-we-built-to-help-us-remember"
+      "essaySlug": "the-things-we-built-to-help-us-remember",
+      "postId": "216894172"
     },
     {
       "guid": "https://livingterrain.substack.com/p/what-are-we-becoming-in-relationship",
@@ -85,7 +107,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-a7f7eadabf7e",
-      "essaySlug": "what-are-we-becoming-in-relationship"
+      "essaySlug": "what-are-we-becoming-in-relationship",
+      "postId": "216746248"
     },
     {
       "guid": "https://livingterrain.substack.com/p/what-happens-when-understanding-gets",
@@ -102,7 +125,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-60e88987679b",
-      "essaySlug": "what-happens-when-understanding-gets"
+      "essaySlug": "what-happens-when-understanding-gets",
+      "postId": "216334903"
     },
     {
       "guid": "https://livingterrain.substack.com/p/the-distance-between-words",
@@ -119,7 +143,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-60fefaa846f4",
-      "essaySlug": "the-distance-between-words"
+      "essaySlug": "the-distance-between-words",
+      "postId": "216145806"
     },
     {
       "guid": "https://livingterrain.substack.com/p/strong-enough-to-raise-them",
@@ -136,7 +161,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-ed5b9d91682e",
-      "essaySlug": "strong-enough-to-raise-them"
+      "essaySlug": "strong-enough-to-raise-them",
+      "postId": "215993079"
     },
     {
       "guid": "https://livingterrain.substack.com/p/what-happens-when-a-society-becomes",
@@ -153,7 +179,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-401da77b075a",
-      "essaySlug": "what-happens-when-a-society-becomes"
+      "essaySlug": "what-happens-when-a-society-becomes",
+      "postId": "215651940"
     },
     {
       "guid": "https://livingterrain.substack.com/p/the-ai-we-fear-looks-suspiciously",
@@ -170,7 +197,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-3dd3c359a827",
-      "essaySlug": "the-ai-we-fear-looks-suspiciously"
+      "essaySlug": "the-ai-we-fear-looks-suspiciously",
+      "postId": "215139103"
     },
     {
       "guid": "https://livingterrain.substack.com/p/we-leave-each-other-words",
@@ -187,7 +215,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-0f3e9e49efe5",
-      "essaySlug": "we-leave-each-other-words"
+      "essaySlug": "we-leave-each-other-words",
+      "postId": "215056384"
     },
     {
       "guid": "https://livingterrain.substack.com/p/what-taught-you-how-to-see",
@@ -204,7 +233,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-483699e4b8f6",
-      "essaySlug": "what-taught-you-how-to-see"
+      "essaySlug": "what-taught-you-how-to-see",
+      "postId": "215051671"
     },
     {
       "guid": "https://livingterrain.substack.com/p/the-future-rarely-arrives-from-nowhere",
@@ -221,7 +251,8 @@
       "tags": [],
       "publicationStatus": "published",
       "essayId": "substack-rss-c76a967ef9a1",
-      "essaySlug": "the-future-rarely-arrives-from-nowhere"
+      "essaySlug": "the-future-rarely-arrives-from-nowhere",
+      "postId": "214727216"
     },
     {
       "postId": "214603014",

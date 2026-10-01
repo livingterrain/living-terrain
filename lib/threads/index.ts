@@ -1,5 +1,6 @@
 export {
   applyEssayThreads,
+  assertEssayThreadSlugsResolve,
   essayThreadMapFromRegistry,
   findUnknownEssayThreadSlugs,
   getEssayThreadMap,

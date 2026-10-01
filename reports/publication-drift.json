@@ -1,0 +1,1254 @@
+{
+  "version": 1,
+  "summary": {
+    "atlasRecordsWithSubstack": 46,
+    "assessment": {
+      "in-sync": 36,
+      "publication-evolution": 10
+    },
+    "identityBasis": {
+      "atlas-url": 36,
+      "reviewed-alias": 10
+    },
+    "title": {
+      "formatting-only": 5,
+      "identical": 41
+    },
+    "date": {
+      "identical": 36,
+      "different": 10
+    },
+    "excerpt": {
+      "different": 37,
+      "identical": 9
+    },
+    "substackUrl": {
+      "identical": 46
+    },
+    "pendingIdentityReviews": 2
+  },
+  "rows": [
+    {
+      "essayId": "e8",
+      "slug": "signals-i-m-watching-june-2026",
+      "postId": "201234793",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "formatting-only",
+        "atlas": "Signals I'm Watching — June 2026",
+        "substack": "Signals I’m Watching — June 2026"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-06-09",
+        "substack": "2026-06-09",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/signals-im-watching-june-2026",
+        "substack": "https://livingterrain.substack.com/p/signals-im-watching-june-2026"
+      }
+    },
+    {
+      "essayId": "e10",
+      "slug": "the-goal-was-never-restriction",
+      "postId": "200380535",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Goal Was Never Restriction",
+        "substack": "The Goal Was Never Restriction"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-06-03",
+        "substack": "2026-06-03",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-goal-was-never-restriction",
+        "substack": "https://livingterrain.substack.com/p/the-goal-was-never-restriction"
+      }
+    },
+    {
+      "essayId": "e12",
+      "slug": "what-if-numbers-are-a-language",
+      "postId": "212608355",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "What If Numbers Are a Language?",
+        "substack": "What If Numbers Are a Language?"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-08-10",
+        "substack": "2026-08-10",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "identical"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/what-if-numbers-are-a-language-9971ce5a86c7",
+        "substack": "https://livingterrain.substack.com/p/what-if-numbers-are-a-language-9971ce5a86c7"
+      }
+    },
+    {
+      "essayId": "e13",
+      "slug": "i-started-with-144-000",
+      "postId": "212608356",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "I Started With 144,000",
+        "substack": "I Started With 144,000"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-08-10",
+        "substack": "2026-08-10",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "identical"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/i-started-with-144-000-205ed3229e4d",
+        "substack": "https://livingterrain.substack.com/p/i-started-with-144-000-205ed3229e4d"
+      }
+    },
+    {
+      "essayId": "e14",
+      "slug": "the-question-that-changed-everything",
+      "postId": "212608358",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Question That Changed Everything",
+        "substack": "The Question That Changed Everything"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-08-05",
+        "substack": "2026-08-05",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "identical"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-question-that-changed-everything-79187646b5f9",
+        "substack": "https://livingterrain.substack.com/p/the-question-that-changed-everything-79187646b5f9"
+      }
+    },
+    {
+      "essayId": "e15",
+      "slug": "writing-is-coming-back",
+      "postId": "212608364",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "Writing Is Coming Back",
+        "substack": "Writing Is Coming Back"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-08-05",
+        "substack": "2026-08-05",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "identical"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/writing-is-coming-back-874752f4a619",
+        "substack": "https://livingterrain.substack.com/p/writing-is-coming-back-874752f4a619"
+      }
+    },
+    {
+      "essayId": "e16",
+      "slug": "when-the-map-becomes-the-blind-spot",
+      "postId": "212608367",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "When the Map Becomes the Blind Spot",
+        "substack": "When the Map Becomes the Blind Spot"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-08-03",
+        "substack": "2026-08-03",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "identical"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/when-the-map-becomes-the-blind-spot-7c8ce189e394",
+        "substack": "https://livingterrain.substack.com/p/when-the-map-becomes-the-blind-spot-7c8ce189e394"
+      }
+    },
+    {
+      "essayId": "e17",
+      "slug": "the-silent-epidemic-of-dissolving-barriers",
+      "postId": "212608368",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Silent Epidemic of Dissolving Barriers",
+        "substack": "The Silent Epidemic of Dissolving Barriers"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-08-02",
+        "substack": "2026-08-02",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "identical"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-silent-epidemic-of-dissolving-barriers-a488db2c7afb",
+        "substack": "https://livingterrain.substack.com/p/the-silent-epidemic-of-dissolving-barriers-a488db2c7afb"
+      }
+    },
+    {
+      "essayId": "e28",
+      "slug": "the-way-was-greater-than-me",
+      "postId": "200304057",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Way Was Greater Than Me",
+        "substack": "The Way Was Greater Than Me"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-06-02",
+        "substack": "2026-06-02",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-way-was-greater-than-me",
+        "substack": "https://livingterrain.substack.com/p/the-way-was-greater-than-me"
+      }
+    },
+    {
+      "essayId": "e29",
+      "slug": "fragmentation-is-the-cost-of-symbolic-consciousness",
+      "postId": "199598660",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "Fragmentation Is the Cost of Symbolic Consciousness",
+        "substack": "Fragmentation Is the Cost of Symbolic Consciousness"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-05-28",
+        "substack": "2026-05-28",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/fragmentation-is-the-cost-of-symbolic",
+        "substack": "https://livingterrain.substack.com/p/fragmentation-is-the-cost-of-symbolic"
+      }
+    },
+    {
+      "essayId": "e30",
+      "slug": "structure-is-stabilized-rhythm-across-time",
+      "postId": "199597419",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "identical",
+        "atlas": "Structure Is Stabilized Rhythm Across Time",
+        "substack": "Structure Is Stabilized Rhythm Across Time"
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2026-05-27",
+        "substack": "2026-05-28",
+        "dayDelta": 1
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/structure-is-stabilized-rhythm-across",
+        "substack": "https://livingterrain.substack.com/p/structure-is-stabilized-rhythm-across"
+      }
+    },
+    {
+      "essayId": "e33",
+      "slug": "my-healing-journey-accidentally-turned-into-a-study-of-consciousness",
+      "postId": "197059884",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "identical",
+        "atlas": "My Healing Journey Accidentally Turned Into a Study of Consciousness",
+        "substack": "My Healing Journey Accidentally Turned Into a Study of Consciousness"
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2026-05-09",
+        "substack": "2026-05-10",
+        "dayDelta": 1
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/my-healing-journey-accidentally-turned",
+        "substack": "https://livingterrain.substack.com/p/my-healing-journey-accidentally-turned"
+      }
+    },
+    {
+      "essayId": "e34",
+      "slug": "the-collapse-of-internal-authority",
+      "postId": "197059434",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "identical",
+        "atlas": "The Collapse of Internal Authority",
+        "substack": "The Collapse of Internal Authority"
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2026-05-06",
+        "substack": "2026-05-10",
+        "dayDelta": 4
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-collapse-of-internal-authority",
+        "substack": "https://livingterrain.substack.com/p/the-collapse-of-internal-authority"
+      }
+    },
+    {
+      "essayId": "e41",
+      "slug": "uranus-entered-gemini-the-next-era-may-be-hard-on-the-human-nervous-syst",
+      "postId": "195660647",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "Uranus Entered Gemini: The Next Era May Be Hard on the Human Nervous System",
+        "substack": "Uranus Entered Gemini: The Next Era May Be Hard on the Human Nervous System"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-04-27",
+        "substack": "2026-04-27",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/uranus-entered-gemini-the-next-era",
+        "substack": "https://livingterrain.substack.com/p/uranus-entered-gemini-the-next-era"
+      }
+    },
+    {
+      "essayId": "e42",
+      "slug": "the-body-keeps-rhythm-because-reality-is-rhythmic",
+      "postId": "195660284",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Body Keeps Rhythm Because Reality Is Rhythmic",
+        "substack": "The Body Keeps Rhythm Because Reality Is Rhythmic"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-04-27",
+        "substack": "2026-04-27",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-body-keeps-rhythm-because-reality",
+        "substack": "https://livingterrain.substack.com/p/the-body-keeps-rhythm-because-reality"
+      }
+    },
+    {
+      "essayId": "e43",
+      "slug": "you-don-t-sound-human-enough-anymore",
+      "postId": "194967606",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "You Don’t Sound Human Enough Anymore",
+        "substack": "You Don’t Sound Human Enough Anymore"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-04-21",
+        "substack": "2026-04-21",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/you-dont-sound-human-enough-anymore",
+        "substack": "https://livingterrain.substack.com/p/you-dont-sound-human-enough-anymore"
+      }
+    },
+    {
+      "essayId": "e52",
+      "slug": "faithful-and-human",
+      "postId": "189261125",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "Faithful and Human",
+        "substack": "Faithful and Human"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-02-26",
+        "substack": "2026-02-26",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/faithful-and-human",
+        "substack": "https://livingterrain.substack.com/p/faithful-and-human"
+      }
+    },
+    {
+      "essayId": "e53",
+      "slug": "you-re-not-afraid-of-rejection-you-re-afraid-of-death",
+      "postId": "189260809",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "You’re Not Afraid of Rejection. You’re Afraid of Death.",
+        "substack": "You’re Not Afraid of Rejection. You’re Afraid of Death."
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-02-26",
+        "substack": "2026-02-26",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/youre-not-afraid-of-rejection-youre",
+        "substack": "https://livingterrain.substack.com/p/youre-not-afraid-of-rejection-youre"
+      }
+    },
+    {
+      "essayId": "e60",
+      "slug": "i-lost-my-innocence-a-few-years-ago",
+      "postId": "186992381",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "I Lost My Innocence a Few Years Ago",
+        "substack": "I Lost My Innocence a Few Years Ago"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-02-05",
+        "substack": "2026-02-05",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/i-lost-my-innocence-a-few-years-ago",
+        "substack": "https://livingterrain.substack.com/p/i-lost-my-innocence-a-few-years-ago"
+      }
+    },
+    {
+      "essayId": "e61",
+      "slug": "the-forgotten-structure-of-reality",
+      "postId": "212608353",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Forgotten Structure of Reality",
+        "substack": "The Forgotten Structure of Reality"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-08-16",
+        "substack": "2026-08-16",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "identical"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-forgotten-structure-of-reality-b140a93d9895",
+        "substack": "https://livingterrain.substack.com/p/the-forgotten-structure-of-reality-b140a93d9895"
+      }
+    },
+    {
+      "essayId": "e62",
+      "slug": "what-had-to-happen-for-this-to-exist",
+      "postId": "212608354",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "What Had to Happen for This to Exist?",
+        "substack": "What Had to Happen for This to Exist?"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-08-16",
+        "substack": "2026-08-16",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "identical"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/what-had-to-happen-for-this-to-exist-54a8ee94a4aa",
+        "substack": "https://livingterrain.substack.com/p/what-had-to-happen-for-this-to-exist-54a8ee94a4aa"
+      }
+    },
+    {
+      "essayId": "e63",
+      "slug": "this-is-not-the-end-of-corruption-this-is-the-end-of-innocence",
+      "postId": "186991690",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "This Is Not the End of Corruption. This Is the End of Innocence",
+        "substack": "This Is Not the End of Corruption. This Is the End of Innocence"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-02-05",
+        "substack": "2026-02-05",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/this-is-not-the-end-of-corruption",
+        "substack": "https://livingterrain.substack.com/p/this-is-not-the-end-of-corruption"
+      }
+    },
+    {
+      "essayId": "e69",
+      "slug": "the-normalization-problem",
+      "postId": "186127643",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "identical",
+        "atlas": "The Normalization Problem",
+        "substack": "The Normalization Problem"
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2026-01-30",
+        "substack": "2026-01-28",
+        "dayDelta": -2
+      },
+      "excerpt": {
+        "status": "identical"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-normalization-problem",
+        "substack": "https://livingterrain.substack.com/p/the-normalization-problem"
+      }
+    },
+    {
+      "essayId": "e72",
+      "slug": "eden-was-a-warning",
+      "postId": "186021970",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "Eden Was a Warning",
+        "substack": "Eden Was a Warning"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-01-27",
+        "substack": "2026-01-27",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/eden-was-a-warning",
+        "substack": "https://livingterrain.substack.com/p/eden-was-a-warning"
+      }
+    },
+    {
+      "essayId": "e73",
+      "slug": "i-don-t-write-self-help-i-write-orientation",
+      "postId": "185788721",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "I Don’t Write Self-Help. I Write Orientation.",
+        "substack": "I Don’t Write Self-Help. I Write Orientation."
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-01-26",
+        "substack": "2026-01-26",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/i-dont-write-self-help-i-write-orientation",
+        "substack": "https://livingterrain.substack.com/p/i-dont-write-self-help-i-write-orientation"
+      }
+    },
+    {
+      "essayId": "e75",
+      "slug": "writing-without-permission",
+      "postId": "185320184",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "Writing Without Permission",
+        "substack": "Writing Without Permission"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-01-21",
+        "substack": "2026-01-21",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/writing-without-permission",
+        "substack": "https://livingterrain.substack.com/p/writing-without-permission"
+      }
+    },
+    {
+      "essayId": "e76",
+      "slug": "i-stopped-explaining-myself-and-my-body-finally-exhaled",
+      "postId": "183240207",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "identical",
+        "atlas": "I Stopped Explaining Myself and My Body Finally Exhaled",
+        "substack": "I Stopped Explaining Myself and My Body Finally Exhaled"
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2026-01-17",
+        "substack": "2026-01-02",
+        "dayDelta": -15
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/i-stopped-explaining-myself-and-my",
+        "substack": "https://livingterrain.substack.com/p/i-stopped-explaining-myself-and-my"
+      }
+    },
+    {
+      "essayId": "e77",
+      "slug": "the-kingdom-of-god-is-a-regulated-nervous-system",
+      "postId": "183238219",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "identical",
+        "atlas": "The Kingdom of God Is a Regulated Nervous System",
+        "substack": "The Kingdom of God Is a Regulated Nervous System"
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2026-01-17",
+        "substack": "2026-01-02",
+        "dayDelta": -15
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-kingdom-of-god-is-a-regulated",
+        "substack": "https://livingterrain.substack.com/p/the-kingdom-of-god-is-a-regulated"
+      }
+    },
+    {
+      "essayId": "e79",
+      "slug": "before-the-word-became-law",
+      "postId": "184664931",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "Before the Word Became Law",
+        "substack": "Before the Word Became Law"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-01-15",
+        "substack": "2026-01-15",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/before-the-word-became-law",
+        "substack": "https://livingterrain.substack.com/p/before-the-word-became-law"
+      }
+    },
+    {
+      "essayId": "e80",
+      "slug": "when-meaning-arrives-too-fast",
+      "postId": "184664652",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "When Meaning Arrives Too Fast",
+        "substack": "When Meaning Arrives Too Fast"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-01-15",
+        "substack": "2026-01-15",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/when-meaning-arrives-too-fast",
+        "substack": "https://livingterrain.substack.com/p/when-meaning-arrives-too-fast"
+      }
+    },
+    {
+      "essayId": "e83",
+      "slug": "we-weren-t-eating-we-were-coping",
+      "postId": "184094170",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "formatting-only",
+        "atlas": "We Weren’t Eating — We Were Coping",
+        "substack": "We Weren’t Eating — We Were Coping"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-01-10",
+        "substack": "2026-01-10",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/we-werent-eating-we-were-coping",
+        "substack": "https://livingterrain.substack.com/p/we-werent-eating-we-were-coping"
+      }
+    },
+    {
+      "essayId": "e87",
+      "slug": "why-marijuana-feels-like-relief-in-a-world-that-won-t-let-you-rest",
+      "postId": "183167395",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "Why Marijuana Feels Like Relief in a World That Won’t Let You Rest",
+        "substack": "Why Marijuana Feels Like Relief in a World That Won’t Let You Rest"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-01-01",
+        "substack": "2026-01-01",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/why-marijuana-feels-like-relief-in",
+        "substack": "https://livingterrain.substack.com/p/why-marijuana-feels-like-relief-in"
+      }
+    },
+    {
+      "essayId": "e88",
+      "slug": "the-nervous-system-doesn-t-know-it-s-january",
+      "postId": "183146741",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Nervous System Doesn’t Know It’s January",
+        "substack": "The Nervous System Doesn’t Know It’s January"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2026-01-01",
+        "substack": "2026-01-01",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-nervous-system-doesnt-know-its",
+        "substack": "https://livingterrain.substack.com/p/the-nervous-system-doesnt-know-its"
+      }
+    },
+    {
+      "essayId": "e90",
+      "slug": "i-ve-been-writing-in-the-dark",
+      "postId": "182957094",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "identical",
+        "atlas": "I’ve Been Writing in the Dark",
+        "substack": "I’ve Been Writing in the Dark"
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2025-12-29",
+        "substack": "2025-12-30",
+        "dayDelta": 1
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/ive-been-writing-in-the-dark",
+        "substack": "https://livingterrain.substack.com/p/ive-been-writing-in-the-dark"
+      }
+    },
+    {
+      "essayId": "e91",
+      "slug": "noticing-patterns-isn-t-a-sin-forgetting-your-power-is",
+      "postId": "181240179",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "formatting-only",
+        "atlas": "Noticing Patterns Isn’t a Sin — Forgetting Your Power Is.",
+        "substack": "Noticing Patterns Isn't a Sin - Forgetting Your Power Is."
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2025-12-28",
+        "substack": "2025-12-10",
+        "dayDelta": -18
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/noticing-patterns-isnt-a-sin-forgetting",
+        "substack": "https://livingterrain.substack.com/p/noticing-patterns-isnt-a-sin-forgetting"
+      }
+    },
+    {
+      "essayId": "e93",
+      "slug": "nothing-is-new-only-remembered",
+      "postId": "181795113",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "Nothing Is New, Only Remembered",
+        "substack": "Nothing Is New, Only Remembered"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2025-12-16",
+        "substack": "2025-12-16",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/nothing-is-new-only-remembered",
+        "substack": "https://livingterrain.substack.com/p/nothing-is-new-only-remembered"
+      }
+    },
+    {
+      "essayId": "e94",
+      "slug": "my-father-saved-me-now-i-m-saving-the-lineage",
+      "postId": "180971335",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "formatting-only",
+        "atlas": "My Father Saved Me. Now I’m Saving the Lineage.",
+        "substack": "My Father Saved Me. Now I'm Saving the Lineage."
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2025-12-07",
+        "substack": "2025-12-07",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/my-father-saved-me-now-im-saving",
+        "substack": "https://livingterrain.substack.com/p/my-father-saved-me-now-im-saving"
+      }
+    },
+    {
+      "essayId": "e95",
+      "slug": "what-your-nervous-system-is-doing-leading-up-to-the-full-moon",
+      "postId": "180618839",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "What Your Nervous System Is Doing Leading Up to the Full Moon",
+        "substack": "What Your Nervous System Is Doing Leading Up to the Full Moon"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2025-12-03",
+        "substack": "2025-12-03",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/what-your-nervous-system-is-doing",
+        "substack": "https://livingterrain.substack.com/p/what-your-nervous-system-is-doing"
+      }
+    },
+    {
+      "essayId": "e97",
+      "slug": "the-opposite-side-rule",
+      "postId": "180457640",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "formatting-only",
+        "atlas": "⭐ **THE OPPOSITE-SIDE RULE:",
+        "substack": "⭐ THE OPPOSITE-SIDE RULE:"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2025-12-01",
+        "substack": "2025-12-01",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-opposite-side-rule",
+        "substack": "https://livingterrain.substack.com/p/the-opposite-side-rule"
+      }
+    },
+    {
+      "essayId": "e98",
+      "slug": "the-roman-system-the-divine-feminine-and-the-collapse-of-modern-health",
+      "postId": "180366937",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Roman System, the Divine Feminine, and the Collapse of Modern Health",
+        "substack": "The Roman System, the Divine Feminine, and the Collapse of Modern Health"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2025-12-01",
+        "substack": "2025-12-01",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-roman-system-the-divine-feminine",
+        "substack": "https://livingterrain.substack.com/p/the-roman-system-the-divine-feminine"
+      }
+    },
+    {
+      "essayId": "e99",
+      "slug": "the-decomposition-response",
+      "postId": "180255868",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "THE DECOMPOSITION RESPONSE",
+        "substack": "THE DECOMPOSITION RESPONSE"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2025-11-29",
+        "substack": "2025-11-29",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-decomposition-response",
+        "substack": "https://livingterrain.substack.com/p/the-decomposition-response"
+      }
+    },
+    {
+      "essayId": "e100",
+      "slug": "the-evolution-of-religions-why-every-age-has-its-messiahs",
+      "postId": "180060703",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Evolution of Religions & Why Every Age Has Its Messiahs",
+        "substack": "The Evolution of Religions & Why Every Age Has Its Messiahs"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2025-11-26",
+        "substack": "2025-11-26",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-evolution-of-religions-and-why",
+        "substack": "https://livingterrain.substack.com/p/the-evolution-of-religions-and-why"
+      }
+    },
+    {
+      "essayId": "e101",
+      "slug": "the-planetary-awakening",
+      "postId": "180056971",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "🌍 THE PLANETARY AWAKENING",
+        "substack": "🌍 THE PLANETARY AWAKENING"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2025-11-26",
+        "substack": "2025-11-26",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-planetary-awakening",
+        "substack": "https://livingterrain.substack.com/p/the-planetary-awakening"
+      }
+    },
+    {
+      "essayId": "e102",
+      "slug": "coming-online-the-shift-from-survival-mode-to-conscious-creation",
+      "postId": "178389301",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "identical",
+        "atlas": "Coming Online: The Shift from Survival Mode to Conscious Creation",
+        "substack": "Coming Online: The Shift from Survival Mode to Conscious Creation"
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2025-11-23",
+        "substack": "2025-11-09",
+        "dayDelta": -14
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/coming-online-the-shift-from-survival",
+        "substack": "https://livingterrain.substack.com/p/coming-online-the-shift-from-survival"
+      }
+    },
+    {
+      "essayId": "e103",
+      "slug": "parallel-lives-the-fire-and-the-feedback-loop",
+      "postId": "178177098",
+      "identityBasis": "reviewed-alias",
+      "assessment": "publication-evolution",
+      "title": {
+        "status": "identical",
+        "atlas": "Parallel Lives: The Fire and the Feedback Loop",
+        "substack": "Parallel Lives: The Fire and the Feedback Loop"
+      },
+      "date": {
+        "status": "different",
+        "atlas": "2025-11-23",
+        "substack": "2025-11-06",
+        "dayDelta": -17
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/parallel-lives-the-fire-and-the-feedback",
+        "substack": "https://livingterrain.substack.com/p/parallel-lives-the-fire-and-the-feedback"
+      }
+    },
+    {
+      "essayId": "e104",
+      "slug": "the-integration-wave",
+      "postId": "177841411",
+      "identityBasis": "atlas-url",
+      "assessment": "in-sync",
+      "title": {
+        "status": "identical",
+        "atlas": "The Integration Wave",
+        "substack": "The Integration Wave"
+      },
+      "date": {
+        "status": "identical",
+        "atlas": "2025-11-02",
+        "substack": "2025-11-02",
+        "dayDelta": 0
+      },
+      "excerpt": {
+        "status": "different"
+      },
+      "substackUrl": {
+        "status": "identical",
+        "atlas": "https://livingterrain.substack.com/p/the-integration-wave",
+        "substack": "https://livingterrain.substack.com/p/the-integration-wave"
+      }
+    }
+  ],
+  "pendingIdentityReviews": [
+    {
+      "atlasEssayId": "e66",
+      "registryEssayId": "substack-186514312",
+      "evidenceFor": [
+        "Same publication date (2026-02-01)",
+        "Substack slug \"the-signal-everyone-is-trying-to\" is the leading prefix of the Atlas title and slug"
+      ],
+      "evidenceAgainst": [
+        "Titles differ: \"The Signal Everyone Is Trying to Replace\" vs \"The Missing Signal Isn’t Metabolic\"",
+        "No shared URL or post ID"
+      ]
+    },
+    {
+      "atlasEssayId": "e92",
+      "registryEssayId": "substack-180506588",
+      "evidenceFor": [
+        "Substack title \"Chronic Illness Is a Paused Process\" is the leading prefix of the Atlas title",
+        "Substack slug \"chronic-illness-is-a-paused-process\" is the leading prefix of the Atlas slug"
+      ],
+      "evidenceAgainst": [
+        "Dates differ by 16 days (Substack 2025-12-02, Atlas 2025-12-18)",
+        "No shared URL or post ID"
+      ]
+    }
+  ]
+}

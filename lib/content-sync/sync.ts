@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { promisify, isDeepStrictEqual } from "node:util";
 import type { Essay } from "../content/types";
 import { parseSubstackFeed } from "./substack-feed";
+import { assertRouteStability, enrichFeedPostIds } from "./post-identity";
 import { resolveSubstackEssay } from "./resolve-essay";
 import {
   isPaidSubstackFieldNote,
@@ -10,6 +11,7 @@ import {
   validateSubstackPost,
   type StoredSubstackPost,
   type SubstackAlias,
+  type SubstackFeedPost,
   type SubstackPostRegistry,
 } from "./schema";
 
@@ -51,6 +53,7 @@ function validateRegistry(posts: StoredSubstackPost[]): void {
   const ids = new Set<string>();
   const essayIds = new Set<string>();
   const slugs = new Set<string>();
+  const postIds = new Set<string>();
   for (const post of posts) {
     const errors = validateSubstackPost(post);
     if (!post.essayId) errors.push("essayId is required");
@@ -60,10 +63,12 @@ function validateRegistry(posts: StoredSubstackPost[]): void {
     if (ids.has(key)) errors.push("source identity is duplicated");
     if (essayIds.has(post.essayId)) errors.push("essay identity is duplicated");
     if (slugs.has(post.essaySlug)) errors.push("essay slug is duplicated");
+    if (post.postId && postIds.has(post.postId)) errors.push("Substack post ID is duplicated");
     if (errors.length) throw new Error(`${post.title || "Untitled post"}: ${errors.join("; ")}`);
     ids.add(key);
     essayIds.add(post.essayId);
     slugs.add(post.essaySlug);
+    if (post.postId) postIds.add(post.postId);
   }
 }
 
@@ -73,12 +78,14 @@ export function syncSubstackRegistry(
   essays: Essay[],
   aliases: SubstackAlias[],
   generatedAt = new Date().toISOString(),
+  archivePosts: SubstackFeedPost[] = [],
 ): SyncResult {
   const parsed = parseSubstackFeed(xml);
   if (parsed.errors.length) {
     throw new Error(`RSS quarantine: ${parsed.errors.map((item) => `item ${item.index + 1}: ${item.errors.join(", ")}`).join(" | ")}`);
   }
   if (parsed.posts.length === 0) throw new Error("RSS feed contained no valid essay items");
+  const feedPosts = enrichFeedPostIds(parsed.posts, archivePosts);
 
   const next: StoredSubstackPost[] = registry.posts
     .filter((post) => !isPaidSubstackFieldNote(post))
@@ -90,7 +97,7 @@ export function syncSubstackRegistry(
   const updated: string[] = [];
   const skipped: string[] = [];
 
-  for (const post of parsed.posts) {
+  for (const post of feedPosts) {
     if (isPaidSubstackFieldNote(post)) {
       skipped.push(post.slug || post.title);
       continue;
@@ -103,6 +110,10 @@ export function syncSubstackRegistry(
     const knownIndex = next.findIndex((stored) => stored.essayId === resolution.essay?.id);
     if (knownIndex >= 0) {
       const known = next[knownIndex];
+      if (known.postId && post.postId && known.postId !== post.postId) {
+        throw new Error(`${post.title}: CONFLICT_REVIEW_REQUIRED — resolved to ${known.essayId}, whose Substack post ID ${known.postId} differs from ${post.postId}`);
+      }
+      const postId = known.postId ?? post.postId;
       const sourceChanged =
         normalizeSourceUrl(known.canonicalUrl) !== normalizeSourceUrl(post.canonicalUrl) ||
         normalizeSourceUrl(known.guid) !== normalizeSourceUrl(post.guid);
@@ -111,6 +122,7 @@ export function syncSubstackRegistry(
         : undefined;
       const candidate: StoredSubstackPost = {
         ...known,
+        ...(postId ? { postId } : {}),
         guid: post.guid,
         canonicalUrl: post.canonicalUrl,
         slug: post.slug,
@@ -142,6 +154,7 @@ export function syncSubstackRegistry(
 
   next.sort((a, b) => new Date(b.publishedTimestamp).getTime() - new Date(a.publishedTimestamp).getTime() || a.essayId.localeCompare(b.essayId));
   validateRegistry(next);
+  assertRouteStability(registry.posts.filter((post) => !isPaidSubstackFieldNote(post)), next);
   const changed = !isDeepStrictEqual(next, registry.posts);
   return {
     changed,

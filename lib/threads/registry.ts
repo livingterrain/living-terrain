@@ -164,6 +164,22 @@ export function findUnknownEssayThreadSlugs(
   );
 }
 
+/** Thread assignments are authored editorial metadata; an unresolved slug fails instead of being dropped. */
+export function assertEssayThreadSlugsResolve(
+  registry: EssayThreadRegistry,
+  renderedSlugs: Iterable<string>,
+): void {
+  const unknown = findUnknownEssayThreadSlugs(registry, renderedSlugs);
+  if (unknown.length > 0) {
+    throw new Error(
+      [
+        `${unknown.length} Thread assignment(s) point to no rendered essay:`,
+        ...unknown.map((item) => `  - ${item.message}`),
+      ].join("\n"),
+    );
+  }
+}
+
 export function essayThreadMapFromRegistry(
   registry: EssayThreadRegistry,
 ): Map<string, ThreadId[]> {
