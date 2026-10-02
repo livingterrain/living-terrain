@@ -1,6 +1,6 @@
 # The Evolutionary Spiral — Phase 0 Canon & Copy
 
-**Status:** Revised proposed specification — awaiting explicit approval before Phase 1  
+**Status:** Approved canonical intellectual specification (2026-10-02). Phase 1 static page authorized separately.  
 **Role:** Canonical intellectual specification for The Evolutionary Spiral  
 **Not:** UI brief · Implementation plan · Atlas relationship inventory · Content CMS  
 **Date:** 2026-10-02 (revised)  
