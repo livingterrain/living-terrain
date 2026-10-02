@@ -476,16 +476,28 @@
 /* ── Helix figure ── */
 
 .spiral-helix {
+  width: 100%;
+}
+
+.spiral-helix__canvas {
   position: relative;
   width: 100%;
-  min-height: min(78vh, 42rem);
+  /* Tall instrument without distorting SVG hit geometry */
+  max-width: 34rem;
+  margin-inline: auto;
+  aspect-ratio: 100 / 168;
+}
+
+@media (min-width: 960px) {
+  .spiral-helix__canvas {
+    max-width: none;
+  }
 }
 
 .spiral-helix__svg {
   display: block;
   width: 100%;
-  height: auto;
-  min-height: min(78vh, 42rem);
+  height: 100%;
   overflow: visible;
 }
 
@@ -724,12 +736,10 @@
 }
 
 @media (max-width: 959px) {
-  .spiral-helix {
-    min-height: min(82vh, 36rem);
-  }
-
-  .spiral-helix__svg {
-    min-height: min(82vh, 36rem);
+  .spiral-helix__canvas {
+    max-width: min(100%, 28rem);
+    /* Prefer tall presence on phones without breaking hit alignment */
+    width: min(100%, calc(82vh * 100 / 168));
   }
 }
 

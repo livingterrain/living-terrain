@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useMemo, type KeyboardEvent } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useId, useMemo, useState, type KeyboardEvent } from "react";
+import { motion } from "framer-motion";
 import {
   SPIRAL_ASCENT_CAPTION,
   SPIRAL_VIEWBOX,
@@ -16,6 +16,19 @@ import {
   type SpiralSequenceStop,
 } from "@/lib/evolutionary-spiral";
 import { cn } from "@/lib/utils";
+
+/** Local probe — defaults to reduced until measured (no ambient flash). */
+function useSpiralReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return reduced;
+}
 
 type Props = {
   sequence: readonly SpiralSequenceStop[];
@@ -36,7 +49,7 @@ export function SpiralHelix({
   panelId,
 }: Props) {
   const reactId = useId();
-  const reduced = useReducedMotion() ?? false;
+  const reduced = useSpiralReducedMotion();
   const nodes = useMemo(() => buildSpiralNodes(sequence), [sequence]);
   const paths = useMemo(() => currentPaths(), []);
   const selectedIndex = Math.max(
@@ -74,9 +87,11 @@ export function SpiralHelix({
 
   return (
     <div className="spiral-helix">
+      <div className="spiral-helix__canvas">
       <svg
         className="spiral-helix__svg"
         viewBox={`0 0 ${SPIRAL_VIEWBOX.width} ${SPIRAL_VIEWBOX.height}`}
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-labelledby={`${reactId}-title ${reactId}-desc`}
       >
@@ -235,8 +250,9 @@ export function SpiralHelix({
           );
         })}
       </div>
+      </div>
 
-      <div className="spiral-helix__legend" aria-hidden={false}>
+      <div className="spiral-helix__legend">
         <p className="spiral-helix__legend-row">
           <span className="spiral-helix__swatch spiral-helix__swatch--continuity" />
           <span>Continuity</span>
