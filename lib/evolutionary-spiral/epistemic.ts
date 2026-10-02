@@ -26,4 +26,3 @@ export function epistemicLabel(kind: SpiralEpistemicKind): string {
     SPIRAL_EPISTEMIC_CATEGORIES.find((c) => c.id === kind)?.label ?? kind
   );
 }
-)

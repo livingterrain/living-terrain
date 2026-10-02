@@ -25,4 +25,3 @@ export const SPIRAL_COPY: SpiralFrameworkCopy = {
   emergenceAgainCue:
     "A further Emergence from altered conditions—not a return to the first beginning.",
 };
-)

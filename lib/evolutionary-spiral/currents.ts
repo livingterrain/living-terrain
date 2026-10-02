@@ -31,4 +31,3 @@ export const SPIRAL_CURRENTS: readonly SpiralCurrent[] = [
     ],
   },
 ] as const;
-)

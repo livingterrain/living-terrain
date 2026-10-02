@@ -156,4 +156,3 @@ export const SPIRAL_SEQUENCE: readonly SpiralSequenceStop[] = [
 export function getSpiralStage(id: string): SpiralStage | undefined {
   return SPIRAL_STAGES.find((s) => s.id === id);
 }
-)

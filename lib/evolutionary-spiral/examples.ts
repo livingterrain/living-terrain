@@ -97,4 +97,3 @@ export const SPIRAL_EXAMPLES: readonly SpiralExample[] = [
 export function examplesForStage(stageId: string): SpiralExample[] {
   return SPIRAL_EXAMPLES.filter((e) => e.stageId === stageId);
 }
-)

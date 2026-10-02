@@ -148,4 +148,3 @@ export type SpiralFrameworkCopy = {
   evolutionaryClarification: string;
   emergenceAgainCue: string;
 };
-)

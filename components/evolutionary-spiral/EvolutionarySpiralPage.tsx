@@ -268,4 +268,3 @@ export function EvolutionarySpiralPage() {
     </Room>
   );
 }
-)
