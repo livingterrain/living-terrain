@@ -1,6 +1,6 @@
 /**
- * Evolutionary Spiral — Phase 1 static page.
- * Room-local atmosphere; no helix visualization yet.
+ * Evolutionary Spiral — Phase 1 foundation + Phase 2 instrument.
+ * Room-local atmosphere. Helix is SVG — no DNA grammar.
  */
 
 .spiral-page {
@@ -355,8 +355,390 @@
   border-top: 1px solid var(--spiral-rule);
 }
 
+.spiral-page__section--compact {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+}
+
+.spiral-page__currents--compact {
+  margin-top: 1.1rem;
+  gap: 1.25rem;
+}
+
+.spiral-page__currents--compact .spiral-page__current-name {
+  font-size: 1.1rem;
+}
+
+.spiral-page__epistemic--compact {
+  margin-top: 1rem;
+  gap: 0.85rem;
+}
+
+.spiral-page__instrument-wrap {
+  max-width: 72rem;
+}
+
+.spiral-page__fallback {
+  margin-top: 3rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--spiral-rule);
+  opacity: 0.78;
+}
+
+.spiral-page__fallback-defs {
+  margin-top: 1.5rem;
+}
+
+/* ── Experience layout ── */
+
+.spiral-experience {
+  margin-top: 0.5rem;
+}
+
+.spiral-experience__head {
+  max-width: 38rem;
+  margin-bottom: 1.25rem;
+}
+
+.spiral-experience__stage {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .spiral-experience__stage {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 2.5rem 2.75rem;
+  }
+}
+
+/* ── Stage rail ── */
+
+.spiral-rail {
+  margin-top: 0.25rem;
+}
+
+.spiral-rail__track {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding: 0.25rem 0 0.5rem;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.spiral-rail__btn {
+  flex: 0 0 auto;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--color-rule) 55%, transparent);
+  background: transparent;
+  color: var(--color-charcoal-faint);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  cursor: pointer;
+}
+
+.spiral-rail__btn:hover {
+  color: var(--color-charcoal-muted);
+  border-color: color-mix(in srgb, var(--color-gold-muted) 40%, transparent);
+}
+
+.spiral-rail__btn:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
+  outline-offset: 3px;
+}
+
+.spiral-rail__btn--selected {
+  color: var(--color-ivory);
+  border-color: color-mix(in srgb, var(--color-gold-muted) 70%, transparent);
+  background: color-mix(in srgb, var(--color-gold) 6%, transparent);
+}
+
+.spiral-rail__n {
+  font-family: var(--font-body);
+  font-size: 0.5625rem;
+  letter-spacing: 0.14em;
+}
+
+.spiral-rail__name {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  line-height: 1.1;
+}
+
+/* ── Helix figure ── */
+
+.spiral-helix {
+  position: relative;
+  width: 100%;
+  min-height: min(78vh, 42rem);
+}
+
+.spiral-helix__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: min(78vh, 42rem);
+  overflow: visible;
+}
+
+.spiral-helix__axis {
+  stroke: color-mix(in srgb, var(--color-charcoal-faint) 55%, transparent);
+  stroke-width: 0.35;
+  stroke-linecap: round;
+}
+
+.spiral-helix__current {
+  stroke-width: 0.85;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.spiral-helix__current--continuity {
+  stroke: color-mix(in srgb, var(--color-ivory) 55%, #adb6c4);
+}
+
+.spiral-helix__current--transformation {
+  stroke: color-mix(in srgb, var(--color-gold-muted) 75%, #b8a478);
+  stroke-dasharray: 2.4 1.8;
+}
+
+.spiral-helix__currents--ambient .spiral-helix__current {
+  animation: spiral-current-breath 22s var(--ease-breath, ease-in-out) infinite;
+}
+
+.spiral-helix__currents--ambient .spiral-helix__current--transformation {
+  animation-delay: -7s;
+}
+
+@keyframes spiral-current-breath {
+  0%,
+  100% {
+    opacity: 0.48;
+  }
+  50% {
+    opacity: 0.62;
+  }
+}
+
+.spiral-helix__wake-path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-ivory) 28%, transparent);
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  opacity: 0.22;
+  filter: blur(0.35px);
+}
+
+.spiral-helix__wake-path--trans {
+  stroke: color-mix(in srgb, var(--color-gold-muted) 32%, transparent);
+  stroke-dasharray: 2.4 1.8;
+}
+
+.spiral-helix__local-axis {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-gold) 55%, transparent);
+  stroke-width: 0.7;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+
+.spiral-helix__local-arc {
+  fill: none;
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  opacity: 0.95;
+}
+
+.spiral-helix__local-arc--continuity {
+  stroke: var(--color-ivory);
+}
+
+.spiral-helix__local-arc--transformation {
+  stroke: var(--color-gold-muted);
+  stroke-dasharray: 2.4 1.8;
+}
+
+.spiral-helix__node-dot {
+  fill: color-mix(in srgb, var(--color-charcoal-muted) 70%, #8490a4);
+  stroke: color-mix(in srgb, var(--color-space) 40%, transparent);
+  stroke-width: 0.35;
+}
+
+.spiral-helix__node-dot--selected {
+  fill: var(--color-ivory);
+  stroke: color-mix(in srgb, var(--color-gold) 65%, transparent);
+  stroke-width: 0.45;
+}
+
+.spiral-helix__node-dot--again:not(.spiral-helix__node-dot--selected) {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-gold-muted) 70%, transparent);
+  stroke-width: 0.55;
+}
+
+.spiral-helix__label {
+  fill: color-mix(in srgb, var(--color-charcoal-faint) 90%, transparent);
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 3.1px;
+  letter-spacing: 0.02em;
+}
+
+.spiral-helix__label--selected {
+  fill: var(--color-ivory);
+}
+
+.spiral-helix__hits {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.spiral-helix__hit {
+  position: absolute;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-left: -1.375rem;
+  margin-top: -1.375rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.spiral-helix__hit:hover {
+  background: color-mix(in srgb, var(--color-ivory) 5%, transparent);
+}
+
+.spiral-helix__hit:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-gold) 35%, transparent);
+}
+
+.spiral-helix__hit--selected {
+  background: color-mix(in srgb, var(--color-gold) 8%, transparent);
+}
+
+.spiral-helix__legend {
+  margin-top: 0.75rem;
+  max-width: 28rem;
+}
+
+.spiral-helix__legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-helix__swatch {
+  width: 1.35rem;
+  height: 2px;
+  display: inline-block;
+}
+
+.spiral-helix__swatch--continuity {
+  background: color-mix(in srgb, var(--color-ivory) 55%, #adb6c4);
+}
+
+.spiral-helix__swatch--transformation {
+  background: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-gold-muted) 80%, #b8a478) 0 6px,
+    transparent 6px 10px
+  );
+}
+
+.spiral-helix__caption {
+  margin-top: 0.65rem;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-charcoal-faint);
+}
+
+/* ── Selected panel ── */
+
+.spiral-panel {
+  padding: 0.25rem 0 0;
+  max-width: 36rem;
+}
+
+@media (min-width: 960px) {
+  .spiral-panel {
+    position: sticky;
+    top: 5.5rem;
+    padding-top: 0.5rem;
+  }
+}
+
+.spiral-panel__folio {
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-panel__title {
+  margin-top: 0.45rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2vw, 1.65rem);
+  color: var(--color-ivory);
+  font-weight: 400;
+}
+
+.spiral-panel__whisper {
+  margin-top: 0.75rem;
+  font-size: 0.975rem;
+  line-height: 1.55;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-panel__again {
+  margin-top: 0.85rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-gold-muted);
+}
+
+.spiral-panel__def {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-charcoal);
+}
+
+.spiral-panel__examples {
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 959px) {
+  .spiral-helix {
+    min-height: min(82vh, 36rem);
+  }
+
+  .spiral-helix__svg {
+    min-height: min(82vh, 36rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .spiral-page * {
     transition: none !important;
+  }
+
+  .spiral-helix__currents--ambient .spiral-helix__current {
+    animation: none !important;
   }
 }

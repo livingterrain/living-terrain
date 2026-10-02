@@ -2,26 +2,27 @@ import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import {
+  SPIRAL_COPY,
+  SPIRAL_CURRENTS,
+  SPIRAL_EPISTEMIC_CATEGORIES,
+  SPIRAL_SEQUENCE,
+  SPIRAL_STAGES,
   examplesForStage,
   getEvolutionarySpiral,
   getSpiralDomain,
   getSpiralStage,
   epistemicLabel,
 } from "@/lib/evolutionary-spiral";
+import { SpiralHelixExperience } from "./SpiralHelixExperience";
 import "./evolutionary-spiral.css";
 
 /**
- * Phase 1 — static semantic foundation.
- * No helix visualization. Content is readable without client JS.
+ * Evolutionary Spiral page — Phase 2 instrument + compressed framing.
+ * Phase 1 data/canon preserved. Helix is the primary sequence experience.
+ * Semantic no-JS fallback retained below the client island.
  */
 export function EvolutionarySpiralPage() {
-  const {
-    copy,
-    stages,
-    sequence,
-    currents,
-    epistemicCategories,
-  } = getEvolutionarySpiral();
+  const { copy } = getEvolutionarySpiral();
 
   return (
     <Room kind="atlas">
@@ -36,14 +37,12 @@ export function EvolutionarySpiralPage() {
       <section className="spiral-page pb-24 pt-0 sm:pb-32">
         <Container narrow>
           <div className="spiral-page__intro type-body">
-            {copy.visitorThesis.map((paragraph) => (
-              <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-            ))}
+            <p>{copy.visitorThesis[0]}</p>
+            <p>{copy.visitorThesis[1]}</p>
             <p>
-              The Evolutionary Spiral begins from that observation.
+              The Evolutionary Spiral begins from that observation.{" "}
+              {copy.evolutionaryClarification}
             </p>
-            <p>{copy.evolutionaryClarification}</p>
-            <p className="text-charcoal-muted">{copy.oneSentenceDefinition}</p>
           </div>
 
           <div className="spiral-page__question">
@@ -52,46 +51,46 @@ export function EvolutionarySpiralPage() {
           </div>
 
           <p className="spiral-page__shape">{copy.shapeSentence}</p>
-          <p className="spiral-page__section-lead mt-4">{copy.ascentNote}</p>
+        </Container>
 
-          {/* Currents */}
-          <section className="spiral-page__section" aria-labelledby="spiral-currents">
+        {/* Wider band for the instrument */}
+        <Container className="spiral-page__instrument-wrap mt-10 sm:mt-14">
+          <SpiralHelixExperience />
+        </Container>
+
+        <Container narrow>
+          {/* Compressed currents + epistemic — legend-scale, not a second lecture */}
+          <section
+            className="spiral-page__section spiral-page__section--compact"
+            aria-labelledby="spiral-currents"
+          >
             <h2 id="spiral-currents" className="spiral-page__section-title">
               Two currents
             </h2>
             <p className="spiral-page__section-lead">
-              Continuity and Transformation move through the same developmental
-              sequence. They are not enemies or a simple binary. The Spiral
-              examines their tension and interaction over time.
+              Continuity and Transformation move together through the same
+              sequence — simultaneous, interdependent, equal in weight.{" "}
+              {SPIRAL_COPY.interactionTendency}
             </p>
-            <p className="spiral-page__section-lead">{copy.interactionTendency}</p>
-            <div className="spiral-page__currents">
-              {currents.map((current) => (
+            <div className="spiral-page__currents spiral-page__currents--compact">
+              {SPIRAL_CURRENTS.map((current) => (
                 <article key={current.id}>
                   <h3 className="spiral-page__current-name">{current.name}</h3>
                   <p className="spiral-page__current-def">{current.definition}</p>
-                  <ul className="spiral-page__qualities" aria-label={`${current.name} qualities`}>
-                    {current.qualities.map((q) => (
-                      <li key={q}>{q}</li>
-                    ))}
-                  </ul>
                 </article>
               ))}
             </div>
           </section>
 
-          {/* Epistemic key */}
-          <section className="spiral-page__section" aria-labelledby="spiral-epistemic">
+          <section
+            className="spiral-page__section spiral-page__section--compact"
+            aria-labelledby="spiral-epistemic"
+          >
             <h2 id="spiral-epistemic" className="spiral-page__section-title">
               Ways of knowing
             </h2>
-            <p className="spiral-page__section-lead">
-              Examples may come from different languages of description. Their
-              evidentiary status is not equivalent. Each example names how it
-              knows.
-            </p>
-            <ul className="spiral-page__epistemic">
-              {epistemicCategories.map((cat) => (
+            <ul className="spiral-page__epistemic spiral-page__epistemic--compact">
+              {SPIRAL_EPISTEMIC_CATEGORIES.map((cat) => (
                 <li key={cat.id}>
                   <span className="spiral-page__epistemic-label">{cat.label}</span>
                   <p className="spiral-page__epistemic-def">{cat.definition}</p>
@@ -103,17 +102,41 @@ export function EvolutionarySpiralPage() {
             </p>
           </section>
 
-          {/* Sequence overview */}
-          <section className="spiral-page__section" aria-labelledby="spiral-sequence">
-            <h2 id="spiral-sequence" className="spiral-page__section-title">
-              Developmental sequence
+          <section
+            className="spiral-page__section spiral-page__section--compact"
+            aria-labelledby="spiral-cycle"
+          >
+            <h2 id="spiral-cycle" className="spiral-page__section-title">
+              Recurrence with history
+            </h2>
+            <div className="spiral-page__cycle">
+              <p className="spiral-page__cycle-flow">
+                Emergence¹ → … → Renewal → Emergence² → …
+              </p>
+              <p>
+                Emergence again is the same stage-kind as the first Emergence,
+                at a later turn. Recurrence is not reset. Ascent marks changed
+                conditions, not guaranteed improvement.
+              </p>
+              <p>{copy.shapeSentence}</p>
+            </div>
+          </section>
+
+          {/* Semantic / no-JS fallback — not a second interactive model */}
+          <section
+            className="spiral-page__fallback"
+            aria-labelledby="spiral-fallback"
+          >
+            <h2 id="spiral-fallback" className="spiral-page__section-title">
+              Stages in sequence
             </h2>
             <p className="spiral-page__section-lead">
-              Nine stages, then Emergence again—same stage-kind, later turn of
-              the helix. Recurrence with history, not identical return.
+              A readable sequence with definitions. Prefer the instrument above
+              when available.
             </p>
+
             <ol className="spiral-page__sequence">
-              {sequence.map((stop) => {
+              {SPIRAL_SEQUENCE.map((stop) => {
                 const stage = getSpiralStage(stop.stageId);
                 const name = stop.labelOverride ?? stage?.name ?? stop.stageId;
                 const isAgain = stop.cycleIndex > 0;
@@ -131,9 +154,9 @@ export function EvolutionarySpiralPage() {
                     </span>
                     <div>
                       <span className="spiral-page__sequence-name">{name}</span>
-                      {isAgain && (
+                      {stage && (
                         <span className="spiral-page__sequence-note">
-                          {copy.emergenceAgainCue} Cycle turn {stop.cycleIndex + 1}.
+                          {stage.whisper}
                         </span>
                       )}
                     </div>
@@ -141,21 +164,9 @@ export function EvolutionarySpiralPage() {
                 );
               })}
             </ol>
-          </section>
 
-          {/* Stages with definitions + sparse examples */}
-          <section className="spiral-page__section" aria-labelledby="spiral-stages">
-            <h2 id="spiral-stages" className="spiral-page__section-title">
-              Stages
-            </h2>
-            <p className="spiral-page__section-lead">
-              Each stage holds a short whisper and a fuller definition. Open a
-              stage to read the definition and any seeded examples. Coverage is
-              intentionally sparse.
-            </p>
-
-            <div className="spiral-page__stages">
-              {stages.map((stage) => {
+            <div className="spiral-page__fallback-defs">
+              {SPIRAL_STAGES.map((stage) => {
                 const examples = examplesForStage(stage.id);
                 return (
                   <details key={stage.id} className="spiral-page__stage">
@@ -167,15 +178,11 @@ export function EvolutionarySpiralPage() {
                           </span>
                           {stage.name}
                         </span>
-                        <span className="spiral-page__stage-toggle" aria-hidden>
-                          Definition
-                        </span>
                       </div>
                       <p className="spiral-page__stage-whisper">{stage.whisper}</p>
                     </summary>
                     <div className="spiral-page__stage-body">
                       <p className="spiral-page__stage-def">{stage.definition}</p>
-
                       {examples.length > 0 && (
                         <div className="spiral-page__examples">
                           {examples.map((example) => {
@@ -199,13 +206,6 @@ export function EvolutionarySpiralPage() {
                                 <p className="spiral-page__example-body">
                                   {example.body}
                                 </p>
-                                {example.comparisonPair && (
-                                  <p className="spiral-page__example-pair">
-                                    {example.comparisonPair.left}
-                                    {" ↔ "}
-                                    {example.comparisonPair.right}
-                                  </p>
-                                )}
                               </article>
                             );
                           })}
@@ -215,43 +215,6 @@ export function EvolutionarySpiralPage() {
                   </details>
                 );
               })}
-            </div>
-          </section>
-
-          {/* Emergence¹ → Renewal → Emergence² */}
-          <section className="spiral-page__section" aria-labelledby="spiral-cycle">
-            <h2 id="spiral-cycle" className="spiral-page__section-title">
-              Recurrence with history
-            </h2>
-            <div className="spiral-page__cycle">
-              <p className="spiral-page__cycle-flow">
-                Emergence¹ → … → Renewal → Emergence² → …
-              </p>
-              <p>
-                <strong className="font-heading font-normal text-ivory">
-                  Integration
-                </strong>{" "}
-                — reorganized elements have become coherent enough to function
-                together.
-              </p>
-              <p>
-                <strong className="font-heading font-normal text-ivory">
-                  Renewal
-                </strong>{" "}
-                — the reorganized system has stabilized sufficiently to continue
-                forward with altered capacity.
-              </p>
-              <p>
-                <strong className="font-heading font-normal text-ivory">
-                  Emergence again
-                </strong>{" "}
-                — a genuinely new pattern, possibility, organization, or level
-                becomes discernible from the conditions produced by the prior
-                cycle. Something is now possible that was not available in the
-                same way at the first Emergence—not because the system is
-                guaranteed “better,” but because history has accumulated.
-              </p>
-              <p>{copy.shapeSentence}</p>
             </div>
           </section>
 

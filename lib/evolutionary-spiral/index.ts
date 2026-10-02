@@ -39,6 +39,26 @@ export { SPIRAL_COPY } from "./copy";
 
 export { SPIRAL_EXAMPLES, examplesForStage } from "./examples";
 
+export {
+  SPIRAL_ASCENT_CAPTION,
+  SPIRAL_DEFAULT_OCCURRENCE_ID,
+  SPIRAL_GEOM,
+  SPIRAL_VIEWBOX,
+  arcWindowForIndex,
+  axisPoint,
+  buildSpiralNodes,
+  continuityPoint,
+  currentPaths,
+  displayNameForStop,
+  localArcPath,
+  localAxisPath,
+  nodeHitStyle,
+  tForIndex,
+  transformationPoint,
+} from "./geometry";
+
+export type { SpiralNodeGeometry, SpiralPoint } from "./geometry";
+
 import { SPIRAL_COPY } from "./copy";
 import { SPIRAL_CURRENTS } from "./currents";
 import { SPIRAL_DOMAINS } from "./domains";
@@ -46,7 +66,7 @@ import { SPIRAL_EPISTEMIC_CATEGORIES } from "./epistemic";
 import { SPIRAL_EXAMPLES } from "./examples";
 import { SPIRAL_SEQUENCE, SPIRAL_STAGES } from "./stages";
 
-/** Aggregated read model for the Phase 1 page. */
+/** Aggregated read model for the Spiral page. */
 export function getEvolutionarySpiral() {
   return {
     copy: SPIRAL_COPY,
