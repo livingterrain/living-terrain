@@ -28,6 +28,13 @@ export const CANONICAL_OBJECT_TYPES = [
    * Excerpt text stays in lib/atlas-v1. The pack SOURCED_FROM a real essay/book.
    */
   "EVIDENCE",
+  /**
+   * Interactive or structured conceptual instruments (Models / Instruments).
+   * Not a fourth primary room. Not a Territory, Thread, Chamber, Evidence,
+   * or Essay. Relationships are authored, never inferred from resemblance.
+   * Internal stage/node systems (e.g. Spiral stages) stay in the model module.
+   */
+  "MODEL",
 ] as const;
 
 export type CanonicalObjectType = (typeof CANONICAL_OBJECT_TYPES)[number];

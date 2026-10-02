@@ -6,6 +6,10 @@
  *
  * Does not add relationships. Does not change journey order.
  * Local V1 files remain presentation metadata (excerpts, fragments, sequence).
+ *
+ * MODEL objects are canonical but not Atlas journey nodes. They are omitted
+ * from this view unless a future authored UI explicitly projects them as
+ * Models — never as Territory, Thread, Chamber, Evidence, or Essay.
  */
 
 import {

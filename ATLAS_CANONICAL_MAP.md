@@ -303,12 +303,16 @@ These should eventually converge with continents and V1 packs — not become a p
 
 ## VI. Models
 
+Models / Instruments are a distinct class of authored intellectual object (`CanonicalObjectType: MODEL` in `lib/canonical`). They are **not** a fourth primary room beside Atlas, Shelves, and Observatory. They are interactive or structured conceptual instruments that may sit under/beside Living Terrain and may later be discoverable through Atlas, Chambers, the homepage, or a dedicated models surface.
+
+**Relationship rule:** Models are canonical, but their relationships are **authored, not inferred**. Conceptual resemblance to a Territory, Thread, Chamber, Essay, Evidence pack, Concept, or another Model is not sufficient to create a canonical bond.
+
 | Model | Status | Belongs beneath |
 |---|---|---|
-| Adaptation loop (Signal → Appraisal → Adaptation → Perception → Identity) | Implemented — Biology of Becoming chamber | Embodiment, Adaptation, Perception, Identity |
+| Adaptation loop (Signal → Appraisal → Adaptation → Perception → Identity) | Implemented — Biology of Becoming chamber (Figure 01). Not yet a canonical MODEL identity (chamber figure; distinct from CONCEPT `adaptation`) | Embodiment, Adaptation, Perception, Identity |
 | Residence (Protection → Habit → Identity) | Implemented — Biology of Becoming chamber | Identity, Embodiment |
 | Reconstruction (Evidence → Embodiment → Becoming) | Implemented — Second Birth chamber | Adaptation, Embodiment, Meaning |
-| Evolutionary Spiral (Emergence → … → Renewal → Emergence again) | Implemented — interactive helix on `/evolutionary-spiral` (Phase 2) | Continuity ↔ Transformation; living systems across cycles (no Territory/Thread/essay bonds inferred) |
+| Evolutionary Spiral (Emergence → … → Renewal → Emergence again) | Implemented — interactive helix on `/evolutionary-spiral` (Phase 2); registered canonical MODEL `evolutionary-spiral` with zero relations | Continuity ↔ Transformation; living systems across cycles (no Territory/Thread/essay bonds inferred) |
 | Feedback loop (action → consequence → return) | **Future opportunity** | Feedback, Relationship |
 | Known vs consumed | **Future opportunity** | Technology / Information, Identity |
 | Demand → recovery → adaptation | **Future opportunity** | Maintenance Cost, Adaptation |

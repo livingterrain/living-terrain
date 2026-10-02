@@ -4,6 +4,10 @@
  * /atlas journey reads a snapshot from lib/canonical/atlas-view.ts.
  * It does not import this barrel from the client Void path.
  *
+ * MODEL objects are registered identities only. Atlas views do not project
+ * them as Territories, Threads, Chambers, Evidence, or Essays. Relations
+ * involving Models must be authored explicitly — never inferred.
+ *
  * Legacy / non-canonical (still live elsewhere, still not Atlas truth):
  * - lib/atlas/data.ts connections
  * - lib/content-import/connections.ts generateEssayConnections
@@ -38,6 +42,8 @@ export {
   listCanonicalObjects,
   requireCanonicalObject,
 } from "./objects";
+
+export { CANONICAL_MODELS } from "./models";
 
 export {
   CANONICAL_RELATIONS,

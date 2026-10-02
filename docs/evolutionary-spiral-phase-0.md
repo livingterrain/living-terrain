@@ -303,7 +303,7 @@ Preserve the existing **Adaptation Loop** unchanged.
 
 | | Adaptation Loop | Evolutionary Spiral |
 |---|---|---|
-| **Where it lives today** | Biology of Becoming chamber (Figure 01) | Proposed signature model (not yet built) |
+| **Where it lives today** | Biology of Becoming chamber (Figure 01) | Implemented Phase 2 — interactive helix on `/evolutionary-spiral` (canonical MODEL; no Territory/Thread/essay bonds) |
 | **Sequence** | Signal → Appraisal → Adaptation → Perception → Identity | Emergence → … → Renewal → Emergence again |
 | **Scale** | Local organism-level appraisal / adaptation cycle | Broader cross-domain systems framework of continuity, transformation, accumulated history, and recurring organization across cycles and scales |
 | **Shape metaphor** | Loop with feedback into appraisal | Ascending helix (recurrence with history) |
@@ -486,7 +486,7 @@ Phase 1 (route shell, data skeleton, static page without helix) must not begin u
 
 After approval, and only when directed:
 
-- optional one-line Models entry in `ATLAS_CANONICAL_MAP.md` (`specified / not yet built`)
+- Models entry in `ATLAS_CANONICAL_MAP.md` and canonical MODEL registration (`evolutionary-spiral`) — Phase 2 + Phase M0 complete
 - then Phase 1 may be authorized separately
 
 **Approval checklist:**

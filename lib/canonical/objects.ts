@@ -10,6 +10,8 @@
  * - fn1–fn5 field notes
  * - visitor observations
  * - quotations
+ * - Adaptation Loop (chamber Figure 01 — identity ambiguous; see models.ts)
+ * - Spiral stage / occurrence nodes (internal to the Spiral module)
  */
 
 import { ATLAS_DATA } from "@/lib/atlas/data";
@@ -26,6 +28,7 @@ import {
   getVisualMapCollections,
   plateHref,
 } from "@/lib/visual-maps";
+import { CANONICAL_MODELS } from "./models";
 import type { CanonicalObject } from "./types";
 
 const ATLAS_CONTENT_MODULE = "lib/atlas/data.ts";
@@ -165,6 +168,10 @@ function buildRegistry(): CanonicalObject[] {
       visibility: "public",
       ...(sourceObjectId ? { sourceObjectId } : {}),
     });
+  }
+
+  for (const model of CANONICAL_MODELS) {
+    objects.push({ ...model });
   }
 
   return objects;
