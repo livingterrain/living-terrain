@@ -42,6 +42,9 @@ assert.equal(counts.CHAMBER, 7);
 assert.equal(counts.CONCEPT, 10, "Atlas V1 concepts only");
 assert.equal(counts.QUESTION, 7, "Atlas V1 questions only");
 assert.equal(counts.EVIDENCE, 11);
+assert.equal(counts.MODEL, 1, "Evolutionary Spiral MODEL only in Phase M0");
+assert.equal(objects.length, 175, "174 prior objects + 1 MODEL");
+assert.equal(relations.length, 71, "MODEL registration adds no relations");
 
 assert.equal(getCanonicalObject("b8")?.visibility, "public");
 assert.equal(getCanonicalObject("b8")?.supersedesId, "b2");
@@ -50,6 +53,27 @@ assert.equal(getCanonicalObject("b2")?.visibility, "superseded");
 assert.equal(getCanonicalObject("q1"), undefined, "legacy q1 must not be registered");
 assert.equal(getCanonicalObject("th-reality"), undefined, "legacy themes must not be registered");
 assert.equal(getCanonicalObject("fn1"), undefined, "field notes must not be registered");
+
+const spiralModel = getCanonicalObject("evolutionary-spiral");
+assert.equal(spiralModel?.type, "MODEL");
+assert.equal(spiralModel?.title, "The Evolutionary Spiral");
+assert.equal(spiralModel?.route, "/evolutionary-spiral");
+assert.equal(spiralModel?.visibility, "public");
+assert.equal(
+  getCanonicalRelations("evolutionary-spiral").length,
+  0,
+  "Spiral MODEL has no inferred Territory/Thread/essay/chamber bonds",
+);
+assert.equal(
+  getCanonicalObject("adaptation-loop"),
+  undefined,
+  "Adaptation Loop not registered as MODEL while identity remains chamber-figure ambiguous",
+);
+assert.equal(
+  getCanonicalObject("adaptation")?.type,
+  "CONCEPT",
+  "Atlas V1 concept adaptation remains CONCEPT, not MODEL",
+);
 
 const obs = getCanonicalObject("obs-heart-authority");
 assert.equal(obs?.type, "OBSERVATION");
