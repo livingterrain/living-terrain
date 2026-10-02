@@ -194,12 +194,12 @@ Evocative but precise. Approximately 12–20 words. For interactive node labels 
 | **Emergence** | Something begins to hold as a pattern—a form not available in the same way before. |
 | **Embodiment** | The pattern takes body or medium—conditions through which it can persist and act. |
 | **Differentiation** | Distinctions appear: parts, roles, and boundaries form within what had been more whole. |
-| **Relationship** | What is differentiated begins to matter through contact; relation becomes constitutive. |
+| **Relationship** | What is differentiated begins to matter through contact; relation itself becomes constitutive. |
 | **Organization** | Relations settle into structure that can regulate itself and hold under ordinary change. |
-| **Disruption** | Pressure arrives that the existing organization cannot assimilate unchanged. |
-| **Transformation** | Under pressure, the means of staying organized themselves begin to change. |
+| **Disruption** | Pressure arrives that the existing organization cannot take in or absorb unchanged. |
+| **Transformation** | Under pressure, the means by which the system stays organized themselves begin to change. |
 | **Integration** | What was reorganized becomes coherent enough to function again as one system. |
-| **Renewal** | The reorganized system stabilizes enough to continue forward with altered capacity. |
+| **Renewal** | The reorganized system stabilizes enough to continue forward now with altered capacity. |
 
 **Emergence again (node cue, same stage-kind):** A further Emergence from altered conditions—not a return to the first beginning.
 
