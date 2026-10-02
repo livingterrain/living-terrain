@@ -502,4 +502,3 @@ After approval, and only when directed:
 - [ ] Introductory copy accepted or marked for rewrite
 - [ ] Future placement & circulation schema accepted
 - [ ] Explicit go-ahead before any canon-map edit or Phase 1 work
-)
