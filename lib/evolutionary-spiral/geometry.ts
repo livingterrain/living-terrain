@@ -18,7 +18,8 @@ export const SPIRAL_VIEWBOX = {
 export const SPIRAL_GEOM = {
   cx: 50,
   yBottom: 152,
-  yTop: 14,
+  /** Leave headroom so the Emergence-again label is not clipped. */
+  yTop: 18,
   /** Slightly more than one turn so interlacing reads as a helix. */
   turns: 1.22,
   r0: 28,
