@@ -40,6 +40,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry("/", { changeFrequency: "weekly", priority: 1 }),
     entry("/atlas", { changeFrequency: "weekly", priority: 0.95 }),
     entry("/atlas/charts", { changeFrequency: "monthly", priority: 0.55 }),
+    entry("/evolutionary-spiral", { changeFrequency: "monthly", priority: 0.7 }),
     entry("/observatory", { changeFrequency: "weekly", priority: 0.9 }),
     entry("/observatory/the-text", { changeFrequency: "weekly", priority: 0.85 }),
     entry("/inquiry", { changeFrequency: "weekly", priority: 0.85 }),

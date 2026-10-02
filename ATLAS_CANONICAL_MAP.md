@@ -308,6 +308,7 @@ These should eventually converge with continents and V1 packs — not become a p
 | Adaptation loop (Signal → Appraisal → Adaptation → Perception → Identity) | Implemented — Biology of Becoming chamber | Embodiment, Adaptation, Perception, Identity |
 | Residence (Protection → Habit → Identity) | Implemented — Biology of Becoming chamber | Identity, Embodiment |
 | Reconstruction (Evidence → Embodiment → Becoming) | Implemented — Second Birth chamber | Adaptation, Embodiment, Meaning |
+| Evolutionary Spiral (Emergence → … → Renewal → Emergence again) | Implemented — interactive helix on `/evolutionary-spiral` (Phase 2) | Continuity ↔ Transformation; living systems across cycles (no Territory/Thread/essay bonds inferred) |
 | Feedback loop (action → consequence → return) | **Future opportunity** | Feedback, Relationship |
 | Known vs consumed | **Future opportunity** | Technology / Information, Identity |
 | Demand → recovery → adaptation | **Future opportunity** | Maintenance Cost, Adaptation |

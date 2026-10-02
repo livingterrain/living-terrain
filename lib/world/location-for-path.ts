@@ -26,6 +26,9 @@ export function locationForPath(path: string): WorldLocationId {
 
   if (path.startsWith("/atlas")) return "atlas";
 
+  // Atlas-adjacent charted model — not Instrument Wing
+  if (path.startsWith("/evolutionary-spiral")) return "atlas";
+
   if (path.startsWith("/library")) return "atlas";
 
   if (path.startsWith("/field-notes")) {
