@@ -1,12 +1,12 @@
 # The Evolutionary Spiral — Phase 0 Canon & Copy
 
-**Status:** Proposed specification — awaiting human approval before Phase 1  
+**Status:** Revised proposed specification — awaiting explicit approval before Phase 1  
 **Role:** Canonical intellectual specification for The Evolutionary Spiral  
 **Not:** UI brief · Implementation plan · Atlas relationship inventory · Content CMS  
-**Date:** 2026-10-02  
+**Date:** 2026-10-02 (revised)  
 **Branch intent:** `cursor/evolutionary-spiral-phase-0-f6b5`
 
-**Out of scope until Phase 0 is approved:** routes, visualization, Atlas data, essays, Threads, Territories, Themes, homepage, navigation, production UI.
+**Out of scope until this revised Phase 0 is explicitly approved:** routes, visualization, Atlas data, essays, Threads, Territories, Themes, homepage, navigation, production UI, and the deferred one-line Models entry in `ATLAS_CANONICAL_MAP.md`.
 
 ---
 
@@ -17,13 +17,15 @@
 Working short form (internal): *the Spiral*  
 Visitor-facing full name on first introduction: **The Evolutionary Spiral**
 
+In visitor-facing copy, clarify that **evolutionary** here refers broadly to change unfolding through accumulated history in this framework—not that the nine-stage Spiral is itself established Darwinian evolutionary theory.
+
 Do not rename to circle, cycle, wheel, or zodiac-derived titles.
 
 ---
 
 ## 2. One-sentence definition
 
-The Evolutionary Spiral is a systems framework for how a living organization remains itself through regulated change across recurring cycles that carry history forward.
+The Evolutionary Spiral is a Living Terrain systems framework for how a living organization remains itself through regulated change across recurring cycles that carry history forward.
 
 ---
 
@@ -43,7 +45,14 @@ A related research question:
 
 **What patterns are fundamental enough that humans keep encountering—and describing—them in different languages?**
 
-The Spiral itself is organized as a living-systems model first. Comparative layers (historical, textual, symbolic) may illuminate structural resemblance; they do not determine the architecture of the model, and they do not validate one another causally.
+### Epistemic status of the framework itself
+
+- Empirical phenomena can **motivate and test parts of our thinking**.
+- The **nine-stage sequence** is a Living Terrain **systems framework / synthesis**, not an empirically established universal developmental law.
+- Structural resemblance across domains is an **object of investigation**, not a proof of shared causation or equivalent evidence.
+- The framework does **not** claim that the exact nine-stage sequence is a universal scientifically established developmental law.
+
+The Spiral is organized as a living-systems model first. Comparative layers (historical, textual, symbolic) may illuminate structural resemblance; they do not determine the architecture of the model, and they do not validate one another causally.
 
 ---
 
@@ -57,13 +66,15 @@ Across biology, human development, and older ways of describing experience, we r
 
 *How does something remain itself while becoming something new?*
 
-The Evolutionary Spiral explores the pattern underneath the answers—without treating every language of description as the same kind of evidence.
+The Evolutionary Spiral is a systems framework for exploring that question—placing different languages of description beside one another without treating them as the same kind of evidence.
 
 ---
 
 ## 6. Biological anchor (required orientation)
 
 The model begins from **living systems**, not from symbolism.
+
+Observable living-systems phenomena may ground and discipline the inquiry. The nine-stage sequence itself remains a proposed systems framework, not a claim that nature universally proceeds through these exact nine named stages as established law.
 
 Primary conceptual tensions the Spiral holds:
 
@@ -77,7 +88,7 @@ Primary conceptual tensions the Spiral holds:
 
 **Key idea:** Living stability does not require remaining unchanged. Systems can preserve organization through regulated change.
 
-Comparative domains (psychology, ecology, biblical narrative, zodiac symbolism, mythology, etc.) may be explored **after** this living-systems frame is established. They are optional interpretive layers, not architectural determinants.
+Comparative lenses may be explored **after** this living-systems frame is established. They are optional interpretive layers, not architectural determinants.
 
 ---
 
@@ -104,6 +115,8 @@ Emergence¹ → … → Renewal → Emergence² → …
 
 **A circle means return. The Spiral means recurrence with accumulated history.**
 
+The helix represents **accumulated history**, not guaranteed improvement and not a mystical “higher level.” Emergence² means something is now possible or present that was not available in the same way at Emergence¹—not that the system has necessarily progressed to a superior state.
+
 ### Independence rule
 
 Do **not** reshape this sequence to match:
@@ -116,9 +129,11 @@ Missing correspondence is preferable to invented correspondence.
 
 ---
 
-## 8. Stage definitions
+## 8. Stage definitions (canonical)
 
-Each definition is systems language. Domain examples are deferred to later phases and must obey epistemic rules (§11–12).
+These are the canonical definitions. Domain examples are deferred to later phases and must obey epistemic rules (§11–12).
+
+Short visitor-facing whispers for future visualization appear in §8A. Whispers must not replace these definitions.
 
 ### 1. Emergence
 
@@ -136,6 +151,8 @@ Distinctions appear within the system—parts, roles, boundaries, or specialized
 
 Differentiated elements enter into mutual influence. What each is becomes inseparable from what it contacts; relation becomes constitutive, not optional.
 
+The overlap between this stage name and Living Terrain’s broader **Relationship** concept is **intentional**. Do not invent a synonym merely to avoid the overlap.
+
 ### 5. Organization
 
 Relations stabilize into structure that can regulate itself across time—coordinated interdependence that holds form under ordinary variation.
@@ -150,15 +167,41 @@ The system reorganizes under pressure. Variation, learning, breakdown, or struct
 
 ### 8. Integration
 
-Reorganization is taken up into a coherent whole again—not as a temporary patch, but as a re-coherence that can function as one system.
+Reorganized elements have become coherent enough to function together again—not as a temporary patch, but as a re-coherence that can operate as one system.
 
 ### 9. Renewal
 
-Stabilized capacity after integration: the system can continue with updated organization, carrying history forward and preparing the conditions under which a further Emergence may occur.
+The reorganized system has stabilized sufficiently to continue forward with altered capacity, carrying history forward and preparing conditions under which a further Emergence may become discernible.
 
 ### Emergence again (Emergence²)
 
-A subsequent Emergence after Renewal. Same stage-kind as Emergence¹; different level of accumulated history. Not reversion to the original state.
+Same stage-kind as Emergence¹; continuous with Renewal, but conceptually distinct.
+
+- **Integration** — reorganized elements have become coherent enough to function together.
+- **Renewal** — the reorganized system has stabilized sufficiently to continue forward with altered capacity.
+- **Emergence²** — a genuinely new pattern, possibility, organization, or level becomes discernible from the conditions produced by the prior cycle.
+
+Emergence² communicates that something is now possible or present that was not available in the same way at Emergence¹. It does **not** imply mystical ascent or inevitable progress—only accumulated history and altered conditions.
+
+---
+
+## 8A. Stage whispers (visitor-facing, for future visualization)
+
+Evocative but precise. Approximately 12–20 words. For interactive node labels later; **not** substitutes for §8.
+
+| Stage | Whisper |
+|---|---|
+| **Emergence** | Something begins to hold as a pattern—a form not available in the same way before. |
+| **Embodiment** | The pattern takes body or medium—conditions through which it can persist and act. |
+| **Differentiation** | Distinctions appear: parts, roles, and boundaries form within what had been more whole. |
+| **Relationship** | What is differentiated begins to matter through contact; relation becomes constitutive. |
+| **Organization** | Relations settle into structure that can regulate itself and hold under ordinary change. |
+| **Disruption** | Pressure arrives that the existing organization cannot assimilate unchanged. |
+| **Transformation** | Under pressure, the means of staying organized themselves begin to change. |
+| **Integration** | What was reorganized becomes coherent enough to function again as one system. |
+| **Renewal** | The reorganized system stabilizes enough to continue forward with altered capacity. |
+
+**Emergence again (node cue, same stage-kind):** A further Emergence from altered conditions—not a return to the first beginning.
 
 ---
 
@@ -196,7 +239,7 @@ Associated qualities (non-exhaustive):
 - reorganization
 - renewal
 
-**Interaction rule:** Continuity without Transformation becomes rigidity. Transformation without Continuity becomes dissolution. Living systems endure in the regulated conversation between them.
+**Interaction tendency (within the framework, not an exceptionless law):** Without sufficient Transformation, Continuity can become rigidity. Without sufficient Continuity, Transformation can become dissolution. Living systems often endure in the regulated conversation between them.
 
 ---
 
@@ -214,22 +257,41 @@ Every comparative example attached to the Spiral (in later phases) must carry ex
 
 - These categories do **not** have equivalent evidentiary status.
 - Display and copy must keep them distinguishable.
-- Prefer empirical anchoring when introducing the model.
+- Prefer living-systems / empirical anchoring when introducing the model.
 - Never present Symbolic/Comparative material as proving Empirical claims, or vice versa.
 - Historical/Textual material may document what traditions said; it does not automatically establish mechanism.
+- Categorize epistemic status **per example, not per domain**. A single domain (e.g. psychology, ecology) may contain empirical, historical/textual, or symbolic/comparative examples depending on the actual claim.
 
 ---
 
-## 11. Rules for comparative examples
+## 11. Comparative lenses and example rules
+
+### Planned lenses for the eventual first public version
+
+| Lens | Role |
+|---|---|
+| **Living Systems / Biology** | Strongest and most complete anchoring layer |
+| **Ecology** | Comparative; sparse coverage acceptable |
+| **Psychology / Human Development** | Comparative; sparse coverage acceptable |
+| **Biblical / Textual** | Comparative; sparse coverage acceptable |
+| **Symbolic / Zodiac** | Comparative; sparse coverage acceptable |
+
+Do **not** require every domain at every stage. Sparse comparative coverage is preferable to forced correspondence.
+
+### Mythology
+
+Do **not** create a standalone Mythology domain in the initial model. Individual mythic material may appear under Symbolic/Comparative where genuinely useful. A separate mythology lens may be considered later only if enough authored material justifies it.
+
+### Rules
 
 1. The Spiral’s architecture is fixed by the nine stages and two currents—not by any comparative domain.
-2. Zodiac symbolism, biblical narrative, mythology, and similar traditions are **optional comparative layers**.
+2. Biblical/textual and symbolic/zodiac material are **optional comparative layers**.
 3. Do **not** force every stage to have a zodiac, biblical, or mythic correspondence.
 4. Missing correspondence is better than invented correspondence.
 5. Allowed claim form: *these structures resemble one another* / *this is a comparative pattern reading*.
 6. Forbidden claim form: *one caused, predicted, or scientifically validates the other*.
 7. Each example must declare its epistemic category (§10).
-8. Domain order in presentation should generally prefer living-systems / empirical material before symbolic layers.
+8. Domain order in presentation should generally prefer Living Systems / Biology before other lenses.
 9. Comparative examples must not rewrite stage names or stage order.
 10. Do not add Atlas essay bonds, Thread membership, Territory membership, or Theme redirects as side effects of adding examples—those require separate authored approval.
 
@@ -243,9 +305,10 @@ Preserve the existing **Adaptation Loop** unchanged.
 |---|---|---|
 | **Where it lives today** | Biology of Becoming chamber (Figure 01) | Proposed signature model (not yet built) |
 | **Sequence** | Signal → Appraisal → Adaptation → Perception → Identity | Emergence → … → Renewal → Emergence again |
-| **Scale** | Local organism-level appraisal / adaptation cycle | Broader cross-domain model of continuity, transformation, accumulated history, and recurring organization across cycles and scales |
+| **Scale** | Local organism-level appraisal / adaptation cycle | Broader cross-domain systems framework of continuity, transformation, accumulated history, and recurring organization across cycles and scales |
 | **Shape metaphor** | Loop with feedback into appraisal | Ascending helix (recurrence with history) |
 | **Job** | How an organism’s state shifts and hardens into self through repeated appraisal | How a living organization remains itself while becoming something new across cycles |
+| **Epistemic note** | Chamber figure within existing work | Living Terrain systems framework / synthesis — not claimed as universal established developmental law |
 
 **Relationship:** The Spiral may contain processes that *resemble* adaptation (especially around Disruption → Transformation). It does **not** replace, absorb, or redefine the Adaptation Loop.
 
@@ -256,9 +319,12 @@ Preserve the existing **Adaptation Loop** unchanged.
 | Use | Avoid (for this model) |
 |---|---|
 | The Evolutionary Spiral / the Spiral | The Evolutionary Cycle / Wheel / Circle (as primary name) |
+| evolutionary = change through accumulated history (in this framework) | implying the Spiral *is* Darwinian evolutionary theory |
 | currents (Continuity / Transformation) | strands, threads, trails, pathways (for these two forces) |
 | stages / developmental sequence | signs, houses, seals (as architectural names) |
-| Emergence¹ / Emergence² / Emergence again | “return to the beginning,” “full circle” |
+| Emergence¹ / Emergence² / Emergence again | “return to the beginning,” “full circle,” mystical “higher level,” inevitable progress |
+| systems tendency / within the framework | exceptionless law (for Continuity/Transformation interaction) |
+| systems framework / synthesis (for the nine stages) | universal scientifically established developmental law |
 | comparative layer / resemblance | proof, prediction, scientific validation across domains |
 | Empirical · Historical/Textual · Symbolic/Comparative | undifferentiated “evidence” across all domains |
 | helix / ascending spiral | closed circle as the true shape |
@@ -271,11 +337,12 @@ When speaking of Atlas graph relationships elsewhere on the site, continue to us
 
 1. Living systems face a recurring problem: how to remain themselves while becoming something new.
 2. Continuity and Transformation interact across developmental phases; neither alone accounts for living persistence.
-3. A useful systems sequence for exploring that problem is the nine-stage sequence above.
+3. The nine-stage sequence is a useful Living Terrain systems framework for exploring that problem.
 4. Recurrence after Renewal is not identical return; history/information can accumulate (spiral, not circle).
 5. Living stability can be achieved through regulated change, not only through stasis.
 6. Humans have described related structural patterns in multiple languages (scientific, historical, symbolic).
 7. Those languages can be placed beside one another for structural comparison **if** their epistemic status remains distinct.
+8. Empirical phenomena can motivate and test parts of the thinking the Spiral organizes.
 
 ---
 
@@ -291,12 +358,15 @@ When speaking of Atlas graph relationships elsewhere on the site, continue to us
 8. That the Spiral is a closed cycle that returns a system to its original state.
 9. That Continuity and Transformation are moral opposites (good preservation vs. bad change, or the reverse).
 10. That publication of the Spiral invents new canonical Atlas relationships among essays, chambers, or concepts without separate authorship.
+11. That the exact nine-stage sequence is a universal scientifically established developmental law.
+12. That the Spiral is identical with Darwinian evolutionary theory, or that “evolutionary” in the title means only that theory.
+13. That ascent on the helix means inevitable improvement or mystical higher attainment.
 
 ---
 
 ## 16. Recommended short disclaimer
 
-The Evolutionary Spiral is a living-systems framework. When historical or symbolic traditions appear beside it, they are comparative pattern-readings—not proof that one domain caused, predicted, or scientifically validates another.
+The Evolutionary Spiral is a Living Terrain systems framework grounded in observations of living systems. It is not offered as a universal scientifically established developmental law. When historical or symbolic traditions appear beside it, they are comparative pattern-readings—not proof that one domain caused, predicted, or scientifically validates another.
 
 ---
 
@@ -310,17 +380,21 @@ Life does not maintain itself by remaining unchanged.
 
 Living systems persist through continuous exchange, adaptation, repair, breakdown, and renewal. Stability, in living terms, is often the art of staying organized while changing.
 
-The Evolutionary Spiral begins from that fact.
+The Evolutionary Spiral begins from that observation.
+
+Here, *evolutionary* means change unfolding through accumulated history—not a claim that this model is Darwinian evolutionary theory itself. The sequence that follows is a systems framework for exploring a recurring problem, not a universal law of development.
 
 It follows a recurring developmental sequence:
 
 Emergence → Embodiment → Differentiation → Relationship → Organization → Disruption → Transformation → Integration → Renewal — and then Emergence again.
 
-The last Emergence is not a return to the first. Something has been carried forward. The shape is a spiral: recurrence with history.
+The last Emergence is not a return to the first. Something has been carried forward.
 
-Through that ascent move two currents—Continuity and Transformation. One preserves memory, inheritance, structure, and identity. The other admits variation, disruption, learning, breakdown, and reorganization. They are not enemies. Living systems endure in their interaction.
+**A circle means return. The Spiral means recurrence with accumulated history.**
 
-Human beings noticed versions of this problem long before they could test its mechanisms. Science, history, and older symbolic languages sometimes describe related structures in different vocabularies. Living Terrain places those descriptions beside one another carefully—without treating them as the same kind of evidence.
+Through that ascent move two currents—Continuity and Transformation. One preserves memory, inheritance, structure, and identity. The other admits variation, disruption, learning, breakdown, and reorganization. They are not enemies. Without sufficient Transformation, Continuity can become rigidity. Without sufficient Continuity, Transformation can become dissolution. Living systems often endure in their interaction.
+
+Human beings noticed versions of this problem long before they could test its mechanisms. Science, history, and older symbolic languages sometimes describe related structures in different vocabularies. Living Terrain places those descriptions beside one another carefully—without treating them as the same kind of evidence, and without claiming that resemblance proves shared causation.
 
 The question underneath remains simple:
 
@@ -335,52 +409,97 @@ When visualization is eventually built, it should communicate:
 - **ascent / accumulated history**, not mere repetition
 - **two currents** moving through one developmental process
 - **Emergence² at a visibly different level** from Emergence¹
+- history/accumulation, **not** guaranteed improvement or mystical hierarchy
+- stage **whispers** (§8A) on nodes; full definitions (§8) in the detail panel
 - graceful reduced-motion behavior; content readable without animation
 
 No UI work in Phase 0.
 
 ---
 
-## 19. Proposed later placement (approved direction; not implemented)
+## 19. Future placement & circulation (approved direction; not implemented)
 
-Recorded for continuity with the architectural proposal; **not authorized for build in Phase 0**:
+**Not authorized for build in Phase 0.**
+
+### Placement
 
 - Dedicated route (proposed): `/evolutionary-spiral`
+- Intended world location: **Atlas-adjacent / charted model**
+- Do **not** place in Instrument Wing unless later experience shows it has become an analytic instrument rather than an explorable model
 - Signature Model / Artifact—not a fifth room, not a new Thread/Territory/Theme by default
 - Discoverable later by whisper/authored circulation; not a homepage locus at launch
 - Visitor term for the two forces: **currents**
 
+### Canon map (deferred)
+
+After **this revised Phase 0 document is explicitly approved**, the model may receive a one-line entry in the Models section of `ATLAS_CANONICAL_MAP.md` with status equivalent to:
+
+`specified / not yet built`
+
+Do **not** make that edit until explicit approval of this revised Phase 0 document.  
+Do not invent relationships, Territory membership, Threads, or essay bonds.
+
+### Future essay → stage schema (when circulation is eventually implemented)
+
+| Field | Required? |
+|---|---|
+| `stageId` | **Required** — the only required Spiral relationship field |
+| `current` | Optional (`continuity` \| `transformation`) — only if authored |
+| `epistemicKind` | Optional — only if authored |
+
+Do not force an essay to declare a current or epistemic category unless that relationship has actually been authored.
+
 ---
 
-## 20. Open questions still needing conceptual resolution
+## 20. Resolved decisions (formerly open questions)
 
-Flagged for human decision before or during Phase 1. Phase 0 does **not** invent answers here.
-
-1. **Stage gloss length for UI** — Are the §8 definitions the visitor-facing glosses, or should each stage also have a shorter one-line whisper (≈12–20 words) for node labels?
-2. **Renewal vs. Emergence² boundary** — Is Renewal primarily *stabilized aftermath*, with Emergence² reserved for *genuinely new pattern appearance*, or may some visitors experience them as nearly continuous? (Canon currently distinguishes them; pedagogy may need an example pair.)
-3. **Minimum viable comparative set** — For first public version, which domains are required vs. optional? Recommendation to resolve: require living-systems/empirical examples for every stage eventually; treat biblical and zodiac layers as sparse and non-mandatory.
-4. **Psychology / ecology status** — Confirm whether psychology and ecology are introduced as Empirical (when mechanism-facing) vs. Historical/Textual or mixed, case by case. Recommendation: categorize **per example**, not per domain wholesale.
-5. **Mythology as named domain** — Thesis mentions myth; comparative domain list in the architectural proposal named biblical + zodiac. Decide whether “mythology” is a separate domain id or folded into Symbolic/Comparative without its own shelf.
-6. **Canon home after approval** — After Phase 0 approval, should a one-line entry be added under Models in `ATLAS_CANONICAL_MAP.md` (status: specified / not yet built), or wait until Phase 1 ships a route?
-7. **World-location whisper** — Atlas-adjacent charted model vs. Instrument Wing: which location whisper should the future route use?
-8. **Name collision “Evolutionary”** — Confirm comfort with “Evolutionary” in the public name given possible misreading as “only Darwinian evolution.” Alternatives were not requested; flag only if the term feels too narrow for the cross-domain thesis.
-9. **Relationship stage vs. Relationship continent** — The stage name **Relationship** overlaps Living Terrain’s gravitational concept *Relationship*. Confirm this overlap is intentional and desirable in visitor copy (likely yes—same ontology—but worth an explicit yes).
-10. **Authored circulation schema** — When essays later point at stages, prefer stage ids only, or stage + current + epistemicKind? (Implementation detail, but affects Phase 1 data shape.)
+| # | Decision |
+|---|---|
+| 1 | Canonical definitions remain in §8; short whispers in §8A for future visualization |
+| 2 | Integration / Renewal / Emergence² kept distinct but continuous; helix = accumulated history, not inevitable progress |
+| 3 | First public lenses: Living Systems/Biology (primary), Ecology, Psychology/Human Development, Biblical/Textual, Symbolic/Zodiac — not every domain at every stage |
+| 4 | Epistemic status categorized **per example**, not per domain |
+| 5 | No standalone Mythology domain initially; mythic material may appear under Symbolic/Comparative |
+| 6 | Canon-map one-liner deferred until explicit approval of this revised Phase 0 doc |
+| 7 | Future world location: Atlas-adjacent / charted model |
+| 8 | Public name remains The Evolutionary Spiral; clarify non-identity with Darwinian theory in intro copy |
+| 9 | Stage name **Relationship** kept; overlap with the broader concept is intentional |
+| 10 | Future circulation: `stageId` required; `current` and `epistemicKind` optional |
 
 ---
 
-## 21. Approval gate
+## 21. Remaining unresolved conceptual questions
 
-Phase 1 (route shell, data skeleton, static page without helix) must not begin until this document is explicitly approved—with any revisions to stage definitions, disclaimer, or open questions resolved as directed.
+None blocking Phase 0 approval from the prior §20 list.
+
+Optional later (not blocking):
+
+1. **First authored living-systems examples** — Which concrete biology/ecology examples should seed each stage first? (Editorial content work for Phase 1+, not a Phase 0 architecture block.)
+2. **Whisper polish in context** — Whether any §8A whisper needs tightening once placed next to the actual helix nodes in a prototype.
+3. **Instrument Wing revisit** — Only if the Spiral later becomes an analytic instrument rather than an explorable model.
+
+---
+
+## 22. Approval gate
+
+Phase 1 (route shell, data skeleton, static page without helix) must not begin until this **revised** document is explicitly approved.
+
+After approval, and only when directed:
+
+- optional one-line Models entry in `ATLAS_CANONICAL_MAP.md` (`specified / not yet built`)
+- then Phase 1 may be authorized separately
 
 **Approval checklist:**
 
 - [ ] Canonical name confirmed
-- [ ] Stage definitions accepted or revised
-- [ ] Currents terminology accepted
-- [ ] Epistemic categories accepted
-- [ ] Adaptation Loop distinction accepted
+- [ ] Framework-vs-law epistemic clarification accepted
+- [ ] Stage definitions (§8) accepted
+- [ ] Stage whispers (§8A) accepted or marked for polish
+- [ ] Continuity / Transformation tendency language accepted
+- [ ] Integration / Renewal / Emergence² boundary accepted
+- [ ] Comparative lenses & mythology decision accepted
 - [ ] Disclaimer accepted
 - [ ] Introductory copy accepted or marked for rewrite
-- [ ] Open questions in §20 answered or deferred with instruction
+- [ ] Future placement & circulation schema accepted
+- [ ] Explicit go-ahead before any canon-map edit or Phase 1 work
 )
