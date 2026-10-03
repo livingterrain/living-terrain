@@ -1,5 +1,12 @@
 export type {
+  SpiralAcrossExploration,
+  SpiralAcrossItem,
+  SpiralAcrossSection,
+  SpiralAcrossSectionKind,
   SpiralComparisonPair,
+  SpiralConcept,
+  SpiralConceptDiveSection,
+  SpiralConceptDiveSectionKind,
   SpiralCurrent,
   SpiralCurrentId,
   SpiralDomain,
@@ -8,15 +15,24 @@ export type {
   SpiralEpistemicKind,
   SpiralEssayRelation,
   SpiralExample,
+  SpiralExploreViewId,
   SpiralFrameworkCopy,
+  SpiralLensEntry,
+  SpiralLensExploration,
+  SpiralLensSection,
+  SpiralLensSectionKind,
+  SpiralProvenanceKind,
   SpiralSequenceStop,
+  SpiralSourceRef,
   SpiralStage,
+  SpiralStageExploration,
   SpiralStageId,
 } from "./types";
 
 export {
   SPIRAL_CURRENT_IDS,
   SPIRAL_DOMAIN_IDS,
+  SPIRAL_LENS_ORDER,
   SPIRAL_STAGE_IDS,
 } from "./types";
 
@@ -35,9 +51,27 @@ export {
   epistemicLabel,
 } from "./epistemic";
 
+export {
+  SPIRAL_PROVENANCE_CATEGORIES,
+  normalizeProvenance,
+  provenanceLabel,
+} from "./provenance";
+
+export type { SpiralProvenanceCategory } from "./provenance";
+
 export { SPIRAL_COPY } from "./copy";
 
 export { SPIRAL_EXAMPLES, examplesForStage } from "./examples";
+
+export {
+  defaultExploreView,
+  getAcrossExploration,
+  getConcept,
+  getLensExploration,
+  getStageExploration,
+  stageHasDeepExploration,
+  TRANSFORMATION_EXPLORATION,
+} from "./exploration";
 
 export {
   SPIRAL_ASCENT_CAPTION,
@@ -72,6 +106,7 @@ import { SPIRAL_DOMAINS } from "./domains";
 import { SPIRAL_EPISTEMIC_CATEGORIES } from "./epistemic";
 import { SPIRAL_EXAMPLES } from "./examples";
 import { SPIRAL_SEQUENCE, SPIRAL_STAGES } from "./stages";
+import { getStageExploration } from "./exploration";
 
 /** Aggregated read model for the Spiral page. */
 export function getEvolutionarySpiral() {
@@ -83,5 +118,8 @@ export function getEvolutionarySpiral() {
     domains: SPIRAL_DOMAINS,
     epistemicCategories: SPIRAL_EPISTEMIC_CATEGORIES,
     examples: SPIRAL_EXAMPLES,
+    explorations: {
+      transformation: getStageExploration("transformation"),
+    },
   };
 }
