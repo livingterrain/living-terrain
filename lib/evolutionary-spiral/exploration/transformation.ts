@@ -2,8 +2,8 @@
  * Transformation stage — deep exploration packet (M1C hierarchy).
  *
  * Systems lens: authored M1D-1 content (approved copy).
+ * Biology lens: authored M1D-2 content (approved copy).
  * Other lenses remain placeholder scaffolding — do not treat as researched claims.
- * One Biology concept reuses an already-authored Phase 1 seed summary.
  */
 
 import type { SpiralStageExploration } from "../types";
@@ -305,134 +305,212 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
     },
     {
       lensId: "living-systems",
+      title:
+        "How can a living system remain continuous while radically changing its organization?",
       framing:
-        "Biological and organism-level readings. Distinct from symbolic or theological languages.",
+        "Living systems survive through both preservation and change.\n\nCells are dismantled and replaced. Tissues are remodeled. Organisms pass through developmental states that can look almost nothing alike. Damage can be repaired without recreating the exact structure that existed before it.\n\nBiology therefore complicates the idea that continuity requires sameness.\n\nSometimes continuity is carried by what remains materially intact. Sometimes it is carried through lineage, information, developmental constraints, surviving structures, or the regulated reuse of existing material.\n\nBut biological transformation has limits. Breakdown can enable reorganization when it is regulated within a viable system. Uncontrolled damage can just as easily produce dysfunction, degeneration, or death.\n\nThe question is not whether destruction creates growth.\n\nIt is what allows a living system to change its organization without losing continuity altogether?",
       concepts: [
         {
           id: "bio-metamorphosis",
           title: "Metamorphosis",
-          summary:
-            "Programmed reorganization with lineage continuity — deep-dive scaffold.",
-          epistemicKind: "empirical-mechanism",
-          placeholder: true,
+          summary: "The organism continues. Its organization does not remain the same.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "empirical-mechanism"],
           sections: [
             {
-              id: "bio-meta-summary",
-              kind: "summary",
-              title: "Summary",
-              body: "Scaffold for holometabolous metamorphosis as continuity through structural change. Research notes not authored here.",
-              placeholder: true,
-            },
-            {
-              id: "bio-meta-mechanism",
-              kind: "mechanism",
-              title: "Mechanism",
-              body: "Reserved for hormonal timing, tissue deletion/remodeling, and imaginal structures — only with sourced authorship.",
-              placeholder: true,
+              id: "bio-meta-body",
+              kind: "general",
+              title: "",
+              body: "Holometabolous insects provide one of biology's clearest examples of continuity through radical reorganization.\n\nDuring metamorphosis, hormonal signals coordinate extensive changes in tissue organization. Some larval tissues are eliminated or remodeled, while adult structures develop from populations of cells established earlier in development.\n\nThe adult is neither an entirely new organism nor simply the larva made larger.\n\nDevelopment continues across the transition, but the organization through which that continuity is expressed changes dramatically.",
             },
             {
               id: "bio-meta-persists",
               kind: "what-persists",
               title: "What persists",
-              body: PH,
-              placeholder: true,
+              body: "Organismal lineage, genome, developmental history, and some cellular and material continuity.",
             },
             {
               id: "bio-meta-changes",
               kind: "what-changes",
               title: "What changes",
-              body: PH,
-              placeholder: true,
-            },
-            {
-              id: "bio-meta-examples",
-              kind: "examples",
-              title: "Examples",
-              body: PH,
-              placeholder: true,
-            },
-          ],
-          sources: [
-            {
-              id: "bio-meta-src-1",
-              title: "Sources reserved",
-              placeholder: true,
+              body: "Body plan, tissue organization, physiology, behavior, ecological role, and the structures through which the organism interacts with its environment.",
             },
           ],
           comparisonBreaks: {
             title: "Where the comparison breaks",
-            body: "Biological metamorphosis is not evidence for theological resurrection or zodiac symbolism.",
-            placeholder: true,
+            body: "Metamorphosis is a regulated developmental program. It should not be treated as evidence that arbitrary destruction produces beneficial transformation.\n\nNor does biological metamorphosis establish religious claims about death and resurrection. The comparison becomes analogical when it leaves the biological mechanism.",
           },
-          openQuestions: [
-            "At which scale — cell, tissue, organism, lineage — is continuity best named?",
+          sources: [
+            {
+              id: "bio-meta-tettamanti-2019",
+              title: "Cell death during complete metamorphosis",
+              authors: "Tettamanti et al.",
+              year: 2019,
+              publication: "Philosophical Transactions of the Royal Society B 374",
+              doi: "10.1098/rstb.2019.0065",
+              url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6711292/",
+              supports:
+                "Programmed cell death and tissue remodeling in holometabolous metamorphosis.",
+            },
+            {
+              id: "bio-meta-truman-riddiford-2019",
+              title: "The evolution of insect metamorphosis…",
+              authors: "Truman & Riddiford",
+              year: 2019,
+              publication: "Philosophical Transactions of the Royal Society B 374",
+              doi: "10.1098/rstb.2019.0070",
+              supports:
+                "Developmental and endocrine framing of complete metamorphosis.",
+            },
           ],
         },
         {
           id: "bio-autophagy",
           title: "Autophagy",
-          summary:
-            "Cellular renovation through selective self-digestion — scaffold.",
+          summary: "Maintenance sometimes requires dismantling.",
           epistemicKind: "empirical-mechanism",
-          placeholder: true,
-          sections: [...diveScaffold("bio-auto")],
+          sections: [
+            {
+              id: "bio-auto-body",
+              kind: "general",
+              title: "",
+              body: "Cells do not preserve themselves by keeping every component indefinitely.\n\nThrough autophagy, cellular material can be enclosed, delivered to lysosomes, broken down, and recycled. The process contributes to cellular quality control, adaptation to changing nutrient conditions, differentiation, and the removal of damaged components.\n\nThis creates an interesting systems problem: some local structures must cease to persist for the larger living organization to continue functioning.\n\nBreakdown, in this case, is not the opposite of maintenance. Regulated breakdown is one of maintenance's tools.\n\nBut the word regulated matters. Autophagy operates within biological control systems. It is not evidence that more breakdown is inherently better or that injury automatically produces renewal.",
+            },
+            {
+              id: "bio-auto-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Cell or system continuity, reusable molecular material, and regulatory organization.",
+            },
+            {
+              id: "bio-auto-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Specific proteins, organelles, molecular arrangements, and resource allocation.",
+            },
+          ],
+          openQuestions: [
+            "At what scale are we deciding what “continuity” means?",
+          ],
           comparisonBreaks: {
-            body: "Cellular recycling metaphors travel easily; mechanisms do not transfer to other lenses.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Do not generalize cellular autophagy into a universal principle that destruction produces renewal.\n\nDo not describe psychological, social, theological, or symbolic processes as autophagy unless explicitly presented as metaphor or analogy.",
           },
+          sources: [
+            {
+              id: "bio-auto-mizushima-komatsu-2011",
+              title: "Autophagy: renovation of cells and tissues",
+              authors: "Mizushima & Komatsu",
+              year: 2011,
+              publication: "Cell 147: 728–741",
+              supports:
+                "Autophagy as a recycling system for cellular renovation and homeostasis.",
+            },
+            {
+              id: "bio-auto-mizushima-levine-2020",
+              title: "Autophagy in Human Diseases",
+              authors: "Mizushima & Levine",
+              year: 2020,
+              publication: "New England Journal of Medicine 383: 1564–1576",
+              doi: "10.1056/NEJMra2022774",
+              supports:
+                "Physiological scope of autophagy in health and disease.",
+            },
+          ],
         },
         {
           id: "bio-wound-remodeling",
-          title: "Wound remodeling",
-          summary:
-            "Repair that may restore function without restoring identical prior tissue.",
+          title: "Wound healing & remodeling",
+          summary: "Repair is not always restoration.",
           epistemicKind: "empirical-observation",
-          placeholder: true,
-          sections: [...diveScaffold("bio-wound")],
+          epistemicKinds: ["empirical-observation", "empirical-mechanism"],
+          whisper:
+            "Healing may produce a viable future without reproducing the exact past.",
+          sections: [
+            {
+              id: "bio-wound-body",
+              kind: "general",
+              title: "",
+              body: "Wound healing is often described through overlapping inflammatory, proliferative, and remodeling phases.\n\nThe immediate problem is survival: control damage, restore a barrier, rebuild enough structure for the tissue to function.\n\nBut repaired tissue does not necessarily become identical to the tissue that existed before injury. Extracellular matrix is reorganized. Collagen architecture changes. Scar tissue may preserve closure and mechanical integrity while differing structurally and functionally from uninjured tissue.\n\nThe system can therefore regain continuity without reversing history.",
+            },
+            {
+              id: "bio-wound-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Living tissue continuity, surviving cells and structures, biological information, and enough organization to restore or preserve function.",
+            },
+            {
+              id: "bio-wound-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Tissue architecture, extracellular matrix organization, material properties, and sometimes function.",
+            },
+          ],
           comparisonBreaks: {
-            body: "Healing is not guaranteed adaptation, and scarring is not failure of a spiral.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Wound healing should not be generalized into the claim that injury is necessary for growth.\n\nRepair consumes resources, can fail, and may leave lasting impairment.\n\nDo not turn this concept into:\n\n“what doesn't kill you makes you stronger”\n\ntrauma-growth language\n\nevidence that suffering is biologically necessary\n\nproof that all damaged systems heal",
           },
+          sources: [
+            {
+              id: "bio-wound-ren-2022",
+              title: "Autophagy and skin wound healing",
+              authors: "Ren et al.",
+              year: 2022,
+              publication: "Burns & Trauma",
+              url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8847901/",
+              supports:
+                "Stage-dependent roles of cellular processes across inflammatory, proliferative, and remodeling phases of wound healing.",
+            },
+          ],
         },
         {
           id: "bio-inheritance-variation",
           title: "Inheritance under variation",
-          summary:
-            "Populations persist by transmitting structure while admitting variation. Related to—but not replacing—the Adaptation Loop.",
+          summary: "Continuity in biology has never required perfect copying.",
           epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "systems-principle"],
+          whisper:
+            "Continuation with variation is not failed repetition. It is one of life's ordinary conditions.",
           sections: [
             {
-              id: "bio-inh-summary",
-              kind: "summary",
-              title: "Summary",
-              body: "Populations persist across generations by transmitting structure while admitting variation. Under sustained pressure, the means of staying organized can themselves shift. This is related to—but does not replace—the organism-level Adaptation Loop elsewhere in Living Terrain.",
+              id: "bio-inh-body",
+              kind: "general",
+              title: "",
+              body: "Biological inheritance preserves enough information and organization for lineages to continue, while variation ensures that descendants are not exact repetitions of what came before.\n\nAt evolutionary scales, continuity and difference are therefore not competing processes. Both are built into the persistence of living lineages.\n\nSelection, developmental constraints, mutation, recombination, and environmental conditions shape what variation survives and what forms become possible.\n\nWhat continues is not an unchanged organism moving through time. It is a lineage capable of producing related but non-identical forms.\n\nThis gives the Spiral another way to understand recurrence:",
             },
             {
               id: "bio-inh-persists",
               kind: "what-persists",
               title: "What persists",
-              body: "Inherited structure and lineage continuity — to be refined with sourced notes.",
-              placeholder: true,
+              body: "Lineage, inherited biological information, developmental constraints, and patterns of descent.",
             },
             {
               id: "bio-inh-changes",
               kind: "what-changes",
               title: "What changes",
-              body: "Variation and, under pressure, the means of organization — scaffold.",
-              placeholder: true,
+              body: "Individual organisms, combinations of inherited variation, traits, environmental relationships, and—across longer evolutionary timescales—lineage characteristics.",
+            },
+            {
+              id: "bio-inh-scale",
+              kind: "general",
+              title: "Scale",
+              body: "This concept deliberately changes scale.\n\nMetamorphosis, autophagy, and wound remodeling primarily examine continuity within an organism or living subsystem.\n\nInheritance under variation examines continuity across generations and evolutionary lineages.\n\nThe reason this concept belongs here is comparative:\n\nIt tests whether biological continuity itself requires exact repetition.",
             },
           ],
           comparisonBreaks: {
-            body: "Population-level inheritance is a different scale from organismal metamorphosis or personal identity change.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Do not present evolution as:\n\nan inevitable upward progression\n\nmovement toward perfection\n\na predetermined spiral\n\nevidence that every system improves through variation\n\nDo not imply that natural selection “wants” transformation or has foresight.",
           },
+          // Seed ex-transformation-inheritance-variation has no authored source metadata.
         },
       ],
       comparisonBreaks: {
-        title: "Where the comparison breaks",
-        body: "Biological process is not evidence for zodiac symbolism or theological narrative.",
-        placeholder: true,
+        title: "Where biological analogy breaks",
+        body: "Biology gives us mechanisms for remodeling, recycling, development, repair, inheritance, and adaptation.\n\nThose mechanisms belong to living systems.\n\nThey do not demonstrate that psychological suffering is necessary for growth, that societies must collapse to renew themselves, that symbolic cycles describe biological laws, or that religious resurrection is another name for regeneration.\n\nSimilar shapes can invite comparison.\n\nMechanisms still have to be established within the domain where the claim is being made.",
       },
+      openQuestions: [
+        "If living continuity does not require material sameness, where does biological identity actually reside?",
+      ],
     },
     {
       lensId: "psychology",
