@@ -502,41 +502,93 @@
 }
 
 .spiral-helix__axis {
-  stroke: color-mix(in srgb, var(--color-charcoal-faint) 55%, transparent);
-  stroke-width: 0.35;
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 70%, #9aa3b2);
+  stroke-width: 0.55;
   stroke-linecap: round;
 }
 
-.spiral-helix__current {
-  stroke-width: 0.85;
+.spiral-helix__axis--halo {
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+/* Depth-layered current segments — occlusion via paint order */
+.spiral-helix__seg-core,
+.spiral-helix__seg-volume {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.spiral-helix__current--continuity {
-  stroke: color-mix(in srgb, var(--color-ivory) 55%, #adb6c4);
+.spiral-helix__seg--continuity .spiral-helix__seg-core,
+.spiral-helix__seg--continuity .spiral-helix__seg-volume {
+  stroke: color-mix(in srgb, var(--color-ivory) 58%, #adb6c4);
 }
 
-.spiral-helix__current--transformation {
-  stroke: color-mix(in srgb, var(--color-gold-muted) 75%, #b8a478);
+.spiral-helix__seg--transformation .spiral-helix__seg-core,
+.spiral-helix__seg--transformation .spiral-helix__seg-volume {
+  stroke: color-mix(in srgb, var(--color-gold-muted) 78%, #b8a478);
   stroke-dasharray: 2.4 1.8;
 }
 
-.spiral-helix__currents--ambient .spiral-helix__current {
-  animation: spiral-current-breath 22s var(--ease-breath, ease-in-out) infinite;
+/* Avoid brightness filters on cores — they can flatten SVG paint-order occlusion.
+   Depth reads from stroke width, opacity, and layer order instead. */
+
+.spiral-helix__seg--front.spiral-helix__seg--near .spiral-helix__seg-volume {
+  filter: blur(0.35px);
 }
 
-.spiral-helix__currents--ambient .spiral-helix__current--transformation {
-  animation-delay: -7s;
+.spiral-helix__seg--front .spiral-helix__seg-volume {
+  filter: blur(0.2px);
 }
 
-@keyframes spiral-current-breath {
+/* Ambient: front/back parallax — depth through differential motion */
+.spiral-helix__layer--back,
+.spiral-helix__layer--front,
+.spiral-helix__layer--axis {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.spiral-helix__space--ambient .spiral-helix__layer--back {
+  animation: spiral-parallax-back 26s var(--ease-breath, ease-in-out) infinite;
+}
+
+.spiral-helix__space--ambient .spiral-helix__layer--front {
+  animation: spiral-parallax-front 22s var(--ease-breath, ease-in-out) infinite;
+}
+
+.spiral-helix__space--ambient .spiral-helix__layer--axis {
+  animation: spiral-axis-drift 30s var(--ease-breath, ease-in-out) infinite;
+}
+
+@keyframes spiral-parallax-back {
   0%,
   100% {
-    opacity: 0.48;
+    transform: translate(0.2px, 0.12px);
   }
   50% {
-    opacity: 0.62;
+    transform: translate(-0.45px, -0.18px);
+  }
+}
+
+@keyframes spiral-parallax-front {
+  0%,
+  100% {
+    transform: translate(-0.25px, -0.08px);
+  }
+  50% {
+    transform: translate(0.55px, 0.22px);
+  }
+}
+
+@keyframes spiral-axis-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0.08px, -0.06px);
   }
 }
 
@@ -741,6 +793,18 @@
     /* Prefer tall presence on phones without breaking hit alignment */
     width: min(100%, calc(82vh * 100 / 168));
   }
+
+  /* Keep depth cues; restrain volume so labels stay legible */
+  .spiral-helix__seg--back .spiral-helix__seg-volume,
+  .spiral-helix__seg--front.spiral-helix__seg--near .spiral-helix__seg-volume {
+    filter: none;
+  }
+
+  .spiral-helix__space--ambient .spiral-helix__layer--back,
+  .spiral-helix__space--ambient .spiral-helix__layer--front {
+    /* Smaller parallax amplitude on narrow screens */
+    animation-duration: 28s;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -748,7 +812,11 @@
     transition: none !important;
   }
 
-  .spiral-helix__currents--ambient .spiral-helix__current {
+  .spiral-helix__space--ambient .spiral-helix__layer--back,
+  .spiral-helix__space--ambient .spiral-helix__layer--front,
+  .spiral-helix__space--ambient .spiral-helix__layer--axis,
+  .spiral-helix__space--ambient .spiral-helix__seg--front .spiral-helix__seg-core,
+  .spiral-helix__space--ambient .spiral-helix__seg--back .spiral-helix__seg-core {
     animation: none !important;
   }
 }
