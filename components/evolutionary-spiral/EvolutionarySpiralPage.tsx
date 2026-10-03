@@ -86,20 +86,36 @@ export function EvolutionarySpiralPage() {
             className="spiral-page__section spiral-page__section--compact"
             aria-labelledby="spiral-epistemic"
           >
-            <h2 id="spiral-epistemic" className="spiral-page__section-title">
-              Ways of knowing
-            </h2>
-            <ul className="spiral-page__epistemic spiral-page__epistemic--compact">
-              {SPIRAL_EPISTEMIC_CATEGORIES.map((cat) => (
-                <li key={cat.id}>
-                  <span className="spiral-page__epistemic-label">{cat.label}</span>
-                  <p className="spiral-page__epistemic-def">{cat.definition}</p>
-                </li>
-              ))}
-            </ul>
-            <p className="spiral-page__disclaimer" role="note">
-              {copy.disclaimer}
-            </p>
+            <details className="spiral-page__ways">
+              <summary
+                id="spiral-epistemic"
+                className="spiral-page__ways-summary"
+              >
+                <span className="spiral-page__ways-heading">
+                  <span className="spiral-page__ways-title">Ways of knowing</span>
+                  <span className="spiral-page__ways-mark" aria-hidden="true">
+                    ⓘ
+                  </span>
+                </span>
+                <span className="spiral-page__ways-lead">
+                  How evidence, interpretation, theology, and symbolic comparison
+                  are distinguished in this instrument.
+                </span>
+              </summary>
+              <ul className="spiral-page__epistemic spiral-page__epistemic--compact">
+                {SPIRAL_EPISTEMIC_CATEGORIES.map((cat) => (
+                  <li key={cat.id}>
+                    <span className="spiral-page__epistemic-label">
+                      {cat.label}
+                    </span>
+                    <p className="spiral-page__epistemic-def">{cat.definition}</p>
+                  </li>
+                ))}
+              </ul>
+              <p className="spiral-page__disclaimer" role="note">
+                {copy.disclaimer}
+              </p>
+            </details>
           </section>
 
           <section
