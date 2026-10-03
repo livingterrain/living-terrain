@@ -3,6 +3,7 @@
  *
  * Systems lens: authored M1D-1 content (approved copy).
  * Biology lens: authored M1D-2 content (approved copy).
+ * Psychology lens: authored M1D-3 content (approved copy).
  * Other lenses remain placeholder scaffolding — do not treat as researched claims.
  */
 
@@ -514,128 +515,249 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
     },
     {
       lensId: "psychology",
+      title:
+        "How can experience change the internal models through which a person interprets the world without erasing continuity of self?",
       framing:
-        "Psychological and developmental readings — not interchangeable with biological mechanism.",
+        "Human beings do not encounter each moment without a history.\n\nMemory, expectation, learned associations, beliefs, and models of self and world shape how new experience is interpreted.\n\nMuch of that organization can absorb contradiction without changing very much. New experiences are incorporated into what is already known.\n\nBut sometimes existing expectations no longer explain what is happening. Old associations may be updated. New learning may compete with earlier learning. Assumptions may have to be revised. Loss may alter the story through which a person understands a life that nevertheless remains their own.\n\nPsychological transformation therefore raises a problem similar to—but not mechanistically identical with—the one we encountered in systems and biology:\n\nWhat changes when the past remains, but its present organization changes?\n\nTransformation here does not mean improvement.\n\nExperience can produce learning, adaptation, confusion, impairment, integration, fragmentation, or no lasting reorganization at all.",
       concepts: [
         {
           id: "psy-reconsolidation",
-          title: "Reconsolidation",
-          summary:
-            "Retrieval can open a memory to updating under specific conditions — scaffold.",
-          epistemicKind: "empirical-mechanism",
-          placeholder: true,
+          title: "Memory reconsolidation",
+          summary: "Remembering is not always passive retrieval.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "empirical-mechanism"],
           sections: [
             {
-              id: "psy-recon-summary",
-              kind: "summary",
-              title: "Summary",
-              body: PH,
-              placeholder: true,
-            },
-            {
-              id: "psy-recon-mechanism",
-              kind: "mechanism",
-              title: "Mechanism",
-              body: "Reserved for boundary-conditioned reconsolidation notes — not authored here.",
-              placeholder: true,
+              id: "psy-recon-body",
+              kind: "general",
+              title: "",
+              body: "A consolidated memory can sometimes become susceptible to updating when it is reactivated under particular conditions.\n\nResearch on reconsolidation suggests that retrieval can, under specific circumstances, destabilize aspects of an established memory before it is stabilized again.\n\nThat does not mean every act of remembering rewrites a memory.\n\nNor does updating mean that the original event disappears.\n\nWhat happened remains part of the person's history. What may change is how aspects of that memory are presently represented, associated, or expressed.\n\nThe past is therefore not altered in the literal sense.\n\nThe living system that carries it can change.",
             },
             {
               id: "psy-recon-persists",
               kind: "what-persists",
               title: "What persists",
-              body: PH,
-              placeholder: true,
+              body: "The historical event, autobiographical continuity, existing memory traces or components, and the fact that prior learning occurred.",
             },
             {
               id: "psy-recon-changes",
               kind: "what-changes",
               title: "What changes",
-              body: PH,
-              placeholder: true,
-            },
-          ],
-          comparisonBreaks: {
-            body: "Memory updating is not erasure, and not a metaphor for ecological succession.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "psy-extinction",
-          title: "Extinction learning",
-          summary:
-            "New inhibitory learning may suppress without destroying the original trace.",
-          epistemicKind: "empirical-mechanism",
-          placeholder: true,
-          sections: [...diveScaffold("psy-ext")],
-          comparisonBreaks: {
-            body: "Apparent return of calm is not proof the prior association is gone.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "psy-belief-revision",
-          title: "Model / belief revision",
-          summary:
-            "Internal models can reorganize while autobiography continues — scaffold.",
-          epistemicKind: "hypothesis",
-          placeholder: true,
-          sections: [...diveScaffold("psy-belief")],
-          comparisonBreaks: {
-            body: "Revision is not necessarily growth.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "psy-grief-identity",
-          title: "Grief & identity",
-          summary:
-            "Loss can reorganize belonging and self-narrative without promising improvement.",
-          epistemicKind: "empirical-observation",
-          placeholder: true,
-          sections: [...diveScaffold("psy-grief")],
-          comparisonBreaks: {
-            body: "Grief is not an adaptive cycle by another name.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "psy-ptg-caution",
-          title: "Post-traumatic growth — caution",
-          summary:
-            "A contested construct. Architecture holds space for critique, not inspirational claims.",
-          epistemicKind: "hypothesis",
-          placeholder: true,
-          sections: [
-            {
-              id: "psy-ptg-summary",
-              kind: "summary",
-              title: "Summary",
-              body: "Scaffold for treating post-traumatic growth as contested — perceived growth is not the same as measured change.",
-              placeholder: true,
-            },
-            {
-              id: "psy-ptg-breaks",
-              kind: "comparison-breaks",
-              title: "Where the comparison breaks",
-              body: "Do not center Transformation on “trauma makes you stronger.”",
-              placeholder: true,
+              body: "Under appropriate conditions, aspects of the memory's current representation, associations, emotional significance, or behavioral expression may be updated.",
             },
           ],
           comparisonBreaks: {
             title: "Where the comparison breaks",
-            body: "Self-reported growth after adversity is not established as reliable transformation.",
-            placeholder: true,
+            body: "Do not present reconsolidation as:\n\nautomatic whenever a memory is recalled\n\nliteral deletion of the past\n\nguaranteed therapeutic rewriting\n\nproof that identity can be freely reconstructed\n\na psychological equivalent of biological metamorphosis\n\nMemory reconsolidation has boundary conditions.\n\nPreserve that uncertainty.",
           },
-          openQuestions: [
-            "What evidentiary bar should a psychological “transformation” claim meet here?",
+          sources: [
+            {
+              id: "psy-recon-nader-2000",
+              // Article title absent from M1B-R dossier — omit title rather than invent or
+              // present a citation line as if it were the publication title.
+              authors: "Nader et al.",
+              year: 2000,
+              publication: "Nature 406: 722–726",
+              supports: "Post-retrieval lability of fear memory.",
+            },
+            {
+              id: "psy-recon-pmc7550798",
+              // Dossier recorded PMC7550798 without a verified author/title.
+              // Uncertain "Astute et al." author string omitted.
+              url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7550798/",
+              supports: "Distinct mnemonic routes of reconsolidation and extinction.",
+            },
+          ],
+        },
+        {
+          id: "psy-extinction",
+          title: "Extinction & new learning",
+          summary: "A response can weaken without the old learning disappearing.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "empirical-mechanism"],
+          whisper:
+            "The old learning can remain even when it no longer organizes behavior in the same way.",
+          sections: [
+            {
+              id: "psy-ext-body",
+              kind: "general",
+              title: "",
+              body: "In learning research, extinction does not necessarily mean that an earlier association has been erased.\n\nInstead, new learning can develop that competes with or inhibits the expression of the older response.\n\nThis matters because the earlier learning may still remain available under some conditions.\n\nResponses that appeared to be extinguished can sometimes return.\n\nThe transformed state may therefore contain more than one history at once:\n\nthe earlier association and the newer learning that changes when or how it is expressed.\n\nChange, in this case, does not require a clean reset.",
+            },
+            {
+              id: "psy-ext-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Prior learning and the history through which the original association was acquired.",
+            },
+            {
+              id: "psy-ext-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "New learning alters the conditions under which the older response is expressed.",
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Do not equate extinction learning with:\n\nerasure\n\nforgetting\n\nhysteresis\n\nbiological recycling\n\nspiritual renewal\n\nAny resemblance to other lenses is structural unless an independent psychological mechanism supports the comparison.",
+          },
+          sources: [
+            {
+              id: "psy-ext-treanor-2017",
+              title: "Can Memories… Be Erased…?",
+              authors: "Treanor et al.",
+              year: 2017,
+              publication: "Perspect. Psychol. Sci. 12",
+              supports:
+                "Boundary conditions and limited clinical translation for memory-updating claims.",
+            },
+            {
+              id: "psy-ext-pmc7550798",
+              // Dossier recorded PMC7550798 without a verified author/title.
+              // Uncertain "Astute et al." author string omitted.
+              url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7550798/",
+              supports: "Distinct mnemonic routes of reconsolidation and extinction.",
+            },
+          ],
+        },
+        {
+          id: "psy-belief-revision",
+          title: "Internal model revision",
+          summary:
+            "When experience no longer fits the model, either experience must be reinterpreted—or the model must change.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "conceptual-framework"],
+          sections: [
+            {
+              id: "psy-belief-body",
+              kind: "general",
+              title: "",
+              body: "People organize experience through learned expectations, beliefs, schemas, assumptions, and narratives about self and world.\n\nThese structures help make new experience intelligible.\n\nMany contradictions can be absorbed without substantially changing them. An unexpected event can be dismissed, reinterpreted, or incorporated into an existing model.\n\nBut some experiences create enough contradiction that existing assumptions become difficult to maintain.\n\nRevision may then become possible or necessary.\n\nThe important transformation is not that reality itself has changed.\n\nIt is that the structure through which reality is interpreted no longer organizes experience in exactly the same way.",
+            },
+            {
+              id: "psy-belief-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Personal history, prior learning, autobiographical continuity, and portions of the existing model that remain useful or credible.",
+            },
+            {
+              id: "psy-belief-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Expectations, assumptions, interpretations, predictions, narratives, or relationships among previously held beliefs.",
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Psychological schemas and internal models are not literally ecological attractors or physical regime states.\n\nSystems language can help formulate questions about stability, contradiction, and reorganization.\n\nIt does not establish identical mechanisms across domains.",
+          },
+          // M1B-R dossier: no bibliographic row for schema / assumptive-world sources.
+        },
+        {
+          id: "psy-grief-identity",
+          title: "Grief & identity integration",
+          summary:
+            "Continuing does not require returning to the person who existed before the loss.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "conceptual-framework"],
+          whisper: "Integration is not the same thing as reversal.",
+          sections: [
+            {
+              id: "psy-grief-body",
+              kind: "general",
+              title: "",
+              body: "Loss can alter more than emotion.\n\nIt can disrupt expectations about relationship, identity, future, safety, meaning, and the shape a life was expected to take.\n\nIntegration does not require forgetting what was lost or restoring the world that existed before the loss.\n\nInstead, psychological continuity may involve incorporating an irreversible absence into an ongoing understanding of self and life.\n\nThe person continues.\n\nThe world through which that person understands themselves may not remain the same.\n\nThis does not require a narrative of improvement.\n\nSomeone can integrate a loss without becoming grateful for it, stronger because of it, or better than they were before it occurred.",
+            },
+            {
+              id: "psy-grief-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Personal history, relationship history, memory, identity continuity, and the significance of what was lost.",
+            },
+            {
+              id: "psy-grief-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Expectations, roles, future models, relationships, identity narratives, and the place the loss occupies within ongoing life.",
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Do not describe grief as:\n\na required adaptive cycle\n\na predictable sequence toward growth\n\na regime shift\n\npsychological metamorphosis\n\nevidence that loss exists in order to transform someone\n\nThere is no required endpoint in which grief produces an improved person.",
+          },
+          // M1B-R dossier: grief/identity mentioned without authored bibliographic metadata.
+        },
+        {
+          id: "psy-ptg-caution",
+          title: "Growth after adversity?",
+          summary:
+            "Transformation is possible after adversity. Adversity does not guarantee transformation.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "contested-interpretation"],
+          whisper:
+            "A person does not need to become better for their survival to count.",
+          sections: [
+            {
+              id: "psy-ptg-body",
+              kind: "general",
+              title: "",
+              body: "Some people report positive psychological changes following highly difficult experiences.\n\nResearch on post-traumatic growth has examined reported changes in areas such as relationships, priorities, personal strength, meaning, and appreciation of life.\n\nBut the interpretation of those reports is not simple.\n\nPerceived growth and demonstrable change are not necessarily the same thing. Retrospective reports can be shaped by memory, coping, meaning-making, and the difficulty of knowing what a person would have been like had the adversity never occurred.\n\nAdversity can also produce lasting injury without growth.\n\nSome people experience both distress and perceived growth.\n\nSome experience neither.\n\nThe existence of possible growth after adversity therefore does not justify treating adversity as beneficial, necessary, or developmentally purposeful.",
+            },
+            {
+              id: "psy-ptg-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "The fact of the adversity, personal history, and whatever consequences remain.",
+            },
+            {
+              id: "psy-ptg-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Potentially beliefs, relationships, priorities, identity narratives, perceived capacities, or meaning.\n\nBut these changes vary substantially and must not be presumed.",
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Do not present post-traumatic growth as:\n\ninevitable\n\nuniversal\n\nproof that trauma is beneficial\n\nevidence that suffering is required for development\n\nthe psychological version of an adaptive cycle\n\nempirical proof of the Evolutionary Spiral\n\nThis concept exists partly to test and constrain one of the Spiral's most seductive interpretations.",
+          },
+          sources: [
+            {
+              id: "psy-ptg-frazier-2009",
+              title:
+                "Does Self-Reported PTG Reflect Genuine Positive Change?",
+              authors: "Frazier et al.",
+              year: 2009,
+              publication: "Psychol. Sci.",
+              supports: "Perceived growth is not necessarily actual growth.",
+            },
+            {
+              id: "psy-ptg-jayawickreme-2021",
+              title: "PTG as Positive Personality Change…",
+              authors: "Jayawickreme et al.",
+              year: 2021,
+              publication: "Eur. J. Pers.",
+              url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8062071/",
+              supports:
+                "Methodological bar for claiming personality transformation after adversity.",
+            },
+            {
+              id: "psy-ptg-boals-2023",
+              title: "Illusory PTG common…",
+              authors: "Boals",
+              year: 2023,
+              publication: "Eur. J. Pers.",
+              supports: "Genuine enduring post-traumatic growth is likely rare.",
+            },
           ],
         },
       ],
       comparisonBreaks: {
-        title: "Where the comparison breaks",
-        body: "A psychological transition is not proof of a biological law or a biblical typology.",
-        placeholder: true,
+        title: "Where psychological analogy breaks",
+        body: "Psychological change is not a regime shift merely because both can be described as reorganization.\n\nMemory reconsolidation is not metamorphosis. Extinction learning is not hysteresis. Grief is not an adaptive cycle. Trauma is not a necessary perturbation designed to produce growth.\n\nSystems language may help us formulate questions about continuity, history, and change.\n\nThe psychological mechanisms still have to be established psychologically.",
       },
+      openQuestions: [
+        "If the past cannot be changed, what exactly changes when its meaning, prediction, or place within the self changes?",
+      ],
     },
     {
       lensId: "ecology",

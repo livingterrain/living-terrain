@@ -196,6 +196,12 @@ function DiveSectionView({ section }: { section: SpiralConceptDiveSection }) {
   );
 }
 
+function sourceLocatorLabel(url: string): string {
+  const pmc = url.match(/PMC\d+/i);
+  if (pmc) return pmc[0].toUpperCase();
+  return url;
+}
+
 function SourcesBlock({ sources }: { sources: readonly SpiralSourceRef[] }) {
   return (
     <section className="spiral-explore__section spiral-explore__section--sources">
@@ -211,13 +217,25 @@ function SourcesBlock({ sources }: { sources: readonly SpiralSourceRef[] }) {
               src.placeholder && "spiral-explore__source--placeholder",
             )}
           >
-            <span className="spiral-explore__source-title">{src.title}</span>
+            {src.title ? (
+              <span className="spiral-explore__source-title">{src.title}</span>
+            ) : null}
             {(src.authors || src.year || src.publication) && (
               <span className="spiral-explore__source-meta">
                 {[src.authors, src.year, src.publication]
                   .filter(Boolean)
                   .join(" · ")}
               </span>
+            )}
+            {src.url && (
+              <a
+                className="spiral-explore__source-locator"
+                href={src.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {sourceLocatorLabel(src.url)}
+              </a>
             )}
             {src.supports && (
               <span className="spiral-explore__source-supports">

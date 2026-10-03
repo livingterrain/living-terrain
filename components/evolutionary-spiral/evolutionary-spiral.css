@@ -1271,10 +1271,21 @@
 }
 
 .spiral-explore__source-meta,
-.spiral-explore__source-supports {
+.spiral-explore__source-supports,
+.spiral-explore__source-locator {
   font-size: 0.8rem;
   line-height: 1.5;
   color: var(--color-charcoal-faint);
+}
+
+.spiral-explore__source-locator {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  width: fit-content;
+}
+
+.spiral-explore__source-locator:hover {
+  color: var(--color-charcoal);
 }
 
 /* Across — structured synthesis */

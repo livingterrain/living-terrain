@@ -79,6 +79,12 @@ export const SPIRAL_EPISTEMIC_CATEGORIES: readonly SpiralEpistemicCategory[] = [
     definition:
       "A provisional proposal offered for further inquiry — not established fact.",
   },
+  {
+    id: "contested-interpretation",
+    label: "Contested interpretation",
+    definition:
+      "An interpretation of evidence that remains actively debated — not settled consensus, and not a provisional hypothesis offered only for future inquiry.",
+  },
 ] as const;
 
 export function epistemicLabel(kind: SpiralEpistemicKind): string {

@@ -46,7 +46,8 @@ export type SpiralEpistemicKind =
   | "theological-interpretation"
   | "symbolic-comparative"
   | "symbolic-analogy"
-  | "hypothesis";
+  | "hypothesis"
+  | "contested-interpretation";
 
 /**
  * Comparative lenses.
@@ -210,10 +211,15 @@ export type SpiralConceptDiveSectionKind =
   | "related"
   | "general";
 
-/** Authored citation slot — never invent DOIs or claims. */
+/**
+ * Authored citation slot — never invent DOIs or claims.
+ * `title` is the publication title when known. Omit it when the dossier
+ * does not record a true article title; do not substitute a citation line.
+ */
 export type SpiralSourceRef = {
   id: string;
-  title: string;
+  /** True publication title when known. Omit rather than invent. */
+  title?: string;
   authors?: string;
   year?: string | number;
   publication?: string;
