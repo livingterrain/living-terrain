@@ -15,7 +15,8 @@ type Props = {
 };
 
 /**
- * Compact horizontal lens selector — sibling to stage selection.
+ * Compact lens selector — sibling to stage selection.
+ * Quiet “Viewed through” orientation: one stage, multiple lenses.
  * Does not alter occurrenceId / stage identity.
  */
 export function SpiralLensRail({ exploration, viewId, onSelect }: Props) {
@@ -24,8 +25,15 @@ export function SpiralLensRail({ exploration, viewId, onSelect }: Props) {
   );
 
   return (
-    <div className="spiral-lens-rail" role="tablist" aria-label="Interpretive lenses">
-      <div className="spiral-lens-rail__track">
+    <div className="spiral-lens-rail">
+      <p className="spiral-lens-rail__orient" id="spiral-lens-orient">
+        Viewed through
+      </p>
+      <div
+        className="spiral-lens-rail__track"
+        role="tablist"
+        aria-labelledby="spiral-lens-orient"
+      >
         {lenses.map((lensId) => {
           const domain = getSpiralDomain(lensId);
           const selected = viewId === lensId;
