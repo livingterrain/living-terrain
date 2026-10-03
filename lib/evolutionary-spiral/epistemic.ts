@@ -20,6 +20,18 @@ export const SPIRAL_EPISTEMIC_CATEGORIES: readonly SpiralEpistemicCategory[] = [
       "An observation of pattern or phenomenon without claiming a complete causal mechanism.",
   },
   {
+    id: "conceptual-framework",
+    label: "Conceptual framework",
+    definition:
+      "An organizing model or heuristic used to interpret patterns — not itself a universal law or a single experimental hypothesis.",
+  },
+  {
+    id: "systems-principle",
+    label: "Systems principle",
+    definition:
+      "A general systems claim about how organization, history, or constraint operate across cases — broader than one measured mechanism.",
+  },
+  {
     id: "historical-observation",
     label: "Historical observation",
     definition:
@@ -66,6 +78,12 @@ export const SPIRAL_EPISTEMIC_CATEGORIES: readonly SpiralEpistemicCategory[] = [
     label: "Hypothesis",
     definition:
       "A provisional proposal offered for further inquiry — not established fact.",
+  },
+  {
+    id: "contested-interpretation",
+    label: "Contested interpretation",
+    definition:
+      "An interpretation of evidence that remains actively debated — not settled consensus, and not a provisional hypothesis offered only for future inquiry.",
   },
 ] as const;
 

@@ -40,6 +40,51 @@ function EpistemicMark({ kind }: { kind: SpiralEpistemicKind }) {
   );
 }
 
+function EpistemicMarks({
+  kind,
+  kinds,
+}: {
+  kind?: SpiralEpistemicKind;
+  kinds?: readonly SpiralEpistemicKind[];
+}) {
+  const list =
+    kinds && kinds.length > 0 ? kinds : kind ? [kind] : ([] as SpiralEpistemicKind[]);
+  if (list.length === 0) return null;
+  return (
+    <span className="spiral-explore__epistemic-row">
+      {list.map((k) => (
+        <EpistemicMark key={k} kind={k} />
+      ))}
+    </span>
+  );
+}
+
+/** Split authored blank-line paragraphs without inventing copy. */
+function Prose({
+  text,
+  className,
+}: {
+  text: string;
+  className?: string;
+}) {
+  const parts = text
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (parts.length <= 1) {
+    return <p className={className}>{text}</p>;
+  }
+  return (
+    <div className={cn("spiral-explore__prose", className)}>
+      {parts.map((part) => (
+        <p key={part.slice(0, 48)} className="spiral-explore__section-body">
+          {part}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 function ProvenanceMarks({
   provenance,
 }: {
@@ -118,20 +163,27 @@ function ExplorePath({
 function DiveSectionView({ section }: { section: SpiralConceptDiveSection }) {
   const isBreak =
     section.kind === "comparison-breaks" || section.kind === "open-questions";
+  const isBody = section.kind === "general" || section.kind === "pattern";
+  const showTitle = Boolean(section.title?.trim());
   return (
     <section
       className={cn(
         "spiral-explore__section",
+        isBody && !showTitle && "spiral-explore__section--body",
         isBreak && "spiral-explore__section--breaks",
         section.placeholder && "spiral-explore__section--placeholder",
       )}
     >
-      <header className="spiral-explore__section-head">
-        <h4 className="spiral-explore__section-title">{section.title}</h4>
-        {section.placeholder && <PlaceholderMark />}
-      </header>
+      {(showTitle || section.placeholder) && (
+        <header className="spiral-explore__section-head">
+          {showTitle && (
+            <h4 className="spiral-explore__section-title">{section.title}</h4>
+          )}
+          {section.placeholder && <PlaceholderMark />}
+        </header>
+      )}
       {section.body && (
-        <p className="spiral-explore__section-body">{section.body}</p>
+        <Prose text={section.body} className="spiral-explore__section-body" />
       )}
       {section.items && section.items.length > 0 && (
         <ul className="spiral-explore__bullet-list">
@@ -142,6 +194,12 @@ function DiveSectionView({ section }: { section: SpiralConceptDiveSection }) {
       )}
     </section>
   );
+}
+
+function sourceLocatorLabel(url: string): string {
+  const pmc = url.match(/PMC\d+/i);
+  if (pmc) return pmc[0].toUpperCase();
+  return url;
 }
 
 function SourcesBlock({ sources }: { sources: readonly SpiralSourceRef[] }) {
@@ -159,13 +217,25 @@ function SourcesBlock({ sources }: { sources: readonly SpiralSourceRef[] }) {
               src.placeholder && "spiral-explore__source--placeholder",
             )}
           >
-            <span className="spiral-explore__source-title">{src.title}</span>
+            {src.title ? (
+              <span className="spiral-explore__source-title">{src.title}</span>
+            ) : null}
             {(src.authors || src.year || src.publication) && (
               <span className="spiral-explore__source-meta">
                 {[src.authors, src.year, src.publication]
                   .filter(Boolean)
                   .join(" · ")}
               </span>
+            )}
+            {src.url && (
+              <a
+                className="spiral-explore__source-locator"
+                href={src.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {sourceLocatorLabel(src.url)}
+              </a>
             )}
             {src.supports && (
               <span className="spiral-explore__source-supports">
@@ -191,8 +261,11 @@ function ConceptIndex({
   return (
     <div className="spiral-explore__lens-body">
       <p className="spiral-explore__lens-label">{domain?.label ?? lens.lensId}</p>
+      {lens.title && (
+        <h4 className="spiral-explore__lens-title">{lens.title}</h4>
+      )}
       {lens.framing && (
-        <p className="spiral-explore__framing">{lens.framing}</p>
+        <Prose text={lens.framing} className="spiral-explore__framing" />
       )}
       <p className="spiral-explore__index-cue">
         Concepts — choose how far to go
@@ -209,9 +282,10 @@ function ConceptIndex({
               onClick={() => onOpen(concept.id)}
             >
               <span className="spiral-explore__concept-meta">
-                {concept.epistemicKind && (
-                  <EpistemicMark kind={concept.epistemicKind} />
-                )}
+                <EpistemicMarks
+                  kind={concept.epistemicKind}
+                  kinds={concept.epistemicKinds}
+                />
                 <ProvenanceMarks provenance={concept.provenance} />
                 {concept.placeholder && <PlaceholderMark />}
               </span>
@@ -231,6 +305,7 @@ function ConceptIndex({
           className={cn(
             "spiral-explore__section",
             "spiral-explore__section--breaks",
+            "spiral-explore__section--lens-breaks",
             lens.comparisonBreaks.placeholder &&
               "spiral-explore__section--placeholder",
           )}
@@ -241,9 +316,24 @@ function ConceptIndex({
             </h4>
             {lens.comparisonBreaks.placeholder && <PlaceholderMark />}
           </header>
-          <p className="spiral-explore__section-body">
-            {lens.comparisonBreaks.body}
-          </p>
+          <Prose
+            text={lens.comparisonBreaks.body}
+            className="spiral-explore__section-body"
+          />
+        </section>
+      )}
+      {lens.openQuestions && lens.openQuestions.length > 0 && (
+        <section className="spiral-explore__section spiral-explore__section--breaks spiral-explore__section--open">
+          <header className="spiral-explore__section-head">
+            <h4 className="spiral-explore__section-title">Open question</h4>
+          </header>
+          <ul className="spiral-explore__open-questions">
+            {lens.openQuestions.map((q) => (
+              <li key={q} className="spiral-explore__open-question">
+                {q}
+              </li>
+            ))}
+          </ul>
         </section>
       )}
     </div>
@@ -276,9 +366,10 @@ function ConceptDeepDive({
 
       <header className="spiral-explore__dive-head">
         <div className="spiral-explore__concept-meta">
-          {concept.epistemicKind && (
-            <EpistemicMark kind={concept.epistemicKind} />
-          )}
+          <EpistemicMarks
+            kind={concept.epistemicKind}
+            kinds={concept.epistemicKinds}
+          />
           <ProvenanceMarks provenance={concept.provenance} />
           {concept.placeholder && <PlaceholderMark />}
         </div>
@@ -286,9 +377,33 @@ function ConceptDeepDive({
         <p className="spiral-explore__dive-summary">{concept.summary}</p>
       </header>
 
-      {concept.sections?.map((section) => (
-        <DiveSectionView key={section.id} section={section} />
-      ))}
+      {(() => {
+        const sections = concept.sections ?? [];
+        const isBody = (s: SpiralConceptDiveSection) =>
+          s.kind === "general" || s.kind === "pattern";
+        let split = sections.length;
+        for (let i = 0; i < sections.length; i++) {
+          if (!isBody(sections[i]!)) {
+            split = i;
+            break;
+          }
+        }
+        const bodySections = sections.slice(0, split);
+        const restSections = sections.slice(split);
+        return (
+          <>
+            {bodySections.map((section) => (
+              <DiveSectionView key={section.id} section={section} />
+            ))}
+            {concept.whisper && (
+              <p className="spiral-explore__whisper-line">{concept.whisper}</p>
+            )}
+            {restSections.map((section) => (
+              <DiveSectionView key={section.id} section={section} />
+            ))}
+          </>
+        );
+      })()}
 
       {concept.sources && concept.sources.length > 0 && (
         <SourcesBlock sources={concept.sources} />
@@ -309,20 +424,23 @@ function ConceptDeepDive({
             </h4>
             {concept.comparisonBreaks.placeholder && <PlaceholderMark />}
           </header>
-          <p className="spiral-explore__section-body">
-            {concept.comparisonBreaks.body}
-          </p>
+          <Prose
+            text={concept.comparisonBreaks.body}
+            className="spiral-explore__section-body"
+          />
         </section>
       )}
 
       {concept.openQuestions && concept.openQuestions.length > 0 && (
-        <section className="spiral-explore__section spiral-explore__section--breaks">
+        <section className="spiral-explore__section spiral-explore__section--breaks spiral-explore__section--open">
           <header className="spiral-explore__section-head">
             <h4 className="spiral-explore__section-title">Open questions</h4>
           </header>
-          <ul className="spiral-explore__bullet-list">
+          <ul className="spiral-explore__open-questions">
             {concept.openQuestions.map((q) => (
-              <li key={q}>{q}</li>
+              <li key={q} className="spiral-explore__open-question">
+                {q}
+              </li>
             ))}
           </ul>
         </section>
