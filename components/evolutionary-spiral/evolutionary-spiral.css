@@ -905,11 +905,12 @@
 
 .spiral-lens-rail__track {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.35rem;
-  overflow-x: auto;
+  /* Prefer wrap over horizontal clipping — later lenses (Biblical, Zodiac, Across)
+     must remain discoverable without an unmarked overflow scroll. */
+  overflow-x: visible;
   padding: 0.15rem 0 0.35rem;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
 }
 
 .spiral-lens-rail__btn {
