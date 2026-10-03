@@ -1,35 +1,47 @@
 import type { SpiralDomain } from "./types";
 
 /**
- * Comparative lenses for the eventual first public version.
- * Living Systems / Biology is the primary anchoring layer.
+ * Comparative lenses.
+ * Living Systems / Biology remains the primary empirical anchoring layer.
+ * Systems is the structural/process lens — not a claim of scientific domain equivalence.
  * Not every domain is required at every stage.
  */
 export const SPIRAL_DOMAINS: readonly SpiralDomain[] = [
   {
+    id: "systems",
+    label: "Systems",
+    shortLabel: "Systems",
+    role: "Structural / process lens — describes organization, perturbation, and reorganization without claiming a single scientific domain.",
+  },
+  {
     id: "living-systems",
-    label: "Living Systems / Biology",
-    role: "Primary anchoring layer — strongest and most complete when examples exist.",
+    label: "Biology",
+    shortLabel: "Biology",
+    role: "Primary empirical anchoring layer — strongest and most complete when examples exist.",
   },
   {
     id: "ecology",
     label: "Ecology",
+    shortLabel: "Ecology",
     role: "Comparative lens — sparse coverage preferred over forced correspondence.",
   },
   {
     id: "psychology",
-    label: "Psychology / Human Development",
+    label: "Psychology",
+    shortLabel: "Psychology",
     role: "Comparative lens — categorize epistemic status per example.",
   },
   {
     id: "biblical-textual",
-    label: "Biblical / Textual",
-    role: "Optional comparative layer — not seeded until deliberately authored.",
+    label: "Biblical / Jesus",
+    shortLabel: "Biblical",
+    role: "Optional comparative layer — textual and theological interpretation only when deliberately authored.",
   },
   {
     id: "symbolic-zodiac",
-    label: "Symbolic / Zodiac",
-    role: "Optional comparative layer — not seeded until deliberately authored.",
+    label: "Zodiac",
+    shortLabel: "Zodiac",
+    role: "Optional comparative layer — symbolic/historical associations only when deliberately authored.",
   },
 ] as const;
 
