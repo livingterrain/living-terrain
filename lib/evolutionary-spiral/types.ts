@@ -37,6 +37,8 @@ export type SpiralEpistemicKind =
   | "empirical"
   | "empirical-mechanism"
   | "empirical-observation"
+  | "conceptual-framework"
+  | "systems-principle"
   | "historical-observation"
   | "historical-textual"
   | "textual-observation"
@@ -241,6 +243,13 @@ export type SpiralConcept = {
   /** Short index whisper — not the full deep dive. */
   summary: string;
   epistemicKind?: SpiralEpistemicKind;
+  /**
+   * Optional multiple epistemic marks when a concept genuinely spans kinds
+   * (e.g. observation + mechanism). When set, takes precedence for display.
+   */
+  epistemicKinds?: readonly SpiralEpistemicKind[];
+  /** Quiet emphasis line in a deep dive — not a second summary. */
+  whisper?: string;
   /** One or more provenance labels when historically relevant. */
   provenance?: SpiralProvenanceKind | readonly SpiralProvenanceKind[];
   placeholder?: boolean;
@@ -259,6 +268,12 @@ export type SpiralConcept = {
 /** Deep exploration packet for one lens at one stage. */
 export type SpiralLensExploration = {
   lensId: SpiralDomainId;
+  /** Optional lens landing title (may differ from domain short label). */
+  title?: string;
+  /**
+   * Lens landing body. May contain paragraphs separated by blank lines;
+   * presentation splits on `\n\n`.
+   */
   framing?: string;
   /** Concept index — primary hierarchy under the lens. */
   concepts: readonly SpiralConcept[];
@@ -268,6 +283,8 @@ export type SpiralLensExploration = {
     body: string;
     placeholder?: boolean;
   };
+  /** Lens-level open questions (not conclusions). */
+  openQuestions?: readonly string[];
 };
 
 /** Structured Across synthesis — not a single paragraph. */

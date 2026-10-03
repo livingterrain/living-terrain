@@ -1,8 +1,8 @@
 /**
  * Transformation stage — deep exploration packet (M1C hierarchy).
  *
- * Concept titles follow the M1B-R research dossier as architecture proof only.
- * Bodies are placeholders — do not treat as researched claims.
+ * Systems lens: authored M1D-1 content (approved copy).
+ * Other lenses remain placeholder scaffolding — do not treat as researched claims.
  * One Biology concept reuses an already-authored Phase 1 seed summary.
  */
 
@@ -55,92 +55,253 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
   lenses: [
     {
       lensId: "systems",
+      title: "When does change become transformation?",
       framing:
-        "A structural reading of Transformation as reorganization under pressure — without assigning it to a single scientific domain.",
+        "A system can absorb enormous variation without becoming a different system. Temperatures fluctuate. Populations rise and fall. Beliefs are challenged. Forests burn and regrow.\n\nBut sometimes change crosses a threshold. The relationships that maintained the previous organization no longer restore it. Feedbacks shift. Old conditions may disappear while pieces of the previous system remain. What emerges next is shaped by what came before, but it is not necessarily a return to it.\n\nSystems science gives us several ways to investigate this boundary between continuity and transformation.\n\nTransformation here does not mean improvement. A system can reorganize into something more adaptive, more brittle, less functional—or fail to reorganize at all.",
       concepts: [
         {
           id: "sys-thresholds-regime-shifts",
           title: "Thresholds & regime shifts",
-          summary:
-            "When ordinary fluctuation gives way to a change of attractor — scaffold only.",
-          epistemicKind: "hypothesis",
-          placeholder: true,
-          sections: [...diveScaffold("sys-thresh")],
-          sources: [
+          summary: "Most change does not transform a system.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "empirical-mechanism"],
+          sections: [
             {
-              id: "sys-thresh-src-1",
-              title: "Sources reserved",
-              supports: "Citations to be attached only when authored.",
-              placeholder: true,
+              id: "sys-thresh-body",
+              kind: "general",
+              title: "",
+              body: "Living and ecological systems are constantly being perturbed. Within limits, their feedbacks absorb those disturbances and pull organization back toward a familiar range.\n\nBut those limits are not infinite.\n\nAs resilience erodes, a system can approach a threshold where relatively small additional pressure produces disproportionately large change. Feedbacks that once stabilized one state may weaken, disappear, or be replaced by feedbacks that stabilize another.\n\nThe important transition is not simply that something changed. It is that the relationships responsible for restoring the previous organization no longer do so in the same way.",
+            },
+            {
+              id: "sys-thresh-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Matter, organisms, stored information, environmental conditions, and remnants of prior organization may persist through the transition.",
+            },
+            {
+              id: "sys-thresh-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Dominant feedbacks, relationships, composition, stability—and sometimes what we would recognize as the system's identity.",
+            },
+            {
+              id: "sys-thresh-example",
+              kind: "examples",
+              title: "Example",
+              body: "Shallow lakes can shift from a clear-water state to a turbid state as nutrient loading and feedbacks reorganize. Once the turbid regime is established, the relationships that once maintained clear water may no longer restore it under the same conditions.",
             },
           ],
-          comparisonBreaks: {
-            title: "Where the comparison breaks",
-            body: "A systems threshold is not automatically a biological, psychological, or theological event.",
-            placeholder: true,
-          },
-          openQuestions: [
-            "How sharp must a threshold be before the pattern earns this name?",
+          sources: [
+            {
+              id: "sys-thresh-scheffer-2001",
+              title: "Catastrophic shifts in ecosystems",
+              authors: "Scheffer et al.",
+              year: 2001,
+              publication: "Nature 413: 591–596",
+              doi: "10.1038/35098000",
+              supports:
+                "Regime shifts, alternative stable states, and hysteresis in ecosystems.",
+            },
+            {
+              id: "sys-thresh-scheffer-2009",
+              title: "Early-warning signals for critical transitions",
+              authors: "Scheffer et al.",
+              year: 2009,
+              publication: "Nature 461: 53–59",
+              doi: "10.1038/nature08227",
+              supports:
+                "Critical slowing down and related indicators near thresholds.",
+            },
+            {
+              id: "sys-thresh-dakos-2015",
+              title: "Resilience indicators…",
+              authors: "Dakos et al.",
+              year: 2015,
+              publication:
+                "Philosophical Transactions of the Royal Society B 370",
+              url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4247400/",
+              supports:
+                "Prospects and limits of resilience / early-warning indicators for regime shifts.",
+            },
           ],
         },
         {
           id: "sys-hysteresis",
           title: "Hysteresis",
-          summary:
-            "History constrains return — reversing a driver may not restore the prior path.",
-          epistemicKind: "hypothesis",
-          placeholder: true,
-          sections: [...diveScaffold("sys-hyst")],
+          summary: "The way back may not be the way you came.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "empirical-mechanism"],
+          whisper:
+            "A return to familiar conditions does not guarantee a return to the former system.",
+          sections: [
+            {
+              id: "sys-hyst-body",
+              kind: "general",
+              title: "",
+              body: "If a system has crossed into a different stable regime, simply reversing the pressure that pushed it there may not restore the previous state.\n\nThis is hysteresis: the present behavior of a system depends partly on its history.\n\nThe threshold for leaving one state can differ from the threshold required to return to it. In some cases, return may become extraordinarily difficult or impossible under the conditions that remain.\n\nThe system therefore carries its past—not necessarily as memory in the psychological sense, but in its altered structure, relationships, feedbacks, and constraints.",
+            },
+            {
+              id: "sys-hyst-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Residual structure, constraints, material conditions, altered feedbacks, and the consequences of the path already taken.",
+            },
+            {
+              id: "sys-hyst-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "The system's response landscape: conditions that once maintained one state may no longer be sufficient to recreate it.",
+            },
+          ],
           comparisonBreaks: {
-            body: "Hysteresis is a dynamical property, not a moral or spiritual lesson.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Do not describe hysteresis as literal psychological memory.\n\nIts relevance to other lenses is structural unless a domain-specific mechanism independently supports the comparison.",
           },
+          sources: [
+            {
+              id: "sys-hyst-scheffer-2001",
+              title: "Catastrophic shifts in ecosystems",
+              authors: "Scheffer et al.",
+              year: 2001,
+              publication: "Nature 413: 591–596",
+              doi: "10.1038/35098000",
+              supports:
+                "Hysteresis and path-dependent return in ecosystem regime shifts.",
+            },
+          ],
+        },
+        {
+          id: "sys-transformability",
+          title: "Resilience & transformability",
+          summary:
+            "Sometimes survival means remaining recognizable. Sometimes it means becoming different.",
+          epistemicKind: "conceptual-framework",
+          epistemicKinds: ["conceptual-framework", "empirical-observation"],
+          sections: [
+            {
+              id: "sys-xform-body",
+              kind: "general",
+              title: "",
+              body: "Resilience describes a system's capacity to absorb disturbance while retaining its essential organization and function.\n\nTransformability asks a different question: what happens when maintaining the existing organization is no longer viable?\n\nAt that point, preserving every feature of the old system may work against persistence at a larger scale. Some structures may have to disappear. Relationships may reorganize. Functions may move. Identity itself may become difficult to define.\n\nThis creates one of the central tensions of the Evolutionary Spiral:\n\nHow much can change while continuity remains?\n\nHow much can remain before continuity becomes rigidity?",
+            },
+            {
+              id: "sys-xform-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "This depends on scale.\n\nA larger system may persist even while components, relationships, or organizational forms change.",
+            },
+            {
+              id: "sys-xform-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Structures, relationships, functions, and potentially the identity used to describe the system.",
+            },
+          ],
+          sources: [
+            {
+              id: "sys-xform-walker-2004",
+              title:
+                "Resilience, adaptability and transformability in social–ecological systems",
+              authors: "Walker et al.",
+              year: 2004,
+              publication: "Ecology & Society 9(2):5",
+              url: "https://www.ecologyandsociety.org/vol9/iss2/art5/main.html",
+              supports:
+                "Distinguishes resilience (absorb while remaining) from transformability (become different).",
+            },
+          ],
         },
         {
           id: "sys-adaptive-cycles",
           title: "Adaptive cycles",
-          summary:
-            "Release and reorganization as a heuristic — not a predictive clock.",
-          epistemicKind: "hypothesis",
-          placeholder: true,
-          sections: [...diveScaffold("sys-adapt")],
+          summary: "The adaptive cycle is not a universal clock.",
+          epistemicKind: "conceptual-framework",
+          epistemicKinds: ["conceptual-framework", "hypothesis"],
+          sections: [
+            {
+              id: "sys-adapt-body",
+              kind: "general",
+              title: "",
+              body: "Some systems researchers have described recurring dynamics through an adaptive cycle: periods of growth and accumulation, increasing connectedness, release, and reorganization.\n\nThe model is useful because it refuses to treat breakdown as the end of the story. Release can free material, information, and possibilities that become available during reorganization.\n\nBut the adaptive cycle is not a universal clock.\n\nSystems do not have to complete it. Reorganization does not guarantee recovery. The next configuration may resemble the previous one, diverge from it, or fail entirely.\n\nThe value of the model is therefore not that everything follows the same cycle. It is that it gives us a language for asking what becomes possible after an existing organization loosens or breaks apart.",
+            },
+          ],
           comparisonBreaks: {
-            body: "The adaptive cycle is a useful metaphor with limits; it is not a universal law.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Do not present the adaptive cycle as:\n\na universal law\n\na guaranteed developmental sequence\n\ninevitable improvement\n\nproof that collapse creates growth",
           },
+          sources: [
+            {
+              id: "sys-adapt-gunderson-holling-2002",
+              title: "Panarchy",
+              authors: "Gunderson & Holling",
+              year: 2002,
+              publication: "Island Press",
+              supports:
+                "Adaptive cycle and panarchy as a heuristic for release and reorganization.",
+            },
+            {
+              id: "sys-adapt-holling-2001",
+              title:
+                "Understanding the Complexity of Economic, Ecological, and Social Systems",
+              authors: "Holling",
+              year: 2001,
+              publication: "Ecosystems 4: 390–405",
+              supports:
+                "Nested adaptive cycles; release, reorganization, remember, and revolt.",
+            },
+          ],
         },
         {
           id: "sys-path-dependence",
           title: "Path dependence",
-          summary:
-            "What can emerge afterward is constrained by what came before.",
-          epistemicKind: "hypothesis",
-          placeholder: true,
-          sections: [...diveScaffold("sys-path")],
+          summary: "Transformation does not begin from zero.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "systems-principle"],
+          sections: [
+            {
+              id: "sys-path-body",
+              kind: "general",
+              title: "",
+              body: "What becomes possible after disruption depends partly on what existed before it.\n\nStructures remain. Resources remain. Constraints remain. Some relationships survive while others disappear. Previous changes alter the landscape on which the next change occurs.\n\nSystems are therefore not merely moving through a sequence of interchangeable states. They are accumulating history.\n\nTwo systems exposed to the same disturbance may respond differently because they did not arrive there by the same path.\n\nThis is one reason recurrence does not require repetition.\n\nA system can encounter a recognizable problem again while meeting it from a different state.",
+            },
+            {
+              id: "sys-path-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "History persists through constraints, structure, resources, legacies, and altered possibilities.",
+            },
+            {
+              id: "sys-path-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "The range of futures available to the system.",
+            },
+          ],
           comparisonBreaks: {
-            body: "Path dependence does not imply progress or destiny.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Do not overstate path dependence as deterministic.\n\nHistory constrains future possibilities; it does not necessarily dictate one inevitable outcome.",
           },
-        },
-        {
-          id: "sys-transformability",
-          title: "Transformability",
-          summary:
-            "Capacity to become a different kind of system — distinct from resilience.",
-          epistemicKind: "hypothesis",
-          placeholder: true,
-          sections: [...diveScaffold("sys-xform")],
-          comparisonBreaks: {
-            body: "Transformability is not improvement by definition.",
-            placeholder: true,
-          },
+          sources: [
+            {
+              id: "sys-path-scheffer-2001",
+              title: "Catastrophic shifts in ecosystems",
+              authors: "Scheffer et al.",
+              year: 2001,
+              publication: "Nature 413: 591–596",
+              doi: "10.1038/35098000",
+              supports:
+                "History-dependent return thresholds (hysteresis) constrain what can follow a regime shift.",
+            },
+          ],
         },
       ],
       comparisonBreaks: {
-        title: "Where the comparison breaks",
-        body: "A systems pattern is not automatically a biological mechanism, a psychological process, or a theological claim.",
-        placeholder: true,
+        title: "Where systems language breaks",
+        body: "Systems language travels easily—and that is also its danger.\n\nWords such as feedback, threshold, resilience, transformation, and emergence can describe patterns at many scales. Their usefulness does not mean the mechanisms operating at those scales are the same.\n\nA regime shift in a lake is not a grief process. Metamorphosis is not resurrection. A symbolic cycle is not hysteresis.\n\nStructural resemblance gives us a reason to compare.\n\nIt does not give us permission to collapse the things being compared.",
       },
+      openQuestions: [
+        "If a system cannot remain exactly what it was, what must be carried forward for us to say that something continued at all?",
+      ],
     },
     {
       lensId: "living-systems",
