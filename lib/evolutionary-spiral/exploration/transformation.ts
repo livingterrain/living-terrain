@@ -4,6 +4,7 @@
  * Systems lens: authored M1D-1 content (approved copy).
  * Biology lens: authored M1D-2 content (approved copy).
  * Psychology lens: authored M1D-3 content (approved copy).
+ * Ecology lens: authored M1D-4 content (approved copy).
  * Other lenses remain placeholder scaffolding — do not treat as researched claims.
  */
 
@@ -761,80 +762,333 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
     },
     {
       lensId: "ecology",
+      title:
+        "When an ecosystem is disrupted, what determines whether it returns, reorganizes, or becomes something else?",
       framing:
-        "Ecological readings of disturbance and reorganization in communities and landscapes.",
+        "Ecological systems are shaped by both disturbance and inheritance.\n\nFire, storms, drought, flooding, species loss, land-use change, and other disruptions can alter an established ecological organization.\n\nWhat follows does not begin from zero.\n\nSurviving organisms, soils, nutrients, seed banks, physical structures, altered feedbacks, and the absence of what was lost can all influence what becomes possible next.\n\nSometimes a recognizable ecological configuration returns.\n\nSometimes recovery is partial.\n\nSometimes a different assemblage forms.\n\nSometimes feedbacks stabilize an alternative state.\n\nSometimes the conditions required for recovery have been lost.\n\nEcology therefore gives the Spiral one of its clearest empirical examples of recurrence with history:\n\nWhat emerges after disruption does not emerge from nothing.\n\nBut recurrence is not guaranteed, and neither is renewal.",
       concepts: [
-        {
-          id: "eco-memory",
-          title: "Ecological memory",
-          summary:
-            "Material and information legacies shape what can grow afterward.",
-          epistemicKind: "empirical-observation",
-          placeholder: true,
-          sections: [...diveScaffold("eco-mem")],
-          comparisonBreaks: {
-            body: "Ecological memory is not psychological memory except by analogy.",
-            placeholder: true,
-          },
-        },
         {
           id: "eco-disturbance-succession",
           title: "Disturbance & succession",
           summary:
-            "After disruption, communities reassemble along historically constrained paths.",
+            "Disturbance changes what is present. Succession describes what happens next.",
           epistemicKind: "empirical-observation",
-          placeholder: true,
-          sections: [...diveScaffold("eco-succ")],
+          epistemicKinds: ["empirical-observation", "conceptual-framework"],
+          whisper:
+            "What comes after disturbance depends partly on what the disturbance leaves behind.",
+          sections: [
+            {
+              id: "eco-succ-body",
+              kind: "general",
+              title: "",
+              body: "Ecological communities are not static.\n\nDisturbances can remove organisms, alter resources, change physical conditions, open space, or reorganize relationships among species.\n\nThe ecological processes that follow are often described through succession.\n\nSuccession does not mean that an ecosystem simply rebuilds itself according to a fixed script.\n\nThe trajectory depends on what survived, what can arrive, the conditions left behind, interactions among organisms, subsequent disturbances, and the larger environmental context.\n\nA disturbed ecosystem may develop toward a configuration resembling what existed before.\n\nIt may also develop differently.",
+            },
+            {
+              id: "eco-succ-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Depending on the disturbance:",
+              items: [
+                "surviving organisms",
+                "soil",
+                "nutrients",
+                "seeds or propagules",
+                "physical structures",
+                "species interactions",
+                "environmental constraints",
+                "remnants of prior organization",
+              ],
+            },
+            {
+              id: "eco-succ-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Potentially:",
+              items: [
+                "species composition",
+                "abundance",
+                "spatial structure",
+                "resource availability",
+                "competitive relationships",
+                "trophic relationships",
+                "ecosystem processes",
+              ],
+            },
+          ],
           comparisonBreaks: {
-            body: "Succession is not spiritual ascent.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Succession is not a universal sequence of destruction followed by improvement.\n\nDo not imply:\n\nevery disturbance initiates renewal\n\necosystems move toward a predetermined ideal state\n\nsuccession is always progressive\n\ndisturbance exists in order to create ecological growth\n\necological succession proves a universal transformation cycle",
           },
+          // M1B-R dossier: no dedicated disturbance/succession bibliographic row.
+        },
+        {
+          id: "eco-memory",
+          title: "Ecological memory & legacies",
+          summary: "An ecosystem can carry its history forward materially.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "empirical-mechanism"],
+          whisper:
+            "The next system inherits a landscape that already has a history.",
+          sections: [
+            {
+              id: "eco-mem-body",
+              kind: "general",
+              title: "",
+              body: "After disturbance, the previous ecological system may remain present in fragments.\n\nSurviving organisms, seed banks, roots, soils, nutrients, dead wood, habitat structures, microbial communities, and other biological or material legacies can influence what develops afterward.\n\nThese remnants are part of what researchers describe as ecological memory.\n\nThey can preserve information, organisms, resources, or structures that affect recovery and reorganization.\n\nThe future system therefore does not encounter an empty landscape.\n\nIts possibilities are partly shaped by what persisted through the disturbance.\n\nThis gives ecological systems a concrete form of continuity without requiring the previous organization to remain intact.",
+            },
+            {
+              id: "eco-mem-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Potentially:",
+              items: [
+                "organisms",
+                "propagules",
+                "genetic material",
+                "soil properties",
+                "nutrients",
+                "habitat structures",
+                "biological interactions",
+                "material remnants",
+                "spatial patterns",
+              ],
+            },
+            {
+              id: "eco-mem-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "The larger organization in which those remnants participate:",
+              items: [
+                "community composition",
+                "population structure",
+                "spatial relationships",
+                "ecological interactions",
+                "ecosystem processes",
+                "dominant feedbacks",
+              ],
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Ecological memory is not memory in the psychological sense.\n\nDo not imply that ecosystems:\n\nremember consciously\n\nencode autobiographical experience\n\npossess psychological memory\n\npreserve every important feature of the previous state\n\n“Memory” here refers to persistent biological, material, spatial, or organizational legacies that influence later ecological dynamics.",
+          },
+          sources: [
+            {
+              id: "eco-mem-johnstone-2016",
+              title: "Changing disturbance regimes, ecological memory…",
+              authors: "Johnstone et al.",
+              year: 2016,
+              publication: "Front. Ecol. Environ. 14: 369–378",
+              doi: "10.1002/fee.1311",
+              supports:
+                "Information vs material legacies; ecological memory and resilience debt.",
+            },
+          ],
+        },
+        {
+          id: "eco-resilience-recovery",
+          title: "Resilience & recovery",
+          summary:
+            "Recovery can mean return. It can also mean continued function under changed organization.",
+          epistemicKind: "empirical-observation",
+          epistemicKinds: ["empirical-observation", "conceptual-framework"],
+          whisper:
+            "A system can remain viable without becoming identical to its former state.",
+          sections: [
+            {
+              id: "eco-res-body",
+              kind: "general",
+              title: "",
+              body: "Ecological resilience concerns how systems respond to disturbance while retaining or reorganizing ecological structure and function.\n\nSome disturbances are absorbed without producing a lasting change in the broader ecological regime.\n\nOther disturbances push systems beyond conditions from which the previous organization readily returns.\n\nRecovery is therefore not a single outcome.\n\nAn ecosystem may regain much of its former composition or function.\n\nIt may recover some functions while remaining compositionally different.\n\nIt may reorganize around different relationships.\n\nOr it may fail to recover important structures and processes at all.\n\nThe word recovery can hide these differences unless we ask:\n\nRecovery of what?",
+            },
+            {
+              id: "eco-res-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Depending on the system:",
+              items: [
+                "ecological functions",
+                "species or functional groups",
+                "material legacies",
+                "habitat structures",
+                "feedback relationships",
+                "portions of community organization",
+              ],
+            },
+            {
+              id: "eco-res-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Potentially:",
+              items: [
+                "species composition",
+                "dominance relationships",
+                "spatial structure",
+                "rates of ecological processes",
+                "interaction networks",
+                "feedback strength",
+                "system function",
+              ],
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Do not use resilience as a synonym for:\n\ngoodness\n\nhealth\n\nimprovement\n\nstrength\n\nsuccessful transformation\n\nAn ecologically resilient state can preserve undesirable conditions from a human perspective.\n\nLikewise, loss of a previous state does not guarantee that what follows will be more diverse, functional, or adaptive.",
+          },
+          sources: [
+            {
+              id: "eco-res-walker-2004",
+              title:
+                "Resilience, adaptability and transformability in social–ecological systems",
+              authors: "Walker et al.",
+              year: 2004,
+              publication: "Ecology & Society 9(2):5",
+              url: "https://www.ecologyandsociety.org/vol9/iss2/art5/main.html",
+              supports:
+                "Distinguishes resilience (absorb while remaining) from transformability (become different).",
+            },
+            // Gunderson/Holling present in dossier/Systems as adaptive-cycle heuristic;
+            // not attached here to avoid broadening Resilience & recovery beyond Walker’s claim.
+          ],
         },
         {
           id: "eco-alt-stable-states",
           title: "Alternative stable states",
           summary:
-            "More than one community configuration may be locally stable.",
+            "The same place can support more than one persistent ecological organization.",
           epistemicKind: "empirical-observation",
-          placeholder: true,
-          sections: [...diveScaffold("eco-alt")],
+          epistemicKinds: ["empirical-observation", "empirical-mechanism"],
+          whisper:
+            "Returning the conditions does not always return the system.",
+          sections: [
+            {
+              id: "eco-alt-body",
+              kind: "general",
+              title: "",
+              body: "Some ecological systems can persist in substantially different configurations under overlapping external conditions.\n\nFeedbacks within each configuration can help maintain that state.\n\nA sufficiently large disturbance or gradual change in conditions may push the system across a threshold into another regime.\n\nOnce that shift occurs, simply reversing the original pressure may not immediately restore the former ecological state.\n\nThe relationships maintaining the new configuration can now matter.\n\nThis is one reason ecological recovery cannot always be understood as retracing the path of disturbance backward.",
+            },
+            {
+              id: "eco-alt-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Potentially:",
+              items: [
+                "geographic place",
+                "portions of the species pool",
+                "soils or physical substrate",
+                "environmental drivers",
+                "material legacies",
+                "some ecosystem processes",
+              ],
+            },
+            {
+              id: "eco-alt-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Potentially:",
+              items: [
+                "dominant species",
+                "community composition",
+                "feedback relationships",
+                "resource dynamics",
+                "trophic structure",
+                "ecosystem function",
+                "stability conditions",
+              ],
+            },
+          ],
           comparisonBreaks: {
-            body: "A new stable state may be degraded relative to the prior one.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Do not present every ecological change as an alternative stable state.\n\nDo not treat “regime shift” as a dramatic synonym for ordinary ecological variation.\n\nEvidence for alternative stable states requires more than observing that an ecosystem changed.\n\nAnd do not equate ecological alternative states with:\n\npsychological identity states\n\ntheological death and resurrection\n\nbiological metamorphosis\n\nsymbolic zodiac transitions",
           },
+          sources: [
+            {
+              id: "eco-alt-scheffer-2001",
+              title: "Catastrophic shifts in ecosystems",
+              authors: "Scheffer et al.",
+              year: 2001,
+              publication: "Nature 413: 591–596",
+              doi: "10.1038/35098000",
+              supports:
+                "Regime shifts, alternative stable states, and hysteresis in ecosystems.",
+            },
+            {
+              id: "eco-alt-walker-2004",
+              title:
+                "Resilience, adaptability and transformability in social–ecological systems",
+              authors: "Walker et al.",
+              year: 2004,
+              publication: "Ecology & Society 9(2):5",
+              url: "https://www.ecologyandsociety.org/vol9/iss2/art5/main.html",
+              supports:
+                "Distinguishes remaining within a regime from becoming differently organized.",
+            },
+          ],
         },
         {
-          id: "eco-recovery-reorg",
-          title: "Recovery vs reorganization",
+          id: "eco-reorganization-collapse",
+          title: "Reorganization after collapse",
           summary:
-            "Return toward a prior community is not the only post-disturbance outcome.",
+            "What follows breakdown depends on what remains capable of participating in what comes next.",
           epistemicKind: "empirical-observation",
-          placeholder: true,
-          sections: [...diveScaffold("eco-rec")],
+          epistemicKinds: ["empirical-observation", "conceptual-framework"],
+          whisper:
+            "Collapse creates a new set of constraints. It does not guarantee a new beginning.",
+          sections: [
+            {
+              id: "eco-reorg-body",
+              kind: "general",
+              title: "",
+              body: "Severe ecological disruption can dismantle relationships that previously maintained a system.\n\nPopulations may disappear.\n\nHabitat structures may be lost.\n\nFeedbacks may weaken or reverse.\n\nMaterial and biological legacies may remain—or they may be severely reduced.\n\nWhat follows depends partly on those remnants, on incoming organisms, on environmental conditions, and on whether the processes required for reorganization are still possible.\n\nA recognizable ecosystem may re-form.\n\nA different ecological configuration may develop.\n\nThe system may remain degraded.\n\nSome losses may not be reversible on meaningful human timescales.\n\nReorganization is therefore a possibility after collapse.\n\nIt is not a promise.",
+            },
+            {
+              id: "eco-reorg-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Only what actually survives or remains available:",
+              items: [
+                "organisms",
+                "propagules",
+                "soil",
+                "nutrients",
+                "physical structures",
+                "regional species pools",
+                "ecological interactions",
+                "material legacies",
+              ],
+            },
+            {
+              id: "eco-reorg-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Potentially almost every aspect of ecological organization:",
+              items: [
+                "community composition",
+                "interaction networks",
+                "spatial structure",
+                "ecosystem processes",
+                "feedbacks",
+                "functions",
+                "future trajectories",
+              ],
+            },
+          ],
           comparisonBreaks: {
-            body: "Recurrence is not identical repetition — and not always recovery.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Do not imply:\n\ncollapse is required for renewal\n\necological destruction is beneficial because succession may follow\n\nnature always heals itself\n\nevery system contains enough memory to recover\n\nreorganization restores what was lost\n\na post-collapse system is necessarily more adaptive than the one before it\n\nThis concept must leave room for irreversible loss.",
           },
-        },
-        {
-          id: "eco-legacy-effects",
-          title: "Legacy effects",
-          summary:
-            "Prior conditions leave traces that bias future assembly — scaffold.",
-          epistemicKind: "empirical-observation",
-          placeholder: true,
-          sections: [...diveScaffold("eco-leg")],
-          comparisonBreaks: {
-            body: "Legacy is constraint, not narrative destiny.",
-            placeholder: true,
-          },
+          // Source gap: Gunderson/Holling, Walker, and Johnstone appear in the dossier as
+          // topical neighbors, but none cleanly source this irreversible-loss framing without
+          // broadening adaptive-cycle or memory citations beyond their authored claims.
         },
       ],
       comparisonBreaks: {
-        title: "Where the comparison breaks",
-        body: "Ecological succession is not a theological resurrection narrative, nor a zodiacal proof.",
-        placeholder: true,
+        title: "Where ecological analogy breaks",
+        body: "Ecological succession is not evidence that everything destroyed will renew.\n\nDisturbance can create conditions for reorganization, but it can also eliminate the organisms, structures, or processes required for recovery.\n\nEcological memory can persist, be altered, or be lost.\n\nA forest after fire is not a person after grief. An ecosystem crossing a threshold is not resurrection. Succession is not proof that collapse is necessary for renewal.\n\nEcology gives us mechanisms for legacy, constraint, feedback, recovery, and reorganization within ecological systems.\n\nComparisons beyond that domain remain comparisons.",
       },
+      openQuestions: [
+        "How much of a system's past has to survive for what comes next to count as recovery rather than replacement?",
+      ],
     },
     {
       lensId: "biblical-textual",
