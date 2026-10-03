@@ -53,11 +53,18 @@ export {
   localArcPath,
   localAxisPath,
   nodeHitStyle,
+  opacityForDepth,
+  segmentCurrentByDepth,
+  strokeWidthForDepth,
   tForIndex,
   transformationPoint,
 } from "./geometry";
 
-export type { SpiralNodeGeometry, SpiralPoint } from "./geometry";
+export type {
+  SpiralDepthSegment,
+  SpiralNodeGeometry,
+  SpiralPoint,
+} from "./geometry";
 
 import { SPIRAL_COPY } from "./copy";
 import { SPIRAL_CURRENTS } from "./currents";

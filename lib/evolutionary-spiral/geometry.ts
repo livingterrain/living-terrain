@@ -24,7 +24,7 @@ export const SPIRAL_GEOM = {
   turns: 1.22,
   r0: 28,
   /** Mild taper toward the apex (perspective / densifying history). */
-  taper: 0.14,
+  taper: 0.2,
   /** Phase offset so Continuity and Transformation oppose each other. */
   phase: -Math.PI / 2,
   /** Samples for smooth current paths. */
@@ -36,8 +36,17 @@ export const SPIRAL_GEOM = {
 export type SpiralPoint = {
   x: number;
   y: number;
-  /** Depth cue: +1 front, -1 back (projection). */
+  /** Depth cue: +1 toward viewer, -1 away (projection). */
   depth: number;
+};
+
+/** Contiguous stroke of one current on one depth side. */
+export type SpiralDepthSegment = {
+  d: string;
+  /** Average projected depth in [-1, 1]. */
+  depth: number;
+  side: "front" | "back";
+  current: "continuity" | "transformation";
 };
 
 export type SpiralNodeGeometry = {
@@ -127,44 +136,109 @@ function sampleCurrent(
   return pts;
 }
 
+function sideForDepth(depth: number): "front" | "back" {
+  return depth >= 0 ? "front" : "back";
+}
+
+function averageDepth(pts: readonly SpiralPoint[]): number {
+  if (pts.length === 0) return 0;
+  let sum = 0;
+  for (const p of pts) sum += p.depth;
+  return sum / pts.length;
+}
+
 /**
- * Continuous current paths. Equal visual weight — no stage-band dominance.
- * Back/front variants use depth to soften the far side of the projection.
+ * Split a sampled current into contiguous front/back strokes so SVG paint
+ * order can occlude at crossings. Crossing samples are shared by both sides
+ * so the stroke does not open a gap.
+ */
+export function segmentCurrentByDepth(
+  current: "continuity" | "transformation",
+  samples = SPIRAL_GEOM.pathSamples,
+): SpiralDepthSegment[] {
+  const pts = sampleCurrent(current, samples);
+  if (pts.length < 2) return [];
+
+  const segments: SpiralDepthSegment[] = [];
+  let bucket: SpiralPoint[] = [pts[0]!];
+  let side = sideForDepth(pts[0]!.depth);
+
+  for (let i = 1; i < pts.length; i++) {
+    const p = pts[i]!;
+    const nextSide = sideForDepth(p.depth);
+    if (nextSide === side) {
+      bucket.push(p);
+      continue;
+    }
+    // Close current side through the crossing sample, then start the other side.
+    bucket.push(p);
+    if (bucket.length >= 2) {
+      segments.push({
+        d: pathDFromPoints(bucket),
+        depth: averageDepth(bucket),
+        side,
+        current,
+      });
+    }
+    bucket = [p];
+    side = nextSide;
+  }
+
+  if (bucket.length >= 2) {
+    segments.push({
+      d: pathDFromPoints(bucket),
+      depth: averageDepth(bucket),
+      side,
+      current,
+    });
+  }
+
+  return segments;
+}
+
+/** Stroke width in viewBox units from projected depth (near thicker, far thinner). */
+export function strokeWidthForDepth(depth: number): number {
+  const n = (depth + 1) / 2; // 0 far → 1 near
+  return 0.32 + 0.95 * n;
+}
+
+/** Core opacity from projected depth. */
+export function opacityForDepth(depth: number): number {
+  const n = (depth + 1) / 2;
+  return 0.14 + 0.68 * n;
+}
+
+/**
+ * Continuous current paths + depth segments for layered occlusion.
+ * Equal conceptual weight — visual near/far is projection, not hierarchy.
  */
 export function currentPaths(samples = SPIRAL_GEOM.pathSamples): {
   continuityFull: string;
   transformationFull: string;
-  continuityBack: string;
-  continuityFront: string;
-  transformationBack: string;
-  transformationFront: string;
+  continuitySegments: SpiralDepthSegment[];
+  transformationSegments: SpiralDepthSegment[];
+  /** Paint order: farthest first. */
+  segmentsPaintOrder: SpiralDepthSegment[];
   axisFull: string;
 } {
   const cont = sampleCurrent("continuity", samples);
   const trans = sampleCurrent("transformation", samples);
-
-  const depthSplit = (pts: SpiralPoint[]) => {
-    // Soft split: keep continuity of stroke by drawing full path twice with
-    // different opacities in the component; expose full + filtered for layering.
-    const back = pts.filter((p) => p.depth < 0.05);
-    const front = pts.filter((p) => p.depth >= -0.05);
-    return {
-      full: pathDFromPoints(pts),
-      back: pathDFromPoints(back.length > 1 ? back : pts),
-      front: pathDFromPoints(front.length > 1 ? front : pts),
-    };
-  };
-
-  const c = depthSplit(cont);
-  const tr = depthSplit(trans);
+  const continuitySegments = segmentCurrentByDepth("continuity", samples);
+  const transformationSegments = segmentCurrentByDepth(
+    "transformation",
+    samples,
+  );
+  const segmentsPaintOrder = [
+    ...continuitySegments,
+    ...transformationSegments,
+  ].sort((a, b) => a.depth - b.depth);
 
   return {
-    continuityFull: c.full,
-    transformationFull: tr.full,
-    continuityBack: c.back,
-    continuityFront: c.front,
-    transformationBack: tr.back,
-    transformationFront: tr.front,
+    continuityFull: pathDFromPoints(cont),
+    transformationFull: pathDFromPoints(trans),
+    continuitySegments,
+    transformationSegments,
+    segmentsPaintOrder,
     axisFull: pathDFromPoints([axisPoint(0), axisPoint(1)]),
   };
 }
