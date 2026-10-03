@@ -5,6 +5,7 @@
  * Biology lens: authored M1D-2 content (approved copy).
  * Psychology lens: authored M1D-3 content (approved copy).
  * Ecology lens: authored M1D-4 content (approved copy).
+ * Biblical / Jesus lens: authored M1D-5 content (approved copy).
  * Other lenses remain placeholder scaffolding — do not treat as researched claims.
  */
 
@@ -1092,184 +1093,337 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
     },
     {
       lensId: "biblical-textual",
+      title:
+        "How do biblical texts describe continuity through rupture, death, return, and renewal?",
       framing:
-        "Textual and theological comparative reading. Not a scientific mechanism. Distinctions among text, interpretation, and theology must remain visible.",
+        "Biblical texts repeatedly ask what can remain continuous when an established world is disrupted.\n\nCovenants are broken and renewed. People leave and return. Israel experiences exile and restoration. Jesus moves through ministry, confrontation, suffering, death, burial, and resurrection. New Testament writers use images of seeds, bodies, and new creation to speak about continuity through radical change.\n\nThese are not scientific descriptions of transformation.\n\nThey are narrative, theological, and symbolic ways of making claims about identity, faithfulness, death, renewal, and what it means for something to be made new.\n\nThat distinction matters.\n\nThe question here is not whether biblical texts secretly contain modern systems theory.\n\nIt is whether their language gives us another historically important way humans have described the problem we have been following throughout the Spiral:\n\nWhat remains continuous when the form of continuation is no longer simple preservation?",
       concepts: [
         {
-          id: "bib-seed-death-life",
-          title: "Seed / death / renewed life",
-          summary:
-            "Primary-text imagery (e.g. John 12:24; 1 Cor 15) — observation before interpretation.",
-          epistemicKind: "textual-observation",
-          placeholder: true,
-          sections: [
-            {
-              id: "bib-seed-summary",
-              kind: "summary",
-              title: "Summary",
-              body: "Scaffold for primary seed imagery. Textual observation first; interpretation labeled separately when authored.",
-              placeholder: true,
-            },
-            {
-              id: "bib-seed-pattern",
-              kind: "pattern",
-              title: "Pattern",
-              body: PH,
-              placeholder: true,
-            },
-            {
-              id: "bib-seed-persists",
-              kind: "what-persists",
-              title: "What persists",
-              body: PH,
-              placeholder: true,
-            },
-            {
-              id: "bib-seed-changes",
-              kind: "what-changes",
-              title: "What changes",
-              body: PH,
-              placeholder: true,
-            },
-          ],
-          comparisonBreaks: {
-            body: "A biblical metaphor is not a biological mechanism.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "bib-exodus-wilderness",
-          title: "Exodus & wilderness",
-          summary:
-            "Liminal reorganization between orders — textual pattern scaffold.",
-          epistemicKind: "textual-interpretation",
-          placeholder: true,
-          sections: [...diveScaffold("bib-ex")],
-          comparisonBreaks: {
-            body: "Wilderness is not guaranteed successful transformation.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "bib-exile-return",
-          title: "Exile & return",
-          summary:
-            "Historical and prophetic patterns of displacement and partial restoration.",
-          epistemicKind: "textual-interpretation",
-          placeholder: true,
-          sections: [...diveScaffold("bib-exile")],
-          comparisonBreaks: {
-            body: "Return is not always identical restoration.",
-            placeholder: true,
-          },
-        },
-        {
           id: "bib-jesus-death-resurrection",
-          title: "Jesus: death / burial / resurrection",
+          title: "Death, burial & raised life",
           summary:
-            "Narrative structure and theological claim held in tension — not reduced to cycle.",
-          epistemicKind: "theological-interpretation",
-          placeholder: true,
+            "The resurrection narrative does not describe Jesus simply resuming the life that preceded death.",
+          epistemicKind: "textual-observation",
+          epistemicKinds: ["textual-observation", "theological-interpretation"],
           sections: [
             {
-              id: "bib-jr-summary",
-              kind: "summary",
-              title: "Summary",
-              body: "Scaffold for the Gospel narrative shape and for the tension: useful structural comparison and resistance to reduction as mere recurrence within Christian theology.",
-              placeholder: true,
-            },
-            {
-              id: "bib-jr-pattern",
-              kind: "pattern",
-              title: "Pattern",
-              body: PH,
-              placeholder: true,
+              id: "bib-jr-body",
+              kind: "general",
+              title: "",
+              body: "The New Testament places death, burial, and resurrection at the center of the Jesus narrative.\n\nThe sequence matters:\n\nJesus is crucified.\n\nHe dies.\n\nHe is buried.\n\nHe is proclaimed raised.\n\nWithin Christian interpretation, resurrection is not normally understood as the reversal of death into an unchanged continuation of ordinary mortal life.\n\nThe claim is continuity and discontinuity together:\n\nthe one who was crucified is the one proclaimed raised, while resurrection is understood as a transformed mode of life.\n\nFor the Spiral, this creates a question about identity through radical discontinuity.\n\nBut the comparison must stop there.\n\nThe biblical claim is theological.\n\nIt is not a biological account of regeneration or an empirical mechanism of recurrence.",
             },
             {
               id: "bib-jr-persists",
               kind: "what-persists",
               title: "What persists",
-              body: PH,
-              placeholder: true,
+              body: "Within the narrative and theological claim:",
+              items: [
+                "the identity of Jesus",
+                "continuity between the crucified and risen Jesus",
+                "the history that preceded death",
+                "relationships and recognition",
+                "the significance of what occurred before resurrection",
+              ],
             },
             {
               id: "bib-jr-changes",
               kind: "what-changes",
               title: "What changes",
-              body: PH,
-              placeholder: true,
-            },
-            {
-              id: "bib-jr-holds",
-              kind: "analogy-holds",
-              title: "Where the analogy holds",
-              body: "Reserved for carefully bounded structural comparison — not authored as claim here.",
-              placeholder: true,
-            },
-            {
-              id: "bib-jr-breaks",
-              kind: "comparison-breaks",
-              title: "Where the comparison breaks",
-              body: "Resurrection may be eschatological interruption / new creation rather than cyclical recurrence. The model must show this tension, not resolve it away.",
-              placeholder: true,
+              body: "Within Christian resurrection language:",
+              items: [
+                "the condition of death",
+                "embodiment as interpreted in resurrection theology",
+                "the relation between mortality and raised life",
+                "the narrative situation after resurrection",
+              ],
             },
           ],
           comparisonBreaks: {
             title: "Where the comparison breaks",
-            body: "Theological interpretation is not empirical mechanism. Structural resemblance does not establish causation or doctrinal proof.",
-            placeholder: true,
+            body: "Resurrection is not biological metamorphosis.\n\nIt is not ecological succession.\n\nIt is not psychological recovery.\n\nIt is not a systems regime shift.\n\nWithin Christian theology, resurrection is presented as an act of God and as something that exceeds ordinary biological processes.\n\nDo not reduce resurrection to “nature's cycle of death and rebirth.”\n\nDo not claim that resurrection empirically demonstrates the Evolutionary Spiral.",
           },
-          openQuestions: [
-            "Can comparative structure serve curiosity without collapsing Christian particularity?",
+          sources: [
+            {
+              id: "bib-jr-gospel-narratives",
+              // Dossier records Gospel plot shape without a verse inventory.
+              title: "Gospel death, burial, and resurrection narratives",
+              supports:
+                "Primary-text narrative sequence of crucifixion, death, burial, and proclamation of resurrection.",
+            },
+            {
+              id: "bib-jr-1cor-15",
+              title: "1 Corinthians 15",
+              supports:
+                "Primary-text theological argument placing death, burial, and raised life in continuity and discontinuity.",
+            },
+            {
+              id: "bib-jr-wright-2003",
+              title: "The Resurrection of the Son of God",
+              authors: "N.T. Wright",
+              year: 2003,
+              publication: "Fortress",
+              supports:
+                "Theological/historical reading of early Christian resurrection as transformed bodily life, not mere resuscitation.",
+            },
+          ],
+        },
+        {
+          id: "bib-seed-death-life",
+          title: "The seed that dies",
+          summary:
+            "The text itself uses biological imagery to speak about death and fruitfulness.",
+          epistemicKind: "textual-observation",
+          epistemicKinds: ["textual-observation", "textual-interpretation"],
+          whisper:
+            "The metaphor depends on continuity without sameness of form.",
+          sections: [
+            {
+              id: "bib-seed-body",
+              kind: "general",
+              title: "",
+              body: "In John 12:24, Jesus uses the image of a grain of wheat falling into the earth and dying before bearing much fruit.\n\nThe image places loss and generativity beside one another.\n\nA seed does not remain visibly what it was while becoming what follows from it.\n\nBut the Gospel's use of seed imagery is not a scientific theory of transformation.\n\nIt is a metaphor within a particular narrative and theological context.\n\nFor this lens, its importance lies in the structure of the image:\n\ncontinuity does not require preservation of the original visible form.\n\nThat resemblance gives us something to compare.\n\nIt does not establish a shared mechanism with biological development, ecological succession, or the Evolutionary Spiral.",
+            },
+            {
+              id: "bib-seed-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Within the metaphor:",
+              items: [
+                "continuity between seed and what develops from it",
+                "the history of what was planted",
+                "the relation between what precedes and what follows",
+              ],
+            },
+            {
+              id: "bib-seed-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Within the metaphor:",
+              items: [
+                "visible form",
+                "organization",
+                "condition",
+                "relation to what comes after",
+              ],
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "A seed germinating is not literally resurrecting.\n\nThe Gospel's metaphor should not be converted into a biological proof of Christian theology.\n\nLikewise, its use in a theological text does not establish a universal scientific law that death produces renewal.\n\nThe comparison is textual and structural.",
+          },
+          sources: [
+            {
+              id: "bib-seed-john-12-24",
+              title: "John 12:24",
+              supports:
+                "Primary-text seed/death/fruit imagery. Paraphrased in the concept body; not presented as a full quotation from a named translation.",
+            },
+          ],
+        },
+        {
+          id: "bib-sown-raised",
+          title: "Sown & raised",
+          summary: "Paul describes resurrection through continuity and difference.",
+          epistemicKind: "textual-observation",
+          epistemicKinds: ["textual-observation", "theological-interpretation"],
+          whisper:
+            "Continuity and transformation are held together rather than treated as opposites.",
+          sections: [
+            {
+              id: "bib-sown-body",
+              kind: "general",
+              title: "",
+              body: "In 1 Corinthians 15, Paul uses sowing imagery while discussing resurrection.\n\nThe body that is sown and the body that is raised are described in relation to one another, but not as identical conditions.\n\nThe passage therefore holds continuity and transformation together.\n\nSomething is not discarded from the story merely because its condition changes radically.\n\nWithin Christian theology, this language participates in a claim about resurrection.\n\nWithin the Spiral, we can observe a structural question:\n\nHow can identity continue when the form or condition of continuation changes?\n\nThat is a comparison we are making.\n\nIt should not be presented as Paul's systems model.",
+            },
+            {
+              id: "bib-sown-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Within the theological argument:",
+              items: [
+                "continuity of the person",
+                "continuity between what is sown and what is raised",
+                "the history of embodied existence",
+              ],
+            },
+            {
+              id: "bib-sown-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Within Paul's resurrection language:",
+              items: [
+                "condition",
+                "qualities attributed to embodiment",
+                "mortality / imperishability",
+                "the form in which continuity is described",
+              ],
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Paul is making a theological argument about resurrection.\n\nHe is not describing:\n\nbiological metamorphosis\n\nevolutionary inheritance\n\necological recovery\n\npsychological integration\n\nsystems hysteresis\n\nDo not translate theological language into empirical mechanism.",
+          },
+          sources: [
+            {
+              id: "bib-sown-1cor-15-36-44",
+              title: "1 Corinthians 15:36–44",
+              supports:
+                "Primary-text sowing/raised-body imagery; continuity and discontinuity. Paraphrased in the concept body; not presented as a full quotation from a named translation.",
+            },
+            {
+              id: "bib-sown-wright-2003",
+              title: "The Resurrection of the Son of God",
+              authors: "N.T. Wright",
+              year: 2003,
+              publication: "Fortress",
+              supports:
+                "Theological interpretation of early Christian resurrection language, including transformed bodily life.",
+            },
+          ],
+        },
+        {
+          id: "bib-exile-return",
+          title: "Exile, return & covenant renewal",
+          summary: "Return does not erase the history of exile.",
+          epistemicKind: "textual-observation",
+          epistemicKinds: ["textual-observation", "textual-interpretation"],
+          whisper: "Return is not the same thing as going backward in time.",
+          sections: [
+            {
+              id: "bib-exile-body",
+              kind: "general",
+              title: "",
+              body: "Across the Hebrew Bible, covenant, displacement, exile, return, and renewal create recurring structures of rupture and continuity.\n\nExile represents more than movement from one location to another.\n\nIt can involve the disruption of land, political order, communal identity, worship, expectation, and inherited understandings of covenant.\n\nTexts of return and restoration do not simply make that history disappear.\n\nThe people who return carry the history of displacement with them.\n\nThis makes exile and return relevant to the Spiral's question of recurrence with history.\n\nBut “exile → return” should not be treated as a single formula governing the entire biblical canon.\n\nDifferent texts interpret exile, covenant, judgment, restoration, and renewal differently.",
+            },
+            {
+              id: "bib-exile-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Across these textual traditions, potentially:",
+              items: [
+                "communal identity",
+                "covenant memory",
+                "inherited texts and practices",
+                "relationship to land",
+                "relationship to God",
+                "collective history",
+              ],
+            },
+            {
+              id: "bib-exile-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Potentially:",
+              items: [
+                "political organization",
+                "geography",
+                "institutions",
+                "communal expectations",
+                "theological interpretation",
+                "practices",
+                "understandings of restoration",
+              ],
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Do not turn biblical exile into:\n\necological disturbance\n\npsychological trauma\n\nsystems collapse\n\na universal stage every society must experience\n\nDo not imply that all biblical authors describe exile and restoration identically.\n\nDo not claim that rupture was valuable merely because later renewal language exists.",
+          },
+          sources: [
+            {
+              id: "bib-exile-brueggemann-delivered-2021",
+              title: "Delivered into Covenant",
+              authors: "Walter Brueggemann",
+              year: 2021,
+              publication: "WJK",
+              supports:
+                "Textual interpretation of wilderness/liminal reorganization and related covenant disruption patterns.",
+            },
+            {
+              id: "bib-exile-brueggemann-wilderness-2021",
+              title: "A Wilderness Zone",
+              authors: "Walter Brueggemann",
+              year: 2021,
+              supports:
+                "Textual interpretation of wilderness as liminal zone; exile as wilderness reprise.",
+            },
+            {
+              id: "bib-exile-saet-exodus-motif",
+              // Dossier title ellipsis; authors/year/URL absent from dossier.
+              title: "The Exodus Motif…",
+              publication: "St Andrews Encyclopaedia of Theology",
+              supports:
+                "Observation that Exodus themes are reused across the Christian biblical canon.",
+            },
           ],
         },
         {
           id: "bib-new-creation",
           title: "New creation",
           summary:
-            "Renewal that is not mere restoration of a prior state — theological scaffold.",
-          epistemicKind: "theological-interpretation",
-          placeholder: true,
-          sections: [...diveScaffold("bib-nc")],
-          comparisonBreaks: {
-            body: "New creation language is theological, not ecological succession.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "bib-counterexamples",
-          title: "Counterexamples / limits",
-          summary:
-            "First-class space for narratives that resist the tidy schema.",
-          epistemicKind: "textual-interpretation",
-          placeholder: true,
+            "Biblical renewal can be described as more than restoration of an earlier condition.",
+          epistemicKind: "textual-observation",
+          epistemicKinds: ["textual-observation", "theological-interpretation"],
+          whisper: "Made new is not necessarily the same as made again.",
           sections: [
             {
-              id: "bib-ce-summary",
-              kind: "summary",
-              title: "Summary",
-              body: "Scaffold for Job-like suffering, incomplete return, and other limits — disagreement belongs in the instrument.",
-              placeholder: true,
+              id: "bib-nc-body",
+              kind: "general",
+              title: "",
+              body: "New Testament language of new creation introduces a form of renewal that is not simply return to a previous state.\n\nThe language points toward continuity with creation and history while also describing something genuinely new.\n\nWithin Christian theology, new creation can therefore hold preservation and transformation together:\n\ncreation is not treated as though it never existed, yet renewal is not merely a reset to an untouched beginning.\n\nThis makes new creation especially relevant to the Spiral's distinction between recurrence and repetition.\n\nBut the similarity remains interpretive.\n\nChristian eschatology is not a theory of cyclic systems behavior.",
             },
             {
-              id: "bib-ce-breaks",
-              kind: "comparison-breaks",
-              title: "Where the comparison breaks",
-              body: "Not every biblical disruption yields renewed order inside the text.",
-              placeholder: true,
+              id: "bib-nc-persists",
+              kind: "what-persists",
+              title: "What persists",
+              body: "Within the theological frame:",
+              items: [
+                "creation",
+                "history",
+                "identity",
+                "relationship",
+                "the significance of what came before",
+              ],
+            },
+            {
+              id: "bib-nc-changes",
+              kind: "what-changes",
+              title: "What changes",
+              body: "Within new-creation language:",
+              items: [
+                "the condition of creation",
+                "mortality and corruption as interpreted theologically",
+                "the relationship between present and renewed creation",
+                "expectations about the future",
+              ],
             },
           ],
           comparisonBreaks: {
-            body: "Forcing every narrative into one sequence flattens the corpus.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "New creation is not:\n\necological succession\n\nanother turn of a natural cycle\n\nbiological regeneration\n\nevidence that history endlessly repeats\n\nproof of the Evolutionary Spiral\n\nChristian eschatological language can be linear, culminative, and future-oriented in ways that resist a simple cyclical reading.\n\nPreserve that tension.",
           },
+          sources: [
+            {
+              id: "bib-nc-wright-2003",
+              title: "The Resurrection of the Son of God",
+              authors: "N.T. Wright",
+              year: 2003,
+              publication: "Fortress",
+              supports:
+                "Theological interpretation linking early Christian resurrection language with new creation.",
+            },
+            // Primary-verse gap: M1B-R names new creation thematically without an authored
+            // verse inventory for this concept.
+          ],
         },
       ],
       comparisonBreaks: {
-        title: "Where the comparison breaks",
-        body: "Theological interpretation is not empirical mechanism. Do not derive Christianity from astrology.",
-        placeholder: true,
+        title: "Where the biblical comparison breaks",
+        body: "Biblical texts are not describing ecological succession, psychological reconsolidation, biological metamorphosis, or systems hysteresis.\n\nResurrection in Christian theology is not ordinary recurrence after disruption. It is presented as an act of God and, particularly in the New Testament, as something that exceeds ordinary biological processes.\n\nLikewise, exile and return, seed imagery, resurrection, and new creation do not form a single scientific transformation mechanism simply because their narratives can be compared.\n\nStructural resemblance gives us a reason to ask questions across domains.\n\nIt does not establish a shared mechanism, common historical origin, or equal evidentiary status.\n\nThe biblical material should be allowed to remain theological where it is theological, textual where it is textual, and historically particular where it is historically particular.",
       },
+      openQuestions: [
+        "When a tradition speaks of something being made new, what does it understand as continuous with what came before?",
+      ],
     },
     {
       lensId: "symbolic-zodiac",
