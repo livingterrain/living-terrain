@@ -5,6 +5,7 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "emergence",
     name: "Emergence",
+    microcopy: "Something becomes possible.",
     order: 1,
     definition:
       "A new pattern of organization becomes discernible as a system—something begins to hold as an identifiable process or form where it was not previously available as such.",
@@ -14,6 +15,7 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "embodiment",
     name: "Embodiment",
+    microcopy: "It takes form.",
     order: 2,
     definition:
       "The emerging pattern takes substrate: it occupies body, medium, or material conditions through which it can persist, sense, and act.",
@@ -23,6 +25,7 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "differentiation",
     name: "Differentiation",
+    microcopy: "Differences appear.",
     order: 3,
     definition:
       "Distinctions appear within the system—parts, roles, boundaries, or specialized functions—so that the whole is no longer an undifferentiated unity.",
@@ -32,6 +35,7 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "relationship",
     name: "Relationship",
+    microcopy: "The parts begin to affect one another.",
     order: 4,
     definition:
       "Differentiated elements enter into mutual influence. What each is becomes inseparable from what it contacts; relation becomes constitutive, not optional.",
@@ -41,6 +45,7 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "organization",
     name: "Organization",
+    microcopy: "A pattern holds.",
     order: 5,
     definition:
       "Relations stabilize into structure that can regulate itself across time—coordinated interdependence that holds form under ordinary variation.",
@@ -50,6 +55,7 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "disruption",
     name: "Disruption",
+    microcopy: "The existing pattern is disturbed.",
     order: 6,
     definition:
       "Stress, novelty, failure, or intrusion challenges the existing organization. Continuity is forced into contact with what it cannot assimilate unchanged.",
@@ -59,6 +65,7 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "transformation",
     name: "Transformation",
+    microcopy: "The old organization can no longer continue unchanged.",
     order: 7,
     definition:
       "The system reorganizes under pressure. Variation, learning, breakdown, or structural change alters the means by which the system maintains itself.",
@@ -68,6 +75,7 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "integration",
     name: "Integration",
+    microcopy: "Change is incorporated.",
     order: 8,
     definition:
       "Reorganized elements have become coherent enough to function together again—not as a temporary patch, but as a re-coherence that can operate as one system.",
@@ -77,6 +85,7 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "renewal",
     name: "Renewal",
+    microcopy: "A viable pattern stabilizes—when it can.",
     order: 9,
     definition:
       "The reorganized system has stabilized sufficiently to continue forward with altered capacity, carrying history forward and preparing conditions under which a further Emergence may become discernible.",
@@ -150,9 +159,15 @@ export const SPIRAL_SEQUENCE: readonly SpiralSequenceStop[] = [
     cycleIndex: 1,
     order: 10,
     labelOverride: "Emergence again",
+    microcopyOverride: "Something becomes possible under changed conditions.",
   },
 ] as const;
 
 export function getSpiralStage(id: string): SpiralStage | undefined {
   return SPIRAL_STAGES.find((s) => s.id === id);
+}
+
+/** Plain-language line for an occurrence (Emergence again keeps its own). */
+export function microcopyForStop(stop: SpiralSequenceStop): string {
+  return stop.microcopyOverride ?? getSpiralStage(stop.stageId)?.microcopy ?? "";
 }

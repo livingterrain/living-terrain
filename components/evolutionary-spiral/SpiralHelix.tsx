@@ -38,6 +38,8 @@ type Props = {
   selectedId: string;
   onSelect: (occurrenceId: string) => void;
   panelId: string;
+  /** Active whole-instrument lens, echoed beneath the helix. */
+  lensLabel?: string;
 };
 
 function CurrentSegment({
@@ -111,6 +113,7 @@ export function SpiralHelix({
   selectedId,
   onSelect,
   panelId,
+  lensLabel,
 }: Props) {
   const reactId = useId();
   const reduced = useSpiralReducedMotion();
@@ -368,6 +371,11 @@ export function SpiralHelix({
           <span>Transformation</span>
         </p>
         <p className="spiral-helix__caption">{SPIRAL_ASCENT_CAPTION}</p>
+        {lensLabel && (
+          <p className="spiral-helix__lens">
+            Whole helix viewed through <span>{lensLabel}</span>
+          </p>
+        )}
       </div>
     </div>
   );

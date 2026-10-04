@@ -3,7 +3,6 @@
 import {
   epistemicLabel,
   getSpiralDomain,
-  getSpiralStage,
   normalizeProvenance,
   provenanceLabel,
   type SpiralAcrossExploration,
@@ -11,26 +10,20 @@ import {
   type SpiralConcept,
   type SpiralConceptDiveSection,
   type SpiralEpistemicKind,
-  type SpiralExploreViewId,
   type SpiralLensCycleContext,
   type SpiralLensExploration,
   type SpiralProvenanceKind,
-  type SpiralSequenceStop,
   type SpiralSourceRef,
-  type SpiralStageExploration,
 } from "@/lib/evolutionary-spiral";
-import { SpiralLensRail } from "./SpiralLensRail";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  stop: SpiralSequenceStop;
-  exploration: SpiralStageExploration;
-  viewId: SpiralExploreViewId;
-  onViewChange: (viewId: SpiralExploreViewId) => void;
-  /** Null = concept index (or Across). Set = deep dive. */
+  /** Stage-local research for the active lens (absent for Across). */
+  exploration?: SpiralLensExploration;
+  across?: SpiralAcrossExploration;
+  /** Null = research index. Set = concept deep dive. */
   conceptId: string | null;
   onConceptChange: (conceptId: string | null) => void;
-  panelId: string;
 };
 
 function EpistemicMark({ kind }: { kind: SpiralEpistemicKind }) {
@@ -113,51 +106,6 @@ function PlaceholderMark() {
     <span className="spiral-explore__placeholder-mark">
       Placeholder — awaiting research
     </span>
-  );
-}
-
-/** Editorial location path — not a SaaS breadcrumb trail. */
-function ExplorePath({
-  stageName,
-  lensLabel,
-  conceptTitle,
-  onLens,
-}: {
-  stageName: string;
-  lensLabel?: string;
-  conceptTitle?: string;
-  onLens?: () => void;
-}) {
-  return (
-    <p className="spiral-explore__path" aria-label="Exploration location">
-      <span className="spiral-explore__path-stage">{stageName}</span>
-      {lensLabel && (
-        <>
-          <span className="spiral-explore__path-sep" aria-hidden="true">
-            →
-          </span>
-          {onLens ? (
-            <button
-              type="button"
-              className="spiral-explore__path-link"
-              onClick={onLens}
-            >
-              {lensLabel}
-            </button>
-          ) : (
-            <span className="spiral-explore__path-lens">{lensLabel}</span>
-          )}
-        </>
-      )}
-      {conceptTitle && (
-        <>
-          <span className="spiral-explore__path-sep" aria-hidden="true">
-            →
-          </span>
-          <span className="spiral-explore__path-concept">{conceptTitle}</span>
-        </>
-      )}
-    </p>
   );
 }
 
@@ -277,45 +225,47 @@ function CycleContextView({ context }: { context: SpiralLensCycleContext }) {
         </div>
       )}
 
-      <ol className="spiral-explore__cycle-stops">
-        {context.stops.map((stop, index) => {
-          const emphasis =
-            stop.emphasis ??
-            (context.focusId && stop.id === context.focusId
-              ? "resonance"
-              : "default");
-          return (
-            <li
-              key={stop.id}
-              className={cn(
-                "spiral-explore__cycle-stop",
-                emphasis === "focus" && "spiral-explore__cycle-stop--focus",
-                emphasis === "resonance" &&
-                  "spiral-explore__cycle-stop--resonance",
-                emphasis === "neighbor" &&
-                  "spiral-explore__cycle-stop--neighbor",
-                stop.recurrence && "spiral-explore__cycle-stop--recurrence",
-              )}
-            >
-              {index > 0 && (
-                <span className="spiral-explore__cycle-arrow" aria-hidden="true">
-                  →
-                </span>
-              )}
-              <span className="spiral-explore__cycle-stop-main">
-                <span className="spiral-explore__cycle-stop-label">
-                  {stop.label}
-                </span>
-                {stop.gloss && (
-                  <span className="spiral-explore__cycle-stop-gloss">
-                    {stop.gloss}
+      {context.stops && context.stops.length > 0 && (
+        <ol className="spiral-explore__cycle-stops">
+          {context.stops.map((stop, index) => {
+            const emphasis =
+              stop.emphasis ??
+              (context.focusId && stop.id === context.focusId
+                ? "resonance"
+                : "default");
+            return (
+              <li
+                key={stop.id}
+                className={cn(
+                  "spiral-explore__cycle-stop",
+                  emphasis === "focus" && "spiral-explore__cycle-stop--focus",
+                  emphasis === "resonance" &&
+                    "spiral-explore__cycle-stop--resonance",
+                  emphasis === "neighbor" &&
+                    "spiral-explore__cycle-stop--neighbor",
+                  stop.recurrence && "spiral-explore__cycle-stop--recurrence",
+                )}
+              >
+                {index > 0 && (
+                  <span className="spiral-explore__cycle-arrow" aria-hidden="true">
+                    →
                   </span>
                 )}
-              </span>
-            </li>
-          );
-        })}
-      </ol>
+                <span className="spiral-explore__cycle-stop-main">
+                  <span className="spiral-explore__cycle-stop-label">
+                    {stop.label}
+                  </span>
+                  {stop.gloss && (
+                    <span className="spiral-explore__cycle-stop-gloss">
+                      {stop.gloss}
+                    </span>
+                  )}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      )}
 
       {context.transitions && context.transitions.length > 0 && (
         <div className="spiral-explore__cycle-transitions">
@@ -372,15 +322,15 @@ function ConceptIndex({
   lens: SpiralLensExploration;
   onOpen: (conceptId: string) => void;
 }) {
-  const domain = getSpiralDomain(lens.lensId);
   return (
     <div className="spiral-explore__lens-body">
-      <p className="spiral-explore__lens-label">{domain?.label ?? lens.lensId}</p>
-      {lens.title && (
-        <h4 className="spiral-explore__lens-title">{lens.title}</h4>
-      )}
       {lens.framing && (
-        <Prose text={lens.framing} className="spiral-explore__framing" />
+        <details className="spiral-explore__framing-full">
+          <summary className="spiral-explore__framing-summary">
+            The question in full
+          </summary>
+          <Prose text={lens.framing} className="spiral-explore__framing" />
+        </details>
       )}
       {lens.cycleContext && <CycleContextView context={lens.cycleContext} />}
       <p className="spiral-explore__index-cue">
@@ -624,14 +574,12 @@ function AcrossBody({ across }: { across: SpiralAcrossExploration }) {
         across.placeholder && "spiral-explore__across--placeholder",
       )}
     >
-      <p className="spiral-explore__lens-label">{across.title ?? "Across lenses"}</p>
+      <p className="spiral-explore__lens-label">
+        {across.title ?? "Across lenses"} · scaffold at Transformation
+      </p>
       {across.framing && (
         <p className="spiral-explore__framing">{across.framing}</p>
       )}
-      <p className="spiral-explore__across-note">
-        Structural resemblance is not common causation, historical transmission,
-        or equal evidence across languages.
-      </p>
       {across.sections.map((section) => (
         <AcrossSectionView key={section.id} section={section} />
       ))}
@@ -640,103 +588,41 @@ function AcrossBody({ across }: { across: SpiralAcrossExploration }) {
 }
 
 /**
- * Deep exploration surface: Stage → Lens → Concept → Deep dive.
- * Lens / concept changes never alter occurrenceId (held by parent).
+ * Investigate depth — research for the local intersection (lens × operation).
+ * Concepts, sources, comparison breaks, open questions, Across scaffold.
+ * Concept changes never alter occurrenceId or lens (held by parent).
  */
-export function SpiralStageExplorer({
-  stop,
+export function SpiralInvestigate({
   exploration,
-  viewId,
-  onViewChange,
+  across,
   conceptId,
   onConceptChange,
-  panelId,
 }: Props) {
-  const stage = getSpiralStage(stop.stageId);
-  if (!stage) return null;
-
-  const title = stop.labelOverride ?? stage.name;
-  const lens =
-    viewId === "across"
-      ? undefined
-      : exploration.lenses.find((l) => l.lensId === viewId);
-  const domain = lens ? getSpiralDomain(lens.lensId) : undefined;
+  const domain = exploration ? getSpiralDomain(exploration.lensId) : undefined;
   const concept =
-    lens && conceptId
-      ? lens.concepts.find((c) => c.id === conceptId)
+    exploration && conceptId
+      ? exploration.concepts.find((c) => c.id === conceptId)
       : undefined;
 
-  const handleLensSelect = (next: SpiralExploreViewId) => {
-    // Parent clears concept + scrolls; keep single ownership of concept reset.
-    onViewChange(next);
-  };
-
-  const lensLabel =
-    viewId === "across"
-      ? "Across"
-      : (domain?.shortLabel ?? domain?.label ?? viewId);
-
   return (
-    <article
-      id={panelId}
-      className={cn(
-        "spiral-explore",
-        concept && "spiral-explore--dive",
-      )}
-      aria-live="polite"
-      aria-atomic="false"
-      data-explore-view={viewId}
+    <div
+      key={conceptId ?? "index"}
+      className={cn("spiral-explore", concept && "spiral-explore--dive")}
       data-concept={conceptId ?? undefined}
     >
-      <div className="spiral-explore__sticky">
-        <header className="spiral-explore__stage-head">
-          <p className="spiral-explore__folio type-folio">
-            {String(stop.order).padStart(2, "0")} · Exploring
-          </p>
-          <h3 className="spiral-explore__title">{title}</h3>
-          <p className="spiral-explore__whisper">{stage.whisper}</p>
-          <ExplorePath
-            stageName={title}
-            lensLabel={lensLabel}
-            conceptTitle={concept?.title}
-            onLens={
-              concept
-                ? () => {
-                    onConceptChange(null);
-                  }
-                : undefined
-            }
-          />
-        </header>
-
-        <SpiralLensRail
-          exploration={exploration}
-          viewId={viewId}
-          onSelect={handleLensSelect}
-        />
-      </div>
-
-      <div
-        key={`${viewId}:${conceptId ?? "index"}`}
-        className="spiral-explore__content"
-        role="tabpanel"
-      >
-        {viewId === "across" && exploration.across ? (
-          <AcrossBody across={exploration.across} />
-        ) : lens && concept ? (
+      <div className="spiral-explore__content">
+        {across ? (
+          <AcrossBody across={across} />
+        ) : exploration && concept ? (
           <ConceptDeepDive
             concept={concept}
             lensLabel={domain?.shortLabel ?? "Lens"}
             onBack={() => onConceptChange(null)}
           />
-        ) : lens ? (
-          <ConceptIndex lens={lens} onOpen={onConceptChange} />
-        ) : (
-          <p className="spiral-explore__section-body">
-            This lens is not yet available for this stage.
-          </p>
-        )}
+        ) : exploration ? (
+          <ConceptIndex lens={exploration} onOpen={onConceptChange} />
+        ) : null}
       </div>
-    </article>
+    </div>
   );
 }

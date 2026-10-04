@@ -1,73 +1,59 @@
 "use client";
 
-import {
-  getSpiralDomain,
-  SPIRAL_LENS_ORDER,
-  type SpiralExploreViewId,
-  type SpiralStageExploration,
-} from "@/lib/evolutionary-spiral";
+import { SPIRAL_LENSES, type SpiralLensId } from "@/lib/evolutionary-spiral";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  exploration: SpiralStageExploration;
-  viewId: SpiralExploreViewId;
-  onSelect: (viewId: SpiralExploreViewId) => void;
+  activeLensId: SpiralLensId | null;
+  onSelect: (lensId: SpiralLensId | null) => void;
 };
 
 /**
- * Compact lens selector — sibling to stage selection.
- * Quiet “Viewed through” orientation: one stage, multiple lenses.
- * Does not alter occurrenceId / stage identity.
+ * Whole-instrument lens control — "View through".
+ * Scoped to the entire helix, never to the selected operation.
+ * Selecting a lens does not alter occurrenceId; selecting an operation
+ * does not alter the lens.
  */
-export function SpiralLensRail({ exploration, viewId, onSelect }: Props) {
-  const lenses = SPIRAL_LENS_ORDER.filter((id) =>
-    exploration.lenses.some((l) => l.lensId === id),
-  );
-
+export function SpiralLensRail({ activeLensId, onSelect }: Props) {
   return (
-    <div className="spiral-lens-rail">
-      <p className="spiral-lens-rail__orient" id="spiral-lens-orient">
-        Viewed through
-      </p>
+    <div id="spiral-lenses" className="spiral-lens-rail" tabIndex={-1}>
+      <div className="spiral-lens-rail__head">
+        <p className="spiral-lens-rail__orient" id="spiral-lens-orient">
+          View the whole Spiral through
+        </p>
+        {activeLensId && (
+          <button
+            type="button"
+            className="spiral-lens-rail__clear"
+            onClick={() => onSelect(null)}
+          >
+            Spiral alone
+          </button>
+        )}
+      </div>
       <div
         className="spiral-lens-rail__track"
-        role="tablist"
+        role="group"
         aria-labelledby="spiral-lens-orient"
       >
-        {lenses.map((lensId) => {
-          const domain = getSpiralDomain(lensId);
-          const selected = viewId === lensId;
+        {SPIRAL_LENSES.map((lens) => {
+          const selected = activeLensId === lens.id;
           return (
             <button
-              key={lensId}
+              key={lens.id}
               type="button"
-              role="tab"
-              aria-selected={selected}
+              aria-pressed={selected}
               className={cn(
                 "spiral-lens-rail__btn",
+                lens.status === "scaffold" && "spiral-lens-rail__btn--scaffold",
                 selected && "spiral-lens-rail__btn--selected",
               )}
-              onClick={() => onSelect(lensId)}
+              onClick={() => onSelect(selected ? null : lens.id)}
             >
-              {domain?.shortLabel ?? lensId}
+              {lens.label}
             </button>
           );
         })}
-        {exploration.across && (
-          <button
-            type="button"
-            role="tab"
-            aria-selected={viewId === "across"}
-            className={cn(
-              "spiral-lens-rail__btn",
-              "spiral-lens-rail__btn--across",
-              viewId === "across" && "spiral-lens-rail__btn--selected",
-            )}
-            onClick={() => onSelect("across")}
-          >
-            Across
-          </button>
-        )}
       </div>
     </div>
   );

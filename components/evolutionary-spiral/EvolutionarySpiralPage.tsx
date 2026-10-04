@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import {
-  SPIRAL_COPY,
   SPIRAL_CURRENTS,
   SPIRAL_EPISTEMIC_CATEGORIES,
   SPIRAL_SEQUENCE,
@@ -12,14 +11,16 @@ import {
   getSpiralDomain,
   getSpiralStage,
   epistemicLabel,
+  microcopyForStop,
 } from "@/lib/evolutionary-spiral";
 import { SpiralHelixExperience } from "./SpiralHelixExperience";
 import "./evolutionary-spiral.css";
 
 /**
- * Evolutionary Spiral page — Phase 2 instrument + compressed framing.
- * Phase 1 data/canon preserved. Helix is the primary sequence experience.
- * Semantic no-JS fallback retained below the client island.
+ * Evolutionary Spiral page — progressive disclosure.
+ * Understand (surface + helix) → Explore (lens × operation) →
+ * Investigate (research, model language, ways of knowing).
+ * Semantic no-JS fallback retained in a collapsed section.
  */
 export function EvolutionarySpiralPage() {
   const { copy } = getEvolutionarySpiral();
@@ -29,111 +30,111 @@ export function EvolutionarySpiralPage() {
       <RoomThreshold
         kind="atlas"
         title={copy.name}
-        whisper="A grammar of recurrent operations — held as a reference trajectory, not a ladder of progress."
+        whisper={copy.surfaceLine}
+        description={copy.surfaceSupport}
         align="left"
-        className="py-12 sm:py-16 md:py-20"
+        className="spiral-arrival pb-6 pt-10 sm:pb-8 sm:pt-14 md:pb-10 md:pt-16"
       />
 
       <section className="spiral-page pb-24 pt-0 sm:pb-32">
-        <Container narrow>
-          <div className="spiral-page__intro type-body">
-            <p>{copy.visitorThesis[0]}</p>
-            <p>{copy.visitorThesis[1]}</p>
-            <p>
-              The Evolutionary Spiral begins from that observation.{" "}
-              {copy.evolutionaryClarification}
-            </p>
-            <p>{copy.oneSentenceDefinition}</p>
-          </div>
-
-          <div className="spiral-page__question">
-            <p className="spiral-page__question-label">Core question</p>
-            <p className="spiral-page__question-text">{copy.coreQuestion}</p>
-          </div>
-
-          <p className="spiral-page__shape">{copy.shapeSentence}</p>
-          <p className="spiral-page__ascent">{copy.ascentNote}</p>
-        </Container>
-
-        {/* Wider band for the instrument */}
-        <Container className="spiral-page__instrument-wrap mt-10 sm:mt-14">
+        <Container className="spiral-page__instrument-wrap">
           <SpiralHelixExperience />
         </Container>
 
-        <Container narrow>
-          <details className="spiral-page__how-to-read">
-            <summary className="spiral-page__how-to-read-summary">
-              <span className="spiral-page__how-to-read-title">
-                How to read the Spiral
-              </span>
-              <span className="spiral-page__how-to-read-lead">
-                Grammar, reference trajectory, and what the helix does not claim.
-              </span>
-            </summary>
-            <ul className="spiral-page__how-to-read-list">
-              {copy.howToRead.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-            <p className="spiral-page__how-to-read-note">
-              {copy.referenceTrajectoryNote}
-            </p>
-            {copy.openQuestions.length > 0 && (
-              <div className="spiral-page__how-to-read-open">
-                <p className="spiral-page__how-to-read-open-label">
-                  Open questions
-                </p>
-                <ul className="spiral-page__how-to-read-open-list">
-                  {copy.openQuestions.map((q) => (
-                    <li key={q}>{q}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </details>
-
-          {/* Compressed currents + epistemic — legend-scale, not a second lecture */}
-          <section
-            className="spiral-page__section spiral-page__section--compact"
-            aria-labelledby="spiral-currents"
-          >
-            <h2 id="spiral-currents" className="spiral-page__section-title">
-              Two currents
-            </h2>
-            <p className="spiral-page__section-lead">
-              Continuity and Transformation are not separate portions of the
-              helix. Every local state holds both questions — what persists, and
-              what changes — simultaneous, interdependent, equal in weight.{" "}
-              {SPIRAL_COPY.interactionTendency}
-            </p>
-            <div className="spiral-page__currents spiral-page__currents--compact">
-              {SPIRAL_CURRENTS.map((current) => (
-                <article key={current.id}>
-                  <h3 className="spiral-page__current-name">{current.name}</h3>
-                  <p className="spiral-page__current-def">{current.definition}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section
-            className="spiral-page__section spiral-page__section--compact"
-            aria-labelledby="spiral-epistemic"
-          >
-            <details className="spiral-page__ways">
-              <summary
-                id="spiral-epistemic"
-                className="spiral-page__ways-summary"
-              >
-                <span className="spiral-page__ways-heading">
-                  <span className="spiral-page__ways-title">Ways of knowing</span>
-                  <span className="spiral-page__ways-mark" aria-hidden="true">
-                    ⓘ
-                  </span>
+        <Container>
+          <div className="spiral-page__deeper">
+            <details className="spiral-page__disclosure">
+              <summary className="spiral-page__disclosure-summary">
+                <span className="spiral-page__disclosure-title">
+                  How the model works
                 </span>
-                <span className="spiral-page__ways-lead">
-                  How evidence, interpretation, theology, and symbolic comparison
-                  are distinguished in this instrument.
+                <span className="spiral-page__disclosure-lead">
+                  What the helix claims, what it does not, and the questions it
+                  leaves open.
+                </span>
+              </summary>
+
+              <div className="spiral-page__model">
+                <div className="spiral-page__model-block">
+                  <p>{copy.visitorThesis[0]}</p>
+                  <p>{copy.visitorThesis[1]}</p>
+                  <p className="spiral-page__question-text">
+                    {copy.coreQuestion}
+                  </p>
+                </div>
+
+                <div className="spiral-page__model-block">
+                  <h3 className="spiral-page__model-title">
+                    A grammar, not a ladder
+                  </h3>
+                  <p>{copy.oneSentenceDefinition}</p>
+                  <p>{copy.evolutionaryClarification}</p>
+                  <ul className="spiral-page__how-to-read-list">
+                    {copy.howToRead.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                  <p>{copy.referenceTrajectoryNote}</p>
+                </div>
+
+                <div className="spiral-page__model-block">
+                  <h3 className="spiral-page__model-title">Two currents</h3>
+                  <p>
+                    Continuity and Transformation are not separate portions of
+                    the helix. Every local state holds both questions—what
+                    persists, and what changes—simultaneous, interdependent,
+                    equal in weight.
+                  </p>
+                  <dl className="spiral-page__currents-list">
+                    {SPIRAL_CURRENTS.map((current) => (
+                      <div key={current.id}>
+                        <dt className="spiral-page__current-name">
+                          {current.name}
+                        </dt>
+                        <dd className="spiral-page__current-def">
+                          {current.definition}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <p>{copy.interactionTendency}</p>
+                </div>
+
+                <div className="spiral-page__model-block">
+                  <h3 className="spiral-page__model-title">
+                    Recurrence with history
+                  </h3>
+                  <p className="spiral-page__shape">{copy.shapeSentence}</p>
+                  <p>{copy.recurrenceNote}</p>
+                  <p>
+                    Emergence again is the same operation-kind as the first
+                    Emergence, at a later turn—not a reset to the first
+                    beginning.
+                  </p>
+                  <p>{copy.ascentNote}</p>
+                </div>
+
+                {copy.openQuestions.length > 0 && (
+                  <div className="spiral-page__model-block">
+                    <h3 className="spiral-page__model-title">Open questions</h3>
+                    <ul className="spiral-page__how-to-read-open-list">
+                      {copy.openQuestions.map((q) => (
+                        <li key={q}>{q}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </details>
+
+            <details className="spiral-page__disclosure spiral-page__ways">
+              <summary className="spiral-page__disclosure-summary">
+                <span className="spiral-page__disclosure-title">
+                  Ways of knowing
+                </span>
+                <span className="spiral-page__disclosure-lead">
+                  How evidence, interpretation, theology, and symbolic
+                  comparison are kept distinct.
                 </span>
               </summary>
               <ul className="spiral-page__epistemic spiral-page__epistemic--compact">
@@ -150,125 +151,104 @@ export function EvolutionarySpiralPage() {
                 {copy.disclaimer}
               </p>
             </details>
-          </section>
 
-          <section
-            className="spiral-page__section spiral-page__section--compact"
-            aria-labelledby="spiral-cycle"
-          >
-            <h2 id="spiral-cycle" className="spiral-page__section-title">
-              Recurrence with history
-            </h2>
-            <div className="spiral-page__cycle">
-              <p className="spiral-page__cycle-flow">
-                Emergence¹ → … → Renewal → Emergence² → …
-              </p>
-              <p>{copy.recurrenceNote}</p>
-              <p>
-                Emergence again is the same operation-kind as the first
-                Emergence, at a later turn — not a reset to the first beginning.
-              </p>
-              <p>{copy.shapeSentence}</p>
-              <p>{copy.ascentNote}</p>
-            </div>
-          </section>
+            {/* Semantic / no-JS fallback — not a second interactive model */}
+            <details className="spiral-page__disclosure spiral-page__fallback">
+              <summary className="spiral-page__disclosure-summary">
+                <span className="spiral-page__disclosure-title">
+                  Read the Spiral as text
+                </span>
+                <span className="spiral-page__disclosure-lead">
+                  The reference trajectory with definitions and seed examples.
+                  This order is revisable; not every system follows it.
+                </span>
+              </summary>
 
-          {/* Semantic / no-JS fallback — not a second interactive model */}
-          <section
-            className="spiral-page__fallback"
-            aria-labelledby="spiral-fallback"
-          >
-            <h2 id="spiral-fallback" className="spiral-page__section-title">
-              Reference trajectory
-            </h2>
-            <p className="spiral-page__section-lead">
-              The current reference traversal through the grammar — readable
-              with definitions. Prefer the instrument above when available. This
-              order is revisable; it is not a claim that every system follows it.
-            </p>
-
-            <ol className="spiral-page__sequence">
-              {SPIRAL_SEQUENCE.map((stop) => {
-                const stage = getSpiralStage(stop.stageId);
-                const name = stop.labelOverride ?? stage?.name ?? stop.stageId;
-                const isAgain = stop.cycleIndex > 0;
-                return (
-                  <li
-                    key={stop.occurrenceId}
-                    className={
-                      isAgain
-                        ? "spiral-page__sequence-item spiral-page__sequence-item--again"
-                        : "spiral-page__sequence-item"
-                    }
-                  >
-                    <span className="spiral-page__sequence-n">
-                      {String(stop.order).padStart(2, "0")}
-                    </span>
-                    <div>
-                      <span className="spiral-page__sequence-name">{name}</span>
-                      {stage && (
+              <ol className="spiral-page__sequence">
+                {SPIRAL_SEQUENCE.map((stop) => {
+                  const stage = getSpiralStage(stop.stageId);
+                  const name = stop.labelOverride ?? stage?.name ?? stop.stageId;
+                  const isAgain = stop.cycleIndex > 0;
+                  return (
+                    <li
+                      key={stop.occurrenceId}
+                      className={
+                        isAgain
+                          ? "spiral-page__sequence-item spiral-page__sequence-item--again"
+                          : "spiral-page__sequence-item"
+                      }
+                    >
+                      <span className="spiral-page__sequence-n">
+                        {String(stop.order).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <span className="spiral-page__sequence-name">{name}</span>
                         <span className="spiral-page__sequence-note">
-                          {stage.whisper}
-                        </span>
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-
-            <div className="spiral-page__fallback-defs">
-              {SPIRAL_STAGES.map((stage) => {
-                const examples = examplesForStage(stage.id);
-                return (
-                  <details key={stage.id} className="spiral-page__stage">
-                    <summary className="spiral-page__stage-summary">
-                      <div className="spiral-page__stage-head">
-                        <span className="spiral-page__stage-name">
-                          <span className="type-folio mr-3">
-                            {String(stage.order).padStart(2, "0")}
-                          </span>
-                          {stage.name}
+                          {microcopyForStop(stop)}
                         </span>
                       </div>
-                      <p className="spiral-page__stage-whisper">{stage.whisper}</p>
-                    </summary>
-                    <div className="spiral-page__stage-body">
-                      <p className="spiral-page__stage-def">{stage.definition}</p>
-                      {examples.length > 0 && (
-                        <div className="spiral-page__examples">
-                          {examples.map((example) => {
-                            const domain = getSpiralDomain(example.domainId);
-                            return (
-                              <article
-                                key={example.id}
-                                className="spiral-page__example"
-                              >
-                                <div className="spiral-page__example-meta">
-                                  <span className="spiral-page__example-domain">
-                                    {domain?.label ?? example.domainId}
-                                  </span>
-                                  <span className="spiral-page__example-epistemic">
-                                    {epistemicLabel(example.epistemicKind)}
-                                  </span>
-                                </div>
-                                <h3 className="spiral-page__example-title">
-                                  {example.title}
-                                </h3>
-                                <p className="spiral-page__example-body">
-                                  {example.body}
-                                </p>
-                              </article>
-                            );
-                          })}
+                    </li>
+                  );
+                })}
+              </ol>
+
+              <div className="spiral-page__fallback-defs">
+                {SPIRAL_STAGES.map((stage) => {
+                  const examples = examplesForStage(stage.id);
+                  return (
+                    <details key={stage.id} className="spiral-page__stage">
+                      <summary className="spiral-page__stage-summary">
+                        <div className="spiral-page__stage-head">
+                          <span className="spiral-page__stage-name">
+                            <span className="type-folio mr-3">
+                              {String(stage.order).padStart(2, "0")}
+                            </span>
+                            {stage.name}
+                          </span>
                         </div>
-                      )}
-                    </div>
-                  </details>
-                );
-              })}
-            </div>
-          </section>
+                        <p className="spiral-page__stage-whisper">
+                          {stage.whisper}
+                        </p>
+                      </summary>
+                      <div className="spiral-page__stage-body">
+                        <p className="spiral-page__stage-def">
+                          {stage.definition}
+                        </p>
+                        {examples.length > 0 && (
+                          <div className="spiral-page__examples">
+                            {examples.map((example) => {
+                              const domain = getSpiralDomain(example.domainId);
+                              return (
+                                <article
+                                  key={example.id}
+                                  className="spiral-page__example"
+                                >
+                                  <div className="spiral-page__example-meta">
+                                    <span className="spiral-page__example-domain">
+                                      {domain?.label ?? example.domainId}
+                                    </span>
+                                    <span className="spiral-page__example-epistemic">
+                                      {epistemicLabel(example.epistemicKind)}
+                                    </span>
+                                  </div>
+                                  <h3 className="spiral-page__example-title">
+                                    {example.title}
+                                  </h3>
+                                  <p className="spiral-page__example-body">
+                                    {example.body}
+                                  </p>
+                                </article>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </details>
+                  );
+                })}
+              </div>
+            </details>
+          </div>
 
           <nav className="spiral-page__return" aria-label="Continue">
             <Link
