@@ -29,7 +29,7 @@ export function EvolutionarySpiralPage() {
       <RoomThreshold
         kind="atlas"
         title={copy.name}
-        whisper="A systems framework for remaining oneself through change."
+        whisper="A grammar of recurrent operations — held as a reference trajectory, not a ladder of progress."
         align="left"
         className="py-12 sm:py-16 md:py-20"
       />
@@ -43,6 +43,7 @@ export function EvolutionarySpiralPage() {
               The Evolutionary Spiral begins from that observation.{" "}
               {copy.evolutionaryClarification}
             </p>
+            <p>{copy.oneSentenceDefinition}</p>
           </div>
 
           <div className="spiral-page__question">
@@ -51,6 +52,7 @@ export function EvolutionarySpiralPage() {
           </div>
 
           <p className="spiral-page__shape">{copy.shapeSentence}</p>
+          <p className="spiral-page__ascent">{copy.ascentNote}</p>
         </Container>
 
         {/* Wider band for the instrument */}
@@ -59,6 +61,37 @@ export function EvolutionarySpiralPage() {
         </Container>
 
         <Container narrow>
+          <details className="spiral-page__how-to-read">
+            <summary className="spiral-page__how-to-read-summary">
+              <span className="spiral-page__how-to-read-title">
+                How to read the Spiral
+              </span>
+              <span className="spiral-page__how-to-read-lead">
+                Grammar, reference trajectory, and what the helix does not claim.
+              </span>
+            </summary>
+            <ul className="spiral-page__how-to-read-list">
+              {copy.howToRead.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+            <p className="spiral-page__how-to-read-note">
+              {copy.referenceTrajectoryNote}
+            </p>
+            {copy.openQuestions.length > 0 && (
+              <div className="spiral-page__how-to-read-open">
+                <p className="spiral-page__how-to-read-open-label">
+                  Open questions
+                </p>
+                <ul className="spiral-page__how-to-read-open-list">
+                  {copy.openQuestions.map((q) => (
+                    <li key={q}>{q}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </details>
+
           {/* Compressed currents + epistemic — legend-scale, not a second lecture */}
           <section
             className="spiral-page__section spiral-page__section--compact"
@@ -68,8 +101,9 @@ export function EvolutionarySpiralPage() {
               Two currents
             </h2>
             <p className="spiral-page__section-lead">
-              Continuity and Transformation move together through the same
-              sequence — simultaneous, interdependent, equal in weight.{" "}
+              Continuity and Transformation are not separate portions of the
+              helix. Every local state holds both questions — what persists, and
+              what changes — simultaneous, interdependent, equal in weight.{" "}
               {SPIRAL_COPY.interactionTendency}
             </p>
             <div className="spiral-page__currents spiral-page__currents--compact">
@@ -129,12 +163,13 @@ export function EvolutionarySpiralPage() {
               <p className="spiral-page__cycle-flow">
                 Emergence¹ → … → Renewal → Emergence² → …
               </p>
+              <p>{copy.recurrenceNote}</p>
               <p>
-                Emergence again is the same stage-kind as the first Emergence,
-                at a later turn. Recurrence is not reset. Ascent marks changed
-                conditions, not guaranteed improvement.
+                Emergence again is the same operation-kind as the first
+                Emergence, at a later turn — not a reset to the first beginning.
               </p>
               <p>{copy.shapeSentence}</p>
+              <p>{copy.ascentNote}</p>
             </div>
           </section>
 
@@ -144,11 +179,12 @@ export function EvolutionarySpiralPage() {
             aria-labelledby="spiral-fallback"
           >
             <h2 id="spiral-fallback" className="spiral-page__section-title">
-              Stages in sequence
+              Reference trajectory
             </h2>
             <p className="spiral-page__section-lead">
-              A readable sequence with definitions. Prefer the instrument above
-              when available.
+              The current reference traversal through the grammar — readable
+              with definitions. Prefer the instrument above when available. This
+              order is revisable; it is not a claim that every system follows it.
             </p>
 
             <ol className="spiral-page__sequence">

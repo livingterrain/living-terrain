@@ -282,7 +282,7 @@ function CycleContextView({ context }: { context: SpiralLensCycleContext }) {
           const emphasis =
             stop.emphasis ??
             (context.focusId && stop.id === context.focusId
-              ? "focus"
+              ? "resonance"
               : "default");
           return (
             <li
@@ -290,6 +290,8 @@ function CycleContextView({ context }: { context: SpiralLensCycleContext }) {
               className={cn(
                 "spiral-explore__cycle-stop",
                 emphasis === "focus" && "spiral-explore__cycle-stop--focus",
+                emphasis === "resonance" &&
+                  "spiral-explore__cycle-stop--resonance",
                 emphasis === "neighbor" &&
                   "spiral-explore__cycle-stop--neighbor",
                 stop.recurrence && "spiral-explore__cycle-stop--recurrence",
@@ -317,10 +319,20 @@ function CycleContextView({ context }: { context: SpiralLensCycleContext }) {
 
       {context.transitions && context.transitions.length > 0 && (
         <div className="spiral-explore__cycle-transitions">
+          {context.transitionsNote && (
+            <p className="spiral-explore__cycle-transitions-note">
+              {context.transitionsNote}
+            </p>
+          )}
           {context.transitions.map((tr) => (
             <div key={tr.id} className="spiral-explore__cycle-transition">
               <div className="spiral-explore__concept-meta">
                 <ProvenanceMarks provenance={tr.provenance} />
+                {tr.role && (
+                  <span className="spiral-explore__cycle-transition-role">
+                    {tr.role}
+                  </span>
+                )}
               </div>
               <h5 className="spiral-explore__cycle-transition-label">
                 {tr.label}
@@ -372,7 +384,7 @@ function ConceptIndex({
       )}
       {lens.cycleContext && <CycleContextView context={lens.cycleContext} />}
       <p className="spiral-explore__index-cue">
-        Concepts — choose how far to go
+        {lens.conceptsCue ?? "Concepts — choose how far to go"}
       </p>
       <ul className="spiral-explore__concepts">
         {lens.concepts.map((concept) => (

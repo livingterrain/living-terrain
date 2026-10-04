@@ -103,7 +103,7 @@ function CurrentSegment({
 
 /**
  * Ascending dual-current helix with projected spatial depth.
- * Nodes on the shared developmental axis. Currents equal weight throughout.
+ * Nodes on the shared reference axis. Currents equal weight throughout.
  * No DNA grammar (no rungs / base pairs / molecule cues).
  */
 export function SpiralHelix({
@@ -171,11 +171,12 @@ export function SpiralHelix({
         >
           <title id={`${reactId}-title`}>The Evolutionary Spiral</title>
           <desc id={`${reactId}-desc`}>
-            An ascending helix. Emergence begins at the bottom and Emergence
-            again appears at the top after Renewal. Two currents, Continuity and
-            Transformation, wind together around a shared developmental axis.
-            History accumulates upward; ascent marks changed conditions, not
-            guaranteed improvement.
+            An ascending helix showing a reference trajectory through a grammar
+            of recurrent operations. Emergence appears near the bottom and
+            Emergence again near the top after Renewal. Two currents, Continuity
+            and Transformation, wind together throughout. History accumulates
+            upward; ascent marks changed conditions, not guaranteed improvement
+            or a path every system must follow.
           </desc>
 
           <defs>

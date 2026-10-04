@@ -182,6 +182,17 @@ export type SpiralFrameworkCopy = {
   disclaimer: string;
   evolutionaryClarification: string;
   emergenceAgainCue: string;
+  /**
+   * Compact “how to read” lines for the instrument — grammar framing,
+   * not a second essay.
+   */
+  howToRead: readonly string[];
+  /** Explicit non-guarantee / alternate-outcome note near the helix. */
+  referenceTrajectoryNote: string;
+  /** Recurrence beyond Emergence again. */
+  recurrenceNote: string;
+  /** Living research questions the instrument should surface. */
+  openQuestions: readonly string[];
 };
 
 /**
@@ -283,8 +294,12 @@ export type SpiralCycleContextStop = {
    * Living Terrain synthesis — lens-level provenanceNote must say so.
    */
   gloss?: string;
-  /** Emphasize the stage-relevant stop (e.g. Scorpio under Transformation). */
-  emphasis?: "default" | "focus" | "neighbor";
+  /**
+   * Visual emphasis within a compact cycle.
+   * `resonance` = comparative interest without one-to-one mapping.
+   * `focus` remains available but should not imply a singular domain “match.”
+   */
+  emphasis?: "default" | "focus" | "neighbor" | "resonance";
   /** Recurrence marker (e.g. Aries again) — not a claim of traditional doctrine. */
   recurrence?: boolean;
 };
@@ -293,6 +308,11 @@ export type SpiralCycleContextTransition = {
   id: string;
   label: string;
   body: string;
+  /**
+   * Quiet role for the transition — e.g. “Candidate resonance” —
+   * not a badge that a sign equals a Spiral stage.
+   */
+  role?: string;
   provenance?: SpiralProvenanceKind | readonly SpiralProvenanceKind[];
 };
 
@@ -311,8 +331,13 @@ export type SpiralLensCycleContext = {
     provenance: SpiralProvenanceKind;
   };
   stops: readonly SpiralCycleContextStop[];
-  /** Id of the stop emphasized for this stage (e.g. scorpio). */
+  /**
+   * @deprecated Prefer transition annotations for comparison.
+   * Per-stop emphasis must not imply sign = stage.
+   */
   focusId?: string;
+  /** Intro above transition annotations — regions/transitions as comparison unit. */
+  transitionsNote?: string;
   transitions?: readonly SpiralCycleContextTransition[];
   /** Circle vs spiral comparison — our systems reading. */
   circleAndSpiral?: {
@@ -337,6 +362,11 @@ export type SpiralLensExploration = {
    * Not twelve Spiral stages and not twelve MODEL objects.
    */
   cycleContext?: SpiralLensCycleContext;
+  /**
+   * Quiet cue above the concept index — e.g. that concepts are supporting
+   * research beneath a trajectory comparison.
+   */
+  conceptsCue?: string;
   /** Concept index — primary hierarchy under the lens. */
   concepts: readonly SpiralConcept[];
   /** Optional lens-level break (concepts may also carry their own). */
