@@ -17,10 +17,11 @@ type Props = {
   trajectory: SpiralTrajectory;
   /** Every authored relationship for this trajectory. */
   relationships: readonly SpiralTrajectoryRelationship[];
-  /** Relationships touching the selected operation or the selected step. */
+  /** Relationships in the current focus (all of them when nothing is focused). */
   activeIds: ReadonlySet<string>;
   selectedStepId: string | null;
-  onSelectStep: (stepId: string | null) => void;
+  onSelectStep: (stepId: string) => void;
+  onSelectRelationship: (relationshipId: string) => void;
 };
 
 function operationNames(r: SpiralTrajectoryRelationship): string {
@@ -43,8 +44,8 @@ function stepAriaLabel(
 ): string {
   const step = trajectory.steps[index]!;
   const base = `${step.label}, ${index + 1} of ${trajectory.steps.length}`;
-  if (related.length === 0) return `${base}. No authored relationship.`;
-  return `${base}. Part of ${related.length} authored relationship${
+  if (related.length === 0) return `${base}. No researched relationship.`;
+  return `${base}. Part of ${related.length} researched relationship${
     related.length === 1 ? "" : "s"
   } with ${Array.from(new Set(related.map(operationNames))).join(", ")}.`;
 }
@@ -64,6 +65,13 @@ function useStepRelationships(
   }, [trajectory, relationships]);
 }
 
+/** Space-separated relationship ids anchored at a step — read by the arc layer. */
+function anchorAttr(related: readonly SpiralTrajectoryRelationship[] | undefined) {
+  return related && related.length > 0
+    ? related.map((r) => r.id).join(" ")
+    : undefined;
+}
+
 /** Cyclical trajectory — a ring; a recurrence step returns inside it, not to the same place. */
 function Wheel({
   trajectory,
@@ -71,6 +79,7 @@ function Wheel({
   activeIds,
   selectedStepId,
   onSelectStep,
+  onSelectRelationship,
 }: Props) {
   const markerId = useId();
   const nodes = useMemo(() => wheelNodes(trajectory.steps), [trajectory.steps]);
@@ -84,7 +93,7 @@ function Wheel({
     const ids = anchorStepIds(trajectory, r.anchor);
     return ids.slice(1).flatMap((to, i) => {
       const seg = segmentFor(ids[i]!, to);
-      return seg ? [{ key: `${r.id}-${seg.from}`, d: seg.d, r }] : [];
+      return seg ? [{ key: `${r.id}-${seg.from}`, d: seg.d, r, first: i === 0 }] : [];
     });
   });
 
@@ -117,11 +126,19 @@ function Wheel({
           />
         ))}
         {overlays.map((o) => (
-          <path
-            key={o.key}
-            d={o.d}
-            className={cn("spiral-wheel__rel", relClass(o.r, activeIds))}
-          />
+          <g key={o.key}>
+            <path
+              d={o.d}
+              className={cn("spiral-wheel__rel", relClass(o.r, activeIds))}
+              data-rel-anchor={o.first ? o.r.id : undefined}
+            />
+            {/* Pointer equivalent of the anchor list in the local card */}
+            <path
+              d={o.d}
+              className="spiral-wheel__rel-hit"
+              onClick={() => onSelectRelationship(o.r.id)}
+            />
+          </g>
         ))}
         {nodes.map((n) => {
           const selected = n.step.id === selectedStepId;
@@ -136,6 +153,7 @@ function Wheel({
                   cy={n.y}
                   r={5.5}
                   className="spiral-wheel__ring"
+                  data-rel-anchor={anchorAttr(byStep.get(n.step.id))}
                 />
               )}
               <circle
@@ -184,7 +202,7 @@ function Wheel({
                   n.index,
                   byStep.get(n.step.id) ?? [],
                 )}
-                onClick={() => onSelectStep(selected ? null : n.step.id)}
+                onClick={() => onSelectStep(n.step.id)}
               />
             </li>
           );
@@ -223,10 +241,6 @@ function Path({
           : undefined;
         const covering = byStep.get(step.id) ?? [];
         const span = covering.find((r) => r.anchor.kind === "span");
-        const endsHere = relationships.filter((r) => {
-          const ids = anchorStepIds(trajectory, r.anchor);
-          return ids[ids.length - 1] === step.id;
-        });
         const selected = step.id === selectedStepId;
         return (
           <li key={step.id} className="spiral-path__item">
@@ -250,21 +264,13 @@ function Path({
                 span && "spiral-path__step--in-span",
                 span && relClass(span, activeIds),
               )}
+              data-rel-anchor={anchorAttr(covering)}
               aria-pressed={selected}
               aria-label={stepAriaLabel(trajectory, index, covering)}
-              onClick={() => onSelectStep(selected ? null : step.id)}
+              onClick={() => onSelectStep(step.id)}
             >
               {step.label}
             </button>
-            {endsHere.map((r) => (
-              <span
-                key={r.id}
-                className={cn("spiral-path__tag", relClass(r, activeIds))}
-                aria-hidden="true"
-              >
-                ↔ {operationNames(r)}
-              </span>
-            ))}
           </li>
         );
       })}
@@ -278,7 +284,7 @@ function Path({
 }
 
 /**
- * The whole trajectory, always. Authored relationships are drawn on their
+ * The whole trajectory, always. Authored relationships are marked on their
  * passages or spans; unresearched parts stay unconnected.
  */
 export function SpiralTrajectoryFigure(props: Props) {

@@ -17,10 +17,10 @@ import { SpiralHelixExperience } from "./SpiralHelixExperience";
 import "./evolutionary-spiral.css";
 
 /**
- * Evolutionary Spiral page — progressive disclosure.
- * Understand (title, thesis, helix, lens, whole trajectory) → Explore
- * (trajectory × operation) → Investigate (research, model language, ways of knowing).
- * Semantic no-JS fallback retained in a collapsed section.
+ * Evolutionary Spiral page — complexity revealed at the speed of curiosity.
+ * See (title, thesis, helix, lens control) → Discover (a whole trajectory laid
+ * against the Spiral) → local card → Investigate (research, model language,
+ * ways of knowing). Semantic no-JS fallback retained in a collapsed section.
  */
 export function EvolutionarySpiralPage() {
   const { copy } = getEvolutionarySpiral();
@@ -32,7 +32,7 @@ export function EvolutionarySpiralPage() {
         title={copy.name}
         whisper={copy.surfaceLine}
         align="left"
-        className="spiral-arrival pb-6 pt-10 sm:pb-8 sm:pt-14 md:pb-10 md:pt-16"
+        className="spiral-arrival pb-6 pt-10 sm:pb-8 sm:pt-14 md:pb-4 md:pt-12"
       />
 
       <section className="spiral-page pb-24 pt-0 sm:pb-32">

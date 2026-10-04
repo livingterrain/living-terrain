@@ -26,6 +26,7 @@
     "test:substack-sync": "tsx scripts/test-substack-sync.ts",
     "test:publication-cta": "tsx scripts/test-publication-cta.ts",
     "test:atlas-journey-editorial": "tsx scripts/test-atlas-journey-editorial.ts",
+    "test:evolutionary-spiral": "tsx scripts/test-evolutionary-spiral.ts",
     "test:threads": "tsx scripts/test-threads.ts",
     "test:circulation": "tsx scripts/test-circulation.ts",
     "content:medium:reconcile": "tsx scripts/reconcile-medium-substack.ts",

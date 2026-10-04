@@ -406,8 +406,10 @@
 }
 
 /* ── Experience layout ──
- * Helix first (left, sticky on desktop) · whole-instrument lens second ·
- * operation and local research third. Single column below 960px.
+ * One comparison figure: helix (left, sticky on desktop) · lens control and
+ * the active trajectory beside it · authored-relationship lines across both.
+ * Below 960px: lens strip → helix → trajectory → legend; the local card is a
+ * bottom sheet below 640px.
  */
 
 .spiral-experience {
@@ -415,166 +417,122 @@
 }
 
 .spiral-experience__stage {
-  display: grid;
-  gap: 1.5rem;
-  align-items: start;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Helix and legend become separate flex items so the trajectory sits between them. */
+.spiral-experience__figure {
+  display: contents;
+}
+
+.spiral-experience__rail {
+  order: 1;
+}
+
+.spiral-experience__helix {
+  order: 2;
+}
+
+.spiral-experience__side {
+  order: 3;
+}
+
+.spiral-experience__legend {
+  order: 4;
 }
 
 @media (min-width: 960px) {
   .spiral-experience__stage {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: 2.5rem 3.25rem;
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    grid-template-areas:
+      "figure rail"
+      "figure side";
+    grid-template-rows: auto 1fr;
+    gap: 1.75rem 3.5rem;
+    align-items: start;
   }
 
   .spiral-experience__figure {
+    display: block;
+    grid-area: figure;
     position: sticky;
     top: 5.5rem;
+  }
+
+  .spiral-experience__rail {
+    grid-area: rail;
+    padding-top: 2.5rem;
+  }
+
+  .spiral-experience__side {
+    grid-area: side;
   }
 }
 
 .spiral-experience__figure,
-.spiral-experience__side {
+.spiral-experience__side,
+.spiral-experience__rail {
   min-width: 0;
+}
+
+/* Content sits above the relationship lines, so lines never obscure text. */
+.spiral-experience__rail,
+.spiral-experience__helix,
+.spiral-experience__side,
+.spiral-experience__legend {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 960px) {
+  .spiral-experience__figure {
+    z-index: 1;
+  }
+
+  .spiral-experience__legend {
+    margin-top: -1.75rem;
+  }
+}
+
+/* Narrow screens: with a trajectory laid against it, the helix gives up some
+   height so helix and trajectory share one screen. */
+@media (max-width: 959px) {
+  /* The phone sheet lives inside the side column; keep it above the legend. */
+  .spiral-experience__side {
+    z-index: 2;
+  }
+
+  .spiral-experience__stage[data-comparing] .spiral-helix__canvas {
+    max-width: 12.5rem;
+  }
+
+  .spiral-experience__stage[data-comparing] .spiral-helix__label {
+    font-size: 4.7px;
+  }
+
+  .spiral-experience__stage[data-comparing] .spiral-helix__label-n {
+    font-size: 3px;
+  }
+
+  .spiral-experience__stage[data-comparing] .spiral-wheel {
+    max-width: 17.5rem;
+  }
+
+  .spiral-experience__rail {
+    scroll-margin-top: 4.5rem;
+  }
 }
 
 .spiral-experience__side {
   max-width: 38rem;
 }
 
-.spiral-experience__operation {
-  margin-top: 1.75rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--spiral-rule);
-}
-
-/* Mobile-only orientation cue — anchor to the lens control below the helix. */
-.spiral-experience__lens-cue {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.35rem;
-  min-height: 2.75rem;
-  margin: 0 auto 0.25rem;
-  width: fit-content;
-  padding: 0 0.5rem;
-  font-family: var(--font-body);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-gold-muted);
-  text-decoration: none;
-}
-
-.spiral-experience__lens-cue:hover {
-  color: var(--color-ivory);
-}
-
-.spiral-experience__lens-cue:focus-visible {
-  outline: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
-  outline-offset: 2px;
-}
-
-@media (min-width: 960px) {
-  .spiral-experience__lens-cue {
-    display: none;
-  }
-}
-
-/* ── Stage rail ── */
-
-.spiral-rail {
-  margin-top: 0;
-}
-
-.spiral-rail__label {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.25rem 1rem;
-  margin: 0 0 0.35rem;
-  font-family: var(--font-body);
-  font-size: 0.625rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-charcoal-faint);
-}
-
-.spiral-rail__key {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  letter-spacing: 0.1em;
-  text-transform: none;
-  font-size: 0.6875rem;
-}
-
-.spiral-rail__dot {
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--color-gold-muted);
-}
-
-.spiral-rail__track {
-  display: flex;
-  gap: 0.35rem;
-  overflow-x: auto;
-  padding: 0.25rem 0 0.5rem;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
-}
-
-.spiral-rail__btn {
-  position: relative;
-  flex: 0 0 auto;
-  min-width: 2.75rem;
-  min-height: 2.75rem;
-  padding: 0.4rem 0.55rem;
-  border: 1px solid color-mix(in srgb, var(--color-rule) 55%, transparent);
-  background: transparent;
-  color: var(--color-charcoal-faint);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.15rem;
-  cursor: pointer;
-}
-
-.spiral-rail__btn:hover {
-  color: var(--color-charcoal-muted);
-  border-color: color-mix(in srgb, var(--color-gold-muted) 40%, transparent);
-}
-
-.spiral-rail__btn:focus-visible {
-  outline: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
-  outline-offset: 3px;
-}
-
-.spiral-rail__btn--selected {
-  color: var(--color-ivory);
-  border-color: color-mix(in srgb, var(--color-gold-muted) 70%, transparent);
-  background: color-mix(in srgb, var(--color-gold) 6%, transparent);
-}
-
-.spiral-rail__n {
-  font-family: var(--font-body);
-  font-size: 0.5625rem;
-  letter-spacing: 0.14em;
-}
-
-.spiral-rail__name {
-  font-family: var(--font-heading);
-  font-size: 0.75rem;
-  line-height: 1.1;
-}
-
-.spiral-rail__btn .spiral-rail__dot {
-  position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
+.spiral-experience__side:empty {
+  display: none;
 }
 
 /* ── Helix figure ── */
@@ -592,11 +550,18 @@
   aspect-ratio: 100 / 168;
 }
 
+@media (max-width: 639px) {
+  .spiral-helix__canvas {
+    max-width: 22rem;
+  }
+}
+
 @media (min-width: 960px) {
-  /* Fit the sticky figure (canvas + legend) inside the viewport. */
+  /* The whole helix fits the first desktop screen beneath the title. */
   .spiral-helix__canvas {
     max-width: none;
-    width: min(100%, calc((100vh - 13rem) * 100 / 168));
+    width: min(100%, calc((100vh - 21.5rem) * 100 / 168));
+    min-width: 17rem;
   }
 }
 
@@ -765,6 +730,68 @@
   fill: var(--color-ivory);
 }
 
+.spiral-helix__label-n {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 2.1px;
+  letter-spacing: 0.12em;
+  fill: color-mix(in srgb, var(--color-charcoal-faint) 75%, transparent);
+}
+
+@media (min-width: 960px) {
+  .spiral-helix__label {
+    font-size: 3.4px;
+  }
+
+  .spiral-helix__label-n {
+    font-size: 2.3px;
+  }
+}
+
+/* A faint ring around each node says "this can be touched". */
+.spiral-helix__node-halo {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-ivory) 14%, transparent);
+  stroke-width: 0.3;
+  transition:
+    stroke 0.25s var(--ease-breath, ease-out),
+    stroke-width 0.25s var(--ease-breath, ease-out);
+}
+
+.spiral-helix__node-halo--on {
+  stroke: color-mix(in srgb, var(--color-gold) 60%, transparent);
+  stroke-width: 0.45;
+}
+
+/* Hover / keyboard-focus preview of the operation microcopy (never the only route to it). */
+.spiral-helix__preview {
+  position: absolute;
+  z-index: 4;
+  width: max-content;
+  max-width: 13rem;
+  margin: 0;
+  padding: 0.4rem 0.6rem;
+  transform: translateY(-50%);
+  border-left: 1px solid color-mix(in srgb, var(--color-gold-muted) 60%, transparent);
+  background: color-mix(in srgb, var(--color-space) 88%, transparent);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--color-charcoal);
+  pointer-events: none;
+}
+
+.spiral-helix__preview--right {
+  margin-left: 1.6rem;
+}
+
+.spiral-helix__preview--left {
+  transform: translate(calc(-100% - 1.6rem), -50%);
+  border-left: none;
+  border-right: 1px solid color-mix(in srgb, var(--color-gold-muted) 60%, transparent);
+  text-align: right;
+}
+
 .spiral-helix__hits {
   position: absolute;
   inset: 0;
@@ -841,36 +868,6 @@
   color: var(--color-charcoal-faint);
 }
 
-.spiral-helix__lens {
-  margin-top: 0.5rem;
-  font-family: var(--font-body);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-charcoal-faint);
-}
-
-.spiral-helix__lens > span:first-child {
-  color: var(--color-gold-muted);
-}
-
-.spiral-helix__lens-key {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-left: 0.9rem;
-  letter-spacing: 0.1em;
-  text-transform: none;
-}
-
-.spiral-helix__lens-diamond {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border: 1px solid var(--color-gold);
-  transform: rotate(45deg);
-}
-
 /* Reference grammar recedes slightly while a trajectory is laid against it. */
 .spiral-helix--quiet .spiral-helix__space {
   opacity: 0.72;
@@ -888,7 +885,7 @@
   stroke-width: 0.8;
 }
 
-/* ── Whole-instrument lens control ("View the whole Spiral through") ── */
+/* ── Whole-instrument lens control ("Explore the pattern through") ── */
 
 .spiral-lens-rail {
   scroll-margin-top: 5rem;
@@ -953,6 +950,67 @@
   font-size: 0.875rem;
   letter-spacing: 0.04em;
   text-transform: none;
+}
+
+.spiral-lens-rail__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* Filled mark: a trajectory is charted. Open mark: not yet charted — still a door. */
+.spiral-lens-rail__mark {
+  flex: none;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-charcoal-muted) 70%, transparent);
+}
+
+.spiral-lens-rail__mark--charted {
+  border-color: var(--color-gold-muted);
+  background: var(--color-gold-muted);
+}
+
+.spiral-lens-rail__btn--uncharted:not(.spiral-lens-rail__btn--selected) {
+  color: color-mix(in srgb, var(--color-charcoal-muted) 85%, transparent);
+}
+
+@media (max-width: 959px) {
+  /* A compact strip directly above the helix; scrolls sideways rather than wrapping. */
+  .spiral-lens-rail__orient {
+    text-align: center;
+  }
+
+  .spiral-lens-rail__track {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    margin-inline: -1.25rem;
+    padding: 0.1rem 1.25rem 0.35rem;
+    scroll-padding-inline: 1.25rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 1.25rem,
+      #000 calc(100% - 2rem),
+      transparent 100%
+    );
+  }
+
+  .spiral-lens-rail__track::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 959px) {
+  .spiral-lens-rail__track {
+    justify-content: center;
+    flex-wrap: wrap;
+    mask-image: none;
+  }
 }
 
 /* ── Lens context — whole trajectory, persists across operations ── */
@@ -1231,9 +1289,8 @@
 /* ── Relationship status — always named in text; line style is a second cue ── */
 
 .spiral-wheel__rel.spiral-rel--dormant,
-.spiral-path__link.spiral-rel--dormant,
-.spiral-path__tag.spiral-rel--dormant {
-  opacity: 0.5;
+.spiral-path__link.spiral-rel--dormant {
+  opacity: 0.4;
 }
 
 .spiral-path__step--in-span.spiral-rel--dormant {
@@ -1338,9 +1395,19 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  pointer-events: none;
+}
+
+.spiral-wheel__rel-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 12;
+  pointer-events: stroke;
+  cursor: pointer;
 }
 
 .spiral-wheel__hit {
+  pointer-events: auto;
   position: absolute;
   width: 2.75rem;
   height: 2.75rem;
@@ -1443,18 +1510,6 @@
 
 .spiral-path--process .spiral-path__link--rel {
   background: var(--color-gold);
-}
-
-.spiral-path__tag {
-  margin-left: 0.4rem;
-  padding: 0.15rem 0.4rem;
-  border-left: 2px solid var(--color-gold);
-  font-family: var(--font-body);
-  font-size: 0.625rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--color-gold-muted);
 }
 
 .spiral-path__onward {
@@ -1573,17 +1628,390 @@
     font-size: 0.85rem;
     padding: 0.3rem 0.45rem;
   }
+}
 
-  .spiral-path__tag {
-    white-space: normal;
+/* ── Authored-relationship lines across the comparison figure ──
+ * Drawn only from relationship records. Line style repeats the status cue
+ * used on the trajectory (solid candidate, dotted context, dashed ambiguous,
+ * dash-dot textual / symbolic).
+ */
+
+.spiral-arcs {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.spiral-arcs__arc {
+  transition: opacity 0.35s var(--ease-breath, ease-out);
+}
+
+.spiral-arcs__line {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-gold) 78%, transparent);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+}
+
+.spiral-arcs__end {
+  fill: var(--color-gold);
+}
+
+.spiral-arcs__arc.spiral-rel--context .spiral-arcs__line,
+.spiral-arcs__arc.spiral-rel--comparison-break .spiral-arcs__line {
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 85%, transparent);
+  stroke-dasharray: 1 4;
+}
+
+.spiral-arcs__arc.spiral-rel--context .spiral-arcs__end,
+.spiral-arcs__arc.spiral-rel--comparison-break .spiral-arcs__end {
+  fill: var(--color-charcoal-muted);
+}
+
+.spiral-arcs__arc.spiral-rel--ambiguous .spiral-arcs__line {
+  stroke-dasharray: 6 4;
+  stroke-linecap: butt;
+}
+
+.spiral-arcs__arc.spiral-rel--textual-theological .spiral-arcs__line,
+.spiral-arcs__arc.spiral-rel--symbolic-analogy .spiral-arcs__line {
+  stroke-dasharray: 9 3 1.5 3;
+  stroke-linecap: butt;
+}
+
+.spiral-arcs__arc--active .spiral-arcs__line {
+  stroke-width: 1.6;
+}
+
+.spiral-arcs__arc--dormant {
+  opacity: 0.28;
+}
+
+.spiral-arcs__arc--offscreen {
+  opacity: 0;
+}
+
+.spiral-arcs__hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.spiral-arcs__arc--offscreen .spiral-arcs__hit {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .spiral-arcs__line {
+    animation: spiral-arc-arrive 0.9s var(--ease-breath, ease-out) both;
+  }
+}
+
+@keyframes spiral-arc-arrive {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.spiral-trajectory__key {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-trajectory__key-line {
+  flex: none;
+  width: 1.5rem;
+  height: 0;
+  border-top: 1.25px solid color-mix(in srgb, var(--color-gold) 78%, transparent);
+}
+
+/* Across — each mapped trajectory in its own shape */
+
+.spiral-mini {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.spiral-mini__btn {
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--color-rule) 45%, transparent);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.spiral-mini__btn:hover {
+  border-color: color-mix(in srgb, var(--color-gold-muted) 45%, transparent);
+}
+
+.spiral-mini__btn:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  outline-offset: 2px;
+}
+
+.spiral-mini__svg {
+  display: block;
+  width: 100%;
+  height: 4.5rem;
+}
+
+.spiral-mini__svg--path {
+  height: 1.6rem;
+  margin-block: 1.45rem;
+}
+
+.spiral-mini__seg {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 55%, transparent);
+  stroke-width: 1.2;
+}
+
+.spiral-mini__seg--process {
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 35%, transparent);
+}
+
+.spiral-mini__rel {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.spiral-mini__rel.spiral-rel--context {
+  stroke: var(--color-charcoal-muted);
+  stroke-dasharray: 0.5 3;
+}
+
+.spiral-mini__rel.spiral-rel--ambiguous {
+  stroke-dasharray: 4 3;
+  stroke-linecap: butt;
+}
+
+.spiral-mini__rel.spiral-rel--textual-theological,
+.spiral-mini__rel.spiral-rel--symbolic-analogy {
+  stroke-dasharray: 6 2 1 2;
+  stroke-linecap: butt;
+}
+
+.spiral-mini__dot {
+  fill: var(--color-charcoal-muted);
+}
+
+.spiral-mini__dot--recurrence {
+  fill: none;
+  stroke: var(--color-charcoal-muted);
+  stroke-width: 1;
+}
+
+.spiral-mini__name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--color-ivory);
+}
+
+.spiral-mini__meta {
+  font-size: 0.75rem;
+  color: var(--color-charcoal-faint);
+}
+
+/* ── Local card — appears only after a selection ── */
+
+.spiral-card {
+  position: relative;
+  margin-top: 1.25rem;
+  padding: 1rem 2.75rem 1.1rem 1rem;
+  border-left: 1px solid color-mix(in srgb, var(--color-gold-muted) 45%, transparent);
+  background: color-mix(in srgb, var(--color-space) 55%, transparent);
+  scroll-margin-block: 6rem 1.5rem;
+}
+
+.spiral-card__close {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  background: none;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--color-charcoal-faint);
+  cursor: pointer;
+}
+
+.spiral-card__close:hover {
+  color: var(--color-ivory);
+}
+
+.spiral-card__close:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  outline-offset: -4px;
+}
+
+.spiral-card .spiral-op__title {
+  margin-top: 0.2rem;
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+}
+
+.spiral-card__status {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-card__with {
+  margin-top: 0.75rem;
+}
+
+.spiral-card__with-label {
+  font-size: 0.8125rem;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-card__anchors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1rem;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.spiral-card__anchor {
+  min-height: 2.75rem;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  text-align: left;
+  color: var(--color-ivory);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-gold-muted) 45%, transparent);
+  text-underline-offset: 0.25em;
+}
+
+.spiral-card__anchor:hover {
+  color: var(--color-gold);
+}
+
+.spiral-card__anchor:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  outline-offset: 2px;
+}
+
+.spiral-card__anchor-op {
+  color: var(--color-gold-muted);
+}
+
+.spiral-op__rel-head .spiral-card__anchor {
+  min-height: 2rem;
+}
+
+.spiral-card__bridge {
+  margin-top: 0.15rem;
+  font-family: var(--font-heading);
+  color: var(--color-gold-muted);
+}
+
+.spiral-card__question {
+  margin-top: 0.6rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  line-height: 1.45;
+  color: var(--color-ivory);
+}
+
+.spiral-card__note {
+  margin-top: 0.75rem;
+}
+
+/* Phone: a non-modal sheet over the lower screen; the figure stays visible above. */
+@media (max-width: 639px) {
+  .spiral-card {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 30;
+    margin: 0;
+    max-height: 42vh;
+    max-height: 42dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.85rem 3rem calc(1rem + env(safe-area-inset-bottom, 0px)) 1.25rem;
+    border-left: none;
+    border-top: 1px solid color-mix(in srgb, var(--color-gold-muted) 45%, transparent);
+    background: var(--color-space);
+    box-shadow: 0 -1.5rem 2.5rem color-mix(in srgb, var(--color-space) 70%, transparent);
+  }
+
+  .spiral-card--expanded {
+    max-height: 86vh;
+    max-height: 86dvh;
+  }
+
+  /* The way back stays in reach while the sheet's content scrolls. */
+  .spiral-card__close {
+    position: sticky;
+    top: -0.85rem;
+    z-index: 1;
+    margin: -0.6rem -2.75rem -2.15rem auto;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-space) 92%, transparent);
+  }
+
+  /* Room to scroll the figure clear of the sheet. */
+  .spiral-experience__stage--local {
+    padding-bottom: 42vh;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 639px) {
+  .spiral-card {
+    animation: spiral-sheet-rise 0.35s var(--ease-breath, ease-out) both;
+  }
+}
+
+@keyframes spiral-sheet-rise {
+  from {
+    transform: translateY(1.5rem);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
   }
 }
 
 /* ── Selected operation (Explore depth) ── */
-
-.spiral-op {
-  margin-top: 1rem;
-}
 
 .spiral-op__folio {
   color: var(--color-charcoal-faint);
@@ -1622,42 +2050,6 @@
 
 .spiral-op__def-label {
   color: var(--color-charcoal-faint);
-}
-
-.spiral-op__definition {
-  margin-top: 0.75rem;
-}
-
-.spiral-op__definition-summary {
-  display: flex;
-  align-items: center;
-  min-height: 2.75rem;
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-charcoal-faint);
-}
-
-.spiral-op__definition-summary:focus-visible {
-  outline: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
-  outline-offset: 3px;
-}
-
-.spiral-op__definition .spiral-op__def {
-  margin-top: 0.25rem;
-}
-
-.spiral-op__compare {
-  margin-top: 1.1rem;
-}
-
-.spiral-op__status {
-  margin-top: 0.35rem;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--color-charcoal-muted);
 }
 
 .spiral-op__explore {

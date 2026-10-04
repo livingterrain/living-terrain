@@ -9,16 +9,15 @@ type Props = {
 };
 
 /**
- * Whole-instrument lens control — "View through".
- * Scoped to the entire helix, never to the selected operation.
- * Selecting a lens does not alter occurrenceId; selecting an operation
- * does not alter the lens.
+ * Whole-instrument lens control. Scoped to the entire helix, never to the
+ * selected operation. Mapped lenses carry a filled mark, uncharted lenses an
+ * open one; Across keeps its dashed edge.
  */
 export function SpiralLensRail({ activeLensId, onSelect }: Props) {
   return (
     <div id="spiral-lenses" className="spiral-lens-rail" tabIndex={-1}>
       <p className="spiral-lens-rail__orient" id="spiral-lens-orient">
-        View the whole Spiral through
+        Explore the pattern through
       </p>
       <div
         className="spiral-lens-rail__track"
@@ -35,22 +34,39 @@ export function SpiralLensRail({ activeLensId, onSelect }: Props) {
           onClick={() => onSelect(null)}
         >
           Spiral
+          <span className="sr-only">, no comparison</span>
         </button>
         {SPIRAL_LENSES.map((lens) => {
           const selected = activeLensId === lens.id;
+          const scaffold = lens.status === "scaffold";
+          const charted = lens.trajectories.length > 0;
           return (
             <button
               key={lens.id}
               type="button"
               aria-pressed={selected}
+              data-lens-state={scaffold ? "across" : charted ? "charted" : "uncharted"}
               className={cn(
                 "spiral-lens-rail__btn",
-                lens.status === "scaffold" && "spiral-lens-rail__btn--scaffold",
+                scaffold && "spiral-lens-rail__btn--scaffold",
+                !scaffold && !charted && "spiral-lens-rail__btn--uncharted",
                 selected && "spiral-lens-rail__btn--selected",
               )}
               onClick={() => onSelect(selected ? null : lens.id)}
             >
+              {!scaffold && (
+                <span
+                  className={cn(
+                    "spiral-lens-rail__mark",
+                    charted && "spiral-lens-rail__mark--charted",
+                  )}
+                  aria-hidden="true"
+                />
+              )}
               {lens.label}
+              {!scaffold && !charted && (
+                <span className="sr-only">, not yet charted</span>
+              )}
             </button>
           );
         })}
