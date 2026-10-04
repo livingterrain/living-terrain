@@ -47,7 +47,9 @@ export type SpiralEpistemicKind =
   | "symbolic-comparative"
   | "symbolic-analogy"
   | "hypothesis"
-  | "contested-interpretation";
+  | "contested-interpretation"
+  /** Output of a formal or computational model — never an observation. */
+  | "model-projection";
 
 /**
  * Comparative lenses.
@@ -506,6 +508,11 @@ export type SpiralTrajectoryEdge = {
   /** Conditions under which this edge is taken, in domain terms. */
   conditions?: string;
   epistemicKinds?: readonly SpiralEpistemicKind[];
+  /**
+   * Sources for this edge's own claim — the transition, its outcome, and its
+   * conditions. Authored only; never inherited from the trajectory or inferred.
+   */
+  sources?: readonly SpiralSourceRef[];
 };
 
 /** An authored open research issue surfaced beside the trajectory. */
@@ -526,6 +533,13 @@ export type SpiralTrajectory = {
   /** One concise orientation line for the whole trajectory. */
   description: string;
   shape: SpiralTrajectoryShape;
+  /**
+   * Opt-in evidentiary standard. `empirical`: every explicit transition that
+   * asserts something (an outcome, conditions, or an empirical or
+   * model-projection epistemic kind) must cite at least one citable source.
+   * Absent = no edge-sourcing requirement (textual, symbolic trajectories).
+   */
+  evidenceStandard?: "empirical";
   steps: readonly SpiralTrajectoryStep[];
   /**
    * Authoritative topology when present: no edge exists that is not listed.

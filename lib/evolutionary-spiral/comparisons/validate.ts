@@ -9,6 +9,7 @@ import type {
   SpiralTrajectoryRelationship,
 } from "../types";
 import { conceptMatches } from "./research";
+import { validateTrajectorySources } from "./sources";
 
 /**
  * Validation for authored trajectory ↔ Spiral relationships.
@@ -41,7 +42,12 @@ export type SpiralComparisonIssueCode =
   | "unknown-transition-step"
   | "unconnected-step"
   | "divergence-requires-branching-shape"
-  | "duplicate-trajectory-concept";
+  | "duplicate-trajectory-concept"
+  | "invalid-edge-source"
+  | "duplicate-edge-source"
+  | "conflicting-source-metadata"
+  | "unsourced-model-projection"
+  | "unsourced-evidence-edge";
 
 export type SpiralComparisonIssue = {
   code: SpiralComparisonIssueCode;
@@ -49,6 +55,7 @@ export type SpiralComparisonIssue = {
   relationshipId?: string;
   trajectoryId?: string;
   stepId?: string;
+  edgeId?: string;
 };
 
 /** The later-turn Emergence occurrence ("Emergence again"). */
@@ -356,9 +363,10 @@ export function validateSpiralComparisons(
   const acknowledgements =
     options.nameCollisionAcknowledgements ?? SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS;
   const multi = multiOccurrenceStageIds();
-  const issues: SpiralComparisonIssue[] = trajectories.flatMap(
-    validateTrajectoryTopology,
-  );
+  const issues: SpiralComparisonIssue[] = trajectories.flatMap((t) => [
+    ...validateTrajectoryTopology(t),
+    ...validateTrajectorySources(t),
+  ]);
   const seen = new Set<string>();
 
   for (const r of relationships) {

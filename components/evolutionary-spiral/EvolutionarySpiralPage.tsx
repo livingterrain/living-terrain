@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/Container";
 import { Room, RoomThreshold } from "@/components/environment";
 import {
   SPIRAL_CURRENTS,
-  SPIRAL_EPISTEMIC_CATEGORIES,
+  SPIRAL_EPISTEMIC_LEGEND,
   SPIRAL_SEQUENCE,
   SPIRAL_STAGES,
   examplesForStage,
@@ -138,7 +138,7 @@ export function EvolutionarySpiralPage() {
                 </span>
               </summary>
               <ul className="spiral-page__epistemic spiral-page__epistemic--compact">
-                {SPIRAL_EPISTEMIC_CATEGORIES.map((cat) => (
+                {SPIRAL_EPISTEMIC_LEGEND.map((cat) => (
                   <li key={cat.id}>
                     <span className="spiral-page__epistemic-label">
                       {cat.label}

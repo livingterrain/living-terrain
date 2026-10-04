@@ -11,8 +11,11 @@ import {
   anchorStepIds,
   authoredTrajectories,
   defaultTrajectoryId,
+  edgeAssertsEvidence,
   EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
+  epistemicLabel,
   findEdge,
+  isCitableSource,
   getTrajectory,
   occurrencesForRelationship,
   orderedEdges,
@@ -20,6 +23,8 @@ import {
   relationshipsForTrajectory,
   resolveRelationshipConcept,
   sinkStepIds,
+  SPIRAL_EPISTEMIC_CATEGORIES,
+  SPIRAL_EPISTEMIC_LEGEND,
   SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS,
   SPIRAL_SCALE_IDS,
   SPIRAL_SEQUENCE,
@@ -28,10 +33,13 @@ import {
   topologySource,
   trajectoryEdges,
   validateSpiralComparisons,
+  validateTrajectorySources,
   validateTrajectoryTopology,
   type SpiralComparisonIssueCode,
+  type SpiralEpistemicKind,
   type SpiralLensId,
   type SpiralScaleId,
+  type SpiralSourceRef,
   type SpiralTrajectory,
   type SpiralTrajectoryEdge,
   type SpiralTrajectoryRelationship,
@@ -634,6 +642,222 @@ check("2B topology module reads no relationships, operations, or geometry", () =
   const source = readFileSync(path.resolve(__dirname, "../lib/evolutionary-spiral/topology.ts"), "utf8");
   const specs = [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
   assert.deepEqual(specs, ["./types"]);
+});
+
+/* ------------------------------------------------------------------ */
+/* Phase 2C.1 — trajectory provenance (synthetic sources only)        */
+/* ------------------------------------------------------------------ */
+
+const SOURCE: SpiralSourceRef = {
+  id: "fixture-source",
+  title: "Fixture title",
+  authors: "Fixture A",
+  year: 2000,
+  doi: "10.0000/fixture",
+};
+const MODEL_SOURCE: SpiralSourceRef = {
+  id: "fixture-model",
+  title: "Fixture model",
+  authors: "Fixture B",
+  year: 2001,
+};
+
+/** `base` with edge b → d replaced; its sources are only those given. */
+function withEdge(
+  replacement: Partial<SpiralTrajectoryEdge>,
+  base: SpiralTrajectory = BRANCHING,
+): SpiralTrajectory {
+  return {
+    ...base,
+    transitions: base.transitions!.map((e) =>
+      e.id === "b-d" ? { ...e, sources: undefined, ...replacement } : e,
+    ),
+  };
+}
+
+/** Empirical standard with every other edge already sourced. */
+const EMPIRICAL: SpiralTrajectory = {
+  ...BRANCHING,
+  id: "empirical-fixture",
+  evidenceStandard: "empirical",
+  transitions: BRANCHING.transitions!.map((e) => ({ ...e, sources: [SOURCE] })),
+};
+
+function sourceCodes(t: SpiralTrajectory): SpiralComparisonIssueCode[] {
+  return validateTrajectorySources(t).map((i) => i.code);
+}
+
+check("2C.1.A model-projection is a valid epistemic kind with its own definition", () => {
+  const kind: SpiralEpistemicKind = "model-projection";
+  const cats = SPIRAL_EPISTEMIC_CATEGORIES.filter((c) => c.id === kind);
+  assert.equal(cats.length, 1);
+  assert.equal(epistemicLabel(kind), "Model projection");
+  assert.match(cats[0]!.definition, /model/i);
+  const ids = SPIRAL_EPISTEMIC_CATEGORIES.map((c) => c.id);
+  assert.equal(new Set(ids).size, ids.length);
+});
+
+check("2C.1.B model-projection stays distinct from hypothesis and observation", () => {
+  const def = (id: SpiralEpistemicKind) =>
+    SPIRAL_EPISTEMIC_CATEGORIES.find((c) => c.id === id)!.definition;
+  const others = ["hypothesis", "empirical-observation", "empirical-mechanism", "systems-principle"] as const;
+  for (const id of others) {
+    assert.notEqual(def("model-projection"), def(id), id);
+    assert.notEqual(epistemicLabel("model-projection"), epistemicLabel(id), id);
+  }
+  // A projection edge is not satisfied the way a hypothesis edge is.
+  assert.deepEqual(sourceCodes(withEdge({ epistemicKinds: ["hypothesis"] })), []);
+  assert.deepEqual(sourceCodes(withEdge({ epistemicKinds: ["model-projection"] })), [
+    "unsourced-model-projection",
+  ]);
+});
+
+check("2C.1 visitor legend is unchanged; model-projection is not yet shown", () => {
+  assert.ok(!SPIRAL_EPISTEMIC_LEGEND.some((c) => c.id === "model-projection"));
+  assert.deepEqual(
+    SPIRAL_EPISTEMIC_LEGEND.map((c) => c.id),
+    SPIRAL_EPISTEMIC_CATEGORIES.map((c) => c.id).filter((id) => id !== "model-projection"),
+  );
+});
+
+check("2C.1.C an edge may carry sources", () => {
+  const t = withEdge({ sources: [SOURCE, MODEL_SOURCE] });
+  assert.deepEqual(sourceCodes(t), []);
+  assert.deepEqual(codes([], [t]), []);
+  assert.deepEqual(findEdge(t, "b", "d")?.sources?.map((s) => s.id), ["fixture-source", "fixture-model"]);
+});
+
+check("2C.1.D duplicate source ids on one edge fail", () => {
+  assert.deepEqual(sourceCodes(withEdge({ sources: [SOURCE, SOURCE] })), ["duplicate-edge-source"]);
+  assert.deepEqual(codes([], [withEdge({ sources: [SOURCE, SOURCE] })]), ["duplicate-edge-source"]);
+});
+
+check("2C.1 the same source may support several edges, but must not change identity", () => {
+  const shared: SpiralTrajectory = {
+    ...BRANCHING,
+    transitions: BRANCHING.transitions!.map((e) => ({ ...e, sources: [SOURCE] })),
+  };
+  assert.deepEqual(sourceCodes(shared), []);
+  const perEdgeClaim = withEdge({ sources: [{ ...SOURCE, supports: "Edge-specific claim." }] }, shared);
+  assert.deepEqual(sourceCodes(perEdgeClaim), []);
+  const drifted = withEdge({ sources: [{ ...SOURCE, year: 2009 }] }, shared);
+  assert.deepEqual(sourceCodes(drifted), ["conflicting-source-metadata"]);
+});
+
+check("2C.1 malformed sources fail; omitted bibliographic fields stay valid", () => {
+  assert.deepEqual(sourceCodes(withEdge({ sources: [{ ...SOURCE, id: " " }] })), ["invalid-edge-source"]);
+  assert.deepEqual(
+    sourceCodes(withEdge({ sources: [{ ...SOURCE, doi: "https://doi.org/10.0000/fixture" }] })),
+    ["invalid-edge-source"],
+  );
+  assert.deepEqual(sourceCodes(withEdge({ sources: [{ id: "bare-slot" }] })), []);
+});
+
+check("2C.1 validation never fills or alters source metadata", () => {
+  const sparse: SpiralSourceRef = Object.freeze({ id: "sparse" });
+  const t = withEdge({ sources: Object.freeze([sparse]) }, EMPIRICAL);
+  const before = JSON.stringify(t);
+  validateSpiralComparisons([], [t]);
+  assert.equal(JSON.stringify(t), before);
+  assert.deepEqual(Object.keys(sparse), ["id"]);
+});
+
+check("2C.1.E edge sources create zero arcs and no relationships", () => {
+  const sourced = EMPIRICAL;
+  assert.deepEqual(codes([], [sourced]), []);
+  const records = SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((r) => r.trajectoryId === sourced.id);
+  assert.equal(records.length, 0);
+  assert.equal(arcEndpointsFromRelationships(records).length, 0);
+  assert.equal(arcEndpointsForTrajectory(sourced.id).length, 0);
+});
+
+check("2C.1.F model-projection edge cannot pass without a citable source", () => {
+  const projected = { epistemicKinds: ["model-projection"] as SpiralEpistemicKind[] };
+  for (const base of [BRANCHING, EMPIRICAL]) {
+    assert.deepEqual(sourceCodes(withEdge(projected, base)), ["unsourced-model-projection"]);
+    assert.deepEqual(
+      sourceCodes(withEdge({ ...projected, sources: [{ ...MODEL_SOURCE, placeholder: true }] }, base)),
+      ["unsourced-model-projection"],
+    );
+    assert.deepEqual(
+      sourceCodes(withEdge({ ...projected, sources: [{ id: "fixture-model", title: "Fixture model" }] }, base)),
+      ["unsourced-model-projection"],
+    );
+    assert.deepEqual(sourceCodes(withEdge({ ...projected, sources: [MODEL_SOURCE] }, base)), []);
+  }
+});
+
+check("2C.1.G empirical edge claims cannot ship source-free under the empirical standard", () => {
+  const unsourced = (extra: Partial<SpiralTrajectoryEdge>) =>
+    sourceCodes(withEdge({ outcome: undefined, conditions: undefined, ...extra }, EMPIRICAL));
+  assert.deepEqual(unsourced({ epistemicKinds: ["empirical-observation"] }), ["unsourced-evidence-edge"]);
+  assert.deepEqual(unsourced({ epistemicKinds: ["empirical-mechanism"] }), ["unsourced-evidence-edge"]);
+  assert.deepEqual(unsourced({ conditions: "Neutral fixture condition." }), ["unsourced-evidence-edge"]);
+  assert.deepEqual(unsourced({ outcome: "failure" }), ["unsourced-evidence-edge"]);
+  assert.deepEqual(
+    unsourced({ epistemicKinds: ["empirical-observation"], sources: [SOURCE] }),
+    [],
+  );
+  // A bare from → to asserts nothing and needs no source.
+  assert.deepEqual(unsourced({}), []);
+  assert.ok(!edgeAssertsEvidence(edge("a", "b")));
+  // Without the standard, the same claims carry no requirement.
+  assert.deepEqual(
+    sourceCodes(withEdge({ epistemicKinds: ["empirical-observation"], conditions: "Neutral." })),
+    [],
+  );
+});
+
+check("2C.1 a source counts as support only when a reader could find it", () => {
+  assert.ok(isCitableSource(SOURCE));
+  assert.ok(isCitableSource(MODEL_SOURCE));
+  assert.ok(!isCitableSource({ ...SOURCE, placeholder: true }));
+  assert.ok(!isCitableSource({ id: "x", title: "Only a title" }));
+  assert.ok(!isCitableSource({ id: "x", authors: "A", year: 2000 }));
+  assert.ok(isCitableSource({ id: "x", authors: "A", year: 2000, url: "https://example.org" }));
+});
+
+check("2C.1.H existing Jesus, Zodiac and Metamorphosis data validate unchanged", () => {
+  const ids = authoredTrajectories().map((t) => t.id).sort();
+  assert.deepEqual(ids, ["jesus-narrative", "metamorphosis", "zodiac-cycle"].sort());
+  for (const t of authoredTrajectories()) {
+    assert.deepEqual(validateTrajectorySources(t), [], t.id);
+    assert.equal(t.evidenceStandard, undefined, t.id);
+    assert.equal(t.transitions, undefined, t.id);
+    assert.ok(!JSON.stringify(t).includes("model-projection"), t.id);
+  }
+  assert.ok(!JSON.stringify(SPIRAL_TRAJECTORY_RELATIONSHIPS).includes("model-projection"));
+});
+
+check("2C.1.I arc counts: Zodiac 4, Jesus 1, Biology 1, all others 0", () => {
+  const expected: Record<string, number> = {
+    "symbolic-zodiac": 4,
+    "biblical-textual": 1,
+    "living-systems": 1,
+  };
+  for (const lensId of ["systems", "living-systems", "psychology", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
+    assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
+  }
+});
+
+check("2C.1.J Emergence Again receives no relationship or arc", () => {
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    assert.ok(!occurrencesForRelationship(r).some((s) => s.occurrenceId === EMERGENCE_AGAIN), r.id);
+  }
+  for (const t of authoredTrajectories()) {
+    assert.ok(!arcEndpointsForTrajectory(t.id).some((e) => e.occurrenceId === EMERGENCE_AGAIN), t.id);
+  }
+});
+
+check("2C.1.K both Phase 2A approval lists remain empty", () => {
+  assert.equal(EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS.length, 0);
+  assert.equal(SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS.length, 0);
+});
+
+check("2C.1.L provenance module reads no canonical data, relationships, or geometry", () => {
+  const source = readFileSync(path.resolve(__dirname, "../lib/evolutionary-spiral/comparisons/sources.ts"), "utf8");
+  const specs = [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
+  assert.deepEqual(specs, ["../types", "./validate"]);
 });
 
 if (failed > 0) {

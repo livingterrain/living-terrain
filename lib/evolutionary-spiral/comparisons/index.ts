@@ -147,6 +147,11 @@ export {
   validateTrajectoryTopology,
 } from "./validate";
 export { conceptMatches, resolveRelationshipConcept } from "./research";
+export {
+  edgeAssertsEvidence,
+  isCitableSource,
+  validateTrajectorySources,
+} from "./sources";
 export type { SpiralConceptMatch } from "./research";
 export type {
   SpiralComparisonIssue,

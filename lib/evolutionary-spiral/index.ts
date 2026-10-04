@@ -82,6 +82,7 @@ export { SPIRAL_DOMAINS, getSpiralDomain } from "./domains";
 
 export {
   SPIRAL_EPISTEMIC_CATEGORIES,
+  SPIRAL_EPISTEMIC_LEGEND,
   epistemicLabel,
 } from "./epistemic";
 
@@ -139,6 +140,8 @@ export {
   anchorLabel,
   anchorStepIds,
   conceptMatches,
+  edgeAssertsEvidence,
+  isCitableSource,
   isDrawableCorrespondence,
   multiOccurrenceStageIds,
   occurrencesForRelationship,
@@ -148,6 +151,7 @@ export {
   relationshipsForTrajectory,
   resolveRelationshipConcept,
   validateSpiralComparisons,
+  validateTrajectorySources,
   validateTrajectoryTopology,
 } from "./comparisons";
 

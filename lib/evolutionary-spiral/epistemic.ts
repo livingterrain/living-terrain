@@ -85,7 +85,22 @@ export const SPIRAL_EPISTEMIC_CATEGORIES: readonly SpiralEpistemicCategory[] = [
     definition:
       "An interpretation of evidence that remains actively debated — not settled consensus, and not a provisional hypothesis offered only for future inquiry.",
   },
+  {
+    id: "model-projection",
+    label: "Model projection",
+    definition:
+      "A result produced by a formal or computational model under stated assumptions or scenarios, estimating possible system behavior beyond directly observed conditions. Not an observation, not a measured mechanism, and not a provisional hypothesis — a projection is never to be read as observed fact.",
+  },
 ] as const;
+
+/** Defined for authored data but not yet introduced in visitor copy. */
+const NOT_YET_IN_LEGEND: ReadonlySet<SpiralEpistemicKind> = new Set([
+  "model-projection",
+]);
+
+/** Categories shown in the visitor "Ways of knowing" legend. */
+export const SPIRAL_EPISTEMIC_LEGEND: readonly SpiralEpistemicCategory[] =
+  SPIRAL_EPISTEMIC_CATEGORIES.filter((c) => !NOT_YET_IN_LEGEND.has(c.id));
 
 export function epistemicLabel(kind: SpiralEpistemicKind): string {
   return (
