@@ -1,95 +1,95 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import {
-  defaultExploreView,
-  getStageExploration,
+  defaultTrajectoryId,
+  getIntersection,
+  getSpiralLens,
+  getSpiralStage,
+  getTrajectory,
+  intersectionHasMaterial,
+  researchedStopsForLens,
   SPIRAL_DEFAULT_OCCURRENCE_ID,
   SPIRAL_SEQUENCE,
-  stageHasDeepExploration,
-  getSpiralStage,
-  type SpiralExploreViewId,
+  type SpiralLensId,
 } from "@/lib/evolutionary-spiral";
 import { SpiralHelix } from "./SpiralHelix";
-import { SpiralStageExplorer } from "./SpiralStageExplorer";
-import { SpiralStagePanel } from "./SpiralStagePanel";
+import { SpiralLensContext } from "./SpiralLensContext";
+import { SpiralLensRail } from "./SpiralLensRail";
+import { SpiralOperationPanel } from "./SpiralOperationPanel";
 import { SpiralStageRail } from "./SpiralStageRail";
-import { cn } from "@/lib/utils";
 
 /**
- * Client island: helix + rail share occurrenceId.
- * Deep stages also hold an independent lens/view id — changing lenses
- * never alters the selected Spiral occurrence.
+ * Client island. Four independent pieces of state:
+ * - selectedOccurrenceId — the operation used as a coordinate
+ * - activeLensId — belongs to the whole helix; survives operation changes
+ * - activeTrajectoryId — belongs to the lens; survives operation changes
+ * - conceptId / investigateOpen — local to lens × operation
+ * - lensResearchOpen / lensConceptId — lens-level research; survives operation changes
  */
 export function SpiralHelixExperience() {
   const panelId = useId();
-  const exploreAnchorRef = useRef<HTMLDivElement>(null);
-  const [selectedId, setSelectedId] = useState(SPIRAL_DEFAULT_OCCURRENCE_ID);
-  const [exploreView, setExploreView] = useState<SpiralExploreViewId>("systems");
-  /** Concept deep-dive id — null means concept index (or Across). */
+  const investigateId = useId();
+  const lensResearchId = useId();
+  const sideRef = useRef<HTMLDivElement>(null);
+  const [selectedOccurrenceId, setSelectedOccurrenceId] = useState(
+    SPIRAL_DEFAULT_OCCURRENCE_ID,
+  );
+  const [activeLensId, setActiveLensId] = useState<SpiralLensId | null>(null);
+  const [activeTrajectoryId, setActiveTrajectoryId] = useState<string | null>(
+    null,
+  );
   const [conceptId, setConceptId] = useState<string | null>(null);
+  const [investigateOpen, setInvestigateOpen] = useState(false);
+  const [lensResearchOpen, setLensResearchOpen] = useState(false);
+  const [lensConceptId, setLensConceptId] = useState<string | null>(null);
 
   const selected =
-    SPIRAL_SEQUENCE.find((s) => s.occurrenceId === selectedId) ??
+    SPIRAL_SEQUENCE.find((s) => s.occurrenceId === selectedOccurrenceId) ??
     SPIRAL_SEQUENCE[0]!;
   const stage = getSpiralStage(selected.stageId);
-  const deep = stageHasDeepExploration(selected.stageId);
-  const exploration = deep
-    ? getStageExploration(selected.stageId)
+  const lens = activeLensId ? getSpiralLens(activeLensId) : undefined;
+  const trajectory = activeLensId
+    ? getTrajectory(activeLensId, activeTrajectoryId)
+    : undefined;
+  const intersection = activeLensId
+    ? getIntersection(activeLensId, selected, trajectory)
     : undefined;
 
-  // When entering a deep stage, seed a valid default lens and clear concept.
-  // occurrenceId stays under selectedId — never altered by lens/concept.
-  useEffect(() => {
-    if (!deep) {
-      setConceptId(null);
-      return;
-    }
-    setExploreView(defaultExploreView(selected.stageId));
-    setConceptId(null);
-  }, [deep, selected.stageId]);
+  const researchedStops = useMemo(
+    () => (activeLensId ? researchedStopsForLens(activeLensId) : []),
+    [activeLensId],
+  );
+  const markedIds = useMemo(() => {
+    if (!activeLensId) return new Set<string>();
+    return new Set(
+      SPIRAL_SEQUENCE.filter((stop) =>
+        intersectionHasMaterial(getIntersection(activeLensId, stop, trajectory)),
+      ).map((stop) => stop.occurrenceId),
+    );
+  }, [activeLensId, trajectory]);
 
   const handleSelectOccurrence = (occurrenceId: string) => {
-    setSelectedId(occurrenceId);
-    // concept cleared by effect when stageId changes; clear eagerly for same-stage no-ops
+    setSelectedOccurrenceId(occurrenceId);
     setConceptId(null);
+    setInvestigateOpen(false);
   };
 
-  const scrollExploreIntoView = () => {
-    const reduce =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const handleLensSelect = (next: SpiralLensId | null) => {
+    setActiveLensId(next);
+    setActiveTrajectoryId(next ? defaultTrajectoryId(next) : null);
+    setConceptId(null);
+    setInvestigateOpen(false);
+    setLensResearchOpen(false);
+    setLensConceptId(null);
+  };
+
+  const scrollResearchIntoView = (selector: string) => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     requestAnimationFrame(() => {
-      const anchor = exploreAnchorRef.current;
-      if (!anchor) return;
-
-      // Sticky stage/lens chrome sticks at `top` and can overlay content if we
-      // scroll the whole explorer flush to the viewport top. Target the content
-      // region and clear the measured sticky stack (top offset + height).
-      const explore = anchor.querySelector<HTMLElement>(".spiral-explore");
-      const sticky = anchor.querySelector<HTMLElement>(".spiral-explore__sticky");
-      const content = anchor.querySelector<HTMLElement>(".spiral-explore__content");
-      const stickyTop = sticky
-        ? Number.parseFloat(getComputedStyle(sticky).top) || 0
-        : 0;
-      const stickyHeight = sticky?.offsetHeight ?? 0;
-      const clearance = Math.ceil(stickyTop + stickyHeight + 8);
-      const clearancePx = `${clearance}px`;
-
-      explore?.style.setProperty("--spiral-explore-sticky-clearance", clearancePx);
-      if (content) {
-        content.style.scrollMarginTop = clearancePx;
-        content.scrollIntoView({
-          block: "start",
-          behavior: reduce ? "auto" : "smooth",
-        });
-        return;
-      }
-
-      const top =
-        anchor.getBoundingClientRect().top + window.scrollY - stickyTop;
-      window.scrollTo({
-        top: Math.max(0, top),
+      const target = sideRef.current?.querySelector<HTMLElement>(selector);
+      target?.scrollIntoView({
+        block: "start",
         behavior: reduce ? "auto" : "smooth",
       });
     });
@@ -97,85 +97,101 @@ export function SpiralHelixExperience() {
 
   const handleConceptChange = (next: string | null) => {
     setConceptId(next);
-    // Keep path / lens rail in view when entering or leaving a deep dive.
-    scrollExploreIntoView();
+    scrollResearchIntoView(".spiral-op__investigate-body");
   };
 
-  const handleViewChange = (next: SpiralExploreViewId) => {
-    setConceptId(null);
-    setExploreView(next);
-    scrollExploreIntoView();
+  const handleLensConceptChange = (next: string | null) => {
+    setLensConceptId(next);
+    scrollResearchIntoView(".spiral-lens-context__research-body");
   };
+
+  const name = selected.labelOverride ?? stage?.name;
 
   return (
     <section
-      className={cn(
-        "spiral-experience",
-        deep && "spiral-experience--deep",
-        conceptId && "spiral-experience--concept-dive",
-      )}
+      className="spiral-experience"
       aria-label="Evolutionary Spiral instrument"
       data-stage={selected.stageId}
       data-occurrence={selected.occurrenceId}
-      data-explore-view={deep ? exploreView : undefined}
-      data-concept={deep ? (conceptId ?? undefined) : undefined}
+      data-lens={activeLensId ?? undefined}
+      data-trajectory={activeTrajectoryId ?? undefined}
+      data-concept={conceptId ?? undefined}
+      data-lens-concept={lensConceptId ?? undefined}
     >
-      <header className="spiral-experience__head">
-        <h2 className="spiral-page__section-title">The instrument</h2>
-        <p className="spiral-page__section-lead">
-          Two currents wind through a grammar of recurrent operations. The helix
-          is a reference trajectory — one proposed traversal, not a universal
-          ladder. Select an operation to see the local state of the whole — not
-          a part where one current takes over.
-          {deep
-            ? " Transformation opens a deeper exploration: hold the operation, rotate the lens, enter a concept. A lens asks where this operation appears in a domain’s trajectories — not which concept equals the stage."
-            : null}
-        </p>
-        <p className="spiral-page__section-lead spiral-experience__ref-note">
-          The helix shows a reference trajectory, not a guaranteed path. Real
-          systems may repeat, overlap, skip, branch, stabilize differently, or
-          fail to renew.
-        </p>
-      </header>
-
-      <SpiralStageRail
-        sequence={SPIRAL_SEQUENCE}
-        selectedId={selectedId}
-        onSelect={handleSelectOccurrence}
-      />
-
       <div className="spiral-experience__stage">
         <div className="spiral-experience__figure">
+          <a href="#spiral-lenses" className="spiral-experience__lens-cue">
+            Explore through different lenses <span aria-hidden="true">↓</span>
+          </a>
           <SpiralHelix
             sequence={SPIRAL_SEQUENCE}
-            selectedId={selectedId}
+            selectedId={selectedOccurrenceId}
             onSelect={handleSelectOccurrence}
             panelId={panelId}
+            lensLabel={lens?.label}
           />
         </div>
 
-        {deep && exploration ? (
-          <div ref={exploreAnchorRef} className="spiral-experience__explore-anchor">
-            <SpiralStageExplorer
+        <div ref={sideRef} className="spiral-experience__side">
+          <SpiralLensRail
+            activeLensId={activeLensId}
+            onSelect={handleLensSelect}
+          />
+
+          {lens ? (
+            <SpiralLensContext
+              lens={lens}
+              trajectory={trajectory}
+              resonances={intersection?.resonances ?? []}
+              researchedStops={researchedStops}
+              selectedOccurrenceId={selectedOccurrenceId}
+              onSelectOccurrence={handleSelectOccurrence}
+              researchOpen={lensResearchOpen}
+              onResearchToggle={() => {
+                setLensResearchOpen((open) => !open);
+                setLensConceptId(null);
+              }}
+              researchConceptId={lensConceptId}
+              onResearchConceptChange={handleLensConceptChange}
+              researchId={lensResearchId}
+            />
+          ) : (
+            <p className="spiral-lens-rail__hint">
+              Each lens is laid across the whole helix. Pick one, then move
+              between operations—the lens stays.
+            </p>
+          )}
+
+          <div className="spiral-experience__operation">
+            <SpiralStageRail
+              sequence={SPIRAL_SEQUENCE}
+              selectedId={selectedOccurrenceId}
+              onSelect={handleSelectOccurrence}
+              markedIds={markedIds}
+              lensLabel={lens?.label}
+            />
+            <SpiralOperationPanel
               stop={selected}
-              exploration={exploration}
-              viewId={exploreView}
-              onViewChange={handleViewChange}
+              lens={lens}
+              trajectory={trajectory}
+              intersection={intersection}
+              investigateOpen={investigateOpen}
+              onInvestigateToggle={() => {
+                setInvestigateOpen((open) => !open);
+                setConceptId(null);
+              }}
               conceptId={conceptId}
               onConceptChange={handleConceptChange}
               panelId={panelId}
+              investigateId={investigateId}
             />
           </div>
-        ) : (
-          <SpiralStagePanel stop={selected} panelId={panelId} />
-        )}
+        </div>
       </div>
 
-      <p className="spiral-experience__selected-sr sr-only">
-        Selected: {selected.labelOverride ?? stage?.name}.{" "}
-        {stage?.whisper}
-        {deep ? ` Exploring through ${exploreView} lens.` : null}
-        {conceptId ? ` Concept ${conceptId}.` : null}
+      <p className="sr-only" aria-live="polite" aria-atomic="true">
+        {name}: {stage ? (selected.microcopyOverride ?? stage.microcopy) : null}
+        {lens ? ` Viewing through ${lens.label}.` : null}
       </p>
     </section>
   );

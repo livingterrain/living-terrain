@@ -65,7 +65,7 @@ export const SPIRAL_DOMAIN_IDS = [
 
 export type SpiralDomainId = (typeof SPIRAL_DOMAIN_IDS)[number];
 
-/** Visitor lens order for deep exploration (prototype). */
+/** Visitor lens order for the whole-instrument "View through" control (Across follows). */
 export const SPIRAL_LENS_ORDER: readonly SpiralDomainId[] = [
   "systems",
   "living-systems",
@@ -99,6 +99,8 @@ export type SpiralSequenceStop = {
    * When omitted, use the stage's canonical name.
    */
   labelOverride?: string;
+  /** Optional plain-language microcopy override for this occurrence. */
+  microcopyOverride?: string;
 };
 
 export type SpiralStage = {
@@ -108,6 +110,8 @@ export type SpiralStage = {
   definition: string;
   /** Visitor-facing whisper (~12–20 words) — Phase 0 §8A. */
   whisper: string;
+  /** Plain-language surface line (a few words) — the instrument's first teaching layer. */
+  microcopy: string;
   /** 1-based order of first occurrence in the primary nine-stage sequence. */
   order: number;
 };
@@ -173,6 +177,10 @@ export type SpiralEpistemicCategory = {
 export type SpiralFrameworkCopy = {
   name: string;
   shortName: string;
+  /** First-screen human sentence — no model vocabulary required. */
+  surfaceLine: string;
+  /** Short supporting sentence beneath the surface line. */
+  surfaceSupport: string;
   oneSentenceDefinition: string;
   coreQuestion: string;
   visitorThesis: readonly string[];
@@ -307,6 +315,9 @@ export type SpiralCycleContextStop = {
 export type SpiralCycleContextTransition = {
   id: string;
   label: string;
+  /** Optional step ids this transition spans (lets a trajectory mark the passage, not a sign). */
+  from?: string;
+  to?: string;
   body: string;
   /**
    * Quiet role for the transition — e.g. “Candidate resonance” —
@@ -330,7 +341,8 @@ export type SpiralLensCycleContext = {
     body: string;
     provenance: SpiralProvenanceKind;
   };
-  stops: readonly SpiralCycleContextStop[];
+  /** Optional — a stage-local context may carry only its transitions. */
+  stops?: readonly SpiralCycleContextStop[];
   /**
    * @deprecated Prefer transition annotations for comparison.
    * Per-stop emphasis must not imply sign = stage.
@@ -357,6 +369,11 @@ export type SpiralLensExploration = {
    * presentation splits on `\n\n`.
    */
   framing?: string;
+  /**
+   * Optional concise Explore-depth lede. When omitted, the first framing
+   * paragraph is used; the full framing remains in Investigate.
+   */
+  lede?: string;
   /**
    * Optional compact symbolic-cycle context (Zodiac lens).
    * Not twelve Spiral stages and not twelve MODEL objects.
@@ -421,6 +438,80 @@ export type SpiralStageExploration = {
   stageId: SpiralStageId;
   lenses: readonly SpiralLensExploration[];
   across?: SpiralAcrossExploration;
+};
+
+/* ── Whole-helix lenses and trajectories ──
+ *
+ * A lens belongs to the whole instrument, not to a stage.
+ * A trajectory is a phenomenon / narrative / process compared against the
+ * Spiral grammar. Stage-local research (SpiralStageExploration) is read as the
+ * intersection: active lens × selected operation.
+ *
+ * Trajectory steps are not Spiral stages and not canonical objects.
+ * Resonances are authored, never inferred. Zero resonances is valid.
+ */
+
+export type SpiralLensId = SpiralExploreViewId;
+
+export type SpiralTrajectoryStep = SpiralCycleContextStop;
+
+/**
+ * Authored candidate relationship between a Spiral operation and a passage
+ * of a trajectory. Not a match, not a mapping, not evidence.
+ */
+export type SpiralTrajectoryResonance = {
+  id: string;
+  stageId: SpiralStageId;
+  /** When set, applies only to this occurrence (e.g. Emergence again). */
+  occurrenceId?: string;
+  /** Step ids spanned — resonance lives in the passage between them. */
+  from: string;
+  to: string;
+  strength: "candidate" | "ambiguous" | "context";
+  /**
+   * Stage-local transition annotation holding the full research text
+   * (looked up in the stage exploration's lens cycleContext).
+   */
+  transitionId?: string;
+  /** Authored note when no stage-local transition exists. */
+  note?: string;
+};
+
+export type SpiralTrajectory = {
+  id: string;
+  lensId: SpiralDomainId;
+  title: string;
+  /** Phrase used in "Where does X appear within …?" */
+  inPhrase: string;
+  /** One concise orientation line for the whole trajectory. */
+  note: string;
+  steps: readonly SpiralTrajectoryStep[];
+  resonances: readonly SpiralTrajectoryResonance[];
+};
+
+export type SpiralLens = {
+  id: SpiralLensId;
+  label: string;
+  /** One human sentence — what this way of seeing brings to the whole Spiral. */
+  intro: string;
+  /** Concise evidentiary line shown at Explore depth. */
+  evidence: string;
+  /** Phrase used in "Where does X appear in …?" when no trajectory is active. */
+  inPhrase: string;
+  /**
+   * Lens-level research — scholarship about the lens as a whole, not owned by
+   * any operation. Same shape as stage-local research.
+   */
+  research?: SpiralLensExploration;
+  /** Authored whole-helix trajectories. Empty is valid. */
+  trajectories: readonly SpiralTrajectory[];
+  /**
+   * Trajectories under consideration but not yet mapped. Names only —
+   * presentation must say they are not yet mapped.
+   */
+  forthcoming?: readonly string[];
+  /** `scaffold` = surface exists, content intentionally unwritten (Across). */
+  status: "available" | "scaffold";
 };
 
 /* ── Legacy M1B section shapes (kept for type compatibility; unused in M1C) ── */

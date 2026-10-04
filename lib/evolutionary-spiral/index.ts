@@ -21,7 +21,9 @@ export type {
   SpiralFrameworkCopy,
   SpiralLensCycleContext,
   SpiralLensEntry,
+  SpiralLens,
   SpiralLensExploration,
+  SpiralLensId,
   SpiralLensSection,
   SpiralLensSectionKind,
   SpiralProvenanceKind,
@@ -30,6 +32,9 @@ export type {
   SpiralStage,
   SpiralStageExploration,
   SpiralStageId,
+  SpiralTrajectory,
+  SpiralTrajectoryResonance,
+  SpiralTrajectoryStep,
 } from "./types";
 
 export {
@@ -43,6 +48,7 @@ export {
   SPIRAL_SEQUENCE,
   SPIRAL_STAGES,
   getSpiralStage,
+  microcopyForStop,
 } from "./stages";
 
 export { SPIRAL_CURRENTS } from "./currents";
@@ -75,6 +81,25 @@ export {
   stageHasDeepExploration,
   TRANSFORMATION_EXPLORATION,
 } from "./exploration";
+
+export {
+  SPIRAL_LENSES,
+  SPIRAL_LENS_IDS,
+  defaultTrajectoryId,
+  getIntersection,
+  getSpiralLens,
+  getTrajectory,
+  intersectionHasMaterial,
+  researchedStopsForLens,
+  resonancesForStop,
+  transitionForResonance,
+} from "./lenses";
+
+export type { SpiralIntersection } from "./lenses";
+
+export { ZODIAC_CYCLE_STEPS, ZODIAC_CYCLE_TRAJECTORY } from "./trajectories/zodiac";
+
+export { ZODIAC_LENS_RESEARCH } from "./research/zodiac";
 
 export {
   SPIRAL_ASCENT_CAPTION,
@@ -110,6 +135,7 @@ import { SPIRAL_EPISTEMIC_CATEGORIES } from "./epistemic";
 import { SPIRAL_EXAMPLES } from "./examples";
 import { SPIRAL_SEQUENCE, SPIRAL_STAGES } from "./stages";
 import { getStageExploration } from "./exploration";
+import { SPIRAL_LENSES } from "./lenses";
 
 /** Aggregated read model for the Spiral page. */
 export function getEvolutionarySpiral() {
@@ -121,6 +147,7 @@ export function getEvolutionarySpiral() {
     domains: SPIRAL_DOMAINS,
     epistemicCategories: SPIRAL_EPISTEMIC_CATEGORIES,
     examples: SPIRAL_EXAMPLES,
+    lenses: SPIRAL_LENSES,
     explorations: {
       transformation: getStageExploration("transformation"),
     },

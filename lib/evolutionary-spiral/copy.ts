@@ -4,6 +4,10 @@ import type { SpiralFrameworkCopy } from "./types";
 export const SPIRAL_COPY: SpiralFrameworkCopy = {
   name: "The Evolutionary Spiral",
   shortName: "the Spiral",
+  surfaceLine:
+    "Things emerge, take form, differentiate, relate, organize, change—and sometimes begin again.",
+  surfaceSupport:
+    "The Spiral is a way of exploring recurring patterns of change across living systems, psychology, ecology, scripture, and symbolic traditions.",
   oneSentenceDefinition:
     "A Living Terrain grammar of recurrent operations through which organized systems may form, persist, meet changing conditions, reorganize, and sometimes generate new organization.",
   coreQuestion:

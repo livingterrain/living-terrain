@@ -33,8 +33,8 @@ export const SPIRAL_DOMAINS: readonly SpiralDomain[] = [
   },
   {
     id: "biblical-textual",
-    label: "Biblical / Jesus",
-    shortLabel: "Biblical",
+    label: "Jesus / Biblical",
+    shortLabel: "Jesus / Biblical",
     role: "Optional comparative layer — textual and theological interpretation only when deliberately authored.",
   },
   {
