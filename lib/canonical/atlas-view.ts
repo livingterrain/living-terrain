@@ -20,7 +20,11 @@ import {
   type AtlasV1QuestionId,
 } from "@/lib/atlas-v1/content";
 import { atlasBondKey } from "./atlas-keys";
-import { getCanonicalRelationsFrom, listCanonicalRelations } from "./query";
+import {
+  getCanonicalRelationsFrom,
+  getCanonicalRelationsTo,
+  listCanonicalRelations,
+} from "./query";
 import { resolveCanonicalRef, type CanonicalRef } from "./resolve";
 import type { TrustedProvenance } from "./types";
 import type { ThreadRelationEdge } from "@/lib/atlas-v1/living-thread";
@@ -43,6 +47,12 @@ export type AtlasBookView = {
 export type AtlasCanonicalView = {
   bonds: Record<string, AtlasBondView | null>;
   evidenceSource: Partial<Record<AtlasV1EssayId, CanonicalRef>>;
+  /**
+   * Where "Where this came from" leads. A superseded edition opens its current
+   * public edition via an authored SUPERSEDES relation; `evidenceSource` keeps
+   * the original provenance.
+   */
+  evidenceSourceRoute: Partial<Record<AtlasV1EssayId, string>>;
   relatedBooks: Partial<Record<AtlasV1EssayId, AtlasBookView[]>>;
   /**
    * Trusted AUTHORED / SOURCE_GROUNDED edges among Atlas-relevant objects.
@@ -100,6 +110,18 @@ function evidenceSourceRef(evidenceId: AtlasV1EssayId): CanonicalRef | undefined
   return resolveCanonicalRef(sourced.to);
 }
 
+function currentEditionRoute(ref: CanonicalRef): string {
+  if (ref.type !== "BOOK" || ref.visibility !== "superseded") return ref.route;
+  const successor = getCanonicalRelationsTo(ref.id).find(
+    (relation) =>
+      relation.type === "SUPERSEDES" &&
+      (relation.provenance === "AUTHORED" ||
+        relation.provenance === "SOURCE_GROUNDED"),
+  );
+  const current = successor ? resolveCanonicalRef(successor.from) : undefined;
+  return current?.visibility === "public" ? current.route : ref.route;
+}
+
 function trustedPublicBooksFrom(objectId: string): AtlasBookView[] {
   const seen = new Set<string>();
   const books: AtlasBookView[] = [];
@@ -133,11 +155,15 @@ export function getAtlasCanonicalView(): AtlasCanonicalView {
   }
 
   const evidenceSource: Partial<Record<AtlasV1EssayId, CanonicalRef>> = {};
+  const evidenceSourceRoute: Partial<Record<AtlasV1EssayId, string>> = {};
   const relatedBooks: Partial<Record<AtlasV1EssayId, AtlasBookView[]>> = {};
 
   for (const evidenceId of Object.keys(ATLAS_V1_ESSAYS) as AtlasV1EssayId[]) {
     const source = evidenceSourceRef(evidenceId);
-    if (source) evidenceSource[evidenceId] = source;
+    if (source) {
+      evidenceSource[evidenceId] = source;
+      evidenceSourceRoute[evidenceId] = currentEditionRoute(source);
+    }
     const books = source ? trustedPublicBooksFrom(source.id) : [];
     relatedBooks[evidenceId] = books.filter(
       (book) => book.route !== source?.route && book.id !== source?.id,
@@ -147,6 +173,7 @@ export function getAtlasCanonicalView(): AtlasCanonicalView {
   return {
     bonds,
     evidenceSource,
+    evidenceSourceRoute,
     relatedBooks,
     threadRelations: atlasThreadRelations(evidenceSource),
   };

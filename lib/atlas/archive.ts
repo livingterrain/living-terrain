@@ -129,12 +129,12 @@ export const ATLAS_DOMAINS: ReadonlyArray<AtlasDomainDef> = [
       },
       {
         id: "map-biology",
-        title: "The Biology of Becoming",
+        title: "The Biology of Becoming — Revised & Expanded",
         description:
           "How the nervous system rewrites identity, perception, and reality.",
         status: "Published",
         kind: "map",
-        href: "/atlas/the-biology-of-becoming",
+        href: "/atlas/the-biology-of-becoming-revised-expanded",
       },
       {
         id: "chamber-biology",
@@ -337,14 +337,6 @@ export const ATLAS_DOMAINS: ReadonlyArray<AtlasDomainDef> = [
         status: "Published",
         kind: "theme",
         href: "/themes/language",
-      },
-      {
-        id: "q-language",
-        title: "Can language hold the unsayable?",
-        description: "On silence, metaphor, and the edge of expression.",
-        status: "Open Inquiry",
-        kind: "question",
-        href: "/atlas",
       },
     ],
   },

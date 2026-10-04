@@ -23,6 +23,7 @@ import {
   type TerritoryWorkTrace,
 } from "@/lib/atlas/territory-landmarks";
 import { TerritoryField } from "@/components/atlas-v1/TerritoryField";
+import { ATLAS_MODELS_DOORWAY } from "@/lib/world/orientation";
 import { cn } from "@/lib/utils";
 import "@/components/atlas-v1/atlas-field.css";
 
@@ -397,9 +398,40 @@ export function TheVoid({ onChoose, surface = "threshold" }: Props) {
             })}
           </div>
 
-          <p className="the-void-charts">
-            <Link href="/atlas/charts">Mapped investigations</Link>
-          </p>
+          <nav
+            className="the-void-charts the-void-facets"
+            aria-label="Also in the Atlas"
+          >
+            <p className="the-void-facets__item">
+              <span className="the-void-facets__name">Living questions</span>
+              <span className="the-void-facets__gloss">
+                Open a territory above to find the questions forming there.
+              </span>
+            </p>
+            <p className="the-void-facets__item">
+              <span className="the-void-facets__name">Charts</span>
+              <Link href="/atlas/charts" className="the-void-facets__link">
+                Mapped investigations&nbsp;→
+              </Link>
+            </p>
+            <p className="the-void-facets__item">
+              <span className="the-void-facets__name">
+                {ATLAS_MODELS_DOORWAY.label}
+              </span>
+              <span className="the-void-facets__gloss">
+                Interactive frameworks for exploring recurring patterns.
+              </span>
+              {ATLAS_MODELS_DOORWAY.links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="the-void-facets__link"
+                >
+                  {link.label}&nbsp;→
+                </Link>
+              ))}
+            </p>
+          </nav>
         </div>
       )}
     </div>

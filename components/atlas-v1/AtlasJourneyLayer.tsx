@@ -249,6 +249,7 @@ export function AtlasJourneyLayer({
                 journey.currentConceptId,
               )}
               evidenceSource={canonical.evidenceSource[essay.id]}
+              evidenceSourceRoute={canonical.evidenceSourceRoute[essay.id]}
               relatedBooks={canonical.relatedBooks[essay.id] ?? []}
               onReturn={onReturn}
               onSourceLeave={onEvidenceSourceLeave}
@@ -653,6 +654,7 @@ function EvidenceView({
   essay,
   evidenceRole,
   evidenceSource,
+  evidenceSourceRoute,
   relatedBooks,
   onReturn,
   onSourceLeave,
@@ -664,13 +666,16 @@ function EvidenceView({
   essay: ReturnType<typeof getEssay>;
   evidenceRole: AtlasV1EvidenceRole;
   evidenceSource?: AtlasCanonicalView["evidenceSource"][AtlasV1EssayId];
+  evidenceSourceRoute?: string;
   relatedBooks: NonNullable<AtlasCanonicalView["relatedBooks"][AtlasV1EssayId]>;
   onReturn: () => void;
   onSourceLeave?: (route: string) => void;
 }) {
   const noticed = noticedWhy ?? fragment;
+  const sourceRoute = evidenceSourceRoute ?? evidenceSource?.route;
   const books = relatedBooks.filter(
-    (book) => book.route !== evidenceSource?.route,
+    (book) =>
+      book.route !== evidenceSource?.route && book.route !== sourceRoute,
   );
   const isFurtherReading = evidenceRole === "further-reading";
 
@@ -714,11 +719,11 @@ function EvidenceView({
             </p>
           ))}
         </div>
-        {evidenceSource && (
+        {evidenceSource && sourceRoute && (
           <p className="mt-12 font-body text-[0.75rem] leading-[1.7] text-ivory/28 sm:mt-14">
             <Link
-              href={evidenceSource.route}
-              onClick={() => onSourceLeave?.(evidenceSource.route)}
+              href={sourceRoute}
+              onClick={() => onSourceLeave?.(sourceRoute)}
               className="transition-colors duration-[1100ms] hover:text-ivory/48"
             >
               Where this came from

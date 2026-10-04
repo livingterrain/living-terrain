@@ -9,7 +9,10 @@ import { usePathname } from "next/navigation";
 import { useCallback, useState } from "react";
 import { TerrainLink } from "@/components/navigation";
 import { TerrainMenu } from "@/components/layout/TerrainMenu";
-import { locationWhisperForPath } from "@/lib/world/orientation";
+import {
+  atlasQuestionsAvailable,
+  locationWhisperForPath,
+} from "@/lib/world/orientation";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -28,7 +31,7 @@ export function TerrainOrientation({
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const whisper = locationWhisperForPath(pathname);
-  const onAtlas = pathname === "/atlas" || pathname.startsWith("/atlas/");
+  const onAtlasRoom = atlasQuestionsAvailable(pathname);
   const dissolve = homeField && !menuOpen;
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
@@ -88,7 +91,7 @@ export function TerrainOrientation({
       <TerrainMenu
         open={menuOpen}
         onClose={closeMenu}
-        includeAtlasQuestions={onAtlas}
+        includeAtlasQuestions={onAtlasRoom}
       />
     </>
   );

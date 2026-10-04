@@ -144,10 +144,12 @@
   position: fixed;
   inset: 0;
   z-index: 80;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .terrain-menu__veil {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background:
     radial-gradient(
@@ -234,6 +236,17 @@
   margin-top: auto;
   margin-bottom: auto;
   padding-bottom: 15vh;
+}
+
+@media (max-height: 720px) {
+  .terrain-menu__chrome {
+    margin-bottom: 1.5rem;
+  }
+
+  .terrain-menu__nav {
+    gap: 1.2rem;
+    padding-bottom: 2rem;
+  }
 }
 
 .terrain-menu__row {
@@ -349,6 +362,127 @@
   margin-top: 1rem;
   padding-top: 1.25rem;
   border-top: 1px solid color-mix(in srgb, #ebe6dc 8%, transparent);
+}
+
+/* Secondary doorway within a primary room — quieter than a room row */
+.terrain-menu__within {
+  margin: -0.85rem 0 0 0.1rem;
+  padding-left: 0.9rem;
+  border-left: 1px solid color-mix(in srgb, #ebe6dc 10%, transparent);
+}
+
+.terrain-menu__within-label {
+  margin: 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 44%, transparent);
+}
+
+.terrain-menu__within-hint {
+  margin: 0.3rem 0 0;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: color-mix(in srgb, #ebe6dc 42%, transparent);
+}
+
+.terrain-menu__within-links {
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.terrain-menu__within-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1rem;
+  color: color-mix(in srgb, #ebe6dc 72%, transparent);
+  text-decoration: none;
+  transition: color 0.55s cubic-bezier(0.38, 0.02, 0.42, 1);
+}
+
+.terrain-menu__within-link::after {
+  content: " →";
+  white-space: pre;
+  color: color-mix(in srgb, #ebe6dc 38%, transparent);
+}
+
+.terrain-menu__within-link:hover,
+.terrain-menu__within-link:focus-visible {
+  color: #ebe6dc;
+}
+
+.terrain-menu__within-link:focus-visible {
+  outline: 1px solid color-mix(in srgb, #c4a86a 55%, transparent);
+  outline-offset: 3px;
+}
+
+.terrain-menu__within-link--here {
+  color: color-mix(in srgb, #ebe6dc 92%, #c4a86a);
+}
+
+/* ——— Atlas facets — questions · charts · models (orientation, not cards) ——— */
+
+.the-void-facets {
+  display: grid;
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, #ebe6dc 8%, transparent);
+}
+
+@media (min-width: 640px) {
+  .the-void-facets {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.75rem;
+  }
+}
+
+.the-void-facets__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+.the-void-facets__name {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #ebe6dc 46%, transparent);
+}
+
+.the-void-facets__gloss {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.8125rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: color-mix(in srgb, #ebe6dc 44%, transparent);
+}
+
+.the-void-language--territories .the-void-facets__link {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: 2.75rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.9375rem;
+  color: color-mix(in srgb, #ebe6dc 66%, transparent);
+  text-decoration: none;
+}
+
+.the-void-language--territories .the-void-facets__link:hover,
+.the-void-language--territories .the-void-facets__link:focus-visible {
+  color: color-mix(in srgb, #ebe6dc 92%, transparent);
+}
+
+.the-void-language--territories .the-void-facets__link:focus-visible {
+  outline: 1px solid color-mix(in srgb, #c4a86a 55%, transparent);
+  outline-offset: 3px;
 }
 
 /* ——— Atlas root territories ——— */
@@ -668,6 +802,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .terrain-menu__label,
+  .terrain-menu__within-link,
   .atlas-territory__q-text {
     transition: none !important;
   }
