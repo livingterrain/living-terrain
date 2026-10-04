@@ -3,10 +3,31 @@
  * Conceptual mystery stays; location does not.
  */
 
-export type MenuDestination = {
+export type MenuLink = {
   href: string;
   label: string;
+};
+
+/**
+ * A quieter doorway nested within a primary room — not a room of its own.
+ * Navigation only: it never implies a canonical relationship.
+ */
+export type MenuWithin = {
+  label: string;
   hint: string;
+  links: readonly MenuLink[];
+};
+
+export type MenuDestination = MenuLink & {
+  hint: string;
+  within?: MenuWithin;
+};
+
+/** Models & instruments live within the Atlas; they are not a fourth room. */
+export const ATLAS_MODELS_DOORWAY: MenuWithin = {
+  label: "Models & instruments",
+  hint: "Explore interactive frameworks.",
+  links: [{ href: "/evolutionary-spiral", label: "Evolutionary Spiral" }],
 };
 
 /** Sparse Menu destinations — primary rooms only */
@@ -19,7 +40,8 @@ export const TERRAIN_MENU: readonly MenuDestination[] = [
   {
     href: "/atlas",
     label: "Atlas",
-    hint: "Follow relationships across the work.",
+    hint: "Questions, relationships, charts, and models.",
+    within: ATLAS_MODELS_DOORWAY,
   },
   {
     href: "/inquiry",
@@ -89,6 +111,11 @@ export function menuDestinationIsActive(
 ): boolean {
   if (href === "/") return pathname === "/" || pathname === "";
   if (pathname === href || pathname.startsWith(`${href}/`)) return true;
+  if (href === "/atlas") {
+    return ATLAS_MODELS_DOORWAY.links.some((link) =>
+      menuDestinationIsActive(pathname, link.href),
+    );
+  }
   if (href === "/inquiry") {
     return (
       pathname === "/books" ||
@@ -99,4 +126,9 @@ export function menuDestinationIsActive(
     );
   }
   return false;
+}
+
+/** Atlas question list listens only on the bare /atlas room. */
+export function atlasQuestionsAvailable(pathname: string): boolean {
+  return pathname === "/atlas" || pathname === "/atlas/";
 }

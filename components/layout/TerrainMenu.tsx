@@ -6,7 +6,7 @@
  * Portaled to document.body so header backdrop-filter cannot trap the overlay.
  */
 
-import { useEffect, useId, useRef } from "react";
+import { Fragment, useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { TerrainLink } from "@/components/navigation";
@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 type Props = {
   open: boolean;
   onClose: () => void;
-  /** When on Atlas, offer return to living questions without leaving the room */
+  /** Only on bare /atlas, where the question-list event has a listener */
   includeAtlasQuestions?: boolean;
 };
 
@@ -87,19 +87,56 @@ export function TerrainMenu({
 
         <nav className="terrain-menu__nav" aria-label="Living Terrain">
           {TERRAIN_MENU.map((d) => (
-            <TerrainLink
-              key={d.href}
-              href={d.href}
-              onClick={onClose}
-              className={cn(
-                "terrain-menu__row",
-                menuDestinationIsActive(pathname, d.href) &&
-                  "terrain-menu__row--here",
+            <Fragment key={d.href}>
+              <TerrainLink
+                href={d.href}
+                onClick={onClose}
+                className={cn(
+                  "terrain-menu__row",
+                  menuDestinationIsActive(pathname, d.href) &&
+                    "terrain-menu__row--here",
+                )}
+              >
+                <span className="terrain-menu__label">{d.label}</span>
+                <span className="terrain-menu__hint">{d.hint}</span>
+              </TerrainLink>
+              {d.within && (
+                <div
+                  className="terrain-menu__within"
+                  role="group"
+                  aria-labelledby={`${dialogId}-within-${d.href}`}
+                >
+                  <p
+                    id={`${dialogId}-within-${d.href}`}
+                    className="terrain-menu__within-label"
+                  >
+                    {d.within.label}
+                    <span className="sr-only">, within the {d.label}</span>
+                  </p>
+                  <p className="terrain-menu__within-hint">{d.within.hint}</p>
+                  <ul className="terrain-menu__within-links">
+                    {d.within.links.map((link) => {
+                      const here = menuDestinationIsActive(pathname, link.href);
+                      return (
+                        <li key={link.href}>
+                          <TerrainLink
+                            href={link.href}
+                            onClick={onClose}
+                            aria-current={here ? "page" : undefined}
+                            className={cn(
+                              "terrain-menu__within-link",
+                              here && "terrain-menu__within-link--here",
+                            )}
+                          >
+                            {link.label}
+                          </TerrainLink>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               )}
-            >
-              <span className="terrain-menu__label">{d.label}</span>
-              <span className="terrain-menu__hint">{d.hint}</span>
-            </TerrainLink>
+            </Fragment>
           ))}
 
           {includeAtlasQuestions && (
@@ -111,7 +148,7 @@ export function TerrainMenu({
             >
               <span className="terrain-menu__label">Living questions</span>
               <span className="terrain-menu__hint">
-                Return to the Atlas threshold
+                Return to the questions.
               </span>
             </button>
           )}
