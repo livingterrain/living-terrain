@@ -8,6 +8,7 @@ import type {
 } from "../types";
 import { JESUS_RELATIONSHIPS } from "./jesus";
 import { METAMORPHOSIS_RELATIONSHIPS } from "./metamorphosis";
+import { multiOccurrenceStageIds } from "./validate";
 import { ZODIAC_RELATIONSHIPS } from "./zodiac";
 
 /** Every authored trajectory ↔ Spiral relationship. Nothing here is inferred. */
@@ -65,14 +66,20 @@ export function relationshipsForTrajectory(
   );
 }
 
+const MULTI_OCCURRENCE_STAGES = multiOccurrenceStageIds();
+
+/**
+ * A ref without an occurrence matches only a stage-kind that occurs once.
+ * For a recurring stage-kind it matches nothing: it is never expanded to every
+ * occurrence (validation reports it as ambiguous).
+ */
 function refMatchesStop(
   ref: SpiralTrajectoryRelationship["operations"][number],
   stop: SpiralSequenceStop,
 ): boolean {
-  return (
-    ref.stageId === stop.stageId &&
-    (!ref.occurrenceId || ref.occurrenceId === stop.occurrenceId)
-  );
+  if (ref.stageId !== stop.stageId) return false;
+  if (ref.occurrenceId) return ref.occurrenceId === stop.occurrenceId;
+  return !MULTI_OCCURRENCE_STAGES.has(ref.stageId);
 }
 
 /** Authored relationships for one occurrence. Zero is valid. */
@@ -131,3 +138,18 @@ export function anchorLabel(
 }
 
 export { JESUS_RELATIONSHIPS, METAMORPHOSIS_RELATIONSHIPS, ZODIAC_RELATIONSHIPS };
+
+export {
+  EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
+  EMERGENCE_AGAIN_OCCURRENCE_ID,
+  SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS,
+  isDrawableCorrespondence,
+  multiOccurrenceStageIds,
+  validateSpiralComparisons,
+} from "./validate";
+export type {
+  SpiralComparisonIssue,
+  SpiralComparisonIssueCode,
+  SpiralComparisonValidationOptions,
+  SpiralNameCollisionAcknowledgement,
+} from "./validate";

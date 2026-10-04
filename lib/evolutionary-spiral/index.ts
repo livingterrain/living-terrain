@@ -110,18 +110,31 @@ export { JESUS_NARRATIVE_TRAJECTORY } from "./trajectories/jesus";
 export { METAMORPHOSIS_TRAJECTORY } from "./trajectories/metamorphosis";
 
 export {
+  EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
+  EMERGENCE_AGAIN_OCCURRENCE_ID,
   JESUS_RELATIONSHIPS,
   METAMORPHOSIS_RELATIONSHIPS,
+  SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS,
   SPIRAL_RELATIONSHIP_STATUS,
   SPIRAL_TRAJECTORY_RELATIONSHIPS,
   ZODIAC_RELATIONSHIPS,
   anchorLabel,
   anchorStepIds,
+  isDrawableCorrespondence,
+  multiOccurrenceStageIds,
   occurrencesForRelationship,
   relationshipStatusLabel,
   relationshipsForStep,
   relationshipsForStop,
   relationshipsForTrajectory,
+  validateSpiralComparisons,
+} from "./comparisons";
+
+export type {
+  SpiralComparisonIssue,
+  SpiralComparisonIssueCode,
+  SpiralComparisonValidationOptions,
+  SpiralNameCollisionAcknowledgement,
 } from "./comparisons";
 
 export {

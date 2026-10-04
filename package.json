@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack --hostname 127.0.0.1 --port 3001",
     "dev:fast": "next dev --turbopack --hostname 127.0.0.1 --port 3001",
     "dev:clean": "rm -rf .next && next dev --turbopack --hostname 127.0.0.1 --port 3001",
-    "build": "tsx scripts/verify-canonical.ts && next build",
+    "build": "tsx scripts/verify-canonical.ts && tsx scripts/test-evolutionary-spiral.ts && next build",
     "start": "next start --port 3001",
     "lint": "next lint",
     "content:essay:new": "tsx scripts/content-essay-cli.ts new",
