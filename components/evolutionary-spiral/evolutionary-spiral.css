@@ -1037,6 +1037,20 @@
 .spiral-explore__content {
   padding-top: 0.5rem;
   padding-bottom: 1.5rem;
+  /*
+   * Clearance for sticky stage/lens chrome is set in JS from the measured
+   * sticky top offset + height when the explorer scrolls a target into view.
+   * Fallback keeps a modest site-header offset if JS has not run yet.
+   */
+  scroll-margin-top: var(--spiral-explore-sticky-clearance, 5.5rem);
+}
+
+.spiral-explore__lens-title,
+.spiral-explore__dive-title,
+.spiral-explore__cycle,
+.spiral-explore__concept,
+.spiral-explore__section {
+  scroll-margin-top: var(--spiral-explore-sticky-clearance, 5.5rem);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1424,6 +1438,135 @@
 
 .spiral-explore__across-items--counter .spiral-explore__across-item-title {
   color: color-mix(in srgb, var(--color-ivory) 92%, var(--color-gold));
+}
+
+/* Zodiac compact cycle context — wrap; no clipped overflow */
+.spiral-explore__cycle {
+  margin: 1.35rem 0 1.75rem;
+  padding: 1rem 0 0.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-ivory) 12%, transparent);
+}
+
+.spiral-explore__cycle-title {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-sans, inherit);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-ivory) 72%, var(--color-gold));
+}
+
+.spiral-explore__cycle-note {
+  margin: 0 0 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-ivory) 68%, transparent);
+}
+
+.spiral-explore__cycle-structure,
+.spiral-explore__cycle-transition,
+.spiral-explore__cycle-circle {
+  margin: 0 0 1rem;
+}
+
+.spiral-explore__cycle-structure-title,
+.spiral-explore__cycle-transition-label,
+.spiral-explore__cycle-circle-title {
+  margin: 0.35rem 0 0.4rem;
+  font-family: var(--font-sans, inherit);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-ivory) 78%, var(--color-gold));
+}
+
+.spiral-explore__cycle-stops {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.45rem 0.15rem;
+  list-style: none;
+  margin: 0 0 1.1rem;
+  padding: 0;
+}
+
+.spiral-explore__cycle-stop {
+  display: inline-flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.spiral-explore__cycle-arrow {
+  margin: 0.15rem 0.35rem 0 0.15rem;
+  color: color-mix(in srgb, var(--color-ivory) 35%, transparent);
+  font-size: 0.8rem;
+}
+
+.spiral-explore__cycle-stop-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  min-width: 0;
+  padding: 0.28rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--color-ivory) 16%, transparent);
+  border-radius: 2px;
+}
+
+.spiral-explore__cycle-stop-label {
+  font-family: var(--font-sans, inherit);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-ivory) 82%, transparent);
+}
+
+.spiral-explore__cycle-stop-gloss {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--color-ivory) 55%, transparent);
+  max-width: 11.5rem;
+}
+
+.spiral-explore__cycle-stop--neighbor .spiral-explore__cycle-stop-main {
+  border-color: color-mix(in srgb, var(--color-gold) 28%, transparent);
+}
+
+.spiral-explore__cycle-stop--focus .spiral-explore__cycle-stop-main {
+  border-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+  background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+}
+
+.spiral-explore__cycle-stop--focus .spiral-explore__cycle-stop-label {
+  color: color-mix(in srgb, var(--color-ivory) 92%, var(--color-gold));
+}
+
+.spiral-explore__cycle-stop--recurrence .spiral-explore__cycle-stop-label {
+  font-style: italic;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.spiral-explore__cycle-transitions {
+  display: grid;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.spiral-explore__cycle-circle {
+  padding-top: 0.75rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-ivory) 10%, transparent);
+}
+
+@media (max-width: 639px) {
+  .spiral-explore__cycle-stop-gloss {
+    max-width: 9.5rem;
+  }
+
+  .spiral-explore__cycle-arrow {
+    margin-right: 0.2rem;
+  }
 }
 
 /* In deep dive, keep stage context compact on small screens */

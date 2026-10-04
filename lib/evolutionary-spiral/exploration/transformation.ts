@@ -6,52 +6,11 @@
  * Psychology lens: authored M1D-3 content (approved copy).
  * Ecology lens: authored M1D-4 content (approved copy).
  * Biblical / Jesus lens: authored M1D-5 content (approved copy).
- * Other lenses remain placeholder scaffolding — do not treat as researched claims.
+ * Zodiac lens: authored M1D-6 content (approved copy).
+ * Across remains placeholder scaffolding — do not treat as researched claims.
  */
 
 import type { SpiralStageExploration } from "../types";
-
-const PH =
-  "Placeholder structure for future research. Not an authored claim.";
-
-const diveScaffold = (prefix: string) =>
-  [
-    {
-      id: `${prefix}-summary`,
-      kind: "summary" as const,
-      title: "Summary",
-      body: PH,
-      placeholder: true,
-    },
-    {
-      id: `${prefix}-pattern`,
-      kind: "pattern" as const,
-      title: "Pattern",
-      body: PH,
-      placeholder: true,
-    },
-    {
-      id: `${prefix}-persists`,
-      kind: "what-persists" as const,
-      title: "What persists",
-      body: PH,
-      placeholder: true,
-    },
-    {
-      id: `${prefix}-changes`,
-      kind: "what-changes" as const,
-      title: "What changes",
-      body: PH,
-      placeholder: true,
-    },
-    {
-      id: `${prefix}-examples`,
-      kind: "examples" as const,
-      title: "Examples",
-      body: PH,
-      placeholder: true,
-    },
-  ] as const;
 
 export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
   stageId: "transformation",
@@ -1427,131 +1386,355 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
     },
     {
       lensId: "symbolic-zodiac",
+      title: "How does a symbol of transformation acquire its own history?",
       framing:
-        "Historical and symbolic associations. Explicitly not an empirical claim about celestial causation. Provenance labels are required.",
+        "Scorpio is commonly described in modern astrology through death, rebirth, intensity, dissolution, and transformation. But those meanings did not arrive as a single ancient package.\n\nScorpio's symbolism accumulated across time.\n\nOlder astrological traditions associated Scorpio with Mars and placed it within a seasonal zodiac. Death and inheritance belonged strongly to the eighth place, which is not the same thing as the eighth sign. Pluto entered astrology only in the twentieth century. Later psychological and developmental astrologers increasingly interpreted the zodiac as a sequence of changing states of human experience.\n\nThis lens therefore asks two questions at once:\n\nWhat has Scorpio meant across different periods?\n\nAnd:\n\nWhat happens when we compare those changing meanings with Transformation in the Spiral?\n\nThe comparison here is symbolic. It does not establish celestial causation, scientific mechanism, or a universal developmental law.",
+      cycleContext: {
+        title: "A symbolic cycle — context, not twelve deep dives",
+        provenanceNote:
+          "These short phrases mix historical/developmental interpretation with Living Terrain's comparative synthesis. They are not presented as ancient doctrine, and they are not twelve authored Spiral stages.",
+        structureNote: {
+          title: "A recurring structural pattern (our concise reading of Ptolemy)",
+          body: "Ptolemy classifies the signs as equinoctial/solstitial (turning), solid, and bicorporeal/transitional.\n\nTurning: Aries, Cancer, Libra, Capricorn.\nSolid: Taurus, Leo, Scorpio, Aquarius.\nBicorporeal: Gemini, Virgo, Sagittarius, Pisces.\n\nFor modern readers, Living Terrain may describe that inherited classification concisely as a recurring Turn → Establish → Transition pattern, four times around the zodiac.\n\nThis is our concise description of his classification.\n\nIt is not a scientific systems model, and Ptolemy did not use our terminology.",
+          provenance: "our-systems-reading",
+        },
+        focusId: "scorpio",
+        stops: [
+          {
+            id: "aries",
+            label: "Aries",
+            gloss: "release / initiation / emergence",
+          },
+          {
+            id: "taurus",
+            label: "Taurus",
+            gloss: "stabilization / embodiment / productive containment",
+          },
+          {
+            id: "gemini",
+            label: "Gemini",
+            gloss: "differentiation / connection / exchange",
+          },
+          {
+            id: "cancer",
+            label: "Cancer",
+            gloss: "boundary / interior center / belonging",
+          },
+          {
+            id: "leo",
+            label: "Leo",
+            gloss: "expression / creation / projection from established identity",
+          },
+          {
+            id: "virgo",
+            label: "Virgo",
+            gloss: "discrimination / adjustment / correction",
+          },
+          {
+            id: "libra",
+            label: "Libra",
+            gloss: "relationship / evaluation / social participation",
+            emphasis: "neighbor",
+          },
+          {
+            id: "scorpio",
+            label: "Scorpio",
+            gloss:
+              "deeper participation / altered boundaries / later transformation symbolism",
+            emphasis: "focus",
+          },
+          {
+            id: "sagittarius",
+            label: "Sagittarius",
+            gloss: "extension of meaning / horizon / interpretation",
+            emphasis: "neighbor",
+          },
+          {
+            id: "capricorn",
+            label: "Capricorn",
+            gloss: "crystallization / structure / collective organization",
+          },
+          {
+            id: "aquarius",
+            label: "Aquarius",
+            gloss: "release / reform / reorganization of established structure",
+          },
+          {
+            id: "pisces",
+            label: "Pisces",
+            gloss:
+              "completion / dissolution / accumulated residue / transition",
+          },
+          {
+            id: "aries-again",
+            label: "Aries again",
+            gloss: "another emergence",
+            recurrence: true,
+          },
+        ],
+        transitions: [
+          {
+            id: "zod-tr-libra-scorpio",
+            label: "Libra → Scorpio",
+            body: "Do not reduce this transition to “relationship → death.”\n\nLibra introduces explicit relational / social participation. In Rudhyar's developmental framework, Scorpio intensifies participation and identification.\n\nOur systems reading may therefore ask: what happens when relationship changes the boundaries of the participating system?\n\nThis is a symbolic comparison. It is not an empirical mechanism.",
+            provenance: ["modern-psychological", "our-systems-reading"],
+          },
+          {
+            id: "zod-tr-scorpio-sagittarius",
+            label: "Scorpio → Sagittarius",
+            body: "Scorpio is not the terminal point of the cycle. Transformation is followed by another phase — extension of meaning, horizon, and interpretation — rather than an ending that closes the sequence.",
+            provenance: ["modern-psychological", "our-systems-reading"],
+          },
+        ],
+        circleAndSpiral: {
+          title: "Circle and Spiral",
+          body: "The zodiac returns symbolically:\n\nPisces → Aries again\n\nThe Evolutionary Spiral represents:\n\nEmergence¹ → … → Emergence again\n\nLiving Terrain's comparison:\n\nA symbolic position can recur.\n\nA historical system does not necessarily return to its former state.\n\nThe Spiral therefore adds a vertical question to circular recurrence:\n\nWhat changes when a cycle remembers?\n\n“Recurrence with accumulated history” is our systems reading. It is not attributed to ancient astrology, and it does not claim that Rudhyar and Living Terrain propose identical models.\n\nAries again marks recurrence of symbolic position in this comparison view — not a claim that traditional astrology contains a second Aries.",
+          provenance: "our-systems-reading",
+        },
+      },
       concepts: [
         {
-          id: "zod-ancient-scorpio",
-          title: "Ancient Scorpio",
-          summary:
-            "Hellenistic associations — death, Mars, intensity — before modern rebirth language.",
+          id: "zod-scorpio-before-transformation",
+          title: "Scorpio before “transformation”",
+          summary: "What was actually inherited?",
           epistemicKind: "historical-observation",
+          epistemicKinds: ["historical-observation", "symbolic-comparative"],
           provenance: "ancient-hellenistic",
-          placeholder: true,
-          sections: [...diveScaffold("zod-anc")],
-          comparisonBreaks: {
-            body: "Ancient death associations are not modern “transformation” psychology.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "zod-mars-rulership",
-          title: "Mars rulership",
-          summary:
-            "Classical domicile rulership and what Mars historically signified.",
-          epistemicKind: "historical-observation",
-          provenance: "ancient-hellenistic",
-          placeholder: true,
-          sections: [...diveScaffold("zod-mars")],
-          comparisonBreaks: {
-            body: "Mars rulership does not encode a systems theory of reorganization.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "zod-eighth-place",
-          title: "Eighth-place death associations",
-          summary:
-            "Idle place, death, inheritance — traditional house significations.",
-          epistemicKind: "historical-observation",
-          provenance: ["ancient-hellenistic", "later-traditional"],
-          placeholder: true,
-          sections: [...diveScaffold("zod-8th")],
-          comparisonBreaks: {
-            body: "House death significations are not proof of a developmental spiral stage.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "zod-pluto-era",
-          title: "Pluto-era Scorpio",
-          summary:
-            "Twentieth-century outer-planet rulership and transformation language.",
-          epistemicKind: "symbolic-analogy",
-          provenance: "modern-pluto-era",
-          placeholder: true,
-          sections: [...diveScaffold("zod-pluto")],
-          comparisonBreaks: {
-            body: "Do not read Pluto-era meanings back into Hellenistic practice.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "zod-psychological",
-          title: "Psychological astrology",
-          summary:
-            "Modern developmental and psychological readings of Scorpio / crisis.",
-          epistemicKind: "symbolic-analogy",
-          provenance: "modern-psychological",
-          placeholder: true,
-          sections: [...diveScaffold("zod-psych")],
-          comparisonBreaks: {
-            body: "Psychological astrology is a modern interpretive layer, not ancient doctrine.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "zod-developmental",
-          title: "Developmental zodiac",
-          summary:
-            "Sign-by-sign developmental glosses — largely modern, not a Hellenistic syllabus.",
-          epistemicKind: "symbolic-analogy",
-          provenance: ["modern-psychological", "our-systems-reading"],
-          placeholder: true,
-          sections: [...diveScaffold("zod-dev")],
-          comparisonBreaks: {
-            body: "Do not present the twelve-stage developmental gloss as ancient canonical doctrine.",
-            placeholder: true,
-          },
-        },
-        {
-          id: "zod-our-reading",
-          title: "Provenance of our systems reading",
-          summary:
-            "What Living Terrain proposes versus what tradition actually held — honesty scaffold.",
-          epistemicKind: "hypothesis",
-          provenance: "our-systems-reading",
-          placeholder: true,
+          whisper:
+            "The symbol is old. Not every meaning attached to it is.",
           sections: [
             {
-              id: "zod-our-summary",
-              kind: "summary",
-              title: "Summary",
-              body: "Scaffold for distinguishing ancient, later, modern, and our own comparative mapping.",
-              placeholder: true,
+              id: "zod-before-body",
+              kind: "general",
+              title: "",
+              body: "In older astrological tradition, Scorpio was the domicile of Mars and belonged to what would later be called the fixed signs.\n\nThat gives us an ancient Scorpio.\n\nBut it does not yet give us the complete modern archetype of psychological death, rebirth, and transformation.\n\nThe distinction matters because symbols have histories. Meanings that now appear inseparable may have entered the tradition centuries apart.",
             },
             {
-              id: "zod-our-breaks",
-              kind: "comparison-breaks",
-              title: "Where the comparison breaks",
-              body: "Our systems reading is a hypothesis about structural resemblance — not historical transmission.",
-              placeholder: true,
+              id: "zod-before-persists",
+              kind: "what-persists",
+              title: "What persists",
+              items: [
+                "Scorpio's place in the zodiac",
+                "Mars rulership",
+                "its relationship to the seasonal cycle",
+              ],
+            },
+            {
+              id: "zod-before-changes",
+              kind: "what-changes",
+              title: "What changes",
+              items: [
+                "the language used to interpret it",
+                "psychological meanings attached to it",
+                "later planetary associations",
+              ],
             },
           ],
           comparisonBreaks: {
-            body: "Celestial symbolism does not scientifically cause biological or psychological processes.",
-            placeholder: true,
+            title: "Where the comparison breaks",
+            body: "Traditional astrological categories are symbolic classifications. Mars rulership or zodiacal position does not provide an empirical mechanism for biological, psychological, ecological, or systems transformation.",
           },
           openQuestions: [
-            "Which zodiac claims are strong enough to keep once provenance is labeled?",
+            "Which parts of a symbol belong to its earliest surviving form—and which become invisible additions because they have been repeated long enough?",
+          ],
+          sources: [
+            {
+              id: "zod-before-ptolemy-tetrabiblos",
+              title: "Tetrabiblos",
+              authors: "Claudius Ptolemy",
+              publication: "Book I — planetary domiciles / rulership structure",
+              supports:
+                "Hellenistic structural placement of Scorpio within the zodiac and Mars domicile associations relevant to an older Scorpio baseline.",
+            },
+          ],
+        },
+        {
+          id: "zod-eighth-sign-not-house",
+          title: "The eighth sign is not the eighth house",
+          summary: "When did separate structures begin to look like one?",
+          epistemicKind: "historical-observation",
+          epistemicKinds: ["historical-observation", "symbolic-comparative"],
+          provenance: ["ancient-hellenistic", "later-traditional"],
+          whisper: "Symbols accumulate history too.",
+          sections: [
+            {
+              id: "zod-8th-body",
+              kind: "general",
+              title: "",
+              body: "Traditional astrology associated the eighth place with subjects including death and inheritance.\n\nScorpio is the eighth sign of the zodiac.\n\nThose are not historically interchangeable structures.\n\nA zodiacal sign describes a position within the zodiacal cycle. A house/place describes a different astrological framework organized from the horizon and other chart angles.\n\nModern astrology often combines Scorpio, the eighth house, death symbolism, Pluto, and transformation into a single interpretive package.\n\nThat package should not be projected backward unchanged into antiquity.",
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Untangling the historical development of signs and houses tells us how an interpretive tradition changed. It does not establish that either describes an objective developmental mechanism.",
+          },
+          openQuestions: [
+            "How often do inherited symbolic systems appear timeless because we no longer remember when their layers were added?",
+          ],
+          sources: [
+            {
+              id: "zod-8th-rudhyar-1950",
+              title: "Astrological Houses and Zodiacal Signs",
+              authors: "Dane Rudhyar",
+              year: 1950,
+              supports:
+                "Distinction between zodiacal signs and astrological houses/places as different frameworks — used here against collapsing the eighth sign into the eighth house.",
+            },
+          ],
+        },
+        {
+          id: "zod-pluto-transformation-archetype",
+          title: "Pluto and the transformation archetype",
+          summary: "What happens when a new symbol enters an old system?",
+          epistemicKind: "historical-observation",
+          epistemicKinds: ["historical-observation", "symbolic-comparative"],
+          provenance: "modern-pluto-era",
+          whisper:
+            "An inherited system can remain recognizable while acquiring meanings its earlier forms never contained.",
+          sections: [
+            {
+              id: "zod-pluto-body",
+              kind: "general",
+              title: "",
+              body: "Pluto entered astrology only after its twentieth-century astronomical discovery.\n\nAstrologers subsequently associated Pluto strongly with Scorpio and developed a vocabulary involving underworld imagery, destruction, elimination, hidden power, regeneration, and profound transformation.\n\nMars did not disappear as Scorpio's traditional ruler.\n\nInstead, the inherited sign accumulated another symbolic layer.\n\nThe modern Scorpio archetype is therefore not simply an ancient meaning preserved unchanged.\n\nIt has a history.",
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "The historical incorporation of Pluto into modern astrology is observable.\n\nA claim that Pluto produces psychological or developmental transformation is a different kind of claim and is not established by that history.",
+          },
+          openQuestions: [
+            "At what point does adding new meaning preserve a tradition—and at what point does it create a new one?",
+          ],
+          sources: [
+            {
+              id: "zod-pluto-era-note",
+              title: "Modern Pluto-era Scorpio associations",
+              supports:
+                "Historical observation that Pluto entered astrology after twentieth-century discovery and that modern Scorpio transformation vocabulary developed afterward. Exact primary monograph for every later keyword is not forced where the dossier does not pin one.",
+            },
+          ],
+        },
+        {
+          id: "zod-developmental-process",
+          title: "The zodiac as developmental process",
+          summary: "What if the signs are phases rather than personalities?",
+          epistemicKind: "historical-observation",
+          epistemicKinds: [
+            "historical-observation",
+            "conceptual-framework",
+            "symbolic-comparative",
+          ],
+          provenance: "modern-psychological",
+          whisper:
+            "A phase changes meaning when it is placed back inside the cycle.",
+          sections: [
+            {
+              id: "zod-dev-body",
+              kind: "general",
+              title: "",
+              body: "Dane Rudhyar explicitly interpreted the zodiac as a dynamic process and presented its twelve signs as phases of human experience.\n\nWithin this framework, a sign does not stand alone.\n\nIts meaning emerges partly from what precedes it, what follows it, and its position within a recurring cycle.\n\nScorpio can therefore be read less as a personality label and more as a phase inside an unfolding symbolic sequence.\n\nThis developmental reading is modern.\n\nIt should not be presented as though every earlier astrologer understood the zodiac this way.",
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "A developmental interpretation of the zodiac is an interpretive framework.\n\nIts structural resemblance to developmental or systems models does not demonstrate that the zodiac measures those processes.",
+          },
+          openQuestions: [
+            "When humans arrange experience into cycles, what makes some sequences feel developmental rather than merely repetitive?",
+          ],
+          sources: [
+            {
+              id: "zod-dev-rudhyar-pulse-1943",
+              title: "The Pulse of Life",
+              authors: "Dane Rudhyar",
+              year: 1943,
+              publication:
+                "Especially: The Zodiac as a Dynamic Process; Twelve Phases of Human Experience; Aries; Scorpio; neighboring signs; Pisces",
+              supports:
+                "Modern developmental reading of the zodiac as a dynamic process and twelve phases of human experience.",
+            },
+          ],
+        },
+        {
+          id: "zod-scorpio-as-transformation",
+          title: "Scorpio as Transformation",
+          summary:
+            "What do we notice when Scorpio is placed beside Transformation?",
+          epistemicKind: "symbolic-analogy",
+          epistemicKinds: ["symbolic-analogy", "conceptual-framework"],
+          provenance: "our-systems-reading",
+          whisper:
+            "Perhaps the interesting question is not whether Scorpio causes transformation, but why transformation became such a powerful way of reading Scorpio at all.",
+          sections: [
+            {
+              id: "zod-sat-body",
+              kind: "general",
+              title: "",
+              body: "Only after separating the historical layers can Living Terrain make its own comparison.\n\nModern Scorpio symbolism repeatedly gathers images involving endings, relinquishment, hidden material, altered boundaries, loss of an existing form, regeneration, and emergence after disruption.\n\nThe Transformation stage of the Spiral asks a different but resonant question:\n\nWhat happens when continuity can no longer be maintained through the system's existing organization?\n\nSystems science can describe thresholds, feedback changes, hysteresis, and regime shifts.\n\nBiology can describe metamorphosis, remodeling, autophagy, and inheritance under variation.\n\nPsychology can investigate memory updating, learning, grief, and identity.\n\nEcology can observe disturbance, memory, succession, alternative states, and reorganization.\n\nBiblical texts and theology can describe death, burial, raised life, covenant disruption and renewal, exile and return, and new creation.\n\nAstrology contributes something epistemically different:\n\na symbolic language humans have used to organize experiences of change.\n\nThat does not make these mechanisms equivalent.\n\nIt gives us something to compare.",
+            },
+            {
+              id: "zod-sat-persists",
+              kind: "what-persists",
+              title: "What persists",
+              items: [
+                "position within a larger sequence",
+                "memory of preceding phases",
+                "the problem of continuation",
+                "relationship to what came before",
+              ],
+            },
+            {
+              id: "zod-sat-changes",
+              kind: "what-changes",
+              title: "What changes",
+              items: [
+                "form",
+                "organization",
+                "meaning",
+                "what can be carried forward",
+                "conditions under which continuation occurs",
+              ],
+            },
+            {
+              id: "zod-sat-libra-scorpio",
+              kind: "general",
+              title: "Libra → Scorpio",
+              body: "Do not describe this simply as relationship → death.\n\nLibra introduces explicit relational / social participation. In Rudhyar's developmental framework, Scorpio intensifies participation and identification.\n\nOur systems reading may therefore ask:\n\nWhat happens when relationship changes the boundaries of the participating system?\n\nThis is a symbolic comparison.\n\nDo not convert it into an empirical mechanism.",
+            },
+            {
+              id: "zod-sat-scorpio-sagittarius",
+              kind: "general",
+              title: "Scorpio → Sagittarius",
+              body: "Preserve the continuation beyond Scorpio. Transformation is followed by another phase — extension of meaning, horizon, and interpretation — rather than a terminal ending of the cycle.",
+            },
+          ],
+          comparisonBreaks: {
+            title: "Where the comparison breaks",
+            body: "Symbolic correspondence is not mechanism.\n\nA resemblance between Scorpio and Transformation does not establish celestial causation, a universal developmental law, common historical origin, or shared mechanism with systems, biology, psychology, ecology, or biblical/theological material.",
+          },
+          openQuestions: [
+            "If Scorpio's meaning has itself transformed across history, are we studying an ancient symbol of transformation—or the transformation of an ancient symbol?",
+          ],
+          sources: [
+            {
+              id: "zod-sat-rudhyar-pulse-1943",
+              title: "The Pulse of Life",
+              authors: "Dane Rudhyar",
+              year: 1943,
+              supports:
+                "Developmental placement of Scorpio after Libra and before Sagittarius within a twelve-phase reading — used comparatively, not as Spiral proof.",
+            },
           ],
         },
       ],
       comparisonBreaks: {
-        title: "Where the comparison breaks",
-        body: "Zodiac symbolism does not scientifically cause biological or psychological processes. Analogy is not mechanism.",
-        placeholder: true,
+        title: "Symbolic correspondence is not mechanism",
+        body: "The zodiac is a symbolic interpretive system.\n\nSystems science, biology, psychology, and ecology investigate observable processes using different forms of evidence.\n\nBiblical / Jesus material is textual and theological.\n\nA resemblance between Scorpio and Transformation does not establish celestial causation, a universal developmental law, common historical origin, or shared mechanism.\n\nThe zodiac returns symbolically.\n\nReal systems may not.\n\nA system can cross a threshold from which reversing the original pressure does not restore its former organization.\n\nSpecies can disappear.\n\nInjuries can leave permanent alteration.\n\nPeople can integrate experiences without returning to who they were before.\n\nTransformation can fail.\n\nReorganization can produce something less functional.\n\nRecurrence in a symbolic cycle does not establish hysteresis, path dependence, ecological memory, material inheritance, or any other causal mechanism described elsewhere in the Spiral.\n\nStructural resemblance is a reason to investigate—not evidence that the structures share a cause.",
       },
+      openQuestions: [
+        "If Scorpio's meaning has itself transformed across history, are we studying an ancient symbol of transformation—or the transformation of an ancient symbol?",
+      ],
     },
   ],
   across: {

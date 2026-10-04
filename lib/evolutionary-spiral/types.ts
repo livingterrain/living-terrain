@@ -271,6 +271,57 @@ export type SpiralConcept = {
   relatedAtlasStops?: readonly string[];
 };
 
+/**
+ * One stop in an optional compact symbolic-cycle context (e.g. Zodiac).
+ * Not a Spiral stage, not a canonical object, not a deep dive.
+ */
+export type SpiralCycleContextStop = {
+  id: string;
+  label: string;
+  /**
+   * Short comparative gloss. May mix historical/developmental reading with
+   * Living Terrain synthesis — lens-level provenanceNote must say so.
+   */
+  gloss?: string;
+  /** Emphasize the stage-relevant stop (e.g. Scorpio under Transformation). */
+  emphasis?: "default" | "focus" | "neighbor";
+  /** Recurrence marker (e.g. Aries again) — not a claim of traditional doctrine. */
+  recurrence?: boolean;
+};
+
+export type SpiralCycleContextTransition = {
+  id: string;
+  label: string;
+  body: string;
+  provenance?: SpiralProvenanceKind | readonly SpiralProvenanceKind[];
+};
+
+/**
+ * Lightweight symbolic-cycle context inside a lens landing.
+ * Used for Zodiac full-sequence orientation — not global navigation.
+ */
+export type SpiralLensCycleContext = {
+  title?: string;
+  /** Required honesty line: glosses are not ancient doctrine. */
+  provenanceNote: string;
+  /** Optional structural reading (e.g. Ptolemy turn/solid/bicorporeal). */
+  structureNote?: {
+    title: string;
+    body: string;
+    provenance: SpiralProvenanceKind;
+  };
+  stops: readonly SpiralCycleContextStop[];
+  /** Id of the stop emphasized for this stage (e.g. scorpio). */
+  focusId?: string;
+  transitions?: readonly SpiralCycleContextTransition[];
+  /** Circle vs spiral comparison — our systems reading. */
+  circleAndSpiral?: {
+    title: string;
+    body: string;
+    provenance: SpiralProvenanceKind;
+  };
+};
+
 /** Deep exploration packet for one lens at one stage. */
 export type SpiralLensExploration = {
   lensId: SpiralDomainId;
@@ -281,6 +332,11 @@ export type SpiralLensExploration = {
    * presentation splits on `\n\n`.
    */
   framing?: string;
+  /**
+   * Optional compact symbolic-cycle context (Zodiac lens).
+   * Not twelve Spiral stages and not twelve MODEL objects.
+   */
+  cycleContext?: SpiralLensCycleContext;
   /** Concept index — primary hierarchy under the lens. */
   concepts: readonly SpiralConcept[];
   /** Optional lens-level break (concepts may also carry their own). */

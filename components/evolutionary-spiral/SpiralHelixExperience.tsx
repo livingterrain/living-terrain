@@ -60,8 +60,36 @@ export function SpiralHelixExperience() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     requestAnimationFrame(() => {
-      exploreAnchorRef.current?.scrollIntoView({
-        block: "nearest",
+      const anchor = exploreAnchorRef.current;
+      if (!anchor) return;
+
+      // Sticky stage/lens chrome sticks at `top` and can overlay content if we
+      // scroll the whole explorer flush to the viewport top. Target the content
+      // region and clear the measured sticky stack (top offset + height).
+      const explore = anchor.querySelector<HTMLElement>(".spiral-explore");
+      const sticky = anchor.querySelector<HTMLElement>(".spiral-explore__sticky");
+      const content = anchor.querySelector<HTMLElement>(".spiral-explore__content");
+      const stickyTop = sticky
+        ? Number.parseFloat(getComputedStyle(sticky).top) || 0
+        : 0;
+      const stickyHeight = sticky?.offsetHeight ?? 0;
+      const clearance = Math.ceil(stickyTop + stickyHeight + 8);
+      const clearancePx = `${clearance}px`;
+
+      explore?.style.setProperty("--spiral-explore-sticky-clearance", clearancePx);
+      if (content) {
+        content.style.scrollMarginTop = clearancePx;
+        content.scrollIntoView({
+          block: "start",
+          behavior: reduce ? "auto" : "smooth",
+        });
+        return;
+      }
+
+      const top =
+        anchor.getBoundingClientRect().top + window.scrollY - stickyTop;
+      window.scrollTo({
+        top: Math.max(0, top),
         behavior: reduce ? "auto" : "smooth",
       });
     });
