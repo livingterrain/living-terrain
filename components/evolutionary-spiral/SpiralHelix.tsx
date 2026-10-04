@@ -38,8 +38,13 @@ type Props = {
   selectedId: string;
   onSelect: (occurrenceId: string) => void;
   panelId: string;
-  /** Active whole-instrument lens, echoed beneath the helix. */
+  /** Active whole-instrument lens / trajectory, echoed beneath the helix. */
   lensLabel?: string;
+  trajectoryLabel?: string;
+  /** Occurrences with an authored relationship to the active trajectory. */
+  relatedIds?: ReadonlySet<string>;
+  /** Occurrences related to the selected trajectory step. */
+  emphasizedIds?: ReadonlySet<string>;
 };
 
 function CurrentSegment({
@@ -114,6 +119,9 @@ export function SpiralHelix({
   onSelect,
   panelId,
   lensLabel,
+  trajectoryLabel,
+  relatedIds,
+  emphasizedIds,
 }: Props) {
   const reactId = useId();
   const reduced = useSpiralReducedMotion();
@@ -163,7 +171,7 @@ export function SpiralHelix({
   };
 
   return (
-    <div className="spiral-helix">
+    <div className={cn("spiral-helix", lensLabel && "spiral-helix--quiet")}>
       <div className="spiral-helix__canvas">
         <svg
           className="spiral-helix__svg"
@@ -304,8 +312,23 @@ export function SpiralHelix({
             const labelX =
               node.labelSide === "left" ? node.x - 14 : node.x + 14;
             const anchor = node.labelSide === "left" ? "end" : "start";
+            const related = relatedIds?.has(node.stop.occurrenceId) ?? false;
+            const emphasized = emphasizedIds?.has(node.stop.occurrenceId) ?? false;
             return (
               <g key={`label-${node.stop.occurrenceId}`} aria-hidden>
+                {related && (
+                  <rect
+                    x={node.x - 2.8}
+                    y={node.y - 2.8}
+                    width={5.6}
+                    height={5.6}
+                    transform={`rotate(45 ${node.x} ${node.y})`}
+                    className={cn(
+                      "spiral-helix__node-related",
+                      emphasized && "spiral-helix__node-related--emphasized",
+                    )}
+                  />
+                )}
                 <circle
                   cx={node.x}
                   cy={node.y}
@@ -341,6 +364,7 @@ export function SpiralHelix({
               stage?.name ?? node.stop.stageId,
             );
             const selected = node.stop.occurrenceId === selectedId;
+            const related = relatedIds?.has(node.stop.occurrenceId) ?? false;
             const style = nodeHitStyle(node);
             return (
               <button
@@ -354,7 +378,11 @@ export function SpiralHelix({
                 style={style}
                 aria-pressed={selected}
                 aria-controls={panelId}
-                aria-label={`${String(node.stop.order).padStart(2, "0")} ${name}`}
+                aria-label={`${String(node.stop.order).padStart(2, "0")} ${name}${
+                  related && trajectoryLabel
+                    ? ` — authored relationship with ${trajectoryLabel}`
+                    : ""
+                }`}
                 onClick={() => onSelect(node.stop.occurrenceId)}
                 onKeyDown={(e) => onKeyNav(e, node.index)}
               />
@@ -373,7 +401,17 @@ export function SpiralHelix({
         <p className="spiral-helix__caption">{SPIRAL_ASCENT_CAPTION}</p>
         {lensLabel && (
           <p className="spiral-helix__lens">
-            Whole helix viewed through <span>{lensLabel}</span>
+            Laid against the whole Spiral:{" "}
+            <span>
+              {lensLabel}
+              {trajectoryLabel ? ` / ${trajectoryLabel}` : null}
+            </span>
+            {relatedIds && relatedIds.size > 0 && (
+              <span className="spiral-helix__lens-key">
+                <span className="spiral-helix__lens-diamond" aria-hidden="true" />
+                authored relationship
+              </span>
+            )}
           </p>
         )}
       </div>

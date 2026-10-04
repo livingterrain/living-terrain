@@ -442,52 +442,123 @@ export type SpiralStageExploration = {
 
 /* ── Whole-helix lenses and trajectories ──
  *
- * A lens belongs to the whole instrument, not to a stage.
- * A trajectory is a phenomenon / narrative / process compared against the
- * Spiral grammar. Stage-local research (SpiralStageExploration) is read as the
- * intersection: active lens × selected operation.
+ * SPIRAL → LENS → TRAJECTORY → STEP / TRANSITION / SPAN ↔ OPERATIONS
+ *
+ * A lens is a way of observing. A trajectory is an actual sequence, process,
+ * or narrative inside that lens, laid against the whole Spiral.
  *
  * Trajectory steps are not Spiral stages and not canonical objects.
- * Resonances are authored, never inferred. Zero resonances is valid.
+ * Relationships are authored separately from trajectory data, never inferred
+ * from position or array index. Zero relationships is valid; mismatch is data.
  */
 
 export type SpiralLensId = SpiralExploreViewId;
 
 export type SpiralTrajectoryStep = SpiralCycleContextStop;
 
-/**
- * Authored candidate relationship between a Spiral operation and a passage
- * of a trajectory. Not a match, not a mapping, not evidence.
- */
-export type SpiralTrajectoryResonance = {
-  id: string;
-  stageId: SpiralStageId;
-  /** When set, applies only to this occurrence (e.g. Emergence again). */
-  occurrenceId?: string;
-  /** Step ids spanned — resonance lives in the passage between them. */
+/** How a trajectory moves. Not every trajectory terminates or returns. */
+export type SpiralTrajectoryShape =
+  | "cyclical"
+  | "directional"
+  | "branching"
+  | "recurrent"
+  | "process";
+
+/** Explicit edge between steps — needed only when steps are not read in order. */
+export type SpiralTrajectoryEdge = {
   from: string;
   to: string;
-  strength: "candidate" | "ambiguous" | "context";
-  /**
-   * Stage-local transition annotation holding the full research text
-   * (looked up in the stage exploration's lens cycleContext).
-   */
-  transitionId?: string;
-  /** Authored note when no stage-local transition exists. */
-  note?: string;
+  label?: string;
+};
+
+/** An authored open research issue surfaced beside the trajectory. */
+export type SpiralTrajectoryResearchIssue = {
+  id: string;
+  question: string;
+  body?: string;
+  items?: readonly string[];
 };
 
 export type SpiralTrajectory = {
   id: string;
   lensId: SpiralDomainId;
   title: string;
+  shortTitle?: string;
   /** Phrase used in "Where does X appear within …?" */
   inPhrase: string;
   /** One concise orientation line for the whole trajectory. */
-  note: string;
+  description: string;
+  shape: SpiralTrajectoryShape;
   steps: readonly SpiralTrajectoryStep[];
-  resonances: readonly SpiralTrajectoryResonance[];
+  /** When omitted, steps are read in order. */
+  transitions?: readonly SpiralTrajectoryEdge[];
+  /** Epistemic framing — what kind of object this trajectory is. */
+  framing?: string;
+  provenanceNote?: string;
+  researchIssues?: readonly SpiralTrajectoryResearchIssue[];
+  openQuestions?: readonly string[];
+  comparisonBreaks?: {
+    title?: string;
+    body: string;
+  };
+  sources?: readonly SpiralSourceRef[];
 };
+
+/** Where on a trajectory a relationship is anchored. */
+export type SpiralTrajectoryAnchor =
+  | { kind: "step"; stepId: string }
+  /** The passage between two adjacent steps. */
+  | { kind: "transition"; from: string; to: string }
+  /** A region of consecutive steps, inclusive. */
+  | { kind: "span"; from: string; to: string };
+
+/**
+ * Status of a comparison — how much weight the relationship can bear.
+ * Statuses are not equivalent; presentation must name them in text.
+ */
+export type SpiralRelationshipStatus =
+  | "strong-empirical"
+  | "candidate"
+  | "structural"
+  | "symbolic-analogy"
+  | "textual-theological"
+  | "context"
+  | "ambiguous"
+  | "comparison-break";
+
+/** A Spiral operation; `occurrenceId` narrows to one occurrence (e.g. Emergence again). */
+export type SpiralOperationRef = {
+  stageId: SpiralStageId;
+  occurrenceId?: string;
+};
+
+/**
+ * Authored relationship between part of a trajectory and one or more Spiral
+ * operations. Not a match, not a mapping, not evidence.
+ */
+export type SpiralTrajectoryRelationship = {
+  id: string;
+  trajectoryId: string;
+  anchor: SpiralTrajectoryAnchor;
+  operations: readonly SpiralOperationRef[];
+  status: SpiralRelationshipStatus;
+  /** Uses the existing epistemic categories. */
+  epistemicKinds?: readonly SpiralEpistemicKind[];
+  /** Observational scale at which the relationship is claimed, when authored. */
+  scale?: string;
+  /**
+   * Stage-local transition annotation holding the full research text
+   * (looked up in the stage exploration's lens cycleContext).
+   */
+  transitionId?: string;
+  /** Stage-local concept that carries the research behind this relationship. */
+  conceptId?: string;
+  /** Authored line; when absent, the transition body's first paragraph is used. */
+  note?: string;
+};
+
+/** @deprecated Prefer SpiralTrajectoryRelationship. */
+export type SpiralTrajectoryResonance = SpiralTrajectoryRelationship;
 
 export type SpiralLens = {
   id: SpiralLensId;

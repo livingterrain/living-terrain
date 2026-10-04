@@ -1,16 +1,18 @@
 "use client";
 
 import {
+  anchorLabel,
   epistemicLabel,
   getStageExploration,
   getSpiralStage,
   microcopyForStop,
+  relationshipStatusLabel,
   transitionForResonance,
   type SpiralIntersection,
   type SpiralLens,
   type SpiralSequenceStop,
   type SpiralTrajectory,
-  type SpiralTrajectoryResonance,
+  type SpiralTrajectoryRelationship,
 } from "@/lib/evolutionary-spiral";
 import { SpiralInvestigate } from "./SpiralInvestigate";
 
@@ -19,57 +21,71 @@ type Props = {
   lens: SpiralLens | undefined;
   trajectory: SpiralTrajectory | undefined;
   intersection: SpiralIntersection | undefined;
+  exploreOpen: boolean;
+  onExploreToggle: () => void;
   investigateOpen: boolean;
   onInvestigateToggle: () => void;
   conceptId: string | null;
   onConceptChange: (conceptId: string | null) => void;
+  /** Open Explore + Investigate at the concept carrying a relationship. */
+  onOpenConcept: (conceptId: string) => void;
   panelId: string;
+  exploreId: string;
   investigateId: string;
-};
-
-const STRENGTH_LABEL: Record<SpiralTrajectoryResonance["strength"], string> = {
-  candidate: "Candidate resonance",
-  context: "Where the cycle continues",
-  ambiguous: "Ambiguous",
 };
 
 const GUARDRAIL =
   "Structural resemblance is a reason to investigate—not evidence that the structures share a cause.";
 
+const NONE_AUTHORED =
+  "No authored relationship yet. No correspondence is assumed, and there may be none.";
+
 function firstParagraph(text: string | undefined): string | undefined {
   return text?.split(/\n\n+/)[0]?.trim() || undefined;
 }
 
-function ResonanceList({
-  resonances,
+function RelationshipList({
+  relationships,
   trajectory,
   lens,
+  hasConcept,
+  onOpenConcept,
 }: {
-  resonances: readonly SpiralTrajectoryResonance[];
+  relationships: readonly SpiralTrajectoryRelationship[];
   trajectory: SpiralTrajectory;
   lens: SpiralLens;
+  hasConcept: (conceptId: string) => boolean;
+  onOpenConcept: (conceptId: string) => void;
 }) {
-  const label = (id: string) =>
-    trajectory.steps.find((s) => s.id === id)?.label ?? id;
   return (
-    <ul className="spiral-op__resonances">
-      {resonances.map((r) => {
-        const transition = transitionForResonance(r, lens.id);
-        const line = r.note ?? firstParagraph(transition?.body);
+    <ul className="spiral-op__rels">
+      {relationships.map((r) => {
+        const line = r.note ?? firstParagraph(transitionForResonance(r, lens.id)?.body);
         return (
-          <li
-            key={r.id}
-            className={`spiral-op__resonance spiral-op__resonance--${r.strength}`}
-          >
-            <p className="spiral-op__resonance-head">
-              <span className="spiral-op__resonance-passage">
-                {label(r.from)} → {label(r.to)}
+          <li key={r.id} className={`spiral-op__rel spiral-rel--${r.status}`}>
+            <p className="spiral-op__rel-head">
+              <span className="spiral-op__rel-anchor">
+                {anchorLabel(trajectory, r.anchor)}
               </span>
-              <span className="spiral-op__resonance-role">
-                {STRENGTH_LABEL[r.strength]}
+              <span className="spiral-op__rel-status">
+                {relationshipStatusLabel(r.status)}
               </span>
             </p>
-            {line && <p className="spiral-op__resonance-line">{line}</p>}
+            {line && <p className="spiral-op__rel-line">{line}</p>}
+            {r.epistemicKinds && r.epistemicKinds.length > 0 && (
+              <p className="spiral-op__rel-meta">
+                {r.epistemicKinds.map(epistemicLabel).join(" · ")}
+              </p>
+            )}
+            {r.conceptId && hasConcept(r.conceptId) && (
+              <button
+                type="button"
+                className="spiral-lens-context__jump spiral-op__rel-concept"
+                onClick={() => onOpenConcept(r.conceptId!)}
+              >
+                Read the research behind this
+              </button>
+            )}
           </li>
         );
       })}
@@ -78,19 +94,24 @@ function ResonanceList({
 }
 
 /**
- * Selected operation — the coordinate used to interrogate the active lens.
- * Explore depth stays readable; Investigate holds the research.
+ * Selected operation — a coordinate on the reference Spiral.
+ * Understand: name + microcopy. Explore: compact comparison with the active
+ * trajectory. Investigate: research, only on request.
  */
 export function SpiralOperationPanel({
   stop,
   lens,
   trajectory,
   intersection,
+  exploreOpen,
+  onExploreToggle,
   investigateOpen,
   onInvestigateToggle,
   conceptId,
   onConceptChange,
+  onOpenConcept,
   panelId,
+  exploreId,
   investigateId,
 }: Props) {
   const stage = getSpiralStage(stop.stageId);
@@ -103,26 +124,38 @@ export function SpiralOperationPanel({
     lens?.id === "across" && intersection?.hasAcross
       ? getStageExploration(stop.stageId)?.across
       : undefined;
-  const resonances = intersection?.resonances ?? [];
+  const relationships = intersection?.resonances ?? [];
   const examples = intersection?.examples ?? [];
-  const hasMaterial =
-    Boolean(exploration) ||
-    Boolean(across) ||
-    resonances.length > 0 ||
-    examples.length > 0;
+  const canExplore = Boolean(exploration || across || examples.length > 0);
   const canInvestigate = Boolean(exploration || across);
-
+  const conceptCount = exploration?.concepts.length ?? 0;
+  const lede = exploration
+    ? (exploration.lede ?? firstParagraph(exploration.framing))
+    : undefined;
   const question = !lens
     ? undefined
     : (exploration?.title ??
       (lens.id === "across"
         ? `What actually recurs at ${name} across ${lens.inPhrase}?`
         : `Where does ${name} appear within ${trajectory?.inPhrase ?? lens.inPhrase}?`));
+  const hasConcept = (id: string) =>
+    Boolean(exploration?.concepts.some((c) => c.id === id));
 
-  const conceptCount = exploration?.concepts.length ?? 0;
-  const lede = exploration
-    ? (exploration.lede ?? firstParagraph(exploration.framing))
-    : undefined;
+  let status: string;
+  if (!lens) {
+    status = "";
+  } else if (lens.status === "scaffold") {
+    status = "Across compares whole trajectories, not single operations.";
+  } else if (trajectory) {
+    status =
+      relationships.length > 0
+        ? "This operation has researched resonances with parts of the trajectory."
+        : NONE_AUTHORED;
+  } else {
+    status = exploration
+      ? `No ${lens.label} trajectory is authored yet. ${name} has stage-level research under this lens.`
+      : `No ${lens.label} trajectory is authored yet. ${NONE_AUTHORED}`;
+  }
 
   return (
     <article
@@ -148,94 +181,120 @@ export function SpiralOperationPanel({
       )}
 
       {!lens ? (
-        <div className="spiral-op__plain">
+        <details className="spiral-op__definition">
+          <summary className="spiral-op__definition-summary">
+            Definition
+          </summary>
           <p className="spiral-op__def">{stage.definition}</p>
-          <p className="spiral-op__hint">
-            Choose a lens above to ask where {name} appears in living systems,
-            minds, ecosystems, scripture, or the zodiac.
-          </p>
-        </div>
+        </details>
       ) : (
-        <div className="spiral-op__explore">
+        <div className="spiral-op__compare">
           <p className="spiral-op__intersection">
-            {lens.label} <span aria-hidden="true">×</span>
-            <span className="sr-only">at</span> {name}
+            {lens.label}
+            {trajectory ? ` / ${trajectory.title}` : null}
           </p>
-          <p className="spiral-op__question">{question}</p>
+          <p className="spiral-op__status">{status}</p>
 
-          {lede && <p className="spiral-op__lede">{lede}</p>}
-
-          {trajectory && resonances.length > 0 && (
-            <ResonanceList
-              resonances={resonances}
+          {trajectory && relationships.length > 0 && (
+            <RelationshipList
+              relationships={relationships}
               trajectory={trajectory}
               lens={lens}
+              hasConcept={hasConcept}
+              onOpenConcept={onOpenConcept}
             />
           )}
 
-          {examples.length > 0 && (
-            <div className="spiral-op__examples">
-              {examples.map((example) => (
-                <div key={example.id} className="spiral-op__example">
-                  <p className="spiral-op__example-meta">
-                    Example · {epistemicLabel(example.epistemicKind)}
-                  </p>
-                  <h4 className="spiral-op__example-title">{example.title}</h4>
-                  <p className="spiral-op__example-body">{example.body}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {lens.status === "scaffold" ? (
-            <p className="spiral-op__empty">
-              {across
-                ? "Placeholder scaffolding exists here. Nothing is concluded yet."
-                : `Nothing to compare yet at ${name}.`}
-            </p>
-          ) : !hasMaterial ? (
-            <p className="spiral-op__empty">
-              Not yet researched.{" "}
-              {trajectory
-                ? `${trajectory.title} stays in view; no correspondence is assumed, and there may be none.`
-                : "No correspondence is assumed, and there may be none."}
-            </p>
-          ) : null}
-
-          {hasMaterial && lens.status !== "scaffold" && (
-            <p className="spiral-op__guardrail">{GUARDRAIL}</p>
-          )}
-
-          {canInvestigate && (
-            <div className="spiral-op__investigate">
+          {canExplore && (
+            <div className="spiral-op__explore">
               <button
                 type="button"
-                className="spiral-op__investigate-toggle"
-                aria-expanded={investigateOpen}
-                aria-controls={investigateId}
-                onClick={onInvestigateToggle}
+                className="spiral-op__explore-toggle"
+                aria-expanded={exploreOpen}
+                aria-controls={exploreId}
+                onClick={onExploreToggle}
               >
-                <span className="spiral-op__investigate-title">
-                  {investigateOpen ? "Close the research" : "Investigate"}
-                </span>
-                <span className="spiral-op__investigate-lead">
-                  {exploration
-                    ? `${conceptCount} research concept${conceptCount === 1 ? "" : "s"} · sources · where the comparison breaks · open questions`
-                    : "Across scaffold · placeholders only"}
-                </span>
+                {exploreOpen ? "Close this comparison" : "Explore this comparison"}
+                <span aria-hidden="true">{exploreOpen ? " ↑" : " →"}</span>
               </button>
               <div
-                id={investigateId}
-                className="spiral-op__investigate-body"
-                hidden={!investigateOpen}
+                id={exploreId}
+                className="spiral-op__explore-body"
+                hidden={!exploreOpen}
               >
-                {investigateOpen && (
-                  <SpiralInvestigate
-                    exploration={exploration}
-                    across={across}
-                    conceptId={conceptId}
-                    onConceptChange={onConceptChange}
-                  />
+                {exploreOpen && (
+                  <>
+                    <p className="spiral-op__question">{question}</p>
+                    {lede && <p className="spiral-op__lede">{lede}</p>}
+                    <p className="spiral-op__def">
+                      <span className="spiral-op__def-label">{name}, defined: </span>
+                      {stage.definition}
+                    </p>
+
+                    {examples.length > 0 && (
+                      <div className="spiral-op__examples">
+                        {examples.map((example) => (
+                          <div key={example.id} className="spiral-op__example">
+                            <p className="spiral-op__example-meta">
+                              Example · {epistemicLabel(example.epistemicKind)}
+                            </p>
+                            <h4 className="spiral-op__example-title">
+                              {example.title}
+                            </h4>
+                            <p className="spiral-op__example-body">
+                              {example.body}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {across && (
+                      <p className="spiral-op__empty">
+                        Placeholder scaffolding exists here. Nothing is
+                        concluded yet.
+                      </p>
+                    )}
+
+                    {lens.status !== "scaffold" && (
+                      <p className="spiral-op__guardrail">{GUARDRAIL}</p>
+                    )}
+
+                    {canInvestigate && (
+                      <div className="spiral-op__investigate">
+                        <button
+                          type="button"
+                          className="spiral-op__investigate-toggle"
+                          aria-expanded={investigateOpen}
+                          aria-controls={investigateId}
+                          onClick={onInvestigateToggle}
+                        >
+                          <span className="spiral-op__investigate-title">
+                            {investigateOpen ? "Close the research" : "Investigate"}
+                          </span>
+                          <span className="spiral-op__investigate-lead">
+                            {exploration
+                              ? `${conceptCount} research concept${conceptCount === 1 ? "" : "s"} · sources · where the comparison breaks · open questions`
+                              : "Across scaffold · placeholders only"}
+                          </span>
+                        </button>
+                        <div
+                          id={investigateId}
+                          className="spiral-op__investigate-body"
+                          hidden={!investigateOpen}
+                        >
+                          {investigateOpen && (
+                            <SpiralInvestigate
+                              exploration={exploration}
+                              across={across}
+                              conceptId={conceptId}
+                              onConceptChange={onConceptChange}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>

@@ -78,50 +78,16 @@ export const ZODIAC_CYCLE_STEPS: readonly SpiralTrajectoryStep[] = [
 ];
 
 /**
- * Resonances are authored only where research already exists.
- * Transformation: transitions from the M1D-6 research — no per-sign matches.
- * Every other operation (including Emergence again) has zero resonances
- * until researched as its own intersection.
+ * Trajectory data only. Relationships to Spiral operations live in
+ * `../comparisons/zodiac.ts`.
  */
 export const ZODIAC_CYCLE_TRAJECTORY: SpiralTrajectory = {
   id: "zodiac-cycle",
   lensId: "symbolic-zodiac",
-  title: "The zodiacal cycle",
+  title: "Zodiacal sequence",
   inPhrase: "the zodiacal trajectory",
-  note: "Signs are not matched to operations. When a comparison is offered, it usually lives in a transition between signs.",
+  description:
+    "Signs are not matched to operations. When a comparison is offered, it usually lives in a transition between signs.",
+  shape: "cyclical",
   steps: ZODIAC_CYCLE_STEPS,
-  resonances: [
-    {
-      id: "zod-res-transformation-libra-scorpio",
-      stageId: "transformation",
-      from: "libra",
-      to: "scorpio",
-      strength: "candidate",
-      transitionId: "zod-tr-libra-scorpio",
-    },
-    {
-      id: "zod-res-transformation-scorpio-sagittarius",
-      stageId: "transformation",
-      from: "scorpio",
-      to: "sagittarius",
-      strength: "context",
-      transitionId: "zod-tr-scorpio-sagittarius",
-    },
-    {
-      id: "zod-res-transformation-capricorn-aquarius",
-      stageId: "transformation",
-      from: "capricorn",
-      to: "aquarius",
-      strength: "candidate",
-      transitionId: "zod-tr-capricorn-aquarius",
-    },
-    {
-      id: "zod-res-transformation-pisces-aries",
-      stageId: "transformation",
-      from: "pisces",
-      to: "aries-again",
-      strength: "ambiguous",
-      transitionId: "zod-tr-pisces-aries",
-    },
-  ],
 };

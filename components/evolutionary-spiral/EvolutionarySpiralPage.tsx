@@ -18,8 +18,8 @@ import "./evolutionary-spiral.css";
 
 /**
  * Evolutionary Spiral page — progressive disclosure.
- * Understand (surface + helix) → Explore (lens × operation) →
- * Investigate (research, model language, ways of knowing).
+ * Understand (title, thesis, helix, lens, whole trajectory) → Explore
+ * (trajectory × operation) → Investigate (research, model language, ways of knowing).
  * Semantic no-JS fallback retained in a collapsed section.
  */
 export function EvolutionarySpiralPage() {
@@ -31,7 +31,6 @@ export function EvolutionarySpiralPage() {
         kind="atlas"
         title={copy.name}
         whisper={copy.surfaceLine}
-        description={copy.surfaceSupport}
         align="left"
         className="spiral-arrival pb-6 pt-10 sm:pb-8 sm:pt-14 md:pb-10 md:pt-16"
       />
@@ -56,6 +55,7 @@ export function EvolutionarySpiralPage() {
 
               <div className="spiral-page__model">
                 <div className="spiral-page__model-block">
+                  <p>{copy.surfaceSupport}</p>
                   <p>{copy.visitorThesis[0]}</p>
                   <p>{copy.visitorThesis[1]}</p>
                   <p className="spiral-page__question-text">
