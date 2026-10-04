@@ -4,6 +4,7 @@ import { SPIRAL_SEQUENCE } from "./stages";
 import { relationshipsForStop } from "./comparisons";
 import { ZODIAC_LENS_RESEARCH } from "./research/zodiac";
 import { JESUS_NARRATIVE_TRAJECTORY } from "./trajectories/jesus";
+import { LODGEPOLE_FIRE_TRAJECTORY } from "./trajectories/lodgepole";
 import { METAMORPHOSIS_TRAJECTORY } from "./trajectories/metamorphosis";
 import { ZODIAC_CYCLE_TRAJECTORY } from "./trajectories/zodiac";
 import type {
@@ -68,6 +69,7 @@ export const SPIRAL_LENSES: readonly SpiralLens[] = [
       "Empirical ecology: recovery is observed, never guaranteed.",
     inPhrase: "ecosystems",
     trajectories: [],
+    heldTrajectories: [LODGEPOLE_FIRE_TRAJECTORY],
     forthcoming: ["Disturbance & succession", "Regime shift", "Recovery"],
     status: "available",
   },
@@ -131,6 +133,11 @@ export function getTrajectory(
 /** Every authored trajectory, in lens order. */
 export function authoredTrajectories(): SpiralTrajectory[] {
   return SPIRAL_LENSES.flatMap((l) => l.trajectories);
+}
+
+/** Trajectories held back until the figure can draw their topology. */
+export function heldTrajectories(): SpiralTrajectory[] {
+  return SPIRAL_LENSES.flatMap((l) => l.heldTrajectories ?? []);
 }
 
 /** @deprecated Prefer relationshipsForStop. */

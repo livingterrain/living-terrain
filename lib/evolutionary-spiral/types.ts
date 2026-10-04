@@ -685,6 +685,11 @@ export type SpiralLens = {
   /** Authored whole-helix trajectories. Empty is valid. */
   trajectories: readonly SpiralTrajectory[];
   /**
+   * Authored and validated, but not selectable: the figure cannot yet draw
+   * their topology. Never returned by lens selection or `authoredTrajectories`.
+   */
+  heldTrajectories?: readonly SpiralTrajectory[];
+  /**
    * Trajectories under consideration but not yet mapped. Names only —
    * presentation must say they are not yet mapped.
    */

@@ -116,6 +116,7 @@ export {
   getIntersection,
   getSpiralLens,
   getTrajectory,
+  heldTrajectories,
   intersectionHasMaterial,
   researchedStopsForLens,
   resonancesForStop,
@@ -127,6 +128,7 @@ export type { SpiralIntersection } from "./lenses";
 export { ZODIAC_CYCLE_STEPS, ZODIAC_CYCLE_TRAJECTORY } from "./trajectories/zodiac";
 export { JESUS_NARRATIVE_TRAJECTORY } from "./trajectories/jesus";
 export { METAMORPHOSIS_TRAJECTORY } from "./trajectories/metamorphosis";
+export { LODGEPOLE_FIRE_TRAJECTORY } from "./trajectories/lodgepole";
 
 export {
   EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,

@@ -5,6 +5,7 @@
  */
 
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import {
@@ -15,13 +16,17 @@ import {
   EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
   epistemicLabel,
   findEdge,
+  getSpiralLens,
+  heldTrajectories,
   isCitableSource,
+  LODGEPOLE_FIRE_TRAJECTORY,
   getTrajectory,
   occurrencesForRelationship,
   orderedEdges,
   outgoingEdges,
   relationshipsForTrajectory,
   resolveRelationshipConcept,
+  resolveSpan,
   sinkStepIds,
   SPIRAL_EPISTEMIC_CATEGORIES,
   SPIRAL_EPISTEMIC_LEGEND,
@@ -42,6 +47,7 @@ import {
   type SpiralSourceRef,
   type SpiralTrajectory,
   type SpiralTrajectoryEdge,
+  type SpiralTrajectoryOutcome,
   type SpiralTrajectoryRelationship,
 } from "../lib/evolutionary-spiral";
 import {
@@ -858,6 +864,222 @@ check("2C.1.L provenance module reads no canonical data, relationships, or geome
   const source = readFileSync(path.resolve(__dirname, "../lib/evolutionary-spiral/comparisons/sources.ts"), "utf8");
   const specs = [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
   assert.deepEqual(specs, ["../types", "./validate"]);
+});
+
+/* ------------------------------------------------------------------ */
+/* Phase 2D — Greater Yellowstone lodgepole trajectory (held, not live) */
+/* ------------------------------------------------------------------ */
+
+const LP = LODGEPOLE_FIRE_TRAJECTORY;
+const LP_STEPS = [
+  "mature-stand",
+  "crown-fire",
+  "burned-stand",
+  "establishment",
+  "dense-cohort",
+  "sparse-cohort",
+  "minimal-recruitment",
+  "young-stand",
+  "sparse-woodland",
+  "reburn",
+];
+const LP_EDGES: [string, string, SpiralTrajectoryOutcome | undefined][] = [
+  ["mature-stand", "crown-fire", undefined],
+  ["crown-fire", "burned-stand", undefined],
+  ["burned-stand", "establishment", "continues"],
+  ["establishment", "dense-cohort", undefined],
+  ["establishment", "sparse-cohort", undefined],
+  ["establishment", "minimal-recruitment", "failure"],
+  ["dense-cohort", "young-stand", "continues"],
+  ["sparse-cohort", "young-stand", undefined],
+  ["sparse-cohort", "sparse-woodland", "reorganization"],
+  ["young-stand", "mature-stand", "recovery"],
+  ["young-stand", "reburn", undefined],
+  ["reburn", "sparse-cohort", undefined],
+  ["reburn", "minimal-recruitment", "failure"],
+];
+
+check("2D held trajectories validate with the build-gate validator, alongside live data", () => {
+  assert.deepEqual(
+    validateSpiralComparisons(SPIRAL_TRAJECTORY_RELATIONSHIPS, [
+      ...authoredTrajectories(),
+      ...heldTrajectories(),
+    ]),
+    [],
+  );
+});
+
+check("2D.A lodgepole trajectory validates: topology, sources, names", () => {
+  assert.deepEqual(validateTrajectoryTopology(LP), []);
+  assert.deepEqual(validateTrajectorySources(LP), []);
+  assert.deepEqual(validateSpiralComparisons([], [LP]), []);
+});
+
+check("2D.B/C empirical standard, branching shape, ecology lens", () => {
+  assert.equal(LP.evidenceStandard, "empirical");
+  assert.equal(LP.shape, "branching");
+  assert.equal(LP.lensId, "ecology");
+});
+
+check("2D.D explicit topology is used", () => {
+  assert.equal(topologySource(LP), "explicit");
+});
+
+check("2D.E expected steps exist, in authored order", () => {
+  assert.deepEqual(LP.steps.map((s) => s.id), LP_STEPS);
+});
+
+check("2D.F expected edges and outcomes exist — and nothing else", () => {
+  assert.deepEqual(
+    trajectoryEdges(LP).map((e) => [e.from, e.to, e.outcome]),
+    LP_EDGES,
+  );
+});
+
+check("2D.G no adjacency edges are invented from step order", () => {
+  const authored = new Set(LP_EDGES.map(([f, t]) => `${f}>${t}`));
+  for (const e of orderedEdges(LP)) {
+    if (authored.has(`${e.from}>${e.to}`)) continue;
+    assert.equal(findEdge(LP, e.from, e.to), undefined, `${e.from} → ${e.to}`);
+  }
+  assert.equal(trajectoryEdges(LP).length, LP_EDGES.length);
+});
+
+check("2D.H both loops are representable as authored paths", () => {
+  const span = (from: string, to: string, via: string[]) =>
+    resolveSpan(LP, { kind: "span", from, to, via });
+  assert.ok(span("mature-stand", "mature-stand", ["crown-fire", "burned-stand", "establishment", "dense-cohort", "young-stand"]).ok);
+  assert.ok(span("young-stand", "young-stand", ["reburn", "sparse-cohort"]).ok);
+});
+
+check("2D.I/J minimal recruitment and sparse woodland are the only sinks", () => {
+  assert.deepEqual(sinkStepIds(LP), ["minimal-recruitment", "sparse-woodland"]);
+});
+
+check("2D.K a sink is where evidence stops, not a terminal ecological state", () => {
+  const issue = LP.researchIssues?.find((i) => i.id === "lp-unknown-futures");
+  assert.ok(issue);
+  assert.match(issue.body ?? "", /observed future remains uncertain/);
+  assert.match(issue.body ?? "", /not a terminal ecological state/);
+  assert.match(LP.framing ?? "", /not terminal ecological states/);
+  for (const sink of sinkStepIds(LP)) {
+    const step = LP.steps.find((s) => s.id === sink)!;
+    assert.deepEqual(Object.keys(step).sort(), ["id", "label"], sink);
+  }
+  // "failure" is scoped to an observational window wherever it is used.
+  for (const e of trajectoryEdges(LP).filter((x) => x.outcome === "failure")) {
+    assert.match(e.conditions ?? "", /within the observed window/, e.id);
+  }
+});
+
+check("2D.L every claim-bearing edge cites a citable source", () => {
+  for (const e of trajectoryEdges(LP)) {
+    assert.ok(edgeAssertsEvidence(e), e.id);
+    assert.ok((e.sources ?? []).some(isCitableSource), e.id);
+    for (const s of e.sources ?? []) assert.ok(s.supports?.trim(), `${e.id}/${s.id}`);
+  }
+});
+
+check("2D.L sources are only the verified dossier set, with stable identity", () => {
+  const ids = new Set(LP.sources!.map((s) => s.id));
+  assert.equal(ids.size, LP.sources!.length);
+  const cited = [
+    ...trajectoryEdges(LP).flatMap((e) => e.sources ?? []),
+    ...(LP.concepts ?? []).flatMap((c) => c.sources ?? []),
+  ];
+  for (const s of cited) {
+    const base = LP.sources!.find((x) => x.id === s.id);
+    assert.ok(base, s.id);
+    const { supports: _ignored, ...identity } = s;
+    assert.deepEqual(identity, base, s.id);
+  }
+  const kashian = LP.sources!.find((s) => s.id === "kashian-2005")!;
+  assert.equal(kashian.doi, undefined);
+  assert.equal(kashian.url, "https://www.jstor.org/stable/3450659");
+  for (const forbidden of ["donato", "davis", "walker"]) {
+    assert.ok(![...ids].some((id) => id.includes(forbidden)), forbidden);
+  }
+});
+
+check("2D.M model projections are research, never observed topology", () => {
+  for (const e of trajectoryEdges(LP)) {
+    assert.ok(!e.epistemicKinds?.includes("model-projection"), e.id);
+    for (const s of e.sources ?? []) {
+      assert.ok(!["hansen-2018", "turner-2022", "westerling-2011"].includes(s.id), `${e.id}/${s.id}`);
+    }
+  }
+  const projections = LP.concepts?.find((c) => c.id === "lp-projections");
+  assert.ok(projections?.epistemicKinds?.includes("model-projection"));
+  for (const id of ["hansen-2018", "turner-2022", "westerling-2011"]) {
+    assert.ok(projections!.sources!.some((s) => s.id === id && isCitableSource(s)), id);
+  }
+});
+
+check("2D.N no nonforest or regime-shift branch exists", () => {
+  for (const e of trajectoryEdges(LP)) {
+    assert.ok(!["regime-shift", "collapse"].includes(e.outcome ?? ""), e.id);
+  }
+  for (const s of LP.steps) {
+    assert.ok(!/nonforest|non-forest|grass|steppe|shrub|regime/i.test(s.label), s.id);
+  }
+});
+
+check("2D.O no Douglas-fir step or claim is merged in", () => {
+  assert.ok(!/douglas/i.test(JSON.stringify(LP)));
+});
+
+check("2D.P/Q zero Spiral relationships and zero arcs", () => {
+  assert.equal(relationshipsForTrajectory(LP.id).length, 0);
+  assert.ok(!SPIRAL_TRAJECTORY_RELATIONSHIPS.some((r) => r.trajectoryId === LP.id));
+  assert.equal(arcEndpointsForTrajectory(LP.id).length, 0);
+});
+
+check("2D.R no operation-name collision acknowledgement is needed", () => {
+  const names = new Set(SPIRAL_SEQUENCE.flatMap((s) => [s.stageId, (s.labelOverride ?? "").toLowerCase()]));
+  for (const s of LP.steps) assert.ok(!names.has(s.label.trim().toLowerCase()), s.id);
+  assert.ok(!validateSpiralComparisons([], [LP]).some((i) => i.code === "unacknowledged-name-collision"));
+  assert.equal(SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS.length, 0);
+});
+
+check("2D.S Emergence Again remains untouched", () => {
+  assert.equal(EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS.length, 0);
+  assert.ok(!arcEndpointsForTrajectory(LP.id).some((e) => e.occurrenceId === EMERGENCE_AGAIN));
+});
+
+check("2D held, not live: never selectable, never rendered by the current figure", () => {
+  assert.ok(!authoredTrajectories().some((t) => t.id === LP.id));
+  assert.equal(getTrajectory("ecology", LP.id), undefined);
+  assert.equal(defaultTrajectoryId("ecology"), null);
+  assert.equal(getSpiralLens("ecology")?.trajectories.length, 0);
+  assert.deepEqual(heldTrajectories().map((t) => t.id), [LP.id]);
+});
+
+check("2D.T existing trajectories and relationships are byte-identical", () => {
+  const hash = (v: unknown) => createHash("sha256").update(JSON.stringify(v)).digest("hex");
+  const expected: Record<string, string> = {
+    metamorphosis: "c059fe5f37ce91b2b301b677aeb7b43ece0ee527650bb937b15d2223bd36909a",
+    "jesus-narrative": "6b230ed587183d774a65c42a6c42557fa19c8d62692c77fc991d0a72f86c86a3",
+    "zodiac-cycle": "a7ef82d16d2f701d9f4751894ce30092e6f162bb989a827b17647a464e024c9d",
+  };
+  assert.deepEqual(
+    Object.fromEntries(authoredTrajectories().map((t) => [t.id, hash(t)])),
+    expected,
+  );
+  assert.equal(
+    hash(SPIRAL_TRAJECTORY_RELATIONSHIPS),
+    "b40977364b3b29415fc262e6110941274d91aabefae3625aaf03e003ba697773",
+  );
+});
+
+check("2D snapshot: arc counts unchanged with the held trajectory present", () => {
+  const expected: Record<string, number> = {
+    "symbolic-zodiac": 4,
+    "biblical-textual": 1,
+    "living-systems": 1,
+  };
+  for (const lensId of ["systems", "living-systems", "psychology", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
+    assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
+  }
 });
 
 if (failed > 0) {
