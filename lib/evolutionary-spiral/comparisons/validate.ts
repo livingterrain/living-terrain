@@ -1,4 +1,6 @@
 import { SPIRAL_SEQUENCE, SPIRAL_STAGES } from "../stages";
+import { EXPLICIT_TOPOLOGY_SHAPES, findEdge, resolveSpan } from "../topology";
+import { SPIRAL_SCALE_IDS } from "../types";
 import type {
   SpiralOperationRef,
   SpiralSequenceStop,
@@ -6,6 +8,7 @@ import type {
   SpiralTrajectory,
   SpiralTrajectoryRelationship,
 } from "../types";
+import { conceptMatches } from "./research";
 
 /**
  * Validation for authored trajectory ↔ Spiral relationships.
@@ -25,7 +28,20 @@ export type SpiralComparisonIssueCode =
   | "unknown-step"
   | "unknown-transition"
   | "unknown-span-endpoint"
-  | "unacknowledged-name-collision";
+  | "ambiguous-span"
+  | "invalid-span-path"
+  | "unknown-concept"
+  | "ambiguous-concept"
+  | "unknown-scale"
+  | "unacknowledged-name-collision"
+  | "duplicate-step-id"
+  | "missing-explicit-transitions"
+  | "duplicate-transition-id"
+  | "duplicate-transition"
+  | "unknown-transition-step"
+  | "unconnected-step"
+  | "divergence-requires-branching-shape"
+  | "duplicate-trajectory-concept";
 
 export type SpiralComparisonIssue = {
   code: SpiralComparisonIssueCode;
@@ -87,22 +103,113 @@ function normalize(label: string): string {
 }
 
 /**
- * Current, linear transition semantics: an explicit edge, or adjacent steps in
- * reading order (closing back to the start for cyclical trajectories).
+ * Topology is checked for malformed references only. Cycles, loops and
+ * revisits are valid; a step may lead to several next steps only in a
+ * branching or recurrent trajectory, which must declare its transitions.
  */
-function transitionExists(
+export function validateTrajectoryTopology(
   trajectory: SpiralTrajectory,
-  from: string,
-  to: string,
-): boolean {
-  if (trajectory.transitions?.some((e) => e.from === from && e.to === to)) {
-    return true;
+): SpiralComparisonIssue[] {
+  const issues: SpiralComparisonIssue[] = [];
+  const t = trajectory.id;
+  const stepIds = new Set<string>();
+  for (const step of trajectory.steps) {
+    if (stepIds.has(step.id)) {
+      issues.push({
+        code: "duplicate-step-id",
+        trajectoryId: t,
+        stepId: step.id,
+        message: `${t}/${step.id}: step id is used more than once.`,
+      });
+    }
+    stepIds.add(step.id);
   }
-  const ids = trajectory.steps.map((s) => s.id);
-  const i = ids.indexOf(from);
-  if (i < 0 || !ids.includes(to)) return false;
-  if (ids[i + 1] === to) return true;
-  return trajectory.shape === "cyclical" && i === ids.length - 1 && ids[0] === to;
+
+  const conceptIds = new Set<string>();
+  for (const concept of trajectory.concepts ?? []) {
+    if (conceptIds.has(concept.id)) {
+      issues.push({
+        code: "duplicate-trajectory-concept",
+        trajectoryId: t,
+        message: `${t}: concept id "${concept.id}" is used more than once.`,
+      });
+    }
+    conceptIds.add(concept.id);
+  }
+
+  if (EXPLICIT_TOPOLOGY_SHAPES.has(trajectory.shape) && !trajectory.transitions) {
+    issues.push({
+      code: "missing-explicit-transitions",
+      trajectoryId: t,
+      message: `${t}: a ${trajectory.shape} trajectory cannot be read from step order; declare its transitions.`,
+    });
+  }
+
+  if (!trajectory.transitions) return issues;
+
+  const edgeIds = new Set<string>();
+  const pairs = new Set<string>();
+  for (const edge of trajectory.transitions) {
+    if (edgeIds.has(edge.id)) {
+      issues.push({
+        code: "duplicate-transition-id",
+        trajectoryId: t,
+        message: `${t}: transition id "${edge.id}" is used more than once.`,
+      });
+    }
+    edgeIds.add(edge.id);
+    const pair = `${edge.from}\u0000${edge.to}`;
+    if (pairs.has(pair)) {
+      issues.push({
+        code: "duplicate-transition",
+        trajectoryId: t,
+        message: `${t}: more than one transition ${edge.from} → ${edge.to}.`,
+      });
+    }
+    pairs.add(pair);
+    for (const end of [edge.from, edge.to]) {
+      if (!stepIds.has(end)) {
+        issues.push({
+          code: "unknown-transition-step",
+          trajectoryId: t,
+          stepId: end,
+          message: `${t}: transition "${edge.id}" references unknown step "${end}".`,
+        });
+      }
+    }
+  }
+
+  if (trajectory.steps.length > 1) {
+    for (const step of trajectory.steps) {
+      const touched = trajectory.transitions.some(
+        (e) => e.from === step.id || e.to === step.id,
+      );
+      if (!touched) {
+        issues.push({
+          code: "unconnected-step",
+          trajectoryId: t,
+          stepId: step.id,
+          message: `${t}/${step.id}: no transition reaches or leaves this step.`,
+        });
+      }
+    }
+  }
+
+  if (!EXPLICIT_TOPOLOGY_SHAPES.has(trajectory.shape)) {
+    for (const step of trajectory.steps) {
+      const out = trajectory.transitions.filter((e) => e.from === step.id).length;
+      if (out > 1) {
+        issues.push({
+          code: "divergence-requires-branching-shape",
+          trajectoryId: t,
+          stepId: step.id,
+          message: `${t}/${step.id}: leads to ${out} steps, but the trajectory is ${trajectory.shape}.`,
+        });
+      }
+    }
+  }
+
+  return issues;
 }
 
 function validateOperation(
@@ -162,7 +269,7 @@ function validateAnchor(
         ];
   }
   if (anchor.kind === "transition") {
-    return transitionExists(trajectory, anchor.from, anchor.to)
+    return findEdge(trajectory, anchor.from, anchor.to)
       ? []
       : [
           {
@@ -172,13 +279,65 @@ function validateAnchor(
           },
         ];
   }
-  return [anchor.from, anchor.to]
-    .filter((id) => !has(id))
-    .map((id) => ({
+  const missing = [anchor.from, anchor.to].filter((id) => !has(id));
+  if (missing.length > 0) {
+    return missing.map((id) => ({
       code: "unknown-span-endpoint" as const,
       relationshipId: r.id,
       message: `${r.id}: span endpoint "${id}" is not in ${trajectory.id}.`,
     }));
+  }
+  const span = resolveSpan(trajectory, anchor);
+  if (span.ok) return [];
+  if (span.reason === "ambiguous") {
+    return [
+      {
+        code: "ambiguous-span",
+        relationshipId: r.id,
+        message: `${r.id}: ${anchor.from} … ${anchor.to} in ${trajectory.id} needs an authored path (via).`,
+      },
+    ];
+  }
+  return [
+    {
+      code: "invalid-span-path",
+      relationshipId: r.id,
+      message: `${r.id}: ${span.path.join(" → ")} is not a path of transitions in ${trajectory.id}.`,
+    },
+  ];
+}
+
+function validateResearch(
+  r: SpiralTrajectoryRelationship,
+  trajectory: SpiralTrajectory,
+): SpiralComparisonIssue[] {
+  const issues: SpiralComparisonIssue[] = [];
+  if (r.conceptId) {
+    const matches = conceptMatches(r, trajectory);
+    if (matches.length === 0) {
+      issues.push({
+        code: "unknown-concept",
+        relationshipId: r.id,
+        message: `${r.id}: concept "${r.conceptId}" is not in ${trajectory.id} or the stage research it names.`,
+      });
+    } else if (matches.length > 1) {
+      issues.push({
+        code: "ambiguous-concept",
+        relationshipId: r.id,
+        message: `${r.id}: concept "${r.conceptId}" exists in more than one scope (${matches
+          .map((m) => (m.scope === "stage" ? `stage:${m.stageId}` : "trajectory"))
+          .join(", ")}).`,
+      });
+    }
+  }
+  if (r.scale && !(SPIRAL_SCALE_IDS as readonly string[]).includes(r.scale.id)) {
+    issues.push({
+      code: "unknown-scale",
+      relationshipId: r.id,
+      message: `${r.id}: scale "${r.scale.id}" is not in the scale vocabulary.`,
+    });
+  }
+  return issues;
 }
 
 export type SpiralComparisonValidationOptions = {
@@ -197,7 +356,9 @@ export function validateSpiralComparisons(
   const acknowledgements =
     options.nameCollisionAcknowledgements ?? SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS;
   const multi = multiOccurrenceStageIds();
-  const issues: SpiralComparisonIssue[] = [];
+  const issues: SpiralComparisonIssue[] = trajectories.flatMap(
+    validateTrajectoryTopology,
+  );
   const seen = new Set<string>();
 
   for (const r of relationships) {
@@ -219,6 +380,7 @@ export function validateSpiralComparisons(
       });
     } else {
       issues.push(...validateAnchor(r, trajectory));
+      issues.push(...validateResearch(r, trajectory));
     }
 
     if (r.operations.length === 0) {

@@ -36,7 +36,10 @@ export type {
   SpiralRelationshipStatus,
   SpiralTrajectory,
   SpiralTrajectoryAnchor,
+  SpiralScaleId,
+  SpiralScaleRef,
   SpiralTrajectoryEdge,
+  SpiralTrajectoryOutcome,
   SpiralTrajectoryRelationship,
   SpiralTrajectoryResearchIssue,
   SpiralTrajectoryResonance,
@@ -48,8 +51,23 @@ export {
   SPIRAL_CURRENT_IDS,
   SPIRAL_DOMAIN_IDS,
   SPIRAL_LENS_ORDER,
+  SPIRAL_SCALE_IDS,
   SPIRAL_STAGE_IDS,
+  SPIRAL_TRAJECTORY_OUTCOMES,
 } from "./types";
+
+export {
+  EXPLICIT_TOPOLOGY_SHAPES,
+  findEdge,
+  orderedEdges,
+  outgoingEdges,
+  resolveSpan,
+  sinkStepIds,
+  topologySource,
+  trajectoryEdges,
+} from "./topology";
+
+export type { SpiralSpanResolution, SpiralTopologySource } from "./topology";
 
 export {
   SPIRAL_SEQUENCE,
@@ -120,6 +138,7 @@ export {
   ZODIAC_RELATIONSHIPS,
   anchorLabel,
   anchorStepIds,
+  conceptMatches,
   isDrawableCorrespondence,
   multiOccurrenceStageIds,
   occurrencesForRelationship,
@@ -127,13 +146,16 @@ export {
   relationshipsForStep,
   relationshipsForStop,
   relationshipsForTrajectory,
+  resolveRelationshipConcept,
   validateSpiralComparisons,
+  validateTrajectoryTopology,
 } from "./comparisons";
 
 export type {
   SpiralComparisonIssue,
   SpiralComparisonIssueCode,
   SpiralComparisonValidationOptions,
+  SpiralConceptMatch,
   SpiralNameCollisionAcknowledgement,
 } from "./comparisons";
 

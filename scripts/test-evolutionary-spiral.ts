@@ -8,19 +8,32 @@ import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import {
+  anchorStepIds,
   authoredTrajectories,
   defaultTrajectoryId,
   EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
+  findEdge,
   getTrajectory,
   occurrencesForRelationship,
+  orderedEdges,
+  outgoingEdges,
   relationshipsForTrajectory,
+  resolveRelationshipConcept,
+  sinkStepIds,
   SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS,
+  SPIRAL_SCALE_IDS,
   SPIRAL_SEQUENCE,
+  SPIRAL_TRAJECTORY_OUTCOMES,
   SPIRAL_TRAJECTORY_RELATIONSHIPS,
+  topologySource,
+  trajectoryEdges,
   validateSpiralComparisons,
+  validateTrajectoryTopology,
   type SpiralComparisonIssueCode,
   type SpiralLensId,
+  type SpiralScaleId,
   type SpiralTrajectory,
+  type SpiralTrajectoryEdge,
   type SpiralTrajectoryRelationship,
 } from "../lib/evolutionary-spiral";
 import {
@@ -335,6 +348,292 @@ check("O. exact operation-name collision requires acknowledgement, not rejection
     steps: [{ id: "x", label: "Renewal effect" }, { id: "y", label: "Adult emergence" }],
   };
   assert.deepEqual(validateSpiralComparisons([], [near]), []);
+});
+
+/* ------------------------------------------------------------------ */
+/* Phase 2B — trajectory topology (neutral fixtures; no real content) */
+/* ------------------------------------------------------------------ */
+
+const step = (id: string) => ({ id, label: `Step ${id.toUpperCase()}` });
+const edge = (from: string, to: string, extra: Partial<SpiralTrajectoryEdge> = {}) => ({
+  id: `${from}-${to}`,
+  from,
+  to,
+  ...extra,
+});
+
+/** a → b; b → c | d | e; c → f; d → g; e ends. Array order is deliberately misleading. */
+const BRANCHING: SpiralTrajectory = {
+  ...FIXTURE,
+  id: "branching-fixture",
+  shape: "branching",
+  steps: ["a", "b", "c", "d", "e", "f", "g"].map(step),
+  transitions: [
+    edge("a", "b"),
+    edge("b", "c", { outcome: "recovery" }),
+    edge("b", "d", { outcome: "regime-shift", conditions: "Neutral fixture condition." }),
+    edge("b", "e", { outcome: "collapse" }),
+    edge("c", "f", { outcome: "reorganization" }),
+    edge("d", "g", { outcome: "failure" }),
+  ],
+};
+
+/** a → b → c → b, with an exit c → d. */
+const LOOP: SpiralTrajectory = {
+  ...FIXTURE,
+  id: "loop-fixture",
+  shape: "recurrent",
+  steps: ["a", "b", "c", "d"].map(step),
+  transitions: [edge("a", "b"), edge("b", "c"), edge("c", "b"), edge("c", "d")],
+};
+
+function topo(t: SpiralTrajectory): SpiralComparisonIssueCode[] {
+  return validateTrajectoryTopology(t).map((i) => i.code);
+}
+
+check("2B.K current trajectories validate their topology", () => {
+  for (const t of authoredTrajectories()) assert.deepEqual(topo(t), [], t.id);
+});
+
+check("2B.K current trajectories keep ordered topology (no explicit transitions yet)", () => {
+  for (const t of authoredTrajectories()) {
+    assert.equal(topologySource(t), "ordered", t.id);
+    assert.deepEqual(
+      trajectoryEdges(t).map((e) => [e.from, e.to]),
+      t.steps.slice(1).map((s, i) => [t.steps[i]!.id, s.id]),
+      t.id,
+    );
+  }
+});
+
+check("2B.L current relationship anchors resolve exactly as before", () => {
+  const covered = (id: string) => {
+    const r = SPIRAL_TRAJECTORY_RELATIONSHIPS.find((x) => x.id === id)!;
+    const t = authoredTrajectories().find((x) => x.id === r.trajectoryId)!;
+    return anchorStepIds(t, r.anchor);
+  };
+  assert.deepEqual(covered("jesus-res-transformation-death-resurrection"), [
+    "death",
+    "burial-silence",
+    "resurrection",
+  ]);
+  assert.deepEqual(covered("meta-res-transformation-reorganization"), [
+    "metamorphic-transition",
+    "tissue-destruction",
+    "tissue-remodeling",
+  ]);
+  assert.deepEqual(covered("zod-res-transformation-pisces-aries"), ["pisces", "aries-again"]);
+});
+
+check("2B rendered lenses hold only topology the current figure draws", () => {
+  // The figure reads steps in order. A branching, recurrent, or re-ordered
+  // trajectory needs a topology-aware figure before it can join a lens.
+  for (const t of authoredTrajectories()) {
+    assert.ok(["cyclical", "directional", "process"].includes(t.shape), t.id);
+    assert.deepEqual(
+      trajectoryEdges(t).map((e) => `${e.from}>${e.to}`),
+      orderedEdges(t).map((e) => `${e.from}>${e.to}`),
+      t.id,
+    );
+  }
+});
+
+check("2B.A every explicit transition must reference real steps", () => {
+  assert.deepEqual(topo(BRANCHING), []);
+  assert.deepEqual(
+    topo({ ...BRANCHING, transitions: [...BRANCHING.transitions!, edge("g", "nowhere")] }),
+    ["unknown-transition-step"],
+  );
+});
+
+check("2B.B duplicate transition ids fail; duplicate from → to fails", () => {
+  assert.deepEqual(
+    topo({ ...BRANCHING, transitions: [...BRANCHING.transitions!, { ...edge("e", "g"), id: "a-b" }] }),
+    ["duplicate-transition-id"],
+  );
+  assert.deepEqual(
+    topo({ ...BRANCHING, transitions: [...BRANCHING.transitions!, { ...edge("a", "b"), id: "again" }] }),
+    ["duplicate-transition"],
+  );
+});
+
+check("2B.C branching or recurrent trajectory without explicit transitions fails", () => {
+  assert.deepEqual(topo({ ...BRANCHING, transitions: undefined }), ["missing-explicit-transitions"]);
+  assert.deepEqual(topo({ ...LOOP, transitions: undefined }), ["missing-explicit-transitions"]);
+});
+
+check("2B a linear shape cannot hide a branch", () => {
+  assert.deepEqual(topo({ ...BRANCHING, shape: "directional" }), [
+    "divergence-requires-branching-shape",
+  ]);
+});
+
+check("2B every step of an explicit topology is connected", () => {
+  assert.deepEqual(
+    topo({ ...BRANCHING, steps: [...BRANCHING.steps, step("h")] }),
+    ["unconnected-step"],
+  );
+});
+
+check("2B.D explicit transitions are authoritative — no adjacency edges invented", () => {
+  assert.ok(findEdge(BRANCHING, "b", "d"));
+  for (const [from, to] of [["c", "d"], ["d", "e"], ["e", "f"], ["f", "g"]] as const) {
+    assert.equal(findEdge(BRANCHING, from, to), undefined, `${from} → ${to}`);
+    assert.deepEqual(
+      codes([rel({ trajectoryId: BRANCHING.id, anchor: { kind: "transition", from, to } })], [BRANCHING]),
+      ["unknown-transition"],
+    );
+  }
+  assert.equal(trajectoryEdges(BRANCHING).length, 6);
+});
+
+check("2B a branch may end — sinks are derived, not flagged", () => {
+  assert.deepEqual(sinkStepIds(BRANCHING), ["e", "f", "g"]);
+  assert.deepEqual(
+    outgoingEdges(BRANCHING, "b").map((e) => e.to),
+    ["c", "d", "e"],
+  );
+});
+
+/** a → b → c → b, with no way out. */
+const CLOSED_LOOP: SpiralTrajectory = {
+  ...LOOP,
+  id: "closed-loop-fixture",
+  steps: ["a", "b", "c"].map(step),
+  transitions: [edge("a", "b"), edge("b", "c"), edge("c", "b")],
+};
+
+check("2B.E cycles are valid", () => {
+  assert.deepEqual(topo(LOOP), []);
+  assert.deepEqual(topo(CLOSED_LOOP), []);
+  assert.deepEqual(sinkStepIds(CLOSED_LOOP), []);
+  assert.deepEqual(topo({ ...CLOSED_LOOP, shape: "cyclical" }), []);
+  assert.deepEqual(topo({ ...CLOSED_LOOP, transitions: [...CLOSED_LOOP.transitions!, edge("c", "c")] }), []);
+});
+
+check("2B.F malformed cycles fail only on bad references", () => {
+  const malformed = {
+    ...CLOSED_LOOP,
+    transitions: [edge("a", "b"), edge("b", "c"), edge("c", "missing")],
+  };
+  assert.deepEqual(topo(malformed), ["unknown-transition-step"]);
+});
+
+check("2B.G ambiguous branch spans fail", () => {
+  const span = (via?: string[]) =>
+    codes([rel({ trajectoryId: BRANCHING.id, anchor: { kind: "span", from: "a", to: "f", via } })], [BRANCHING]);
+  assert.deepEqual(span(), ["ambiguous-span"]);
+  assert.deepEqual(span(["b"]), ["invalid-span-path"]);
+  assert.deepEqual(span(["b", "d"]), ["invalid-span-path"]);
+  assert.deepEqual(span(["b", "missing"]), ["invalid-span-path"]);
+});
+
+check("2B.H explicitly authored branch path validates and resolves exactly", () => {
+  const r = rel({ trajectoryId: BRANCHING.id, anchor: { kind: "span", from: "a", to: "f", via: ["b", "c"] } });
+  assert.deepEqual(codes([r], [BRANCHING]), []);
+  assert.deepEqual(anchorStepIds(BRANCHING, r.anchor), ["a", "b", "c", "f"]);
+  const direct = rel({ trajectoryId: BRANCHING.id, anchor: { kind: "span", from: "b", to: "e" } });
+  assert.deepEqual(codes([direct], [BRANCHING]), []);
+  assert.deepEqual(anchorStepIds(BRANCHING, direct.anchor), ["b", "e"]);
+});
+
+check("2B a span may follow a loop", () => {
+  const r = rel({ trajectoryId: LOOP.id, anchor: { kind: "span", from: "a", to: "d", via: ["b", "c", "b", "c"] } });
+  assert.deepEqual(codes([r], [LOOP]), []);
+});
+
+check("2B ordered spans: in order without via; reversed fails", () => {
+  assert.deepEqual(codes([rel({ anchor: { kind: "span", from: "a", to: "c" } })]), []);
+  assert.deepEqual(codes([rel({ anchor: { kind: "span", from: "c", to: "a" } })]), ["invalid-span-path"]);
+  assert.deepEqual(codes([rel({ anchor: { kind: "span", from: "a", to: "c", via: ["b"] } })]), []);
+  assert.deepEqual(codes([rel({ anchor: { kind: "span", from: "a", to: "c", via: ["c"] } })]), ["invalid-span-path"]);
+});
+
+check("2B.I outcomes are domain vocabulary and create no relationship", () => {
+  const names = new Set<string>([
+    ...SPIRAL_SEQUENCE.map((s) => s.stageId),
+    ...SPIRAL_SEQUENCE.map((s) => (s.labelOverride ?? "").toLowerCase()),
+    "organization", "disruption", "renewal", "transformation",
+  ]);
+  for (const o of SPIRAL_TRAJECTORY_OUTCOMES) assert.ok(!names.has(o), o);
+  assert.equal(arcEndpointsFromRelationships([]).length, 0);
+  // A record on a "failure" edge is drawn only by its own status and operations.
+  const r = rel({ trajectoryId: BRANCHING.id, anchor: { kind: "transition", from: "d", to: "g" } });
+  assert.deepEqual(arcEndpointsFromRelationships([r]).map((e) => e.occurrenceId), [TRANSFORMATION]);
+  assert.equal(r.status, "candidate");
+});
+
+check("2B.J zero comparison records give zero arcs, whatever the topology", () => {
+  for (const t of [BRANCHING, LOOP, FIXTURE]) {
+    const records = SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((r) => r.trajectoryId === t.id);
+    assert.equal(records.length, 0, t.id);
+    assert.equal(arcEndpointsFromRelationships(records).length, 0, t.id);
+  }
+});
+
+check("2B a trajectory loop is not Emergence Again", () => {
+  const r = rel({ trajectoryId: LOOP.id, anchor: { kind: "transition", from: "c", to: "b" } });
+  assert.deepEqual(codes([r], [LOOP]), []);
+  assert.deepEqual(arcEndpointsFromRelationships([r]).map((e) => e.occurrenceId), [TRANSFORMATION]);
+});
+
+check("2B comparison break on a collapse edge: valid record, no arc", () => {
+  const r = rel({
+    trajectoryId: BRANCHING.id,
+    anchor: { kind: "transition", from: "b", to: "e" },
+    status: "comparison-break",
+  });
+  assert.deepEqual(codes([r], [BRANCHING]), []);
+  assert.equal(arcEndpointsFromRelationships([r]).length, 0);
+});
+
+check("2B trajectory-owned research resolves exactly once, never by guess", () => {
+  const concept = { id: "fixture-concept", title: "Fixture concept", summary: "Neutral." };
+  const owning: SpiralTrajectory = { ...FIXTURE, concepts: [concept] };
+  const r = rel({ conceptId: "fixture-concept" });
+  assert.deepEqual(codes([r], [owning]), []);
+  assert.equal(resolveRelationshipConcept(r, owning)?.scope, "trajectory");
+  assert.deepEqual(codes([rel({ conceptId: "nowhere" })], [owning]), ["unknown-concept"]);
+  // Stage-local research for the trajectory's lens still resolves.
+  const staged = rel({ conceptId: "bio-metamorphosis" });
+  assert.deepEqual(codes([staged]), []);
+  assert.equal(resolveRelationshipConcept(staged, FIXTURE)?.scope, "stage");
+  // The same id in two scopes is refused, not chosen.
+  const shadowing: SpiralTrajectory = {
+    ...FIXTURE,
+    concepts: [{ ...concept, id: "bio-metamorphosis" }],
+  };
+  assert.deepEqual(codes([staged], [shadowing]), ["ambiguous-concept"]);
+  assert.equal(resolveRelationshipConcept(staged, shadowing), undefined);
+  assert.deepEqual(
+    topo({ ...FIXTURE, concepts: [concept, concept] }),
+    ["duplicate-trajectory-concept"],
+  );
+});
+
+check("2B current relationship concepts resolve to stage research", () => {
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((x) => x.conceptId)) {
+    const t = authoredTrajectories().find((x) => x.id === r.trajectoryId)!;
+    assert.equal(resolveRelationshipConcept(r, t)?.scope, "stage", r.id);
+  }
+});
+
+check("2B scale is a controlled, flat vocabulary", () => {
+  assert.deepEqual(codes([rel({ scale: { id: "organism", note: "Neutral." } })]), []);
+  assert.deepEqual(
+    codes([rel({ scale: { id: "cosmos" as SpiralScaleId } })]),
+    ["unknown-scale"],
+  );
+  for (const id of SPIRAL_SCALE_IDS) {
+    assert.ok(!SPIRAL_SEQUENCE.some((s) => (s.stageId as string) === id), id);
+  }
+  assert.ok(SPIRAL_TRAJECTORY_RELATIONSHIPS.every((r) => r.scale === undefined));
+});
+
+check("2B topology module reads no relationships, operations, or geometry", () => {
+  const source = readFileSync(path.resolve(__dirname, "../lib/evolutionary-spiral/topology.ts"), "utf8");
+  const specs = [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
+  assert.deepEqual(specs, ["./types"]);
 });
 
 if (failed > 0) {

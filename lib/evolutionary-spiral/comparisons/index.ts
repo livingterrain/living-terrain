@@ -1,4 +1,5 @@
 import { SPIRAL_SEQUENCE } from "../stages";
+import { resolveSpan } from "../topology";
 import type {
   SpiralRelationshipStatus,
   SpiralSequenceStop,
@@ -101,18 +102,15 @@ export function occurrencesForRelationship(
   );
 }
 
-/** Step ids an anchor covers, in trajectory order. */
+/** Step ids an anchor covers, along its authored path. Unresolvable spans cover nothing. */
 export function anchorStepIds(
   trajectory: SpiralTrajectory,
   anchor: SpiralTrajectoryAnchor,
 ): string[] {
   if (anchor.kind === "step") return [anchor.stepId];
   if (anchor.kind === "transition") return [anchor.from, anchor.to];
-  const ids = trajectory.steps.map((s) => s.id);
-  const a = ids.indexOf(anchor.from);
-  const b = ids.indexOf(anchor.to);
-  if (a < 0 || b < 0) return [];
-  return ids.slice(Math.min(a, b), Math.max(a, b) + 1);
+  const span = resolveSpan(trajectory, anchor);
+  return span.ok ? [...span.path] : [];
 }
 
 /** Authored relationships whose anchor touches a step. */
@@ -146,7 +144,10 @@ export {
   isDrawableCorrespondence,
   multiOccurrenceStageIds,
   validateSpiralComparisons,
+  validateTrajectoryTopology,
 } from "./validate";
+export { conceptMatches, resolveRelationshipConcept } from "./research";
+export type { SpiralConceptMatch } from "./research";
 export type {
   SpiralComparisonIssue,
   SpiralComparisonIssueCode,
