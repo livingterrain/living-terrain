@@ -32,8 +32,15 @@ export type {
   SpiralStage,
   SpiralStageExploration,
   SpiralStageId,
+  SpiralOperationRef,
+  SpiralRelationshipStatus,
   SpiralTrajectory,
+  SpiralTrajectoryAnchor,
+  SpiralTrajectoryEdge,
+  SpiralTrajectoryRelationship,
+  SpiralTrajectoryResearchIssue,
   SpiralTrajectoryResonance,
+  SpiralTrajectoryShape,
   SpiralTrajectoryStep,
 } from "./types";
 
@@ -85,6 +92,7 @@ export {
 export {
   SPIRAL_LENSES,
   SPIRAL_LENS_IDS,
+  authoredTrajectories,
   defaultTrajectoryId,
   getIntersection,
   getSpiralLens,
@@ -98,6 +106,32 @@ export {
 export type { SpiralIntersection } from "./lenses";
 
 export { ZODIAC_CYCLE_STEPS, ZODIAC_CYCLE_TRAJECTORY } from "./trajectories/zodiac";
+export { JESUS_NARRATIVE_TRAJECTORY } from "./trajectories/jesus";
+export { METAMORPHOSIS_TRAJECTORY } from "./trajectories/metamorphosis";
+
+export {
+  JESUS_RELATIONSHIPS,
+  METAMORPHOSIS_RELATIONSHIPS,
+  SPIRAL_RELATIONSHIP_STATUS,
+  SPIRAL_TRAJECTORY_RELATIONSHIPS,
+  ZODIAC_RELATIONSHIPS,
+  anchorLabel,
+  anchorStepIds,
+  occurrencesForRelationship,
+  relationshipStatusLabel,
+  relationshipsForStep,
+  relationshipsForStop,
+  relationshipsForTrajectory,
+} from "./comparisons";
+
+export {
+  TRAJECTORY_WHEEL,
+  wheelHitStyle,
+  wheelNodes,
+  wheelSegments,
+} from "./trajectory-geometry";
+
+export type { WheelNode, WheelSegment } from "./trajectory-geometry";
 
 export { ZODIAC_LENS_RESEARCH } from "./research/zodiac";
 

@@ -1,7 +1,10 @@
 import { examplesForStage } from "./examples";
 import { getStageExploration } from "./exploration";
 import { SPIRAL_SEQUENCE } from "./stages";
+import { relationshipsForStop } from "./comparisons";
 import { ZODIAC_LENS_RESEARCH } from "./research/zodiac";
+import { JESUS_NARRATIVE_TRAJECTORY } from "./trajectories/jesus";
+import { METAMORPHOSIS_TRAJECTORY } from "./trajectories/metamorphosis";
 import { ZODIAC_CYCLE_TRAJECTORY } from "./trajectories/zodiac";
 import type {
   SpiralCycleContextTransition,
@@ -11,13 +14,13 @@ import type {
   SpiralLensId,
   SpiralSequenceStop,
   SpiralTrajectory,
-  SpiralTrajectoryResonance,
+  SpiralTrajectoryRelationship,
 } from "./types";
 
 /**
  * Whole-helix lenses — the "View through" control.
- * A lens persists across operations; stage-local research is read as
- * lens × operation. Forthcoming trajectories are names only, not mappings.
+ * A lens persists across operations; its trajectory is laid against the
+ * whole Spiral. Forthcoming trajectories are names only, not mappings.
  */
 export const SPIRAL_LENSES: readonly SpiralLens[] = [
   {
@@ -29,6 +32,7 @@ export const SPIRAL_LENSES: readonly SpiralLens[] = [
       "A structural lens: it frames questions about organization; it does not supply one shared mechanism.",
     inPhrase: "systems",
     trajectories: [],
+    forthcoming: ["Regime shift / adaptive-cycle trajectories"],
     status: "available",
   },
   {
@@ -39,8 +43,8 @@ export const SPIRAL_LENSES: readonly SpiralLens[] = [
     evidence:
       "Empirical research on living systems—the instrument’s primary anchor, and still specific to life.",
     inPhrase: "living systems",
-    trajectories: [],
-    forthcoming: ["Metamorphosis", "Wound healing"],
+    trajectories: [METAMORPHOSIS_TRAJECTORY],
+    forthcoming: ["Wound healing", "Autophagy", "Development"],
     status: "available",
   },
   {
@@ -52,7 +56,7 @@ export const SPIRAL_LENSES: readonly SpiralLens[] = [
       "Empirical and clinical research of varying strength—each concept is marked.",
     inPhrase: "psychological life",
     trajectories: [],
-    forthcoming: ["Grief", "Learning", "Identity revision"],
+    forthcoming: ["Grief", "Memory updating", "Developmental transition"],
     status: "available",
   },
   {
@@ -64,7 +68,7 @@ export const SPIRAL_LENSES: readonly SpiralLens[] = [
       "Empirical ecology: recovery is observed, never guaranteed.",
     inPhrase: "ecosystems",
     trajectories: [],
-    forthcoming: ["Disturbance & succession", "Regime shifts"],
+    forthcoming: ["Disturbance & succession", "Regime shift", "Recovery"],
     status: "available",
   },
   {
@@ -75,8 +79,7 @@ export const SPIRAL_LENSES: readonly SpiralLens[] = [
     evidence:
       "Textual, historical, and theological interpretation—not empirical mechanism.",
     inPhrase: "the biblical narrative",
-    trajectories: [],
-    forthcoming: ["The Jesus narrative across the whole helix"],
+    trajectories: [JESUS_NARRATIVE_TRAJECTORY],
     status: "available",
   },
   {
@@ -125,28 +128,34 @@ export function getTrajectory(
   return getSpiralLens(lensId)?.trajectories.find((t) => t.id === trajectoryId);
 }
 
-/** Authored resonances for one occurrence. Zero is valid. */
+/** Every authored trajectory, in lens order. */
+export function authoredTrajectories(): SpiralTrajectory[] {
+  return SPIRAL_LENSES.flatMap((l) => l.trajectories);
+}
+
+/** @deprecated Prefer relationshipsForStop. */
 export function resonancesForStop(
   trajectory: SpiralTrajectory | undefined,
   stop: SpiralSequenceStop,
-): SpiralTrajectoryResonance[] {
-  if (!trajectory) return [];
-  return trajectory.resonances.filter(
-    (r) =>
-      r.stageId === stop.stageId &&
-      (!r.occurrenceId || r.occurrenceId === stop.occurrenceId),
-  );
+): SpiralTrajectoryRelationship[] {
+  return relationshipsForStop(trajectory?.id, stop);
 }
 
-/** Full transition annotation behind a resonance, when it exists. */
+/** Full transition annotation behind a relationship, when it exists. */
 export function transitionForResonance(
-  resonance: SpiralTrajectoryResonance,
+  relationship: SpiralTrajectoryRelationship,
   lensId: SpiralLensId,
 ): SpiralCycleContextTransition | undefined {
-  if (!resonance.transitionId || lensId === "across") return undefined;
-  return getStageExploration(resonance.stageId)
-    ?.lenses.find((l) => l.lensId === lensId)
-    ?.cycleContext?.transitions?.find((t) => t.id === resonance.transitionId);
+  if (!relationship.transitionId || lensId === "across") return undefined;
+  for (const ref of relationship.operations) {
+    const found = getStageExploration(ref.stageId)
+      ?.lenses.find((l) => l.lensId === lensId)
+      ?.cycleContext?.transitions?.find(
+        (t) => t.id === relationship.transitionId,
+      );
+    if (found) return found;
+  }
+  return undefined;
 }
 
 export type SpiralIntersection = {
@@ -154,7 +163,8 @@ export type SpiralIntersection = {
   exploration?: SpiralLensExploration;
   /** Seeded Phase 1 examples for this lens × stage. */
   examples: SpiralExample[];
-  resonances: SpiralTrajectoryResonance[];
+  /** Authored relationships between the active trajectory and this operation. */
+  resonances: SpiralTrajectoryRelationship[];
   /** Across scaffold for this stage, when Across is active. */
   hasAcross: boolean;
 };
@@ -178,7 +188,7 @@ export function getIntersection(
     examples: examplesForStage(stop.stageId).filter(
       (e) => e.domainId === lensId,
     ),
-    resonances: resonancesForStop(trajectory, stop),
+    resonances: relationshipsForStop(trajectory?.id, stop),
     hasAcross: false,
   };
 }

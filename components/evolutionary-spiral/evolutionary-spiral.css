@@ -850,8 +850,42 @@
   color: var(--color-charcoal-faint);
 }
 
-.spiral-helix__lens span {
+.spiral-helix__lens > span:first-child {
   color: var(--color-gold-muted);
+}
+
+.spiral-helix__lens-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: none;
+}
+
+.spiral-helix__lens-diamond {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--color-gold);
+  transform: rotate(45deg);
+}
+
+/* Reference grammar recedes slightly while a trajectory is laid against it. */
+.spiral-helix--quiet .spiral-helix__space {
+  opacity: 0.72;
+  transition: opacity 0.5s var(--ease-breath, ease-out);
+}
+
+.spiral-helix__node-related {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-gold) 60%, transparent);
+  stroke-width: 0.35;
+}
+
+.spiral-helix__node-related--emphasized {
+  fill: color-mix(in srgb, var(--color-gold) 28%, transparent);
+  stroke-width: 0.8;
 }
 
 /* ── Whole-instrument lens control ("View the whole Spiral through") ── */
@@ -864,43 +898,13 @@
   outline: none;
 }
 
-.spiral-lens-rail__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.25rem 1rem;
-  margin-bottom: 0.5rem;
-}
-
 .spiral-lens-rail__orient {
-  margin: 0;
+  margin: 0 0 0.5rem;
   font-family: var(--font-body);
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-gold-muted);
-}
-
-.spiral-lens-rail__clear {
-  min-height: 2.75rem;
-  padding: 0 0.25rem;
-  border: none;
-  background: none;
-  font-family: var(--font-body);
-  font-size: 0.6875rem;
-  letter-spacing: 0.1em;
-  color: var(--color-charcoal-faint);
-  cursor: pointer;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--color-gold-muted) 35%, transparent);
-  text-underline-offset: 0.2em;
-}
-
-.spiral-lens-rail__clear:hover,
-.spiral-lens-rail__clear:focus-visible {
-  color: var(--color-ivory);
-  outline: none;
 }
 
 .spiral-lens-rail__track {
@@ -944,11 +948,11 @@
   color: var(--color-charcoal-faint);
 }
 
-.spiral-lens-rail__hint {
-  margin-top: 0.85rem;
-  font-size: 0.9rem;
-  line-height: 1.55;
-  color: var(--color-charcoal-faint);
+.spiral-lens-rail__btn--spiral {
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
 }
 
 /* ── Lens context — whole trajectory, persists across operations ── */
@@ -1016,8 +1020,519 @@
   scroll-margin-top: 6rem;
 }
 
+.spiral-lens-context__progress {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-charcoal-muted);
+}
+
+/* ── Active trajectory ── */
+
+.spiral-trajectory__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.spiral-trajectory__tab {
+  min-height: 2.75rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-bottom: 1px solid transparent;
+  background: none;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--color-charcoal-muted);
+  cursor: pointer;
+}
+
+.spiral-trajectory__tab--selected {
+  color: var(--color-ivory);
+  border-bottom-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+}
+
+.spiral-trajectory__tab:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
+  outline-offset: 2px;
+}
+
+.spiral-trajectory__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+
 .spiral-trajectory__title {
-  margin-bottom: 0.4rem;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--color-ivory);
+}
+
+.spiral-trajectory__lens {
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-trajectory__shape {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold-muted);
+}
+
+.spiral-trajectory__desc {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-trajectory__summary {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-trajectory__step-detail {
+  padding: 0.6rem 0.85rem;
+  border-left: 1px solid color-mix(in srgb, var(--color-gold-muted) 45%, transparent);
+}
+
+.spiral-trajectory__step-name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--color-ivory);
+}
+
+.spiral-trajectory__step-rels {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-trajectory__step-none {
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-trajectory__issue {
+  border-top: 1px solid var(--spiral-rule);
+}
+
+.spiral-trajectory__issue-summary {
+  display: grid;
+  gap: 0.2rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.spiral-trajectory__issue-summary::-webkit-details-marker {
+  display: none;
+}
+
+.spiral-trajectory__issue-summary:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
+  outline-offset: 3px;
+}
+
+.spiral-trajectory__issue-label {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-muted);
+}
+
+.spiral-trajectory__issue-label::after {
+  content: " +";
+  letter-spacing: 0;
+}
+
+.spiral-trajectory__issue[open] .spiral-trajectory__issue-label::after {
+  content: " −";
+}
+
+.spiral-trajectory__issue-question {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--color-ivory);
+}
+
+.spiral-trajectory__issue-body {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-trajectory__issue-items {
+  margin: 0.4rem 0 0.75rem 1.1rem;
+  padding: 0;
+  list-style: disc;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-trajectory__research {
+  display: grid;
+  gap: 0.75rem;
+  padding-bottom: 1.25rem;
+}
+
+.spiral-trajectory__research-label {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-muted);
+}
+
+.spiral-trajectory__research-body {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-trajectory__research-note {
+  font-size: 0.8125rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-trajectory__research-break {
+  display: grid;
+  gap: 0.4rem;
+  padding-left: 0.85rem;
+  border-left: 1px solid color-mix(in srgb, var(--color-charcoal-muted) 40%, transparent);
+}
+
+.spiral-trajectory__sources {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-charcoal-faint);
+}
+
+/* ── Relationship status — always named in text; line style is a second cue ── */
+
+.spiral-wheel__rel.spiral-rel--dormant,
+.spiral-path__link.spiral-rel--dormant,
+.spiral-path__tag.spiral-rel--dormant {
+  opacity: 0.5;
+}
+
+.spiral-path__step--in-span.spiral-rel--dormant {
+  border-bottom-color: color-mix(in srgb, var(--color-gold) 45%, transparent);
+}
+
+/* Cyclical wheel */
+
+.spiral-wheel {
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
+  aspect-ratio: 240 / 206;
+}
+
+.spiral-wheel__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.spiral-wheel__seg {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 55%, transparent);
+  stroke-width: 0.9;
+}
+
+.spiral-wheel__arrow {
+  fill: color-mix(in srgb, var(--color-charcoal-muted) 70%, transparent);
+}
+
+.spiral-wheel__rel {
+  fill: none;
+  stroke-linecap: round;
+  stroke: var(--color-gold);
+  stroke-width: 2.4;
+  transition: opacity 0.3s var(--ease-breath, ease-out);
+}
+
+.spiral-wheel__rel.spiral-rel--context {
+  stroke: var(--color-charcoal-muted);
+  stroke-width: 2;
+  stroke-dasharray: 0.5 3;
+}
+
+.spiral-wheel__rel.spiral-rel--ambiguous {
+  stroke-dasharray: 4 3;
+  stroke-linecap: butt;
+}
+
+.spiral-wheel__rel.spiral-rel--textual-theological,
+.spiral-wheel__rel.spiral-rel--symbolic-analogy {
+  stroke-dasharray: 6 2 1 2;
+  stroke-linecap: butt;
+}
+
+.spiral-wheel__rel.spiral-rel--comparison-break {
+  stroke: var(--color-charcoal-muted);
+  stroke-dasharray: 1 2;
+}
+
+.spiral-wheel__ring {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 0.8;
+}
+
+.spiral-wheel__dot {
+  fill: var(--color-charcoal-muted);
+}
+
+.spiral-wheel__dot--recurrence {
+  fill: none;
+  stroke: var(--color-charcoal-muted);
+  stroke-width: 0.8;
+}
+
+.spiral-wheel__dot--selected {
+  fill: var(--color-ivory);
+}
+
+.spiral-wheel__label {
+  font-family: var(--font-heading);
+  font-size: 8.5px;
+  fill: var(--color-charcoal);
+}
+
+.spiral-wheel__label--recurrence {
+  font-style: italic;
+  fill: var(--color-charcoal-muted);
+}
+
+.spiral-wheel__label--selected {
+  fill: var(--color-ivory);
+}
+
+.spiral-wheel__hits {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.spiral-wheel__hit {
+  position: absolute;
+  width: 2.75rem;
+  height: 2.75rem;
+  transform: translate(-50%, -50%);
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.spiral-wheel__hit:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  outline-offset: -4px;
+}
+
+/* Directional / process path */
+
+.spiral-path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.spiral-path__item {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.spiral-path__link {
+  display: inline-block;
+  padding: 0 0.3rem;
+  font-size: 0.8rem;
+  color: color-mix(in srgb, var(--color-charcoal-faint) 80%, transparent);
+}
+
+.spiral-path--process .spiral-path__link {
+  width: 0.9rem;
+  height: 2px;
+  padding: 0;
+  background: color-mix(in srgb, var(--color-charcoal-muted) 45%, transparent);
+}
+
+.spiral-path__step {
+  min-height: 2.75rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--color-rule) 45%, transparent);
+  background: transparent;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  line-height: 1.2;
+  color: var(--color-charcoal);
+  cursor: pointer;
+  text-align: left;
+}
+
+.spiral-path--process .spiral-path__step {
+  border-radius: 999px;
+}
+
+.spiral-path__step:hover {
+  border-color: color-mix(in srgb, var(--color-gold-muted) 45%, transparent);
+}
+
+.spiral-path__step:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  outline-offset: 2px;
+}
+
+.spiral-path__step--selected {
+  color: var(--color-ivory);
+  border-color: color-mix(in srgb, var(--color-ivory) 55%, transparent);
+}
+
+.spiral-path__step--in-span {
+  border-bottom: 3px solid var(--color-gold);
+}
+
+.spiral-path__step--in-span.spiral-rel--textual-theological,
+.spiral-path__step--in-span.spiral-rel--symbolic-analogy {
+  border-bottom-style: double;
+}
+
+.spiral-path__step--in-span.spiral-rel--ambiguous {
+  border-bottom-style: dashed;
+}
+
+.spiral-path__step--in-span.spiral-rel--context,
+.spiral-path__step--in-span.spiral-rel--comparison-break {
+  border-bottom: 2px dotted var(--color-charcoal-muted);
+}
+
+.spiral-path__link--rel {
+  color: var(--color-gold);
+}
+
+.spiral-path--process .spiral-path__link--rel {
+  background: var(--color-gold);
+}
+
+.spiral-path__tag {
+  margin-left: 0.4rem;
+  padding: 0.15rem 0.4rem;
+  border-left: 2px solid var(--color-gold);
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-gold-muted);
+}
+
+.spiral-path__onward {
+  padding: 0 0.3rem;
+  font-size: 1.1rem;
+  color: var(--color-gold-muted);
+}
+
+/* ── Across scaffold ── */
+
+.spiral-across {
+  display: grid;
+  gap: 1rem;
+}
+
+.spiral-across__lede {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--color-ivory);
+}
+
+.spiral-across__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--color-charcoal);
+}
+
+.spiral-across__table th,
+.spiral-across__table td {
+  padding: 0.45rem 0.5rem 0.45rem 0;
+  border-bottom: 1px solid var(--spiral-rule);
+  text-align: left;
+  vertical-align: top;
+  font-weight: 400;
+}
+
+.spiral-across__table thead th {
+  font-family: var(--font-body);
+  font-size: 0.5625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-across__lens {
+  min-height: 2.75rem;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: var(--color-gold-muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-gold-muted) 40%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+.spiral-across__lens:hover,
+.spiral-across__lens:focus-visible {
+  color: var(--color-ivory);
+  outline: none;
+}
+
+.spiral-across__meta {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-across__muted {
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-across__future-label {
   font-family: var(--font-body);
   font-size: 0.625rem;
   letter-spacing: 0.16em;
@@ -1025,61 +1540,16 @@
   color: var(--color-charcoal-faint);
 }
 
-.spiral-trajectory__steps {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.2rem 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.spiral-trajectory__step {
-  display: inline-flex;
-  align-items: baseline;
-  white-space: nowrap;
-}
-
-.spiral-trajectory__label {
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
-  color: var(--color-charcoal);
-}
-
-.spiral-trajectory__step--recurrence .spiral-trajectory__label {
-  font-style: italic;
-  color: var(--color-charcoal-muted);
-}
-
-.spiral-trajectory__arrow {
-  display: inline-block;
-  padding: 0 0.4rem;
-  font-size: 0.8rem;
-  color: color-mix(in srgb, var(--color-charcoal-faint) 75%, transparent);
-  border-radius: 2px;
-}
-
-/* Resonance lives in the passage between signs — never on a sign. */
-.spiral-trajectory__arrow--candidate {
-  color: var(--color-ivory);
-  background: color-mix(in srgb, var(--color-gold) 16%, transparent);
-  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--color-gold) 70%, transparent);
-}
-
-.spiral-trajectory__arrow--ambiguous {
-  color: var(--color-gold-muted);
-  border-bottom: 1px dashed color-mix(in srgb, var(--color-gold-muted) 70%, transparent);
-}
-
-.spiral-trajectory__arrow--context {
-  color: var(--color-charcoal-muted);
-  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--color-charcoal-muted) 45%, transparent);
-}
-
-.spiral-trajectory__note {
-  margin-top: 0.5rem;
+.spiral-across__future-list {
+  margin-top: 0.3rem;
   font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-across__note {
+  font-size: 0.8125rem;
+  font-style: italic;
   line-height: 1.55;
   color: var(--color-charcoal-faint);
 }
@@ -1099,12 +1569,13 @@
     font-size: 0.975rem;
   }
 
-  .spiral-trajectory__label {
-    font-size: 0.9rem;
+  .spiral-path__step {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.45rem;
   }
 
-  .spiral-trajectory__arrow {
-    padding: 0 0.3rem;
+  .spiral-path__tag {
+    white-space: normal;
   }
 }
 
@@ -1149,15 +1620,76 @@
   color: var(--color-charcoal);
 }
 
-.spiral-op__hint {
-  margin-top: 0.85rem;
-  font-size: 0.875rem;
-  line-height: 1.6;
+.spiral-op__def-label {
   color: var(--color-charcoal-faint);
 }
 
+.spiral-op__definition {
+  margin-top: 0.75rem;
+}
+
+.spiral-op__definition-summary {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-op__definition-summary:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  outline-offset: 3px;
+}
+
+.spiral-op__definition .spiral-op__def {
+  margin-top: 0.25rem;
+}
+
+.spiral-op__compare {
+  margin-top: 1.1rem;
+}
+
+.spiral-op__status {
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-charcoal-muted);
+}
+
 .spiral-op__explore {
-  margin-top: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.spiral-op__explore-toggle {
+  min-height: 2.75rem;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold-muted);
+  cursor: pointer;
+}
+
+.spiral-op__explore-toggle:hover {
+  color: var(--color-ivory);
+}
+
+.spiral-op__explore-toggle:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
+  outline-offset: 3px;
+}
+
+.spiral-op__explore-body .spiral-op__def {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-charcoal-muted);
 }
 
 .spiral-op__intersection {
@@ -1183,41 +1715,49 @@
   color: var(--color-charcoal-muted);
 }
 
-.spiral-op__resonances {
-  margin: 1rem 0 0;
+.spiral-op__rels {
+  margin: 0.85rem 0 0;
   padding: 0;
   list-style: none;
   display: grid;
   gap: 0.85rem;
 }
 
-.spiral-op__resonance {
+.spiral-op__rel {
   padding-left: 0.85rem;
-  border-left: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
 }
 
-.spiral-op__resonance--ambiguous {
+.spiral-op__rel.spiral-rel--ambiguous {
   border-left-style: dashed;
 }
 
-.spiral-op__resonance--context {
-  border-left-color: color-mix(in srgb, var(--color-charcoal-muted) 40%, transparent);
+.spiral-op__rel.spiral-rel--textual-theological,
+.spiral-op__rel.spiral-rel--symbolic-analogy {
+  border-left-style: double;
+  border-left-width: 3px;
 }
 
-.spiral-op__resonance-head {
+.spiral-op__rel.spiral-rel--context,
+.spiral-op__rel.spiral-rel--comparison-break {
+  border-left-style: dotted;
+  border-left-color: color-mix(in srgb, var(--color-charcoal-muted) 55%, transparent);
+}
+
+.spiral-op__rel-head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.15rem 0.75rem;
 }
 
-.spiral-op__resonance-passage {
+.spiral-op__rel-anchor {
   font-family: var(--font-heading);
   font-size: 1rem;
   color: var(--color-ivory);
 }
 
-.spiral-op__resonance-role {
+.spiral-op__rel-status {
   font-family: var(--font-body);
   font-size: 0.625rem;
   letter-spacing: 0.12em;
@@ -1225,11 +1765,21 @@
   color: var(--color-charcoal-faint);
 }
 
-.spiral-op__resonance-line {
+.spiral-op__rel-line {
   margin-top: 0.25rem;
   font-size: 0.9rem;
   line-height: 1.6;
   color: var(--color-charcoal-muted);
+}
+
+.spiral-op__rel-meta {
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-op__rel-concept {
+  font-size: 0.8125rem;
 }
 
 .spiral-op__examples {

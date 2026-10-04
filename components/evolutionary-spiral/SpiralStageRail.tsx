@@ -7,9 +7,10 @@ type Props = {
   sequence: readonly SpiralSequenceStop[];
   selectedId: string;
   onSelect: (occurrenceId: string) => void;
-  /** Occurrences with local material under the active lens (quiet mark). */
+  /** Occurrences carrying a quiet mark under the active lens / trajectory. */
   markedIds?: ReadonlySet<string>;
-  lensLabel?: string;
+  /** What the mark means, e.g. "authored relationship with Zodiacal sequence". */
+  markLabel?: string;
 };
 
 /** Compact horizontal jump navigation — shares occurrenceId with helix + panel. */
@@ -18,17 +19,16 @@ export function SpiralStageRail({
   selectedId,
   onSelect,
   markedIds,
-  lensLabel,
+  markLabel,
 }: Props) {
-  const hasMarks = Boolean(markedIds && markedIds.size > 0);
+  const hasMarks = Boolean(markedIds && markedIds.size > 0 && markLabel);
   return (
     <div className="spiral-rail" role="group" aria-labelledby="spiral-rail-label">
       <p className="spiral-rail__label" id="spiral-rail-label">
         Choose an operation
-        {hasMarks && lensLabel ? (
+        {hasMarks ? (
           <span className="spiral-rail__key">
-            <span className="spiral-rail__dot" aria-hidden="true" /> has{" "}
-            {lensLabel} material
+            <span className="spiral-rail__dot" aria-hidden="true" /> {markLabel}
           </span>
         ) : null}
       </p>
@@ -37,7 +37,7 @@ export function SpiralStageRail({
           const stage = getSpiralStage(stop.stageId);
           const label = stop.labelOverride ?? stage?.name ?? stop.stageId;
           const selected = stop.occurrenceId === selectedId;
-          const marked = markedIds?.has(stop.occurrenceId) ?? false;
+          const marked = (hasMarks && markedIds?.has(stop.occurrenceId)) ?? false;
           const short =
             stop.cycleIndex > 0
               ? "Again"
@@ -54,7 +54,7 @@ export function SpiralStageRail({
               )}
               aria-pressed={selected}
               aria-label={`${String(stop.order).padStart(2, "0")} ${label}${
-                marked && lensLabel ? ` — has ${lensLabel} material` : ""
+                marked ? ` — ${markLabel}` : ""
               }`}
               onClick={() => onSelect(stop.occurrenceId)}
             >

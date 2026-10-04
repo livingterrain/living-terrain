@@ -17,25 +17,25 @@ type Props = {
 export function SpiralLensRail({ activeLensId, onSelect }: Props) {
   return (
     <div id="spiral-lenses" className="spiral-lens-rail" tabIndex={-1}>
-      <div className="spiral-lens-rail__head">
-        <p className="spiral-lens-rail__orient" id="spiral-lens-orient">
-          View the whole Spiral through
-        </p>
-        {activeLensId && (
-          <button
-            type="button"
-            className="spiral-lens-rail__clear"
-            onClick={() => onSelect(null)}
-          >
-            Spiral alone
-          </button>
-        )}
-      </div>
+      <p className="spiral-lens-rail__orient" id="spiral-lens-orient">
+        View the whole Spiral through
+      </p>
       <div
         className="spiral-lens-rail__track"
         role="group"
         aria-labelledby="spiral-lens-orient"
       >
+        <button
+          type="button"
+          aria-pressed={activeLensId === null}
+          className={cn(
+            "spiral-lens-rail__btn spiral-lens-rail__btn--spiral",
+            activeLensId === null && "spiral-lens-rail__btn--selected",
+          )}
+          onClick={() => onSelect(null)}
+        >
+          Spiral
+        </button>
         {SPIRAL_LENSES.map((lens) => {
           const selected = activeLensId === lens.id;
           return (

@@ -1,0 +1,133 @@
+import { SPIRAL_SEQUENCE } from "../stages";
+import type {
+  SpiralRelationshipStatus,
+  SpiralSequenceStop,
+  SpiralTrajectory,
+  SpiralTrajectoryAnchor,
+  SpiralTrajectoryRelationship,
+} from "../types";
+import { JESUS_RELATIONSHIPS } from "./jesus";
+import { METAMORPHOSIS_RELATIONSHIPS } from "./metamorphosis";
+import { ZODIAC_RELATIONSHIPS } from "./zodiac";
+
+/** Every authored trajectory ↔ Spiral relationship. Nothing here is inferred. */
+export const SPIRAL_TRAJECTORY_RELATIONSHIPS: readonly SpiralTrajectoryRelationship[] =
+  [...ZODIAC_RELATIONSHIPS, ...JESUS_RELATIONSHIPS, ...METAMORPHOSIS_RELATIONSHIPS];
+
+export const SPIRAL_RELATIONSHIP_STATUS: Record<
+  SpiralRelationshipStatus,
+  { label: string; definition: string }
+> = {
+  "strong-empirical": {
+    label: "Strong empirical correspondence",
+    definition: "Supported by evidence within the domain where the claim is made.",
+  },
+  candidate: {
+    label: "Candidate resonance",
+    definition: "Worth investigating; not established.",
+  },
+  structural: {
+    label: "Structural resemblance",
+    definition: "A similar shape, without a shared mechanism.",
+  },
+  "symbolic-analogy": {
+    label: "Symbolic analogy",
+    definition: "A comparison in symbolic language; not evidence of causation.",
+  },
+  "textual-theological": {
+    label: "Textual / theological resonance",
+    definition: "A reading of texts and theology; not an empirical mechanism.",
+  },
+  context: {
+    label: "Contextual",
+    definition: "Where the sequence continues around a comparison.",
+  },
+  ambiguous: {
+    label: "Ambiguous",
+    definition: "Could be read more than one way; the ambiguity is kept.",
+  },
+  "comparison-break": {
+    label: "Comparison break",
+    definition: "Where the trajectory and the Spiral disagree.",
+  },
+};
+
+export function relationshipStatusLabel(status: SpiralRelationshipStatus): string {
+  return SPIRAL_RELATIONSHIP_STATUS[status].label;
+}
+
+export function relationshipsForTrajectory(
+  trajectoryId: string | null | undefined,
+): SpiralTrajectoryRelationship[] {
+  if (!trajectoryId) return [];
+  return SPIRAL_TRAJECTORY_RELATIONSHIPS.filter(
+    (r) => r.trajectoryId === trajectoryId,
+  );
+}
+
+function refMatchesStop(
+  ref: SpiralTrajectoryRelationship["operations"][number],
+  stop: SpiralSequenceStop,
+): boolean {
+  return (
+    ref.stageId === stop.stageId &&
+    (!ref.occurrenceId || ref.occurrenceId === stop.occurrenceId)
+  );
+}
+
+/** Authored relationships for one occurrence. Zero is valid. */
+export function relationshipsForStop(
+  trajectoryId: string | null | undefined,
+  stop: SpiralSequenceStop,
+): SpiralTrajectoryRelationship[] {
+  return relationshipsForTrajectory(trajectoryId).filter((r) =>
+    r.operations.some((ref) => refMatchesStop(ref, stop)),
+  );
+}
+
+/** Occurrences touched by a relationship — from authored refs only. */
+export function occurrencesForRelationship(
+  relationship: SpiralTrajectoryRelationship,
+): SpiralSequenceStop[] {
+  return SPIRAL_SEQUENCE.filter((stop) =>
+    relationship.operations.some((ref) => refMatchesStop(ref, stop)),
+  );
+}
+
+/** Step ids an anchor covers, in trajectory order. */
+export function anchorStepIds(
+  trajectory: SpiralTrajectory,
+  anchor: SpiralTrajectoryAnchor,
+): string[] {
+  if (anchor.kind === "step") return [anchor.stepId];
+  if (anchor.kind === "transition") return [anchor.from, anchor.to];
+  const ids = trajectory.steps.map((s) => s.id);
+  const a = ids.indexOf(anchor.from);
+  const b = ids.indexOf(anchor.to);
+  if (a < 0 || b < 0) return [];
+  return ids.slice(Math.min(a, b), Math.max(a, b) + 1);
+}
+
+/** Authored relationships whose anchor touches a step. */
+export function relationshipsForStep(
+  trajectory: SpiralTrajectory,
+  stepId: string,
+): SpiralTrajectoryRelationship[] {
+  return relationshipsForTrajectory(trajectory.id).filter((r) =>
+    anchorStepIds(trajectory, r.anchor).includes(stepId),
+  );
+}
+
+export function anchorLabel(
+  trajectory: SpiralTrajectory,
+  anchor: SpiralTrajectoryAnchor,
+): string {
+  const label = (id: string) =>
+    trajectory.steps.find((s) => s.id === id)?.label ?? id;
+  if (anchor.kind === "step") return label(anchor.stepId);
+  if (anchor.kind === "transition")
+    return `${label(anchor.from)} → ${label(anchor.to)}`;
+  return `${label(anchor.from)} … ${label(anchor.to)}`;
+}
+
+export { JESUS_RELATIONSHIPS, METAMORPHOSIS_RELATIONSHIPS, ZODIAC_RELATIONSHIPS };
