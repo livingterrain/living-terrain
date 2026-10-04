@@ -2,10 +2,8 @@
 
 import { useRef, type KeyboardEvent } from "react";
 import {
-  anchorLabel,
   getSpiralStage,
   occurrencesForRelationship,
-  relationshipStatusLabel,
   type SpiralLens,
   type SpiralLensId,
   type SpiralSequenceStop,
@@ -33,12 +31,13 @@ type Props = {
   relationships: readonly SpiralTrajectoryRelationship[];
   activeRelationshipIds: ReadonlySet<string>;
   selectedStepId: string | null;
-  onSelectStep: (stepId: string | null) => void;
-  /** Relationships touching the selected step. */
-  stepRelationships: readonly SpiralTrajectoryRelationship[];
+  onSelectStep: (stepId: string) => void;
+  onSelectRelationship: (relationshipId: string) => void;
   researchedStops: readonly SpiralSequenceStop[];
   onSelectOccurrence: (occurrenceId: string) => void;
   onSelectLens: (lensId: SpiralLensId) => void;
+  /** One Investigate per context: hidden while a local card holds its own. */
+  showInvestigate: boolean;
   researchOpen: boolean;
   onResearchToggle: () => void;
   researchConceptId: string | null;
@@ -181,9 +180,34 @@ function TrajectoryTabs({
   );
 }
 
+function InvestigateToggle({
+  open,
+  onToggle,
+  id,
+  lead,
+}: {
+  open: boolean;
+  onToggle: () => void;
+  id: string;
+  lead: string;
+}) {
+  return (
+    <button
+      type="button"
+      className="spiral-op__investigate-toggle"
+      aria-expanded={open}
+      aria-controls={id}
+      onClick={onToggle}
+    >
+      <span className="spiral-op__investigate-title">Investigate</span>
+      <span className="spiral-op__investigate-lead">{lead}</span>
+    </button>
+  );
+}
+
 /**
- * The active lens laid against the whole Spiral. The trajectory stays whole
- * while operations change; research about it is opt-in.
+ * The active lens laid against the whole Spiral. Discovery depth is the
+ * figure and one orienting line; research about the lens is opt-in.
  */
 export function SpiralLensContext({
   lens,
@@ -193,10 +217,11 @@ export function SpiralLensContext({
   activeRelationshipIds,
   selectedStepId,
   onSelectStep,
-  stepRelationships,
+  onSelectRelationship,
   researchedStops,
   onSelectOccurrence,
   onSelectLens,
+  showInvestigate,
   researchOpen,
   onResearchToggle,
   researchConceptId,
@@ -207,10 +232,16 @@ export function SpiralLensContext({
     return (
       <section
         className="spiral-lens-context spiral-lens-context--scaffold"
-        aria-label={`${lens.label} — comparison scaffold`}
+        aria-label={`${lens.label}: mapped trajectories side by side`}
         data-lens={lens.id}
       >
-        <SpiralAcrossScaffold onSelectLens={onSelectLens} />
+        <SpiralAcrossScaffold
+          onSelectLens={onSelectLens}
+          showInvestigate={showInvestigate}
+          researchOpen={researchOpen}
+          onResearchToggle={onResearchToggle}
+          researchId={researchId}
+        />
       </section>
     );
   }
@@ -218,63 +249,77 @@ export function SpiralLensContext({
   if (!trajectory) {
     return (
       <section
-        className="spiral-lens-context"
-        aria-label={`${lens.label} — whole-Spiral view`}
+        className="spiral-lens-context spiral-lens-context--uncharted"
+        aria-label={`${lens.label}: not yet charted`}
         data-lens={lens.id}
       >
         <p className="spiral-lens-context__intro">{lens.intro}</p>
-        <p className="spiral-lens-context__progress">
-          Trajectory research in progress.
-        </p>
+        <p className="spiral-lens-context__progress">Not yet charted.</p>
         {lens.forthcoming && lens.forthcoming.length > 0 && (
           <p className="spiral-lens-context__forthcoming">
             <span className="spiral-lens-context__forthcoming-label">
-              Being considered, not yet mapped:
+              Being considered:
             </span>{" "}
             {lens.forthcoming.join(" · ")}
           </p>
         )}
-        {researchedStops.length > 0 && (
-          <p className="spiral-lens-context__researched">
-            <span>Stage-level research so far at </span>
-            {researchedStops.map((stop, i) => (
-              <span key={stop.occurrenceId}>
-                {i > 0 && ", "}
-                <button
-                  type="button"
-                  className="spiral-lens-context__jump"
-                  onClick={() => onSelectOccurrence(stop.occurrenceId)}
-                >
-                  {stopName(stop)}
-                </button>
-              </span>
-            ))}
-            <span>.</span>
-          </p>
+        {showInvestigate && (
+          <div className="spiral-lens-context__research">
+            <InvestigateToggle
+              open={researchOpen}
+              onToggle={onResearchToggle}
+              id={researchId}
+              lead="what this lens can and cannot show · research so far"
+            />
+            <div
+              id={researchId}
+              className="spiral-lens-context__research-body"
+              hidden={!researchOpen}
+            >
+              {researchOpen && (
+                <div className="spiral-trajectory__research">
+                  <p className="spiral-trajectory__research-note">
+                    Trajectory research in progress. Being considered, not yet
+                    mapped: {lens.forthcoming?.join(" · ") ?? "—"}.
+                  </p>
+                  <p className="spiral-lens-context__evidence">{lens.evidence}</p>
+                  {researchedStops.length > 0 && (
+                    <p className="spiral-lens-context__researched">
+                      <span>Stage-level research so far at </span>
+                      {researchedStops.map((stop, i) => (
+                        <span key={stop.occurrenceId}>
+                          {i > 0 && ", "}
+                          <button
+                            type="button"
+                            className="spiral-lens-context__jump"
+                            onClick={() => onSelectOccurrence(stop.occurrenceId)}
+                          >
+                            {stopName(stop)}
+                          </button>
+                        </span>
+                      ))}
+                      <span>.</span>
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         )}
-        <p className="spiral-lens-context__evidence">{lens.evidence}</p>
       </section>
     );
   }
 
-  const selectedStep = selectedStepId
-    ? trajectory.steps.find((s) => s.id === selectedStepId)
-    : undefined;
   const research = lens.research;
   const conceptCount = research?.concepts.length ?? 0;
-  const hasTrajectoryResearch = Boolean(
-    trajectory.framing ||
-      trajectory.provenanceNote ||
-      trajectory.comparisonBreaks ||
-      trajectory.openQuestions?.length ||
-      trajectory.sources?.length,
-  );
   const researchLead = [
     conceptCount > 0 &&
       `${conceptCount} concept${conceptCount === 1 ? "" : "s"}`,
     (trajectory.framing || trajectory.provenanceNote) && "framing",
     trajectory.comparisonBreaks && "where the comparison breaks",
-    (trajectory.openQuestions?.length || research?.openQuestions?.length) &&
+    (trajectory.researchIssues?.length ||
+      trajectory.openQuestions?.length ||
+      research?.openQuestions?.length) &&
       "open questions",
     (trajectory.sources?.length || research) && "sources",
   ].filter(Boolean);
@@ -282,7 +327,7 @@ export function SpiralLensContext({
   return (
     <section
       className="spiral-lens-context"
-      aria-label={`${lens.label} — ${trajectory.title} laid against the whole Spiral`}
+      aria-label={`${lens.label}: ${trajectory.title} laid against the whole Spiral`}
       data-lens={lens.id}
       data-trajectory={trajectory.id}
       data-shape={trajectory.shape}
@@ -314,136 +359,95 @@ export function SpiralLensContext({
         activeIds={activeRelationshipIds}
         selectedStepId={selectedStepId}
         onSelectStep={onSelectStep}
+        onSelectRelationship={onSelectRelationship}
       />
 
-      <RelationshipSummary
-        relationships={relationships}
-        onSelectOccurrence={onSelectOccurrence}
-      />
-
-      {selectedStep && (
-        <div className="spiral-trajectory__step-detail">
-          <p className="spiral-trajectory__step-name">{selectedStep.label}</p>
-          {stepRelationships.length > 0 ? (
-            <ul className="spiral-trajectory__step-rels">
-              {stepRelationships.map((r) => (
-                <li key={r.id}>
-                  {anchorLabel(trajectory, r.anchor)} ·{" "}
-                  {occurrencesForRelationship(r).map((stop, i) => (
-                    <span key={stop.occurrenceId}>
-                      {i > 0 && ", "}
-                      <button
-                        type="button"
-                        className="spiral-lens-context__jump"
-                        onClick={() => onSelectOccurrence(stop.occurrenceId)}
-                      >
-                        {stopName(stop)}
-                      </button>
-                    </span>
-                  ))}{" "}
-                  · {relationshipStatusLabel(r.status)}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="spiral-trajectory__step-none">
-              No authored relationship for this step. No correspondence is
-              assumed, and there may be none.
-            </p>
-          )}
-        </div>
+      {relationships.length > 0 && (
+        <p className="spiral-trajectory__key">
+          <span className="spiral-trajectory__key-line" aria-hidden="true" />
+          Lines mark researched relationships.
+        </p>
       )}
 
-      {trajectory.researchIssues?.map((issue) => (
-        <details key={issue.id} className="spiral-trajectory__issue">
-          <summary className="spiral-trajectory__issue-summary">
-            <span className="spiral-trajectory__issue-label">
-              Open research question
-            </span>
-            <span className="spiral-trajectory__issue-question">
-              {issue.question}
-            </span>
-          </summary>
-          {issue.body && (
-            <p className="spiral-trajectory__issue-body">{issue.body}</p>
-          )}
-          {issue.items && (
-            <ul className="spiral-trajectory__issue-items">
-              {issue.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          )}
-        </details>
-      ))}
-
-      <p className="spiral-lens-context__evidence">{lens.evidence}</p>
-
-      {(research || hasTrajectoryResearch) && (
+      {showInvestigate && (
         <div className="spiral-lens-context__research">
-          <button
-            type="button"
-            className="spiral-op__investigate-toggle"
-            aria-expanded={researchOpen}
-            aria-controls={researchId}
-            onClick={onResearchToggle}
-          >
-            <span className="spiral-op__investigate-title">
-              Investigate this trajectory
-            </span>
-            <span className="spiral-op__investigate-lead">
-              {researchLead.join(" · ")}
-            </span>
-          </button>
+          <InvestigateToggle
+            open={researchOpen}
+            onToggle={onResearchToggle}
+            id={researchId}
+            lead={researchLead.join(" · ")}
+          />
           <div
             id={researchId}
             className="spiral-lens-context__research-body"
             hidden={!researchOpen}
           >
             {researchOpen && (
-              <>
-                {hasTrajectoryResearch && (
-                  <div className="spiral-trajectory__research">
-                    {trajectory.framing && (
-                      <Paragraphs
-                        text={trajectory.framing}
-                        className="spiral-trajectory__research-body"
-                      />
+              <div className="spiral-trajectory__research">
+                <RelationshipSummary
+                  relationships={relationships}
+                  onSelectOccurrence={onSelectOccurrence}
+                />
+                <p className="spiral-lens-context__evidence">{lens.evidence}</p>
+                {trajectory.researchIssues?.map((issue) => (
+                  <details key={issue.id} className="spiral-trajectory__issue">
+                    <summary className="spiral-trajectory__issue-summary">
+                      <span className="spiral-trajectory__issue-label">
+                        Open research question
+                      </span>
+                      <span className="spiral-trajectory__issue-question">
+                        {issue.question}
+                      </span>
+                    </summary>
+                    {issue.body && (
+                      <p className="spiral-trajectory__issue-body">{issue.body}</p>
                     )}
-                    {trajectory.provenanceNote && (
-                      <p className="spiral-trajectory__research-note">
-                        {trajectory.provenanceNote}
-                      </p>
+                    {issue.items && (
+                      <ul className="spiral-trajectory__issue-items">
+                        {issue.items.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
                     )}
-                    {trajectory.comparisonBreaks && (
-                      <div className="spiral-trajectory__research-break">
-                        <p className="spiral-trajectory__research-label">
-                          {trajectory.comparisonBreaks.title ??
-                            "Where the comparison breaks"}
-                        </p>
-                        <Paragraphs
-                          text={trajectory.comparisonBreaks.body}
-                          className="spiral-trajectory__research-body"
-                        />
-                      </div>
-                    )}
-                    {trajectory.openQuestions &&
-                      trajectory.openQuestions.length > 0 && (
-                        <div>
-                          <p className="spiral-trajectory__research-label">
-                            Open questions
-                          </p>
-                          <ul className="spiral-trajectory__issue-items">
-                            {trajectory.openQuestions.map((q) => (
-                              <li key={q}>{q}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    {trajectory.sources && trajectory.sources.length > 0 && (
-                      <SourceList sources={trajectory.sources} />
-                    )}
+                  </details>
+                ))}
+                {trajectory.framing && (
+                  <Paragraphs
+                    text={trajectory.framing}
+                    className="spiral-trajectory__research-body"
+                  />
+                )}
+                {trajectory.provenanceNote && (
+                  <p className="spiral-trajectory__research-note">
+                    {trajectory.provenanceNote}
+                  </p>
+                )}
+                {trajectory.comparisonBreaks && (
+                  <div className="spiral-trajectory__research-break">
+                    <p className="spiral-trajectory__research-label">
+                      {trajectory.comparisonBreaks.title ??
+                        "Where the comparison breaks"}
+                    </p>
+                    <Paragraphs
+                      text={trajectory.comparisonBreaks.body}
+                      className="spiral-trajectory__research-body"
+                    />
                   </div>
+                )}
+                {trajectory.openQuestions && trajectory.openQuestions.length > 0 && (
+                  <div>
+                    <p className="spiral-trajectory__research-label">
+                      Open questions
+                    </p>
+                    <ul className="spiral-trajectory__issue-items">
+                      {trajectory.openQuestions.map((q) => (
+                        <li key={q}>{q}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {trajectory.sources && trajectory.sources.length > 0 && (
+                  <SourceList sources={trajectory.sources} />
                 )}
                 {research && (
                   <SpiralInvestigate
@@ -452,7 +456,7 @@ export function SpiralLensContext({
                     onConceptChange={onResearchConceptChange}
                   />
                 )}
-              </>
+              </div>
             )}
           </div>
         </div>

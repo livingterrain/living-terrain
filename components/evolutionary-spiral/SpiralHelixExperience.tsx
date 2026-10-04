@@ -1,26 +1,28 @@
 "use client";
 
-import { useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
+  anchorLabel,
   defaultTrajectoryId,
   getIntersection,
   getSpiralLens,
   getSpiralStage,
   getTrajectory,
+  microcopyForStop,
   occurrencesForRelationship,
   relationshipsForStep,
   relationshipsForTrajectory,
   researchedStopsForLens,
-  SPIRAL_DEFAULT_OCCURRENCE_ID,
   SPIRAL_SEQUENCE,
   type SpiralLensId,
   type SpiralTrajectoryRelationship,
 } from "@/lib/evolutionary-spiral";
-import { SpiralHelix } from "./SpiralHelix";
+import { SpiralHelix, SpiralHelixLegend } from "./SpiralHelix";
 import { SpiralLensContext } from "./SpiralLensContext";
 import { SpiralLensRail } from "./SpiralLensRail";
-import { SpiralOperationPanel } from "./SpiralOperationPanel";
-import { SpiralStageRail } from "./SpiralStageRail";
+import { SpiralLocalCard, type SpiralFocus } from "./SpiralLocalCard";
+import { SpiralRelationshipArcs, type SpiralArcSpec } from "./SpiralRelationshipArcs";
+import { arcEndpointsForTrajectory } from "./spiral-arc-endpoints";
 
 function occurrenceIdsFor(
   relationships: readonly SpiralTrajectoryRelationship[],
@@ -32,73 +34,122 @@ function occurrenceIdsFor(
   );
 }
 
+function stopName(occurrenceId: string): string {
+  const stop = SPIRAL_SEQUENCE.find((s) => s.occurrenceId === occurrenceId);
+  if (!stop) return occurrenceId;
+  return stop.labelOverride ?? getSpiralStage(stop.stageId)?.name ?? stop.stageId;
+}
+
+type LocalSelection =
+  | { kind: "operation"; id: string }
+  | { kind: "step"; id: string }
+  | { kind: "relationship"; id: string }
+  | null;
+
 /**
- * Client island. Independent state:
- * - selectedOccurrenceId — a coordinate on the reference Spiral
+ * Client island. SEE: helix + lens control. DISCOVER: a lens lays its whole
+ * trajectory against the Spiral; authored relationships alone draw lines.
+ * LOCAL: one selection (operation, step, or relationship) opens a small card.
+ * INVESTIGATE: research, on request, one entry per context.
+ *
+ * - selection — nothing is selected on arrival
  * - activeLensId / activeTrajectoryId — survive operation changes
- * - selectedStepId — a step of the active trajectory; survives operation changes
- * - exploreOpen / investigateOpen / conceptId — local to lens × operation
- * - lensResearchOpen / lensConceptId — trajectory research; survives operation changes
+ * - exploreOpen / investigateOpen / conceptId — local to the selection
+ * - lensResearchOpen / lensConceptId — trajectory research, when nothing local is open
  */
 export function SpiralHelixExperience() {
-  const panelId = useId();
+  const cardId = useId();
   const exploreId = useId();
   const investigateId = useId();
   const lensResearchId = useId();
-  const sideRef = useRef<HTMLDivElement>(null);
-  const [selectedOccurrenceId, setSelectedOccurrenceId] = useState(
-    SPIRAL_DEFAULT_OCCURRENCE_ID,
-  );
+  const stageRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const railRef = useRef<HTMLDivElement>(null);
+  const lensScrollPendingRef = useRef(false);
+  const [selection, setSelection] = useState<LocalSelection>(null);
   const [activeLensId, setActiveLensId] = useState<SpiralLensId | null>(null);
   const [activeTrajectoryId, setActiveTrajectoryId] = useState<string | null>(
     null,
   );
-  const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
   const [exploreOpen, setExploreOpen] = useState(false);
   const [investigateOpen, setInvestigateOpen] = useState(false);
   const [conceptId, setConceptId] = useState<string | null>(null);
   const [lensResearchOpen, setLensResearchOpen] = useState(false);
   const [lensConceptId, setLensConceptId] = useState<string | null>(null);
 
-  const selected =
-    SPIRAL_SEQUENCE.find((s) => s.occurrenceId === selectedOccurrenceId) ??
-    SPIRAL_SEQUENCE[0]!;
-  const stage = getSpiralStage(selected.stageId);
   const lens = activeLensId ? getSpiralLens(activeLensId) : undefined;
   const trajectory = activeLensId
     ? getTrajectory(activeLensId, activeTrajectoryId)
     : undefined;
-  const intersection = activeLensId
-    ? getIntersection(activeLensId, selected, trajectory)
-    : undefined;
-
   const relationships = useMemo(
     () => relationshipsForTrajectory(trajectory?.id),
     [trajectory],
   );
-  const stepRelationships = useMemo(
-    () =>
-      trajectory && selectedStepId
-        ? relationshipsForStep(trajectory, selectedStepId)
-        : [],
-    [trajectory, selectedStepId],
-  );
-  const operationRelationships = intersection?.resonances ?? [];
-  const activeRelationshipIds = new Set(
-    [...operationRelationships, ...stepRelationships].map((r) => r.id),
+
+  const selectedStop =
+    selection?.kind === "operation"
+      ? SPIRAL_SEQUENCE.find((s) => s.occurrenceId === selection.id)
+      : undefined;
+  const selectedStepId = selection?.kind === "step" ? selection.id : null;
+  const selectedRelationship =
+    selection?.kind === "relationship"
+      ? relationships.find((r) => r.id === selection.id)
+      : undefined;
+
+  const intersection =
+    activeLensId && selectedStop
+      ? getIntersection(activeLensId, selectedStop, trajectory)
+      : undefined;
+
+  /** Relationships in the current local focus — all of them when nothing is focused. */
+  const focusedRelationships = useMemo(() => {
+    if (!trajectory) return [];
+    if (selectedRelationship) return [selectedRelationship];
+    if (selectedStepId) return relationshipsForStep(trajectory, selectedStepId);
+    if (selectedStop)
+      return relationships.filter((r) =>
+        occurrencesForRelationship(r).some(
+          (s) => s.occurrenceId === selectedStop.occurrenceId,
+        ),
+      );
+    return relationships;
+  }, [trajectory, relationships, selectedRelationship, selectedStepId, selectedStop]);
+
+  const activeRelationshipIds = useMemo(
+    () => new Set(focusedRelationships.map((r) => r.id)),
+    [focusedRelationships],
   );
   const relatedIds = useMemo(() => occurrenceIdsFor(relationships), [relationships]);
   const emphasizedIds = useMemo(
-    () => occurrenceIdsFor(stepRelationships),
-    [stepRelationships],
+    () =>
+      selectedStepId || selectedRelationship
+        ? occurrenceIdsFor(focusedRelationships)
+        : new Set<string>(),
+    [selectedStepId, selectedRelationship, focusedRelationships],
   );
   const researchedStops = useMemo(
     () => (activeLensId ? researchedStopsForLens(activeLensId) : []),
     [activeLensId],
   );
-  const railMarks = trajectory
-    ? relatedIds
-    : new Set(researchedStops.map((s) => s.occurrenceId));
+
+  const arcs: SpiralArcSpec[] = useMemo(() => {
+    if (!trajectory) return [];
+    return arcEndpointsForTrajectory(trajectory.id).map((end) => {
+      const r = relationships.find((x) => x.id === end.relationshipId)!;
+      return {
+        ...end,
+        active: activeRelationshipIds.has(end.relationshipId),
+        label: `${anchorLabel(trajectory, r.anchor)} ↔ ${stopName(end.occurrenceId)}`,
+      };
+    });
+  }, [trajectory, relationships, activeRelationshipIds]);
+
+  let focus: SpiralFocus | null = null;
+  if (selectedStop) focus = { kind: "operation", stop: selectedStop };
+  else if (selectedStepId && trajectory) focus = { kind: "step", stepId: selectedStepId };
+  else if (selectedRelationship)
+    focus = { kind: "relationship", relationship: selectedRelationship };
 
   const resetLocal = () => {
     setExploreOpen(false);
@@ -106,15 +157,28 @@ export function SpiralHelixExperience() {
     setConceptId(null);
   };
 
-  const handleSelectOccurrence = (occurrenceId: string) => {
-    setSelectedOccurrenceId(occurrenceId);
+  const select = (next: LocalSelection) => {
+    if (next && !selection) {
+      const active = document.activeElement;
+      returnFocusRef.current = active instanceof HTMLElement ? active : null;
+    }
+    setSelection(next);
     resetLocal();
   };
 
+  const closeCard = () => {
+    setSelection(null);
+    resetLocal();
+    const target = returnFocusRef.current;
+    returnFocusRef.current = null;
+    if (target && target.isConnected) target.focus();
+  };
+
   const handleLensSelect = (next: SpiralLensId | null) => {
+    lensScrollPendingRef.current = true;
     setActiveLensId(next);
     setActiveTrajectoryId(next ? defaultTrajectoryId(next) : null);
-    setSelectedStepId(null);
+    setSelection((current) => (current?.kind === "operation" ? current : null));
     setLensResearchOpen(false);
     setLensConceptId(null);
     resetLocal();
@@ -122,26 +186,28 @@ export function SpiralHelixExperience() {
 
   const handleTrajectorySelect = (trajectoryId: string) => {
     setActiveTrajectoryId(trajectoryId);
-    setSelectedStepId(null);
+    setSelection((current) => (current?.kind === "operation" ? current : null));
     setLensResearchOpen(false);
     setLensConceptId(null);
     resetLocal();
   };
 
+  const prefersReducedMotion = () =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   const scrollResearchIntoView = (selector: string) => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     requestAnimationFrame(() => {
-      const target = sideRef.current?.querySelector<HTMLElement>(selector);
+      const target = stageRef.current?.querySelector<HTMLElement>(selector);
       target?.scrollIntoView({
         block: "start",
-        behavior: reduce ? "auto" : "smooth",
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
       });
     });
   };
 
   const handleConceptChange = (next: string | null) => {
     setConceptId(next);
-    scrollResearchIntoView(".spiral-op__investigate-body");
+    scrollResearchIntoView(".spiral-card .spiral-op__investigate-body");
   };
 
   const handleOpenConcept = (next: string) => {
@@ -155,43 +221,119 @@ export function SpiralHelixExperience() {
     scrollResearchIntoView(".spiral-lens-context__research-body");
   };
 
-  const name = selected.labelOverride ?? stage?.name;
+  /** Desktop: bring the card into view beside the figure. Mobile: it is a sheet. */
+  const selectionKey = selection ? `${selection.kind}:${selection.id}` : "";
+  useEffect(() => {
+    if (!selectionKey) return;
+    if (!window.matchMedia("(min-width: 640px)").matches) return;
+    cardRef.current?.scrollIntoView({
+      block: "nearest",
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  }, [selectionKey]);
+
+  /** Narrow screens: bring strip, helix, and trajectory into one view after a lens change. */
+  useEffect(() => {
+    if (!lensScrollPendingRef.current) return;
+    lensScrollPendingRef.current = false;
+    if (window.matchMedia("(min-width: 960px)").matches) return;
+    railRef.current?.scrollIntoView({
+      block: "start",
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  }, [activeLensId]);
+
+  let announcement = "";
+  if (focus?.kind === "operation") {
+    announcement = `${stopName(focus.stop.occurrenceId)}: ${microcopyForStop(focus.stop)}`;
+    if (trajectory)
+      announcement += ` ${
+        focusedRelationships.length > 0
+          ? `${focusedRelationships.length} researched relationship${
+              focusedRelationships.length === 1 ? "" : "s"
+            } with ${trajectory.title}.`
+          : `No researched relationship with ${trajectory.title}.`
+      }`;
+  } else if (focus?.kind === "step" && trajectory) {
+    const step = trajectory.steps.find((s) => s.id === focus.stepId);
+    announcement = `${step?.label ?? ""}: ${
+      focusedRelationships.length > 0
+        ? `${focusedRelationships.length} researched relationship${
+            focusedRelationships.length === 1 ? "" : "s"
+          }.`
+        : "no researched relationship with the Spiral."
+    }`;
+  } else if (focus?.kind === "relationship" && trajectory) {
+    announcement = `${anchorLabel(trajectory, focus.relationship.anchor)}, researched relationship with ${occurrencesForRelationship(
+      focus.relationship,
+    )
+      .map((s) => stopName(s.occurrenceId))
+      .join(", ")}.`;
+  } else if (lens) {
+    announcement = trajectory
+      ? `${lens.label}: ${trajectory.title} laid against the Spiral. ${
+          relationships.length
+        } line${relationships.length === 1 ? "" : "s"} mark researched relationships.`
+      : lens.status === "scaffold"
+        ? `${lens.label}: mapped trajectories side by side.`
+        : `${lens.label}: not yet charted.`;
+  }
+
+  const layoutKey = [
+    activeLensId,
+    trajectory?.id,
+    selectionKey,
+    exploreOpen,
+    investigateOpen,
+    lensResearchOpen,
+  ].join("|");
 
   return (
     <section
       className="spiral-experience"
       aria-label="Evolutionary Spiral instrument"
-      data-stage={selected.stageId}
-      data-occurrence={selected.occurrenceId}
+      data-occurrence={selectedStop?.occurrenceId}
       data-lens={activeLensId ?? undefined}
       data-trajectory={trajectory?.id}
       data-step={selectedStepId ?? undefined}
+      data-relationship={selectedRelationship?.id}
       data-concept={conceptId ?? undefined}
       data-lens-concept={lensConceptId ?? undefined}
     >
-      <div className="spiral-experience__stage">
-        <div className="spiral-experience__figure">
-          <a href="#spiral-lenses" className="spiral-experience__lens-cue">
-            Explore through different lenses <span aria-hidden="true">↓</span>
-          </a>
-          <SpiralHelix
-            sequence={SPIRAL_SEQUENCE}
-            selectedId={selectedOccurrenceId}
-            onSelect={handleSelectOccurrence}
-            panelId={panelId}
-            lensLabel={lens?.label}
-            trajectoryLabel={trajectory?.title}
-            relatedIds={relatedIds}
-            emphasizedIds={emphasizedIds}
-          />
+      <div
+        ref={stageRef}
+        className={
+          focus
+            ? "spiral-experience__stage spiral-experience__stage--local"
+            : "spiral-experience__stage"
+        }
+        data-comparing={trajectory ? "" : undefined}
+        onKeyDown={(e) => {
+          if (e.key === "Escape" && focus) closeCard();
+        }}
+      >
+        <div ref={railRef} className="spiral-experience__rail">
+          <SpiralLensRail activeLensId={activeLensId} onSelect={handleLensSelect} />
         </div>
 
-        <div ref={sideRef} className="spiral-experience__side">
-          <SpiralLensRail
-            activeLensId={activeLensId}
-            onSelect={handleLensSelect}
-          />
+        <div className="spiral-experience__figure">
+          <div className="spiral-experience__helix">
+            <SpiralHelix
+              sequence={SPIRAL_SEQUENCE}
+              selectedId={selectedStop?.occurrenceId ?? null}
+              onSelect={(id) => select({ kind: "operation", id })}
+              quiet={Boolean(lens)}
+              trajectoryLabel={trajectory?.title}
+              relatedIds={relatedIds}
+              emphasizedIds={emphasizedIds}
+            />
+          </div>
+          <div className="spiral-experience__legend">
+            <SpiralHelixLegend />
+          </div>
+        </div>
 
+        <div className="spiral-experience__side">
           {lens && (
             <SpiralLensContext
               lens={lens}
@@ -200,11 +342,12 @@ export function SpiralHelixExperience() {
               relationships={relationships}
               activeRelationshipIds={activeRelationshipIds}
               selectedStepId={selectedStepId}
-              onSelectStep={setSelectedStepId}
-              stepRelationships={stepRelationships}
+              onSelectStep={(id) => select({ kind: "step", id })}
+              onSelectRelationship={(id) => select({ kind: "relationship", id })}
               researchedStops={researchedStops}
-              onSelectOccurrence={handleSelectOccurrence}
+              onSelectOccurrence={(id) => select({ kind: "operation", id })}
               onSelectLens={handleLensSelect}
+              showInvestigate={!focus}
               researchOpen={lensResearchOpen}
               onResearchToggle={() => {
                 setLensResearchOpen((open) => !open);
@@ -216,25 +359,16 @@ export function SpiralHelixExperience() {
             />
           )}
 
-          <div className="spiral-experience__operation">
-            <SpiralStageRail
-              sequence={SPIRAL_SEQUENCE}
-              selectedId={selectedOccurrenceId}
-              onSelect={handleSelectOccurrence}
-              markedIds={railMarks}
-              markLabel={
-                trajectory
-                  ? `authored relationship with ${trajectory.title}`
-                  : lens
-                    ? `${lens.label} stage-level research`
-                    : undefined
-              }
-            />
-            <SpiralOperationPanel
-              stop={selected}
+          {focus && (
+            <SpiralLocalCard
+              ref={cardRef}
+              focus={focus}
               lens={lens}
               trajectory={trajectory}
               intersection={intersection}
+              onSelectOccurrence={(id) => select({ kind: "operation", id })}
+              onSelectRelationship={(id) => select({ kind: "relationship", id })}
+              onClose={closeCard}
               exploreOpen={exploreOpen}
               onExploreToggle={() => {
                 setExploreOpen((open) => !open);
@@ -242,31 +376,30 @@ export function SpiralHelixExperience() {
                 setConceptId(null);
               }}
               investigateOpen={investigateOpen}
-              onInvestigateToggle={() => {
+              onInvestigateToggle={(hint) => {
                 setInvestigateOpen((open) => !open);
-                setConceptId(null);
+                setConceptId(investigateOpen ? null : (hint ?? null));
               }}
               conceptId={conceptId}
               onConceptChange={handleConceptChange}
               onOpenConcept={handleOpenConcept}
-              panelId={panelId}
+              cardId={cardId}
               exploreId={exploreId}
               investigateId={investigateId}
             />
-          </div>
+          )}
         </div>
+
+        <SpiralRelationshipArcs
+          containerRef={stageRef}
+          arcs={arcs}
+          layoutKey={layoutKey}
+          onSelect={(id) => select({ kind: "relationship", id })}
+        />
       </div>
 
       <p className="sr-only" aria-live="polite" aria-atomic="true">
-        {name}: {stage ? (selected.microcopyOverride ?? stage.microcopy) : null}
-        {lens
-          ? ` Viewing through ${lens.label}${trajectory ? `, ${trajectory.title}` : ""}.`
-          : null}
-        {trajectory
-          ? ` ${operationRelationships.length} authored relationship${
-              operationRelationships.length === 1 ? "" : "s"
-            } here.`
-          : null}
+        {announcement}
       </p>
     </section>
   );

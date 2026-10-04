@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+  type FocusEvent,
+  type KeyboardEvent,
+} from "react";
 import { motion } from "framer-motion";
 import {
   SPIRAL_ASCENT_CAPTION,
@@ -12,6 +19,7 @@ import {
   getSpiralStage,
   localArcPath,
   localAxisPath,
+  microcopyForStop,
   nodeHitStyle,
   opacityForDepth,
   strokeWidthForDepth,
@@ -35,15 +43,16 @@ function useSpiralReducedMotion(): boolean {
 
 type Props = {
   sequence: readonly SpiralSequenceStop[];
-  selectedId: string;
+  /** No operation is selected until the visitor chooses one. */
+  selectedId: string | null;
   onSelect: (occurrenceId: string) => void;
-  panelId: string;
-  /** Active whole-instrument lens / trajectory, echoed beneath the helix. */
-  lensLabel?: string;
+  /** A domain trajectory is laid against the Spiral — the reference recedes. */
+  quiet?: boolean;
+  /** Active trajectory title, for screen-reader context on related nodes. */
   trajectoryLabel?: string;
   /** Occurrences with an authored relationship to the active trajectory. */
   relatedIds?: ReadonlySet<string>;
-  /** Occurrences related to the selected trajectory step. */
+  /** Occurrences touched by the focused step or relationship. */
   emphasizedIds?: ReadonlySet<string>;
 };
 
@@ -108,23 +117,38 @@ function CurrentSegment({
   );
 }
 
+/** Continuity ↔ Transformation and the ascent caption — quiet, always present. */
+export function SpiralHelixLegend() {
+  return (
+    <div className="spiral-helix__legend">
+      <p className="spiral-helix__legend-row">
+        <span className="spiral-helix__swatch spiral-helix__swatch--continuity" />
+        <span>Continuity</span>
+        <span className="spiral-helix__swatch spiral-helix__swatch--transformation" />
+        <span>Transformation</span>
+      </p>
+      <p className="spiral-helix__caption">{SPIRAL_ASCENT_CAPTION}</p>
+    </div>
+  );
+}
+
 /**
  * Ascending dual-current helix with projected spatial depth.
- * Nodes on the shared reference axis. Currents equal weight throughout.
+ * Nodes on the shared reference axis are the operation selector.
  * No DNA grammar (no rungs / base pairs / molecule cues).
  */
 export function SpiralHelix({
   sequence,
   selectedId,
   onSelect,
-  panelId,
-  lensLabel,
+  quiet,
   trajectoryLabel,
   relatedIds,
   emphasizedIds,
 }: Props) {
   const reactId = useId();
   const reduced = useSpiralReducedMotion();
+  const [previewId, setPreviewId] = useState<string | null>(null);
   const nodes = useMemo(() => buildSpiralNodes(sequence), [sequence]);
   const paths = useMemo(() => currentPaths(), []);
   const backSegments = useMemo(
@@ -135,16 +159,26 @@ export function SpiralHelix({
     () => paths.segmentsPaintOrder.filter((s) => s.side === "front"),
     [paths.segmentsPaintOrder],
   );
-  const selectedIndex = Math.max(
-    0,
-    sequence.findIndex((s) => s.occurrenceId === selectedId),
-  );
-  const selectedStop = sequence[selectedIndex]!;
-  const { tMin, tMax } = arcWindowForIndex(selectedIndex, sequence.length);
-  const contArc = localArcPath("continuity", tMin, tMax);
-  const transArc = localArcPath("transformation", tMin, tMax);
-  const axisArc = localAxisPath(tMin, tMax);
-  const emergenceAgainSelected = selectedStop.cycleIndex > 0;
+  const selectedIndex = selectedId
+    ? sequence.findIndex((s) => s.occurrenceId === selectedId)
+    : -1;
+  const selectedStop = selectedIndex >= 0 ? sequence[selectedIndex] : undefined;
+  const local = selectedStop
+    ? (() => {
+        const { tMin, tMax } = arcWindowForIndex(selectedIndex, sequence.length);
+        return {
+          cont: localArcPath("continuity", tMin, tMax),
+          trans: localArcPath("transformation", tMin, tMax),
+          axis: localAxisPath(tMin, tMax),
+        };
+      })()
+    : undefined;
+  const emergenceAgainSelected = (selectedStop?.cycleIndex ?? 0) > 0;
+  /** Roving tab stop: the selected node, else the first. */
+  const tabStopIndex = Math.max(0, selectedIndex);
+  const previewNode = previewId
+    ? nodes.find((n) => n.stop.occurrenceId === previewId)
+    : undefined;
 
   const onKeyNav = (e: KeyboardEvent, index: number) => {
     let next = index;
@@ -170,8 +204,12 @@ export function SpiralHelix({
     el?.focus();
   };
 
+  const onHitFocus = (e: FocusEvent<HTMLButtonElement>, id: string) => {
+    if (e.currentTarget.matches(":focus-visible")) setPreviewId(id);
+  };
+
   return (
-    <div className={cn("spiral-helix", lensLabel && "spiral-helix--quiet")}>
+    <div className={cn("spiral-helix", quiet && "spiral-helix--quiet")}>
       <div className="spiral-helix__canvas">
         <svg
           className="spiral-helix__svg"
@@ -289,17 +327,19 @@ export function SpiralHelix({
           )}
 
           {/* Local arc of BOTH currents + lifted axis — whole-process local state */}
-          <g className="spiral-helix__local" aria-hidden>
-            <path d={axisArc} className="spiral-helix__local-axis" />
-            <path
-              d={contArc}
-              className="spiral-helix__local-arc spiral-helix__local-arc--continuity"
-            />
-            <path
-              d={transArc}
-              className="spiral-helix__local-arc spiral-helix__local-arc--transformation"
-            />
-          </g>
+          {local && (
+            <g className="spiral-helix__local" aria-hidden>
+              <path d={local.axis} className="spiral-helix__local-axis" />
+              <path
+                d={local.cont}
+                className="spiral-helix__local-arc spiral-helix__local-arc--continuity"
+              />
+              <path
+                d={local.trans}
+                className="spiral-helix__local-arc spiral-helix__local-arc--transformation"
+              />
+            </g>
+          )}
 
           {/* Stage labels (visual); interaction via HTML hit targets */}
           {nodes.map((node) => {
@@ -309,6 +349,7 @@ export function SpiralHelix({
               stage?.name ?? node.stop.stageId,
             );
             const selected = node.stop.occurrenceId === selectedId;
+            const previewed = node.stop.occurrenceId === previewId;
             const labelX =
               node.labelSide === "left" ? node.x - 14 : node.x + 14;
             const anchor = node.labelSide === "left" ? "end" : "start";
@@ -332,6 +373,15 @@ export function SpiralHelix({
                 <circle
                   cx={node.x}
                   cy={node.y}
+                  r={3.4}
+                  className={cn(
+                    "spiral-helix__node-halo",
+                    (selected || previewed) && "spiral-helix__node-halo--on",
+                  )}
+                />
+                <circle
+                  cx={node.x}
+                  cy={node.y}
                   r={selected ? 2.1 : node.stop.cycleIndex > 0 ? 1.85 : 1.55}
                   className={cn(
                     "spiral-helix__node-dot",
@@ -345,9 +395,13 @@ export function SpiralHelix({
                   textAnchor={anchor}
                   className={cn(
                     "spiral-helix__label",
-                    selected && "spiral-helix__label--selected",
+                    (selected || previewed || emphasized) &&
+                      "spiral-helix__label--selected",
                   )}
                 >
+                  <tspan className="spiral-helix__label-n">
+                    {String(node.stop.order).padStart(2, "0")}
+                  </tspan>{" "}
                   {name}
                 </text>
               </g>
@@ -355,8 +409,12 @@ export function SpiralHelix({
           })}
         </svg>
 
-        {/* Min 44px hit targets — shared selection with rail/panel */}
-        <div className="spiral-helix__hits">
+        {/* Min 44px hit targets — the helix is the operation selector */}
+        <div
+          className="spiral-helix__hits"
+          role="group"
+          aria-label="Operations of the Spiral"
+        >
           {nodes.map((node) => {
             const stage = getSpiralStage(node.stop.stageId);
             const name = displayNameForStop(
@@ -366,52 +424,57 @@ export function SpiralHelix({
             const selected = node.stop.occurrenceId === selectedId;
             const related = relatedIds?.has(node.stop.occurrenceId) ?? false;
             const style = nodeHitStyle(node);
+            const id = node.stop.occurrenceId;
             return (
               <button
-                key={node.stop.occurrenceId}
-                id={`${reactId}-hit-${node.stop.occurrenceId}`}
+                key={id}
+                id={`${reactId}-hit-${id}`}
                 type="button"
+                data-occurrence-hit={id}
                 className={cn(
                   "spiral-helix__hit",
                   selected && "spiral-helix__hit--selected",
                 )}
                 style={style}
+                tabIndex={node.index === tabStopIndex ? 0 : -1}
                 aria-pressed={selected}
-                aria-controls={panelId}
+                aria-describedby={`${reactId}-micro-${id}`}
                 aria-label={`${String(node.stop.order).padStart(2, "0")} ${name}${
                   related && trajectoryLabel
-                    ? ` — authored relationship with ${trajectoryLabel}`
+                    ? `, researched relationship with ${trajectoryLabel}`
                     : ""
                 }`}
-                onClick={() => onSelect(node.stop.occurrenceId)}
+                onClick={() => onSelect(id)}
                 onKeyDown={(e) => onKeyNav(e, node.index)}
-              />
+                onMouseEnter={() => setPreviewId(id)}
+                onMouseLeave={() =>
+                  setPreviewId((current) => (current === id ? null : current))
+                }
+                onFocus={(e) => onHitFocus(e, id)}
+                onBlur={() =>
+                  setPreviewId((current) => (current === id ? null : current))
+                }
+              >
+                <span id={`${reactId}-micro-${id}`} className="sr-only">
+                  {microcopyForStop(node.stop)}
+                </span>
+              </button>
             );
           })}
         </div>
-      </div>
 
-      <div className="spiral-helix__legend">
-        <p className="spiral-helix__legend-row">
-          <span className="spiral-helix__swatch spiral-helix__swatch--continuity" />
-          <span>Continuity</span>
-          <span className="spiral-helix__swatch spiral-helix__swatch--transformation" />
-          <span>Transformation</span>
-        </p>
-        <p className="spiral-helix__caption">{SPIRAL_ASCENT_CAPTION}</p>
-        {lensLabel && (
-          <p className="spiral-helix__lens">
-            Laid against the whole Spiral:{" "}
-            <span>
-              {lensLabel}
-              {trajectoryLabel ? ` / ${trajectoryLabel}` : null}
-            </span>
-            {relatedIds && relatedIds.size > 0 && (
-              <span className="spiral-helix__lens-key">
-                <span className="spiral-helix__lens-diamond" aria-hidden="true" />
-                authored relationship
-              </span>
+        {previewNode && previewNode.stop.occurrenceId !== selectedId && (
+          <p
+            className={cn(
+              "spiral-helix__preview",
+              previewNode.labelSide === "left"
+                ? "spiral-helix__preview--right"
+                : "spiral-helix__preview--left",
             )}
+            style={nodeHitStyle(previewNode)}
+            aria-hidden="true"
+          >
+            {microcopyForStop(previewNode.stop)}
           </p>
         )}
       </div>
