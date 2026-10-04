@@ -1386,19 +1386,21 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
     },
     {
       lensId: "symbolic-zodiac",
-      title: "How does a symbol of transformation acquire its own history?",
+      title:
+        "Where does Transformation appear within the zodiacal trajectory?",
       framing:
-        "Scorpio is commonly described in modern astrology through death, rebirth, intensity, dissolution, and transformation. But those meanings did not arrive as a single ancient package.\n\nScorpio's symbolism accumulated across time.\n\nOlder astrological traditions associated Scorpio with Mars and placed it within a seasonal zodiac. Death and inheritance belonged strongly to the eighth place, which is not the same thing as the eighth sign. Pluto entered astrology only in the twentieth century. Later psychological and developmental astrologers increasingly interpreted the zodiac as a sequence of changing states of human experience.\n\nThis lens therefore asks two questions at once:\n\nWhat has Scorpio meant across different periods?\n\nAnd:\n\nWhat happens when we compare those changing meanings with Transformation in the Spiral?\n\nThe comparison here is symbolic. It does not establish celestial causation, scientific mechanism, or a universal developmental law.",
+        "This lens does not ask which zodiac sign equals Transformation.\n\nIt asks where the operation we call Transformation may appear within a symbolic trajectory humans have used to organize changing experience — and where that comparison breaks.\n\nThe object under examination is the whole sequence:\n\nAries → Taurus → Gemini → Cancer → Leo → Virgo → Libra → Scorpio → Sagittarius → Capricorn → Aquarius → Pisces → Aries again.\n\nThe unit of comparison is often a region or transition — not a one-to-one sign match. Candidate regions under comparison include Libra → Scorpio (participation deepens; boundaries or organization may be altered) and Capricorn → Aquarius (established organization meets pressure toward reorganization). Pisces → Aries again may speak as much to recurrence / Emergence as to Transformation; that ambiguity is preserved.\n\nThese are candidate resonances — not causal equivalences, not sign-to-stage identities, and not evidence that astrology anticipated systems science.\n\nHistorical research into Scorpio's accumulated meanings remains valuable supporting inquiry beneath this trajectory reading. It does not redefine the Zodiac lens as “Scorpio means Transformation.”",
+      conceptsCue:
+        "Supporting research — historical layers and comparative reading (not a sign-to-stage map)",
       cycleContext: {
-        title: "A symbolic cycle — context, not twelve deep dives",
+        title: "Zodiacal trajectory — context for comparison",
         provenanceNote:
-          "These short phrases mix historical/developmental interpretation with Living Terrain's comparative synthesis. They are not presented as ancient doctrine, and they are not twelve authored Spiral stages.",
+          "The twelve signs are the trajectory under examination. Individual signs are not marked as Transformation matches. Comparison, when offered, lives in the transition annotations below — as candidate regions under comparison, not proof.",
         structureNote: {
           title: "A recurring structural pattern (our concise reading of Ptolemy)",
           body: "Ptolemy classifies the signs as equinoctial/solstitial (turning), solid, and bicorporeal/transitional.\n\nTurning: Aries, Cancer, Libra, Capricorn.\nSolid: Taurus, Leo, Scorpio, Aquarius.\nBicorporeal: Gemini, Virgo, Sagittarius, Pisces.\n\nFor modern readers, Living Terrain may describe that inherited classification concisely as a recurring Turn → Establish → Transition pattern, four times around the zodiac.\n\nThis is our concise description of his classification.\n\nIt is not a scientific systems model, and Ptolemy did not use our terminology.",
           provenance: "our-systems-reading",
         },
-        focusId: "scorpio",
         stops: [
           {
             id: "aries",
@@ -1434,20 +1436,17 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
             id: "libra",
             label: "Libra",
             gloss: "relationship / evaluation / social participation",
-            emphasis: "neighbor",
           },
           {
             id: "scorpio",
             label: "Scorpio",
             gloss:
               "deeper participation / altered boundaries / later transformation symbolism",
-            emphasis: "focus",
           },
           {
             id: "sagittarius",
             label: "Sagittarius",
             gloss: "extension of meaning / horizon / interpretation",
-            emphasis: "neighbor",
           },
           {
             id: "capricorn",
@@ -1472,17 +1471,35 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
             recurrence: true,
           },
         ],
+        transitionsNote:
+          "Candidate regions under comparison are transitions — not individual signs equated with Transformation.",
         transitions: [
           {
             id: "zod-tr-libra-scorpio",
             label: "Libra → Scorpio",
-            body: "Do not reduce this transition to “relationship → death.”\n\nLibra introduces explicit relational / social participation. In Rudhyar's developmental framework, Scorpio intensifies participation and identification.\n\nOur systems reading may therefore ask: what happens when relationship changes the boundaries of the participating system?\n\nThis is a symbolic comparison. It is not an empirical mechanism.",
+            role: "Candidate resonance — region under comparison",
+            body: "Relationship / participation deepens; boundaries or organization may be altered.\n\nDo not reduce this to “relationship → death,” and do not treat either sign as Transformation itself.\n\nLibra introduces explicit relational / social participation. In Rudhyar's developmental framework, Scorpio intensifies participation and identification.\n\nOur systems reading may therefore ask: what happens when relationship changes the boundaries of the participating system?\n\nThis is a symbolic comparison. It is not an empirical mechanism.",
             provenance: ["modern-psychological", "our-systems-reading"],
           },
           {
             id: "zod-tr-scorpio-sagittarius",
             label: "Scorpio → Sagittarius",
-            body: "Scorpio is not the terminal point of the cycle. Transformation is followed by another phase — extension of meaning, horizon, and interpretation — rather than an ending that closes the sequence.",
+            role: "Contextual continuation",
+            body: "The trajectory continues — extension of meaning, horizon, and interpretation — rather than ending where modern transformation language is loudest. Continuation here is context, not a Transformation match.",
+            provenance: ["modern-psychological", "our-systems-reading"],
+          },
+          {
+            id: "zod-tr-capricorn-aquarius",
+            label: "Capricorn → Aquarius",
+            role: "Candidate resonance — region under comparison",
+            body: "Established organization encounters pressure toward reorganization.\n\nOur systems reading may ask whether Transformation resonates in this region — when crystallized structure can no longer continue unchanged.\n\nNeither Capricorn nor Aquarius is Transformation. This remains a candidate resonance, not a second “true” match that replaces Scorpio historiography.",
+            provenance: ["modern-psychological", "our-systems-reading"],
+          },
+          {
+            id: "zod-tr-pisces-aries",
+            label: "Pisces → Aries again",
+            role: "Region under comparison — ambiguous (recurrence / Emergence?)",
+            body: "Completion, dissolution, or accumulated residue may give way to another emergence.\n\nThis region may resonate more strongly with recurrence or Emergence than with Transformation itself. That ambiguity is intentional.\n\nIt is not labeled a Transformation match merely because Transformation is the stage currently in view.\n\nThe comparison concerns symbolic position under a cycle — not a claim that traditional astrology contains a second Aries, and not hysteresis or path dependence in living systems.",
             provenance: ["modern-psychological", "our-systems-reading"],
           },
         ],
@@ -1658,20 +1675,20 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
         },
         {
           id: "zod-scorpio-as-transformation",
-          title: "Scorpio as Transformation",
+          title: "Comparative resonances along the trajectory",
           summary:
-            "What do we notice when Scorpio is placed beside Transformation?",
+            "Where might candidate regions or transitions invite comparison — without treating signs as matches?",
           epistemicKind: "symbolic-analogy",
           epistemicKinds: ["symbolic-analogy", "conceptual-framework"],
           provenance: "our-systems-reading",
           whisper:
-            "Perhaps the interesting question is not whether Scorpio causes transformation, but why transformation became such a powerful way of reading Scorpio at all.",
+            "The interesting question is not which sign equals Transformation, but which transitions or regions invite careful comparison — and why Scorpio historiography became so loud.",
           sections: [
             {
               id: "zod-sat-body",
               kind: "general",
               title: "",
-              body: "Only after separating the historical layers can Living Terrain make its own comparison.\n\nModern Scorpio symbolism repeatedly gathers images involving endings, relinquishment, hidden material, altered boundaries, loss of an existing form, regeneration, and emergence after disruption.\n\nThe Transformation stage of the Spiral asks a different but resonant question:\n\nWhat happens when continuity can no longer be maintained through the system's existing organization?\n\nSystems science can describe thresholds, feedback changes, hysteresis, and regime shifts.\n\nBiology can describe metamorphosis, remodeling, autophagy, and inheritance under variation.\n\nPsychology can investigate memory updating, learning, grief, and identity.\n\nEcology can observe disturbance, memory, succession, alternative states, and reorganization.\n\nBiblical texts and theology can describe death, burial, raised life, covenant disruption and renewal, exile and return, and new creation.\n\nAstrology contributes something epistemically different:\n\na symbolic language humans have used to organize experiences of change.\n\nThat does not make these mechanisms equivalent.\n\nIt gives us something to compare.",
+              body: "Only after separating historical layers can Living Terrain make its own comparison — and the comparison is with the whole zodiacal trajectory, not with Scorpio alone.\n\nModern Scorpio symbolism repeatedly gathers images involving endings, relinquishment, hidden material, altered boundaries, loss of an existing form, regeneration, and emergence after disruption. That history matters. It does not exhaust the question.\n\nThe Transformation operation of the Spiral asks a different but resonant question:\n\nWhat happens when continuity can no longer be maintained through the system's existing organization?\n\nSystems science can describe thresholds, feedback changes, hysteresis, and regime shifts.\n\nBiology can describe metamorphosis, remodeling, autophagy, and inheritance under variation.\n\nPsychology can investigate memory updating, learning, grief, and identity.\n\nEcology can observe disturbance, memory, succession, alternative states, and reorganization.\n\nBiblical texts and theology can describe death, burial, raised life, covenant disruption and renewal, exile and return, and new creation.\n\nAstrology contributes something epistemically different:\n\na symbolic language humans have used to organize experiences of change across a full cycle.\n\nThat does not make these mechanisms equivalent.\n\nIt gives us something to compare — possibly at more than one region of the trajectory.",
             },
             {
               id: "zod-sat-persists",
@@ -1700,21 +1717,34 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
               id: "zod-sat-libra-scorpio",
               kind: "general",
               title: "Libra → Scorpio",
-              body: "Do not describe this simply as relationship → death.\n\nLibra introduces explicit relational / social participation. In Rudhyar's developmental framework, Scorpio intensifies participation and identification.\n\nOur systems reading may therefore ask:\n\nWhat happens when relationship changes the boundaries of the participating system?\n\nThis is a symbolic comparison.\n\nDo not convert it into an empirical mechanism.",
+              body: "Do not describe this simply as relationship → death, and do not treat it as the only resonance.\n\nLibra introduces explicit relational / social participation. In Rudhyar's developmental framework, Scorpio intensifies participation and identification.\n\nOur systems reading may therefore ask:\n\nWhat happens when relationship changes the boundaries of the participating system?\n\nThis is a symbolic comparison.\n\nDo not convert it into an empirical mechanism.",
             },
             {
               id: "zod-sat-scorpio-sagittarius",
               kind: "general",
               title: "Scorpio → Sagittarius",
-              body: "Preserve the continuation beyond Scorpio. Transformation is followed by another phase — extension of meaning, horizon, and interpretation — rather than a terminal ending of the cycle.",
+              body: "Preserve the continuation beyond Scorpio. A trajectory continues into extension of meaning, horizon, and interpretation — rather than ending where modern transformation language is loudest.",
+            },
+            {
+              id: "zod-sat-capricorn-aquarius",
+              kind: "general",
+              title: "Capricorn → Aquarius",
+              body: "Established organization may encounter pressure toward reform or reorganization.\n\nIf Transformation names reorganization under conditions the prior form cannot absorb, this region may also resonate — without replacing Scorpio's historical research or claiming a second exclusive match.",
+            },
+            {
+              id: "zod-sat-pisces-aries",
+              kind: "general",
+              title: "Pisces → Aries again",
+              body: "Completion, dissolution, or accumulated residue may give way to another emergence.\n\nThis region may speak more to recurrence / Emergence than to Transformation. Preserve that ambiguity — do not treat it as a Transformation match merely because Transformation is the stage in view.\n\nSymbolic recurrence of position is also not the same claim as Spiral recurrence with accumulated history.",
             },
           ],
           comparisonBreaks: {
             title: "Where the comparison breaks",
-            body: "Symbolic correspondence is not mechanism.\n\nA resemblance between Scorpio and Transformation does not establish celestial causation, a universal developmental law, common historical origin, or shared mechanism with systems, biology, psychology, ecology, or biblical/theological material.",
+            body: "Symbolic correspondence is not mechanism.\n\nA resemblance between any zodiacal region and Transformation does not establish celestial causation, a universal developmental law, common historical origin, or shared mechanism with systems, biology, psychology, ecology, or biblical/theological material.\n\nMultiple resonances do not multiply proof.",
           },
           openQuestions: [
             "If Scorpio's meaning has itself transformed across history, are we studying an ancient symbol of transformation—or the transformation of an ancient symbol?",
+            "Where else along the Aries→Pisces trajectory does the Transformation operation appear — and where does forcing a match obscure the domain?",
           ],
           sources: [
             {
@@ -1723,16 +1753,18 @@ export const TRANSFORMATION_EXPLORATION: SpiralStageExploration = {
               authors: "Dane Rudhyar",
               year: 1943,
               supports:
-                "Developmental placement of Scorpio after Libra and before Sagittarius within a twelve-phase reading — used comparatively, not as Spiral proof.",
+                "Developmental placement of signs within a twelve-phase reading — used comparatively across transitions, not as Spiral proof or a Scorpio-only map.",
             },
           ],
         },
       ],
       comparisonBreaks: {
         title: "Symbolic correspondence is not mechanism",
-        body: "The zodiac is a symbolic interpretive system.\n\nSystems science, biology, psychology, and ecology investigate observable processes using different forms of evidence.\n\nBiblical / Jesus material is textual and theological.\n\nA resemblance between Scorpio and Transformation does not establish celestial causation, a universal developmental law, common historical origin, or shared mechanism.\n\nThe zodiac returns symbolically.\n\nReal systems may not.\n\nA system can cross a threshold from which reversing the original pressure does not restore its former organization.\n\nSpecies can disappear.\n\nInjuries can leave permanent alteration.\n\nPeople can integrate experiences without returning to who they were before.\n\nTransformation can fail.\n\nReorganization can produce something less functional.\n\nRecurrence in a symbolic cycle does not establish hysteresis, path dependence, ecological memory, material inheritance, or any other causal mechanism described elsewhere in the Spiral.\n\nStructural resemblance is a reason to investigate—not evidence that the structures share a cause.",
+        body: "The zodiac is a symbolic interpretive system.\n\nSystems science, biology, psychology, and ecology investigate observable processes using different forms of evidence.\n\nBiblical / Jesus material is textual and theological.\n\nA resemblance between regions of the zodiacal trajectory and Transformation does not establish celestial causation, a universal developmental law, common historical origin, or shared mechanism.\n\nThe zodiac returns symbolically.\n\nReal systems may not.\n\nA system can cross a threshold from which reversing the original pressure does not restore its former organization.\n\nSpecies can disappear.\n\nInjuries can leave permanent alteration.\n\nPeople can integrate experiences without returning to who they were before.\n\nTransformation can fail.\n\nReorganization can produce something less functional.\n\nRecurrence in a symbolic cycle does not establish hysteresis, path dependence, ecological memory, material inheritance, or any other causal mechanism described elsewhere in the Spiral.\n\nStructural resemblance is a reason to investigate—not evidence that the structures share a cause.",
       },
       openQuestions: [
+        "Where does Transformation appear within the zodiacal trajectory — and where does the comparison fail?",
+        "Is boundary formation (as Gemini → Cancer may suggest) an independent operation, or does it emerge from embodiment, differentiation, relationship, and organization?",
         "If Scorpio's meaning has itself transformed across history, are we studying an ancient symbol of transformation—or the transformation of an ancient symbol?",
       ],
     },

@@ -41,7 +41,7 @@ export const SPIRAL_DOMAINS: readonly SpiralDomain[] = [
     id: "symbolic-zodiac",
     label: "Zodiac",
     shortLabel: "Zodiac",
-    role: "Optional comparative layer — symbolic/historical associations only when deliberately authored.",
+    role: "Optional comparative layer — asks where Spiral operations appear within symbolic/historical trajectories; not a one-to-one sign map.",
   },
 ] as const;
 

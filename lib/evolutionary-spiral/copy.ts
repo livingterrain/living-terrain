@@ -1,11 +1,11 @@
 import type { SpiralFrameworkCopy } from "./types";
 
-/** Visitor-facing framing from approved Phase 0 canon. */
+/** Visitor-facing framing — grammar of operations + reference trajectory. */
 export const SPIRAL_COPY: SpiralFrameworkCopy = {
   name: "The Evolutionary Spiral",
   shortName: "the Spiral",
   oneSentenceDefinition:
-    "A Living Terrain systems framework for how a living organization remains itself through regulated change across recurring cycles that carry history forward.",
+    "A Living Terrain grammar of recurrent operations through which organized systems may form, persist, meet changing conditions, reorganize, and sometimes generate new organization.",
   coreQuestion:
     "How does a living system remain itself while becoming something new?",
   visitorThesis: [
@@ -15,13 +15,27 @@ export const SPIRAL_COPY: SpiralFrameworkCopy = {
   shapeSentence:
     "A circle means return. The Spiral means recurrence with accumulated history.",
   ascentNote:
-    "When the Spiral eventually rises visually, that ascent marks accumulated history and altered conditions—not guaranteed improvement, mystical higher attainment, or inevitable progress.",
+    "History accumulates upward. Ascent marks changed conditions, not guaranteed improvement, mystical higher attainment, or inevitable progress.",
   interactionTendency:
     "Without sufficient Transformation, Continuity can become rigidity. Without sufficient Continuity, Transformation can become dissolution. Living systems often endure in their interaction.",
   disclaimer:
-    "The Evolutionary Spiral is a Living Terrain systems framework grounded in observations of living systems. It is not offered as a universal scientifically established developmental law. When historical or symbolic traditions appear beside it, they are comparative pattern-readings—not proof that one domain caused, predicted, or scientifically validates another.",
+    "The Evolutionary Spiral is a Living Terrain systems framework grounded in observations of living systems. It is not offered as a universal scientifically established developmental law. When historical or symbolic traditions appear beside it, they are comparative pattern-readings—not proof that one domain caused, predicted, or scientifically validates another. Structural resemblance is a reason to investigate—not evidence that the structures share a cause.",
   evolutionaryClarification:
-    "Here, evolutionary means change unfolding through accumulated history—not a claim that this model is Darwinian evolutionary theory itself. The sequence is a systems framework for exploring a recurring problem, not a universal law of development.",
+    "Here, evolutionary means change unfolding through accumulated history—not a claim that this model is Darwinian evolutionary theory itself. The helix shows a reference trajectory through a grammar of operations, not a universal ladder every system must climb.",
   emergenceAgainCue:
     "A further Emergence from altered conditions—not a return to the first beginning.",
+  howToRead: [
+    "The stages are recurrent operations in a grammar—not mandatory rungs of progress.",
+    "The helix shows one reference trajectory through that grammar, not a law that every system begins at Emergence, visits every operation once, or renews successfully.",
+    "Continuity and Transformation ask, at every local state: what persists, and what changes?",
+    "A lens compares trajectories in a domain with the grammar. An operation may appear more than once—or not at all. Mismatch is useful evidence.",
+  ],
+  referenceTrajectoryNote:
+    "The helix shows a reference trajectory, not a guaranteed path. Real systems may repeat, overlap, skip, branch, stabilize differently, or fail to renew. Disruption need not lead to Transformation; Transformation need not lead to Integration or Renewal.",
+  recurrenceNote:
+    "Emergence again makes recurrence visible, but any operation may recur under changed conditions. A later Disruption is not the same state as an earlier one—history has already accumulated.",
+  openQuestions: [
+    "Is boundary formation an independent operation, or does it emerge from embodiment, differentiation, relationship, and organization?",
+    "When the same operation appears at cell, organism, and collective scales, what travels across scales—and what does not?",
+  ],
 };

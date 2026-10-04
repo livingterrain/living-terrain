@@ -123,12 +123,18 @@ export function SpiralHelixExperience() {
       <header className="spiral-experience__head">
         <h2 className="spiral-page__section-title">The instrument</h2>
         <p className="spiral-page__section-lead">
-          Two currents wind through one developmental process. Select a stage to
-          see the local state of the whole — not a part where one current takes
-          over.
+          Two currents wind through a grammar of recurrent operations. The helix
+          is a reference trajectory — one proposed traversal, not a universal
+          ladder. Select an operation to see the local state of the whole — not
+          a part where one current takes over.
           {deep
-            ? " Transformation opens a deeper exploration: hold the stage, rotate the lens, enter a concept."
+            ? " Transformation opens a deeper exploration: hold the operation, rotate the lens, enter a concept. A lens asks where this operation appears in a domain’s trajectories — not which concept equals the stage."
             : null}
+        </p>
+        <p className="spiral-page__section-lead spiral-experience__ref-note">
+          The helix shows a reference trajectory, not a guaranteed path. Real
+          systems may repeat, overlap, skip, branch, stabilize differently, or
+          fail to renew.
         </p>
       </header>
 
