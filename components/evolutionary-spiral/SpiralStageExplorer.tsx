@@ -12,6 +12,7 @@ import {
   type SpiralConceptDiveSection,
   type SpiralEpistemicKind,
   type SpiralExploreViewId,
+  type SpiralLensCycleContext,
   type SpiralLensExploration,
   type SpiralProvenanceKind,
   type SpiralSequenceStop,
@@ -250,6 +251,108 @@ function SourcesBlock({ sources }: { sources: readonly SpiralSourceRef[] }) {
   );
 }
 
+function CycleContextView({ context }: { context: SpiralLensCycleContext }) {
+  return (
+    <section
+      className="spiral-explore__cycle"
+      aria-label={context.title ?? "Symbolic cycle context"}
+    >
+      {context.title && (
+        <h4 className="spiral-explore__cycle-title">{context.title}</h4>
+      )}
+      <p className="spiral-explore__cycle-note">{context.provenanceNote}</p>
+
+      {context.structureNote && (
+        <div className="spiral-explore__cycle-structure">
+          <div className="spiral-explore__concept-meta">
+            <ProvenanceMarks provenance={context.structureNote.provenance} />
+          </div>
+          <h5 className="spiral-explore__cycle-structure-title">
+            {context.structureNote.title}
+          </h5>
+          <Prose
+            text={context.structureNote.body}
+            className="spiral-explore__section-body"
+          />
+        </div>
+      )}
+
+      <ol className="spiral-explore__cycle-stops">
+        {context.stops.map((stop, index) => {
+          const emphasis =
+            stop.emphasis ??
+            (context.focusId && stop.id === context.focusId
+              ? "focus"
+              : "default");
+          return (
+            <li
+              key={stop.id}
+              className={cn(
+                "spiral-explore__cycle-stop",
+                emphasis === "focus" && "spiral-explore__cycle-stop--focus",
+                emphasis === "neighbor" &&
+                  "spiral-explore__cycle-stop--neighbor",
+                stop.recurrence && "spiral-explore__cycle-stop--recurrence",
+              )}
+            >
+              {index > 0 && (
+                <span className="spiral-explore__cycle-arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
+              <span className="spiral-explore__cycle-stop-main">
+                <span className="spiral-explore__cycle-stop-label">
+                  {stop.label}
+                </span>
+                {stop.gloss && (
+                  <span className="spiral-explore__cycle-stop-gloss">
+                    {stop.gloss}
+                  </span>
+                )}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+
+      {context.transitions && context.transitions.length > 0 && (
+        <div className="spiral-explore__cycle-transitions">
+          {context.transitions.map((tr) => (
+            <div key={tr.id} className="spiral-explore__cycle-transition">
+              <div className="spiral-explore__concept-meta">
+                <ProvenanceMarks provenance={tr.provenance} />
+              </div>
+              <h5 className="spiral-explore__cycle-transition-label">
+                {tr.label}
+              </h5>
+              <Prose
+                text={tr.body}
+                className="spiral-explore__section-body"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CircleAndSpiralView({
+  section,
+}: {
+  section: NonNullable<SpiralLensCycleContext["circleAndSpiral"]>;
+}) {
+  return (
+    <section className="spiral-explore__cycle-circle spiral-explore__section">
+      <div className="spiral-explore__concept-meta">
+        <ProvenanceMarks provenance={section.provenance} />
+      </div>
+      <h4 className="spiral-explore__cycle-circle-title">{section.title}</h4>
+      <Prose text={section.body} className="spiral-explore__section-body" />
+    </section>
+  );
+}
+
 function ConceptIndex({
   lens,
   onOpen,
@@ -267,6 +370,7 @@ function ConceptIndex({
       {lens.framing && (
         <Prose text={lens.framing} className="spiral-explore__framing" />
       )}
+      {lens.cycleContext && <CycleContextView context={lens.cycleContext} />}
       <p className="spiral-explore__index-cue">
         Concepts — choose how far to go
       </p>
@@ -321,6 +425,9 @@ function ConceptIndex({
             className="spiral-explore__section-body"
           />
         </section>
+      )}
+      {lens.cycleContext?.circleAndSpiral && (
+        <CircleAndSpiralView section={lens.cycleContext.circleAndSpiral} />
       )}
       {lens.openQuestions && lens.openQuestions.length > 0 && (
         <section className="spiral-explore__section spiral-explore__section--breaks spiral-explore__section--open">
