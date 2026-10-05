@@ -447,7 +447,7 @@
 @media (min-width: 960px) {
   .spiral-experience__stage {
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     grid-template-areas:
       "figure rail"
       "figure side";
@@ -535,6 +535,75 @@
   display: none;
 }
 
+/* Spiral-only: a quiet reading of what the helix is, balancing it on wide screens. */
+.spiral-orientation {
+  display: none;
+}
+
+@media (max-width: 959px) {
+  .spiral-experience__side:has(> .spiral-orientation:only-child) {
+    display: none;
+  }
+}
+
+@media (min-width: 960px) {
+  .spiral-orientation {
+    display: block;
+    max-width: 26rem;
+    padding-top: 1.5rem;
+  }
+}
+
+.spiral-orientation__title {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold-muted);
+}
+
+.spiral-orientation__lede {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: var(--color-charcoal);
+}
+
+.spiral-orientation__ideas {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1.75rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid color-mix(in srgb, var(--color-gold-muted) 35%, transparent);
+}
+
+.spiral-orientation__idea dt {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-orientation__idea dd {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--color-ivory);
+}
+
+.spiral-orientation__invite {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-charcoal-muted);
+}
+
 /* ── Helix figure ── */
 
 .spiral-helix {
@@ -557,11 +626,23 @@
 }
 
 @media (min-width: 960px) {
-  /* The whole helix fits the first desktop screen beneath the title. */
+  /* Larger instrument; the second bound keeps the sticky figure and its
+     legend within one screen. */
   .spiral-helix__canvas {
     max-width: none;
-    width: min(100%, calc((100vh - 21.5rem) * 100 / 168));
-    min-width: 17rem;
+    width: min(
+      100%,
+      calc((100vh - 21.5rem) * 122 / 168),
+      calc((100vh - 13rem) * 100 / 168)
+    );
+    min-width: 20.5rem;
+  }
+
+  .spiral-helix__hit {
+    width: 3rem;
+    height: 3rem;
+    margin-left: -1.5rem;
+    margin-top: -1.5rem;
   }
 }
 
@@ -573,8 +654,8 @@
 }
 
 .spiral-helix__axis {
-  stroke: color-mix(in srgb, var(--color-charcoal-muted) 70%, #9aa3b2);
-  stroke-width: 0.55;
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 64%, #9aa3b2);
+  stroke-width: 0.6;
   stroke-linecap: round;
 }
 
@@ -720,7 +801,7 @@
 }
 
 .spiral-helix__label {
-  fill: color-mix(in srgb, var(--color-charcoal-faint) 90%, transparent);
+  fill: var(--color-charcoal-faint);
   font-family: var(--font-heading), Georgia, serif;
   font-size: 3.1px;
   letter-spacing: 0.02em;
@@ -825,6 +906,28 @@
   background: color-mix(in srgb, var(--color-gold) 8%, transparent);
 }
 
+/* The target reaches across the operation's label. A pseudo-element keeps the
+   button's own box on the node, where relationship lines are anchored. */
+.spiral-helix__hits {
+  container-type: size;
+}
+
+.spiral-helix__hit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 42cqw;
+}
+
+.spiral-helix__hit--right::before {
+  left: 50%;
+}
+
+.spiral-helix__hit--left::before {
+  right: 50%;
+}
+
 .spiral-helix__legend {
   margin-top: 0.75rem;
   max-width: 28rem;
@@ -870,14 +973,43 @@
 
 /* Reference grammar recedes slightly while a trajectory is laid against it. */
 .spiral-helix--quiet .spiral-helix__space {
-  opacity: 0.72;
+  opacity: 0.82;
   transition: opacity 0.5s var(--ease-breath, ease-out);
+}
+
+/* Operations the active trajectory has drawable relationships with lead;
+   the rest stay readable, a step back. */
+.spiral-helix__label {
+  transition:
+    fill 0.4s var(--ease-breath, ease-out),
+    opacity 0.4s var(--ease-breath, ease-out);
+}
+
+.spiral-helix--has-related .spiral-helix__label {
+  opacity: 0.78;
+}
+
+.spiral-helix--has-related .spiral-helix__label--related,
+.spiral-helix--has-related .spiral-helix__label--selected {
+  opacity: 1;
+}
+
+.spiral-helix__label--related {
+  fill: color-mix(in srgb, var(--color-gold) 55%, var(--color-ivory));
+}
+
+.spiral-helix__label--related .spiral-helix__label-n {
+  fill: color-mix(in srgb, var(--color-gold-muted) 80%, transparent);
+}
+
+.spiral-helix__node-dot--related:not(.spiral-helix__node-dot--selected) {
+  fill: color-mix(in srgb, var(--color-gold) 70%, var(--color-ivory));
 }
 
 .spiral-helix__node-related {
   fill: none;
-  stroke: color-mix(in srgb, var(--color-gold) 60%, transparent);
-  stroke-width: 0.35;
+  stroke: color-mix(in srgb, var(--color-gold) 72%, transparent);
+  stroke-width: 0.45;
 }
 
 .spiral-helix__node-related--emphasized {
@@ -1147,6 +1279,27 @@
   font-size: 0.875rem;
   line-height: 1.55;
   color: var(--color-charcoal-muted);
+}
+
+.spiral-trajectory__takeaway {
+  display: grid;
+  gap: 0.2rem;
+  padding-left: 0.85rem;
+  border-left: 1px solid color-mix(in srgb, var(--color-gold-muted) 50%, transparent);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-charcoal);
+}
+
+.spiral-trajectory__takeaway-label {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-style: normal;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-muted);
 }
 
 .spiral-trajectory__summary {
@@ -1518,6 +1671,273 @@
   color: var(--color-gold-muted);
 }
 
+/* Explicit topology — authored transitions only */
+
+.spiral-topology {
+  /* Measured for layout: its width must come from the column, not the figure. */
+  contain: inline-size;
+  width: 100%;
+  margin: 0;
+}
+
+.spiral-topology__canvas {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.spiral-topology__plot {
+  position: relative;
+}
+
+.spiral-topology__svg {
+  display: block;
+  overflow: visible;
+}
+
+.spiral-topology__edge {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 62%, transparent);
+  stroke-width: 1;
+  stroke-linecap: round;
+  transition:
+    opacity 0.3s var(--ease-breath, ease-out),
+    stroke 0.3s var(--ease-breath, ease-out);
+}
+
+.spiral-topology__edge--return {
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 48%, transparent);
+}
+
+.spiral-topology__arrow {
+  fill: color-mix(in srgb, var(--color-charcoal-muted) 80%, transparent);
+}
+
+.spiral-topology[data-focused] .spiral-topology__edge {
+  opacity: 0.34;
+}
+
+/* Arrival: disturbance → establishment → the first branching read first;
+   later passages wait in the background until the visitor reaches for them. */
+.spiral-topology[data-staged] .spiral-topology__edge {
+  stroke: color-mix(in srgb, var(--color-charcoal) 70%, transparent);
+}
+
+/* Common history reads plainly; the fork and its futures read a step brighter.
+   Neutral tones only — gold belongs to authored relationships. */
+.spiral-topology[data-staged] .spiral-topology__edge--branch {
+  stroke: color-mix(in srgb, var(--color-ivory) 82%, transparent);
+  stroke-width: 1.4;
+}
+
+.spiral-topology[data-staged] .spiral-topology__node--fork .spiral-topology__dot,
+.spiral-topology[data-staged] .spiral-topology__node--future:not(.spiral-topology__node--open) .spiral-topology__dot {
+  fill: var(--color-ivory);
+}
+
+.spiral-topology[data-staged] .spiral-topology__node--open.spiral-topology__node--future .spiral-topology__dot {
+  stroke: var(--color-ivory);
+}
+
+.spiral-topology[data-staged] .spiral-topology__step--fork,
+.spiral-topology[data-staged] .spiral-topology__step--future {
+  color: var(--color-ivory);
+}
+
+.spiral-topology[data-staged] .spiral-topology__edge--later {
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 62%, transparent);
+  opacity: 0.32;
+}
+
+.spiral-topology[data-staged] .spiral-topology__node--later .spiral-topology__dot,
+.spiral-topology[data-staged] .spiral-topology__node--later .spiral-topology__halo {
+  opacity: 0.45;
+}
+
+.spiral-topology[data-staged] .spiral-topology__step--later {
+  opacity: 0.5;
+}
+
+.spiral-topology[data-staged] .spiral-topology__step--later:hover,
+.spiral-topology[data-staged] .spiral-topology__step--later:focus-visible {
+  opacity: 1;
+}
+
+.spiral-topology[data-focused] .spiral-topology__edge--near {
+  opacity: 1;
+  stroke: color-mix(in srgb, var(--color-ivory) 74%, transparent);
+}
+
+.spiral-topology__edge--selected,
+.spiral-topology[data-focused] .spiral-topology__edge--selected {
+  opacity: 1;
+  stroke: var(--color-ivory);
+  stroke-width: 1.5;
+}
+
+.spiral-topology__edge-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 12;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.spiral-topology__rel {
+  fill: none;
+  stroke-linecap: round;
+  stroke: var(--color-gold);
+  stroke-width: 2.4;
+  transition: opacity 0.3s var(--ease-breath, ease-out);
+}
+
+.spiral-topology__rel.spiral-rel--dormant {
+  opacity: 0.4;
+}
+
+/* A comparison break marks where the comparison was tested — never a line to the Spiral. */
+.spiral-topology__rel.spiral-rel--comparison-break,
+.spiral-topology__ring.spiral-rel--comparison-break {
+  stroke: var(--color-charcoal-muted);
+  stroke-dasharray: 1 3;
+}
+
+.spiral-topology__dot {
+  fill: var(--color-charcoal-muted);
+  transition: fill 0.3s var(--ease-breath, ease-out);
+}
+
+.spiral-topology__node--near .spiral-topology__dot {
+  fill: var(--color-charcoal);
+}
+
+.spiral-topology__node--selected .spiral-topology__dot {
+  fill: var(--color-ivory);
+}
+
+/* Where evidence stops: an open dot in a fading ring, never an end mark. */
+.spiral-topology__node--open .spiral-topology__dot {
+  fill: var(--color-space);
+  stroke: var(--color-charcoal-muted);
+  stroke-width: 0.9;
+}
+
+.spiral-topology__node--open.spiral-topology__node--selected .spiral-topology__dot {
+  stroke: var(--color-ivory);
+}
+
+.spiral-topology__halo {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 35%, transparent);
+  stroke-width: 0.8;
+  stroke-dasharray: 1.5 3;
+}
+
+.spiral-topology__steps {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.spiral-topology__step {
+  pointer-events: auto;
+  position: absolute;
+  display: block;
+  width: max-content;
+  min-height: 2.25rem;
+  padding: 0.2rem 0.35rem;
+  border: none;
+  border-radius: 2px;
+  background: transparent;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  color: var(--color-charcoal);
+  cursor: pointer;
+  transition:
+    color 0.3s var(--ease-breath, ease-out),
+    opacity 0.3s var(--ease-breath, ease-out);
+}
+
+.spiral-topology[data-compact] .spiral-topology__step {
+  font-size: 0.76rem;
+}
+
+.spiral-topology__step--right {
+  padding-left: 1.05rem;
+  transform: translate(-0.7rem, -50%);
+  text-align: left;
+}
+
+.spiral-topology__step--left {
+  padding-right: 1.05rem;
+  transform: translate(calc(-100% + 0.7rem), -50%);
+  text-align: right;
+}
+
+.spiral-topology__name {
+  display: block;
+  padding-block: 0.35rem;
+  text-shadow:
+    0 0 3px var(--color-space),
+    0 0 6px var(--color-space);
+}
+
+.spiral-topology__step--open {
+  font-style: italic;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-topology[data-focused] .spiral-topology__step {
+  opacity: 0.62;
+}
+
+.spiral-topology[data-focused] .spiral-topology__step--near {
+  opacity: 1;
+}
+
+.spiral-topology__step:hover,
+.spiral-topology__step--near {
+  color: var(--color-ivory);
+}
+
+.spiral-topology__step--selected {
+  color: var(--color-ivory);
+}
+
+.spiral-topology__step--selected .spiral-topology__name {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-ivory) 40%, transparent);
+  text-underline-offset: 0.25em;
+}
+
+.spiral-topology__step:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  outline-offset: -2px;
+}
+
+.spiral-topology__key {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 0.75rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-topology__key-open {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.4rem;
+  border: 1px dashed var(--color-charcoal-muted);
+  border-radius: 999px;
+  vertical-align: -0.05rem;
+}
+
 /* ── Across scaffold ── */
 
 .spiral-across {
@@ -1738,6 +2158,10 @@
   border-top: 1.25px solid color-mix(in srgb, var(--color-gold) 78%, transparent);
 }
 
+.spiral-trajectory__key-line--break {
+  border-top: 1.25px dotted var(--color-charcoal-muted);
+}
+
 /* Across — each mapped trajectory in its own shape */
 
 .spiral-mini {
@@ -1828,6 +2252,21 @@
   stroke-width: 1;
 }
 
+.spiral-mini__svg--topology {
+  height: 6rem;
+}
+
+.spiral-mini__seg--topology {
+  stroke-width: 2.4;
+}
+
+.spiral-mini__dot--open {
+  fill: none;
+  stroke: var(--color-charcoal-muted);
+  stroke-width: 2;
+  stroke-dasharray: 2 3;
+}
+
 .spiral-mini__name {
   font-family: var(--font-heading);
   font-size: 1rem;
@@ -1848,6 +2287,15 @@
   border-left: 1px solid color-mix(in srgb, var(--color-gold-muted) 45%, transparent);
   background: color-mix(in srgb, var(--color-space) 55%, transparent);
   scroll-margin-block: 6rem 1.5rem;
+}
+
+.spiral-card:focus {
+  outline: none;
+}
+
+.spiral-card:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
+  outline-offset: 2px;
 }
 
 .spiral-card__close {
@@ -1889,6 +2337,47 @@
 
 .spiral-card__with {
   margin-top: 0.75rem;
+}
+
+.spiral-card__paths {
+  margin-top: 0.6rem;
+}
+
+.spiral-card__outcome {
+  font-style: italic;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-card__open {
+  margin-top: 0.6rem;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-card__transition .spiral-card__anchor {
+  min-height: 2.25rem;
+  font: inherit;
+}
+
+.spiral-card__conditions {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-charcoal);
+}
+
+.spiral-card__sources {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.spiral-card__source-supports {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--color-charcoal-faint);
 }
 
 .spiral-card__with-label {
@@ -1955,6 +2444,23 @@
   margin-top: 0.75rem;
 }
 
+.spiral-card > .spiral-card__note {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-charcoal);
+}
+
+.spiral-card__scale {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-charcoal-muted);
+}
+
+.spiral-card__bridge--break {
+  color: var(--color-charcoal-muted);
+}
+
 /* Phone: a non-modal sheet over the lower screen; the figure stays visible above. */
 @media (max-width: 639px) {
   .spiral-card {
@@ -1986,6 +2492,11 @@
     margin: -0.6rem -2.75rem -2.15rem auto;
     border-radius: 999px;
     background: color-mix(in srgb, var(--color-space) 92%, transparent);
+  }
+
+  /* Sticky keeps the close button inside the content box, over the folio's line ends. */
+  .spiral-card .spiral-op__folio {
+    padding-right: 3rem;
   }
 
   /* Room to scroll the figure clear of the sheet. */

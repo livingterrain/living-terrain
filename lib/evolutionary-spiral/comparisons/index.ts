@@ -1,4 +1,5 @@
 import { SPIRAL_SEQUENCE } from "../stages";
+import { resolveSpan } from "../topology";
 import type {
   SpiralRelationshipStatus,
   SpiralSequenceStop,
@@ -6,13 +7,21 @@ import type {
   SpiralTrajectoryAnchor,
   SpiralTrajectoryRelationship,
 } from "../types";
+import { isComparisonFinding } from "./findings";
 import { JESUS_RELATIONSHIPS } from "./jesus";
+import { LODGEPOLE_RELATIONSHIPS } from "./lodgepole";
 import { METAMORPHOSIS_RELATIONSHIPS } from "./metamorphosis";
+import { multiOccurrenceStageIds } from "./validate";
 import { ZODIAC_RELATIONSHIPS } from "./zodiac";
 
 /** Every authored trajectory ↔ Spiral relationship. Nothing here is inferred. */
 export const SPIRAL_TRAJECTORY_RELATIONSHIPS: readonly SpiralTrajectoryRelationship[] =
-  [...ZODIAC_RELATIONSHIPS, ...JESUS_RELATIONSHIPS, ...METAMORPHOSIS_RELATIONSHIPS];
+  [
+    ...ZODIAC_RELATIONSHIPS,
+    ...JESUS_RELATIONSHIPS,
+    ...METAMORPHOSIS_RELATIONSHIPS,
+    ...LODGEPOLE_RELATIONSHIPS,
+  ];
 
 export const SPIRAL_RELATIONSHIP_STATUS: Record<
   SpiralRelationshipStatus,
@@ -56,23 +65,33 @@ export function relationshipStatusLabel(status: SpiralRelationshipStatus): strin
   return SPIRAL_RELATIONSHIP_STATUS[status].label;
 }
 
+/**
+ * Authored comparison records for a trajectory — the source every presentation
+ * reads from. Records without an explicit classification are withheld.
+ */
 export function relationshipsForTrajectory(
   trajectoryId: string | null | undefined,
 ): SpiralTrajectoryRelationship[] {
   if (!trajectoryId) return [];
   return SPIRAL_TRAJECTORY_RELATIONSHIPS.filter(
-    (r) => r.trajectoryId === trajectoryId,
+    (r) => r.trajectoryId === trajectoryId && isComparisonFinding(r),
   );
 }
 
+const MULTI_OCCURRENCE_STAGES = multiOccurrenceStageIds();
+
+/**
+ * A ref without an occurrence matches only a stage-kind that occurs once.
+ * For a recurring stage-kind it matches nothing: it is never expanded to every
+ * occurrence (validation reports it as ambiguous).
+ */
 function refMatchesStop(
   ref: SpiralTrajectoryRelationship["operations"][number],
   stop: SpiralSequenceStop,
 ): boolean {
-  return (
-    ref.stageId === stop.stageId &&
-    (!ref.occurrenceId || ref.occurrenceId === stop.occurrenceId)
-  );
+  if (ref.stageId !== stop.stageId) return false;
+  if (ref.occurrenceId) return ref.occurrenceId === stop.occurrenceId;
+  return !MULTI_OCCURRENCE_STAGES.has(ref.stageId);
 }
 
 /** Authored relationships for one occurrence. Zero is valid. */
@@ -94,18 +113,15 @@ export function occurrencesForRelationship(
   );
 }
 
-/** Step ids an anchor covers, in trajectory order. */
+/** Step ids an anchor covers, along its authored path. Unresolvable spans cover nothing. */
 export function anchorStepIds(
   trajectory: SpiralTrajectory,
   anchor: SpiralTrajectoryAnchor,
 ): string[] {
   if (anchor.kind === "step") return [anchor.stepId];
   if (anchor.kind === "transition") return [anchor.from, anchor.to];
-  const ids = trajectory.steps.map((s) => s.id);
-  const a = ids.indexOf(anchor.from);
-  const b = ids.indexOf(anchor.to);
-  if (a < 0 || b < 0) return [];
-  return ids.slice(Math.min(a, b), Math.max(a, b) + 1);
+  const span = resolveSpan(trajectory, anchor);
+  return span.ok ? [...span.path] : [];
 }
 
 /** Authored relationships whose anchor touches a step. */
@@ -130,4 +146,40 @@ export function anchorLabel(
   return `${label(anchor.from)} … ${label(anchor.to)}`;
 }
 
-export { JESUS_RELATIONSHIPS, METAMORPHOSIS_RELATIONSHIPS, ZODIAC_RELATIONSHIPS };
+export {
+  JESUS_RELATIONSHIPS,
+  LODGEPOLE_RELATIONSHIPS,
+  METAMORPHOSIS_RELATIONSHIPS,
+  ZODIAC_RELATIONSHIPS,
+};
+
+export {
+  EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
+  EMERGENCE_AGAIN_OCCURRENCE_ID,
+  SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS,
+  multiOccurrenceStageIds,
+  validateSpiralComparisons,
+  validateTrajectoryTopology,
+} from "./validate";
+export {
+  COMPARISON_BREAK_STATUSES,
+  DRAWABLE_RELATIONSHIP_STATUSES,
+  comparisonFindingKind,
+  isComparisonBreak,
+  isComparisonFinding,
+  isDrawableRelationship,
+} from "./findings";
+export type { SpiralComparisonFindingKind } from "./findings";
+export { conceptMatches, resolveRelationshipConcept } from "./research";
+export {
+  edgeAssertsEvidence,
+  isCitableSource,
+  validateTrajectorySources,
+} from "./sources";
+export type { SpiralConceptMatch } from "./research";
+export type {
+  SpiralComparisonIssue,
+  SpiralComparisonIssueCode,
+  SpiralComparisonValidationOptions,
+  SpiralNameCollisionAcknowledgement,
+} from "./validate";

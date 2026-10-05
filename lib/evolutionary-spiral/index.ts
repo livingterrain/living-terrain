@@ -36,7 +36,10 @@ export type {
   SpiralRelationshipStatus,
   SpiralTrajectory,
   SpiralTrajectoryAnchor,
+  SpiralScaleId,
+  SpiralScaleRef,
   SpiralTrajectoryEdge,
+  SpiralTrajectoryOutcome,
   SpiralTrajectoryRelationship,
   SpiralTrajectoryResearchIssue,
   SpiralTrajectoryResonance,
@@ -48,8 +51,40 @@ export {
   SPIRAL_CURRENT_IDS,
   SPIRAL_DOMAIN_IDS,
   SPIRAL_LENS_ORDER,
+  SPIRAL_SCALE_IDS,
   SPIRAL_STAGE_IDS,
+  SPIRAL_TRAJECTORY_OUTCOMES,
 } from "./types";
+
+export {
+  EXPLICIT_TOPOLOGY_SHAPES,
+  findEdge,
+  incomingEdges,
+  orderedEdges,
+  outgoingEdges,
+  resolveSpan,
+  sinkStepIds,
+  topologySource,
+  trajectoryEdges,
+} from "./topology";
+
+export type { SpiralSpanResolution, SpiralTopologySource } from "./topology";
+
+export {
+  TRAJECTORY_TOPOLOGY,
+  fitTopologyLayout,
+  returningEdgeIds,
+  topologyLayout,
+  trajectoryFigureKind,
+} from "./topology-layout";
+
+export type {
+  SpiralTrajectoryFigureKind,
+  TopologyDensity,
+  TopologyLayout,
+  TopologyNode,
+  TopologyRoute,
+} from "./topology-layout";
 
 export {
   SPIRAL_SEQUENCE,
@@ -64,6 +99,7 @@ export { SPIRAL_DOMAINS, getSpiralDomain } from "./domains";
 
 export {
   SPIRAL_EPISTEMIC_CATEGORIES,
+  SPIRAL_EPISTEMIC_LEGEND,
   epistemicLabel,
 } from "./epistemic";
 
@@ -75,7 +111,7 @@ export {
 
 export type { SpiralProvenanceCategory } from "./provenance";
 
-export { SPIRAL_COPY } from "./copy";
+export { SPIRAL_COPY, SPIRAL_ORIENTATION, TRAJECTORY_TAKEAWAYS } from "./copy";
 
 export { SPIRAL_EXAMPLES, examplesForStage } from "./examples";
 
@@ -108,20 +144,48 @@ export type { SpiralIntersection } from "./lenses";
 export { ZODIAC_CYCLE_STEPS, ZODIAC_CYCLE_TRAJECTORY } from "./trajectories/zodiac";
 export { JESUS_NARRATIVE_TRAJECTORY } from "./trajectories/jesus";
 export { METAMORPHOSIS_TRAJECTORY } from "./trajectories/metamorphosis";
+export { LODGEPOLE_FIRE_TRAJECTORY } from "./trajectories/lodgepole";
 
 export {
+  EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
+  EMERGENCE_AGAIN_OCCURRENCE_ID,
   JESUS_RELATIONSHIPS,
+  LODGEPOLE_RELATIONSHIPS,
   METAMORPHOSIS_RELATIONSHIPS,
+  SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS,
   SPIRAL_RELATIONSHIP_STATUS,
   SPIRAL_TRAJECTORY_RELATIONSHIPS,
   ZODIAC_RELATIONSHIPS,
   anchorLabel,
   anchorStepIds,
+  conceptMatches,
+  edgeAssertsEvidence,
+  isCitableSource,
+  COMPARISON_BREAK_STATUSES,
+  DRAWABLE_RELATIONSHIP_STATUSES,
+  comparisonFindingKind,
+  isComparisonBreak,
+  isComparisonFinding,
+  isDrawableRelationship,
+  multiOccurrenceStageIds,
   occurrencesForRelationship,
   relationshipStatusLabel,
   relationshipsForStep,
   relationshipsForStop,
   relationshipsForTrajectory,
+  resolveRelationshipConcept,
+  validateSpiralComparisons,
+  validateTrajectorySources,
+  validateTrajectoryTopology,
+} from "./comparisons";
+
+export type {
+  SpiralComparisonFindingKind,
+  SpiralComparisonIssue,
+  SpiralComparisonIssueCode,
+  SpiralComparisonValidationOptions,
+  SpiralConceptMatch,
+  SpiralNameCollisionAcknowledgement,
 } from "./comparisons";
 
 export {

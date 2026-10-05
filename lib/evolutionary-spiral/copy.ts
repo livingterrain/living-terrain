@@ -35,11 +35,39 @@ export const SPIRAL_COPY: SpiralFrameworkCopy = {
     "A lens compares trajectories in a domain with the grammar. An operation may appear more than once—or not at all. Mismatch is useful evidence.",
   ],
   referenceTrajectoryNote:
-    "The helix shows a reference trajectory, not a guaranteed path. Real systems may repeat, overlap, skip, branch, stabilize differently, or fail to renew. Disruption need not lead to Transformation; Transformation need not lead to Integration or Renewal.",
+    "The helix shows a reference trajectory, not a guaranteed path. Real systems may repeat, overlap, skip, branch, stabilize differently, or fail to renew. Disruption need not lead to Transformation, and Transformation need not begin with Disruption. Neither leads necessarily to Integration or Renewal.",
   recurrenceNote:
     "Emergence again makes recurrence visible, but any operation may recur under changed conditions. A later Disruption is not the same state as an earlier one—history has already accumulated.",
   openQuestions: [
     "Is boundary formation an independent operation, or does it emerge from embodiment, differentiation, relationship, and organization?",
     "When the same operation appears at cell, organism, and collective scales, what travels across scales—and what does not?",
   ],
+};
+
+/** Spiral-only orientation: what a first-time visitor is looking at. */
+export const SPIRAL_ORIENTATION = {
+  title: "The grammar",
+  lede: "The Spiral proposes a set of recurrent operations through which systems form, differentiate, organize, change, and sometimes begin again.",
+  ideas: [
+    { term: "Operations", question: "What is happening?" },
+    { term: "Currents", question: "What persists? What changes?" },
+    { term: "Trajectories", question: "What actually happened in this system?" },
+  ],
+  invitation:
+    "Choose a domain above to see where an independently studied trajectory meets the model.",
+} as const;
+
+/**
+ * One plain reading per trajectory, restating its authored comparison records.
+ * Absent where nothing has been compared; never a new finding.
+ */
+export const TRAJECTORY_TAKEAWAYS: Readonly<Record<string, string>> = {
+  "zodiac-cycle":
+    "The researched resemblances cluster around Transformation, while the zodiac remains a cyclical symbolic sequence.",
+  "jesus-narrative":
+    "The researched comparison spans death through resurrection, while the narrative itself remains directional rather than cyclical.",
+  metamorphosis:
+    "The researched comparison is with Transformation: development continues through metamorphosis while the organization carrying it changes. At which scale remains open.",
+  "lodgepole-fire-regeneration":
+    "The strongest comparison is not fire itself, but what happens when another fire arrives before the stand has rebuilt its capacity to regenerate.",
 };

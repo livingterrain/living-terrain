@@ -3,8 +3,12 @@
 import { useRef, type KeyboardEvent } from "react";
 import {
   getSpiralStage,
+  isComparisonBreak,
+  isDrawableRelationship,
   occurrencesForRelationship,
+  TRAJECTORY_TAKEAWAYS,
   type SpiralLens,
+  type SpiralLensExploration,
   type SpiralLensId,
   type SpiralSequenceStop,
   type SpiralSourceRef,
@@ -32,6 +36,8 @@ type Props = {
   activeRelationshipIds: ReadonlySet<string>;
   selectedStepId: string | null;
   onSelectStep: (stepId: string) => void;
+  selectedEdgeId: string | null;
+  onSelectEdge: (edgeId: string) => void;
   onSelectRelationship: (relationshipId: string) => void;
   researchedStops: readonly SpiralSequenceStop[];
   onSelectOccurrence: (occurrenceId: string) => void;
@@ -90,35 +96,58 @@ function RelationshipSummary({
   if (relationships.length === 0) {
     return (
       <p className="spiral-trajectory__summary">
-        No authored relationships with the Spiral yet.
+        This trajectory has been charted independently. No Spiral
+        relationships have been authored yet.
       </p>
     );
   }
-  const counts = new Map<string, { stop: SpiralSequenceStop; n: number }>();
-  for (const r of relationships) {
-    for (const stop of occurrencesForRelationship(r)) {
-      const prev = counts.get(stop.occurrenceId);
-      counts.set(stop.occurrenceId, { stop, n: (prev?.n ?? 0) + 1 });
+  const tally = (rels: readonly SpiralTrajectoryRelationship[]) => {
+    const counts = new Map<string, { stop: SpiralSequenceStop; n: number }>();
+    for (const r of rels) {
+      for (const stop of occurrencesForRelationship(r)) {
+        const prev = counts.get(stop.occurrenceId);
+        counts.set(stop.occurrenceId, { stop, n: (prev?.n ?? 0) + 1 });
+      }
     }
-  }
+    return Array.from(counts.values());
+  };
+  const jumps = (entries: ReturnType<typeof tally>) =>
+    entries.map(({ stop, n }, i) => (
+      <span key={stop.occurrenceId}>
+        {i > 0 && ", "}
+        <button
+          type="button"
+          className="spiral-lens-context__jump"
+          onClick={() => onSelectOccurrence(stop.occurrenceId)}
+        >
+          {stopName(stop)}
+        </button>{" "}
+        ({n})
+      </span>
+    ));
+  const drawn = tally(relationships.filter(isDrawableRelationship));
+  const breaks = tally(relationships.filter(isComparisonBreak));
   return (
     <p className="spiral-trajectory__summary">
-      <span>Authored relationships with the Spiral: </span>
-      {Array.from(counts.values()).map(({ stop, n }, i) => (
-        <span key={stop.occurrenceId}>
-          {i > 0 && ", "}
-          <button
-            type="button"
-            className="spiral-lens-context__jump"
-            onClick={() => onSelectOccurrence(stop.occurrenceId)}
-          >
-            {stopName(stop)}
-          </button>{" "}
-          ({n})
-        </span>
-      ))}
+      {drawn.length > 0 && (
+        <>
+          <span>Authored relationships with the Spiral: </span>
+          {jumps(drawn)}
+          <span>. </span>
+        </>
+      )}
+      {breaks.length > 0 && (
+        <>
+          <span>Comparison breaks, drawn without a line: </span>
+          {jumps(breaks)}
+          <span>. </span>
+        </>
+      )}
+      {drawn.length + breaks.length > 1 && (
+        <span>Each is a separate finding, not a path through the Spiral. </span>
+      )}
       <span>
-        . Everything else is unresearched. No correspondence is assumed, and
+        Everything else is unresearched. No correspondence is assumed, and
         there may be none.
       </span>
     </p>
@@ -217,6 +246,8 @@ export function SpiralLensContext({
   activeRelationshipIds,
   selectedStepId,
   onSelectStep,
+  selectedEdgeId,
+  onSelectEdge,
   onSelectRelationship,
   researchedStops,
   onSelectOccurrence,
@@ -310,7 +341,15 @@ export function SpiralLensContext({
     );
   }
 
-  const research = lens.research;
+  const research: SpiralLensExploration | undefined =
+    lens.research ??
+    (trajectory.concepts?.length
+      ? {
+          lensId: trajectory.lensId,
+          conceptsCue: "Research beneath this trajectory",
+          concepts: trajectory.concepts,
+        }
+      : undefined);
   const conceptCount = research?.concepts.length ?? 0;
   const researchLead = [
     conceptCount > 0 &&
@@ -323,6 +362,9 @@ export function SpiralLensContext({
       "open questions",
     (trajectory.sources?.length || research) && "sources",
   ].filter(Boolean);
+  const takeaway = relationships.some(isDrawableRelationship)
+    ? TRAJECTORY_TAKEAWAYS[trajectory.id]
+    : undefined;
 
   return (
     <section
@@ -359,13 +401,31 @@ export function SpiralLensContext({
         activeIds={activeRelationshipIds}
         selectedStepId={selectedStepId}
         onSelectStep={onSelectStep}
+        selectedEdgeId={selectedEdgeId}
+        onSelectEdge={onSelectEdge}
         onSelectRelationship={onSelectRelationship}
       />
 
-      {relationships.length > 0 && (
+      {relationships.some(isDrawableRelationship) && (
         <p className="spiral-trajectory__key">
           <span className="spiral-trajectory__key-line" aria-hidden="true" />
           Lines mark researched relationships.
+        </p>
+      )}
+      {relationships.some(isComparisonBreak) && (
+        <p className="spiral-trajectory__key">
+          <span
+            className="spiral-trajectory__key-line spiral-trajectory__key-line--break"
+            aria-hidden="true"
+          />
+          Dotted marks: a comparison was investigated here and does not hold.
+        </p>
+      )}
+
+      {takeaway && (
+        <p className="spiral-trajectory__takeaway">
+          <span className="spiral-trajectory__takeaway-label">What this shows</span>
+          {takeaway}
         </p>
       )}
 

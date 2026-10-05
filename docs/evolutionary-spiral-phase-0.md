@@ -92,14 +92,26 @@ Comparative lenses may be explored **after** this living-systems frame is establ
 
 ---
 
-## 7. Developmental sequence (primary architecture)
+## 7. Operations and the reference trajectory (primary architecture)
 
-The nine-stage sequence is primary and independent.
+**The operations form the grammar. The helix shows one reference trajectory through that grammar.** Both are primary and independent.
 
 ```
 Emergence → Embodiment → Differentiation → Relationship → Organization
 → Disruption → Transformation → Integration → Renewal → Emergence again
 ```
+
+The reference trajectory is ordered partly because some definitions presuppose a state that earlier operations can produce: Relationship requires distinct elements, Organization requires relations, and Disruption requires an existing organization. Presupposing a state is not presupposing an operation—those elements, relations, or organization may already be present, however they arose, without Differentiation, Relationship, or Organization occurring just before. Embodiment, Integration, Renewal, and Emergence again are defined by reference to earlier operations (an emerging pattern, reorganized elements, the reorganized system, a prior cycle); that is a feature of their current definitions, not a sequence any real system must follow.
+
+That conceptual order is not a developmental law, a mandatory sequence, or a guaranteed pathway. Real trajectories may repeat, skip, overlap, branch, converge, loop, stall, or remain open; an operation may appear more than once or not at all.
+
+### Reading an operation
+
+An operation is read relative to a stated system and scale; it is not an intrinsic label on an event or a state. A fire is an event; Disruption is one possible reading of it relative to a system's organization and capacity. A sparse stand is a state; Transformation is a claim about changed means of maintenance.
+
+Currents describe what persists and what changes. Operations describe what is happening at a stated scale. Trajectories describe what actually happened to a system; topology, the shape of that trajectory; outcomes, where things stand at an observation time. Conditions shape what becomes possible or disruptive.
+
+Comparisons with the Spiral are authored one at a time. None is inferred from stage order, from another comparison, or from an outcome label.
 
 ### Cycle notation (conceptual)
 
@@ -137,7 +149,13 @@ Short visitor-facing whispers for future visualization appear in §8A. Whispers 
 
 ### 1. Emergence
 
-A new pattern of organization becomes discernible as a system—something begins to hold as an identifiable process or form where it was not previously available as such.
+Relations among a system's components begin to sustain a capacity the system did not have at that scale—new against what the system, and any lineage or program that reliably reproduces it, already makes possible—and that capacity holds rather than flickers.
+
+**Reading Emergence.** A *capacity* is something the system can now do, resist, sustain, or produce at the stated scale. Novelty is always judged against a stated reference. By default the reference is the system's repertoire: what it already has, together with what any lineage, developmental program, or institutional template reliably reproduces. An individual's first instance of a capacity its kind reliably produces is maturation or recurrence, not Emergence.
+
+The capacity arises through relations among components at the stated scale. Weak emergence qualifies: the capacity need only be absent from the components taken separately or merely added together. No metaphysical irreducibility is claimed. "Holds" excludes momentary fluctuations.
+
+A different reference (for example, cells rather than the lineage) may be used only when stated explicitly, and the claim then holds only against that reference.
 
 ### 2. Embodiment
 
@@ -163,7 +181,11 @@ Stress, novelty, failure, or intrusion challenges the existing organization. Con
 
 ### 7. Transformation
 
-The system reorganizes under pressure. Variation, learning, breakdown, or structural change alters the means by which the system maintains itself.
+The processes by which a system generates or maintains its organization are themselves altered—not only their products, rate, setting, or appearance, and not merely their ordinary operation. It may follow Disruption or arise without it, through variation, learning, breakdown, development, or structural change.
+
+**Reading Transformation.** Not every change is Transformation. Growth, shape change, turnover, ordinary repair, and routine variation alter what a system produces, how fast, under which settings, or how it looks, while the processes that keep it organized continue as before. Transformation claims that those processes themselves have changed, at a stated scale. It can be visually dramatic or nearly invisible.
+
+Transformation is defined by what changes, not by what causes it. Disruption—pressure an organization cannot absorb unchanged—may set it in motion, may be absorbed without it, and is not required for it: scheduled developmental reorganization alters the means of maintenance without any Disruption.
 
 ### 8. Integration
 
@@ -191,13 +213,13 @@ Evocative but precise. Approximately 12–20 words. For interactive node labels 
 
 | Stage | Whisper |
 |---|---|
-| **Emergence** | Something begins to hold as a pattern—a form not available in the same way before. |
+| **Emergence** | Relations among parts begin to hold a capacity not already available in the system's repertoire. |
 | **Embodiment** | The pattern takes body or medium—conditions through which it can persist and act. |
 | **Differentiation** | Distinctions appear: parts, roles, and boundaries form within what had been more whole. |
 | **Relationship** | What is differentiated begins to matter through contact; relation itself becomes constitutive. |
 | **Organization** | Relations settle into structure that can regulate itself and hold under ordinary change. |
 | **Disruption** | Pressure arrives that the existing organization cannot take in or absorb unchanged. |
-| **Transformation** | Under pressure, the means by which the system stays organized themselves begin to change. |
+| **Transformation** | More than its form changes: the very ways the system keeps itself organized are altered. |
 | **Integration** | What was reorganized becomes coherent enough to function again as one system. |
 | **Renewal** | The reorganized system stabilizes enough to continue forward now with altered capacity. |
 
@@ -210,7 +232,7 @@ Evocative but precise. Approximately 12–20 words. For interactive node labels 
 Visitor-facing term: **currents**  
 Do **not** use *strand*, *thread*, *trail*, or *pathway* for these two forces (those terms are already reserved elsewhere in Living Terrain).
 
-The Spiral examines the **tension and interaction** between Continuity and Transformation over time. They are not enemies, not a simple binary, and not alternating exclusive modes. Both move through the same developmental sequence.
+The Spiral examines the **tension and interaction** between Continuity and Transformation over time. They are not enemies, not a simple binary, and not alternating exclusive modes. Both act throughout the grammar, at every operation of the reference trajectory.
 
 ### Continuity current
 
@@ -297,6 +319,68 @@ Do **not** create a standalone Mythology domain in the initial model. Individual
 
 ---
 
+## 11A. Comparison findings and silence
+
+What a comparison between a trajectory and the Spiral can conclude. These are results of inquiry, not epistemic categories (§10): a comparison break or a bounded negative is never an epistemic kind.
+
+### Silence is not a claim
+
+No comparison record means only: *no comparison finding has been authored here.* It does not mean the operation is absent, that it was investigated, that a comparison failed, that evidence contradicts it, or that it cannot occur. No relationship and no negative may be inferred from silence. Silence is the default: most operation–trajectory pairs have no record, and a record exists only where research produced a finding worth preserving.
+
+### Vocabulary
+
+| Term | Meaning | Represented |
+|---|---|---|
+| **Relationship** | An affirmative authored comparison finding. The only finding that may produce an ordinary arc. | Comparison record with an approved drawing status |
+| **Comparison break** | A plausible resemblance was investigated and fails, or misleads, because an important structural difference matters. Produces no ordinary arc. | Comparison record, status `comparison-break` |
+| **Unresolved inquiry** | Research occurred, but evidence, definitions, or scope do not support a conclusion. | Research material only (research issues, trajectory concepts, dossiers) |
+| **Bounded negative** | Evidence supports non-occurrence of an operation within a stated, researchable scope. | Not implemented; no authored case qualifies |
+| **Rejected candidate** | A proposed mapping failed and does not need visitor-facing correction. | Research notes only |
+
+**Comparison records** are relationships and breaks together. Do not call them all relationships. Comparison records are not canonical relationships.
+
+### A comparison break concerns the comparison
+
+A break says a proposed resemblance fails at a stated scale or reference. It does not claim the operation is absent from the system. Historical-interval crown fire breaks as Disruption at landscape/regime scale; that does not mean Disruption is absent from lodgepole ecology — the short-interval reburn supports a Disruption comparison elsewhere in the same trajectory.
+
+### Unresolved is not `ambiguous`
+
+The relationship status `ambiguous` is an authored comparison that still draws, with its reading kept open (the Zodiac's Pisces → Aries passage). An unresolved inquiry is research that cannot yet author any comparison. The two must never be merged, and unresolved material stays in research until a real need justifies structure.
+
+### Rejected candidates
+
+A rejected mapping does not establish absence: rejecting establishment → Emergence shows only that this anchor does not support Emergence. A rejected candidate becomes a comparison break only when the resemblance is plausible enough that showing why it fails teaches the visitor or prevents a likely misreading. Otherwise it remains research material.
+
+### Bounded negatives (concept only)
+
+A bounded negative is bounded by its anchor or segment, scale, variable, reference, observation window, and evidence base. It is not impossibility, silence, a failure to find a source, an unresolved inquiry, a comparison break, or a rejected analogy. Before one is authored it should meet all of:
+
+1. the operation is defined well enough to be detected;
+2. the anchor or context is defined;
+3. scale is stated;
+4. the variable is stated;
+5. a reference is stated where "new" or "altered" depends on one;
+6. an observation window is stated where time matters;
+7. the relevant evidence base was searched;
+8. the evidence could have detected the operation had it occurred;
+9. an explicit argument shows the evidence supports non-occurrence rather than uncertainty.
+
+"Not within the observed window" is never "does not occur." A bounded negative will not be a relationship status; if a real case requires it, it gets its own type, which cannot reach arc geometry.
+
+### One finding per inquiry
+
+Do not record the same inquiry twice. When a break already carries the negative implication — long-interval return × Renewal establishes no altered capacity on that path — that implication belongs inside the break, not in a second negative record.
+
+### Domain standards
+
+Negative standards may differ by domain, and must be defined for a domain before any bounded negative is authored there. Provisionally: empirical domains may sometimes support bounded negatives where variables and windows are measurable; psychology needs special caution, because heterogeneous evidence and individual variation make negative claims difficult; textual absence is not automatically operation absence; symbolic systems do not support empirical-style absence merely because no resemblance is authored. These are not final rules.
+
+### Drawing
+
+Only explicitly approved affirmative relationship statuses draw ordinary arcs. Everything else fails closed: comparison breaks, unresolved inquiry, bounded negatives, silence, and any status not yet approved draw nothing. Across names the operations a trajectory meets from relationships only, counts breaks separately, and never counts silence or unresolved research; it is not a measure of research completeness.
+
+---
+
 ## 12. Distinction from the Adaptation Loop
 
 Preserve the existing **Adaptation Loop** unchanged.
@@ -321,7 +405,7 @@ Preserve the existing **Adaptation Loop** unchanged.
 | The Evolutionary Spiral / the Spiral | The Evolutionary Cycle / Wheel / Circle (as primary name) |
 | evolutionary = change through accumulated history (in this framework) | implying the Spiral *is* Darwinian evolutionary theory |
 | currents (Continuity / Transformation) | strands, threads, trails, pathways (for these two forces) |
-| stages / developmental sequence | signs, houses, seals (as architectural names) |
+| stages / operations / reference trajectory | signs, houses, seals (as architectural names) |
 | Emergence¹ / Emergence² / Emergence again | “return to the beginning,” “full circle,” mystical “higher level,” inevitable progress |
 | systems tendency / within the framework | exceptionless law (for Continuity/Transformation interaction) |
 | systems framework / synthesis (for the nine stages) | universal scientifically established developmental law |
@@ -384,9 +468,11 @@ The Evolutionary Spiral begins from that observation.
 
 Here, *evolutionary* means change unfolding through accumulated history—not a claim that this model is Darwinian evolutionary theory itself. The sequence that follows is a systems framework for exploring a recurring problem, not a universal law of development.
 
-It follows a recurring developmental sequence:
+Its helix traces one reference trajectory through a grammar of recurrent operations:
 
 Emergence → Embodiment → Differentiation → Relationship → Organization → Disruption → Transformation → Integration → Renewal — and then Emergence again.
+
+Real systems may repeat, skip, branch, or stall along the way; the order is a reference, not a path every system follows.
 
 The last Emergence is not a return to the first. Something has been carried forward.
 
@@ -407,7 +493,7 @@ The question underneath remains simple:
 When visualization is eventually built, it should communicate:
 
 - **ascent / accumulated history**, not mere repetition
-- **two currents** moving through one developmental process
+- **two currents** moving through the reference trajectory
 - **Emergence² at a visibly different level** from Emergence¹
 - history/accumulation, **not** guaranteed improvement or mystical hierarchy
 - stage **whispers** (§8A) on nodes; full definitions (§8) in the detail panel

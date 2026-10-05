@@ -4,6 +4,7 @@ import { SPIRAL_SEQUENCE } from "./stages";
 import { relationshipsForStop } from "./comparisons";
 import { ZODIAC_LENS_RESEARCH } from "./research/zodiac";
 import { JESUS_NARRATIVE_TRAJECTORY } from "./trajectories/jesus";
+import { LODGEPOLE_FIRE_TRAJECTORY } from "./trajectories/lodgepole";
 import { METAMORPHOSIS_TRAJECTORY } from "./trajectories/metamorphosis";
 import { ZODIAC_CYCLE_TRAJECTORY } from "./trajectories/zodiac";
 import type {
@@ -67,7 +68,7 @@ export const SPIRAL_LENSES: readonly SpiralLens[] = [
     evidence:
       "Empirical ecology: recovery is observed, never guaranteed.",
     inPhrase: "ecosystems",
-    trajectories: [],
+    trajectories: [LODGEPOLE_FIRE_TRAJECTORY],
     forthcoming: ["Disturbance & succession", "Regime shift", "Recovery"],
     status: "available",
   },

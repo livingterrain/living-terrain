@@ -47,7 +47,9 @@ export type SpiralEpistemicKind =
   | "symbolic-comparative"
   | "symbolic-analogy"
   | "hypothesis"
-  | "contested-interpretation";
+  | "contested-interpretation"
+  /** Output of a formal or computational model — never an observation. */
+  | "model-projection";
 
 /**
  * Comparative lenses.
@@ -79,7 +81,7 @@ export const SPIRAL_LENS_ORDER: readonly SpiralDomainId[] = [
 export type SpiralExploreViewId = SpiralDomainId | "across";
 
 /**
- * One stop in the visitor-facing developmental sequence.
+ * One stop in the visitor-facing reference trajectory.
  * Emergence may appear at cycleIndex 0 (Emergence¹) and again at later turns
  * (Emergence²…) — same stageId, different cycleIndex.
  */
@@ -464,11 +466,53 @@ export type SpiralTrajectoryShape =
   | "recurrent"
   | "process";
 
-/** Explicit edge between steps — needed only when steps are not read in order. */
+/**
+ * What happens across an edge, in the trajectory's own domain terms.
+ * Never a Spiral operation: `recovery` is not Renewal, `reorganization` is not
+ * Organization, `collapse` is not Disruption, and `failure` is not a
+ * comparison break. A return to an earlier step is expressed by the edge
+ * itself, not by an outcome. Absent = not stated.
+ */
+export const SPIRAL_TRAJECTORY_OUTCOMES = [
+  /** The process proceeds without a change of regime. */
+  "continues",
+  /** Returns toward a prior configuration. */
+  "recovery",
+  /** Persists through a substantially changed configuration. */
+  "reorganization",
+  /** Crosses into a different, self-maintaining configuration. */
+  "regime-shift",
+  /** Loses its organization. */
+  "collapse",
+  /** Arrested; does not proceed. */
+  "stall",
+  /** Breaks into separate parts that continue apart. */
+  "fragmentation",
+  /** Does not complete what the process undertakes. */
+  "failure",
+] as const;
+
+export type SpiralTrajectoryOutcome = (typeof SPIRAL_TRAJECTORY_OUTCOMES)[number];
+
+/**
+ * Edge between two steps — domain topology only. An edge never implies a
+ * Spiral operation; comparisons are authored separately as relationships.
+ */
 export type SpiralTrajectoryEdge = {
+  /** Stable, unique within the trajectory. */
+  id: string;
   from: string;
   to: string;
   label?: string;
+  outcome?: SpiralTrajectoryOutcome;
+  /** Conditions under which this edge is taken, in domain terms. */
+  conditions?: string;
+  epistemicKinds?: readonly SpiralEpistemicKind[];
+  /**
+   * Sources for this edge's own claim — the transition, its outcome, and its
+   * conditions. Authored only; never inherited from the trajectory or inferred.
+   */
+  sources?: readonly SpiralSourceRef[];
 };
 
 /** An authored open research issue surfaced beside the trajectory. */
@@ -489,9 +533,26 @@ export type SpiralTrajectory = {
   /** One concise orientation line for the whole trajectory. */
   description: string;
   shape: SpiralTrajectoryShape;
+  /**
+   * Opt-in evidentiary standard. `empirical`: every explicit transition that
+   * asserts something (an outcome, conditions, or an empirical or
+   * model-projection epistemic kind) must cite at least one citable source.
+   * Absent = no edge-sourcing requirement (textual, symbolic trajectories).
+   */
+  evidenceStandard?: "empirical";
   steps: readonly SpiralTrajectoryStep[];
-  /** When omitted, steps are read in order. */
+  /**
+   * Authoritative topology when present: no edge exists that is not listed.
+   * When omitted, consecutive steps are read in order (no closing edge).
+   * Required for `branching` and `recurrent` shapes.
+   */
   transitions?: readonly SpiralTrajectoryEdge[];
+  /**
+   * Research owned by this trajectory, referenced by relationship `conceptId`.
+   * An id must not also exist in the stage-local research a relationship
+   * could resolve against.
+   */
+  concepts?: readonly SpiralConcept[];
   /** Epistemic framing — what kind of object this trajectory is. */
   framing?: string;
   provenanceNote?: string;
@@ -507,14 +568,60 @@ export type SpiralTrajectory = {
 /** Where on a trajectory a relationship is anchored. */
 export type SpiralTrajectoryAnchor =
   | { kind: "step"; stepId: string }
-  /** The passage between two adjacent steps. */
+  /** The passage along one existing edge. */
   | { kind: "transition"; from: string; to: string }
-  /** A region of consecutive steps, inclusive. */
-  | { kind: "span"; from: string; to: string };
+  /**
+   * An authored path, inclusive: from → …via → to, each hop an existing edge.
+   * `via` may be omitted only when the path is unambiguous by construction —
+   * in-order steps of an ordered trajectory, or a single explicit edge.
+   */
+  | { kind: "span"; from: string; to: string; via?: readonly string[] };
+
+/**
+ * Observational scale of a claim. A flat vocabulary — not ordered, and no
+ * scale is "higher" or "lower" than another across domains.
+ */
+export const SPIRAL_SCALE_IDS = [
+  /** Processes within or of single cells (e.g. autophagy). */
+  "cell",
+  /** Tissues and organs (e.g. remodeling, wound repair). */
+  "tissue",
+  /** The whole living body (e.g. metamorphosis, development). */
+  "organism",
+  /** One person's experience, memory, identity. */
+  "person",
+  /** Dyads, families, small groups. */
+  "group",
+  /** Organizations, institutions, societies. */
+  "institution",
+  /** One species' population. */
+  "population",
+  /** An ecological community of species, e.g. a forest stand. */
+  "ecological-community",
+  /** Community together with its abiotic processes (nutrients, water, fire). */
+  "ecosystem",
+  /** A mosaic of ecosystems and the regimes shaping it. */
+  "landscape",
+  /** A text and its tradition of reading. */
+  "text-tradition",
+  /** A symbolic system read as a whole (e.g. the zodiac). */
+  "symbolic-system",
+] as const;
+
+export type SpiralScaleId = (typeof SPIRAL_SCALE_IDS)[number];
+
+export type SpiralScaleRef = {
+  id: SpiralScaleId;
+  /** Domain-specific qualification of the scale. */
+  note?: string;
+};
 
 /**
  * Status of a comparison — how much weight the relationship can bear.
  * Statuses are not equivalent; presentation must name them in text.
+ * Whether a status draws is decided only in `comparisons/findings.ts`; a new
+ * status draws nothing until it is listed there. `ambiguous` is an authored,
+ * drawing relationship whose reading is kept open — not an unresolved inquiry.
  */
 export type SpiralRelationshipStatus =
   | "strong-empirical"
@@ -545,13 +652,17 @@ export type SpiralTrajectoryRelationship = {
   /** Uses the existing epistemic categories. */
   epistemicKinds?: readonly SpiralEpistemicKind[];
   /** Observational scale at which the relationship is claimed, when authored. */
-  scale?: string;
+  scale?: SpiralScaleRef;
   /**
    * Stage-local transition annotation holding the full research text
    * (looked up in the stage exploration's lens cycleContext).
    */
   transitionId?: string;
-  /** Stage-local concept that carries the research behind this relationship. */
+  /**
+   * Concept carrying the research behind this relationship. Resolves against
+   * the trajectory's own concepts or the stage-local research of its
+   * operations for the trajectory's lens — exactly one match, never a guess.
+   */
   conceptId?: string;
   /** Authored line; when absent, the transition body's first paragraph is used. */
   note?: string;
