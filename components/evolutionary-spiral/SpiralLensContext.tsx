@@ -140,6 +140,9 @@ function RelationshipSummary({
           <span>. </span>
         </>
       )}
+      {drawn.length + breaks.length > 1 && (
+        <span>Each is a separate finding, not a path through the Spiral. </span>
+      )}
       <span>
         Everything else is unresearched. No correspondence is assumed, and
         there may be none.
@@ -409,7 +412,7 @@ export function SpiralLensContext({
             className="spiral-trajectory__key-line spiral-trajectory__key-line--break"
             aria-hidden="true"
           />
-          Dotted marks show where a comparison breaks. They draw no line.
+          Dotted marks: a comparison was investigated here and does not hold.
         </p>
       )}
 

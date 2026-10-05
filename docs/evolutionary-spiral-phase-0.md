@@ -92,14 +92,26 @@ Comparative lenses may be explored **after** this living-systems frame is establ
 
 ---
 
-## 7. Developmental sequence (primary architecture)
+## 7. Operations and the reference trajectory (primary architecture)
 
-The nine-stage sequence is primary and independent.
+**The operations form the grammar. The helix shows one reference trajectory through that grammar.** Both are primary and independent.
 
 ```
 Emergence → Embodiment → Differentiation → Relationship → Organization
 → Disruption → Transformation → Integration → Renewal → Emergence again
 ```
+
+The reference trajectory is ordered partly because later definitions presuppose earlier ones: Embodiment refers to an emerging pattern, Relationship to differentiated elements, Organization to relations, Disruption to an existing organization, Integration to reorganized elements, Renewal to the reorganized system, and Emergence again to conditions produced by a prior cycle.
+
+That conceptual order is not a developmental law, a mandatory sequence, or a guaranteed pathway. Real trajectories may repeat, skip, overlap, branch, converge, loop, stall, or remain open; an operation may appear more than once or not at all.
+
+### Reading an operation
+
+An operation is read relative to a stated system and scale; it is not an intrinsic label on an event or a state. A fire is an event; Disruption is one possible reading of it relative to a system's organization and capacity. A sparse stand is a state; Transformation is a claim about changed means of maintenance.
+
+Currents describe what persists and what changes. Operations describe what is happening at a stated scale. Trajectories describe what actually happened to a system; topology, the shape of that trajectory; outcomes, where things stand at an observation time. Conditions shape what becomes possible or disruptive.
+
+Comparisons with the Spiral are authored one at a time. None is inferred from stage order, from another comparison, or from an outcome label.
 
 ### Cycle notation (conceptual)
 
@@ -210,7 +222,7 @@ Evocative but precise. Approximately 12–20 words. For interactive node labels 
 Visitor-facing term: **currents**  
 Do **not** use *strand*, *thread*, *trail*, or *pathway* for these two forces (those terms are already reserved elsewhere in Living Terrain).
 
-The Spiral examines the **tension and interaction** between Continuity and Transformation over time. They are not enemies, not a simple binary, and not alternating exclusive modes. Both move through the same developmental sequence.
+The Spiral examines the **tension and interaction** between Continuity and Transformation over time. They are not enemies, not a simple binary, and not alternating exclusive modes. Both act throughout the grammar, at every operation of the reference trajectory.
 
 ### Continuity current
 
@@ -321,7 +333,7 @@ Preserve the existing **Adaptation Loop** unchanged.
 | The Evolutionary Spiral / the Spiral | The Evolutionary Cycle / Wheel / Circle (as primary name) |
 | evolutionary = change through accumulated history (in this framework) | implying the Spiral *is* Darwinian evolutionary theory |
 | currents (Continuity / Transformation) | strands, threads, trails, pathways (for these two forces) |
-| stages / developmental sequence | signs, houses, seals (as architectural names) |
+| stages / operations / reference trajectory | signs, houses, seals (as architectural names) |
 | Emergence¹ / Emergence² / Emergence again | “return to the beginning,” “full circle,” mystical “higher level,” inevitable progress |
 | systems tendency / within the framework | exceptionless law (for Continuity/Transformation interaction) |
 | systems framework / synthesis (for the nine stages) | universal scientifically established developmental law |
@@ -384,9 +396,11 @@ The Evolutionary Spiral begins from that observation.
 
 Here, *evolutionary* means change unfolding through accumulated history—not a claim that this model is Darwinian evolutionary theory itself. The sequence that follows is a systems framework for exploring a recurring problem, not a universal law of development.
 
-It follows a recurring developmental sequence:
+Its helix traces one reference trajectory through a grammar of recurrent operations:
 
 Emergence → Embodiment → Differentiation → Relationship → Organization → Disruption → Transformation → Integration → Renewal — and then Emergence again.
+
+Real systems may repeat, skip, branch, or stall along the way; the order is a reference, not a path every system follows.
 
 The last Emergence is not a return to the first. Something has been carried forward.
 
@@ -407,7 +421,7 @@ The question underneath remains simple:
 When visualization is eventually built, it should communicate:
 
 - **ascent / accumulated history**, not mere repetition
-- **two currents** moving through one developmental process
+- **two currents** moving through the reference trajectory
 - **Emergence² at a visibly different level** from Emergence¹
 - history/accumulation, **not** guaranteed improvement or mystical hierarchy
 - stage **whispers** (§8A) on nodes; full definitions (§8) in the detail panel

@@ -16,7 +16,7 @@ export const LODGEPOLE_RELATIONSHIPS: readonly SpiralTrajectoryRelationship[] = 
     epistemicKinds: ["empirical-observation", "empirical-mechanism"],
     scale: { id: "ecological-community", note: "The stand." },
     conceptId: "lp-cmp-reburn-restructuring",
-    note: "After a second fire within about 30 years, a dense stand can persist as a much sparser lodgepole forest. The species stays the same, but fewer trees mean less future seed and less fuel: a change in how the stand maintains itself, not only in how it looks.",
+    note: "After a second fire within about 30 years, a dense stand can persist as a much sparser lodgepole forest. The species stays the same, but fewer trees mean less future seed and less fuel: a change in how the stand maintains itself. Sparseness alone is not the claim; stands that grew sparse naturally after 1988 are not part of it.",
   },
   {
     id: "lp-cand-disruption-short-interval-reburn",
@@ -30,7 +30,7 @@ export const LODGEPOLE_RELATIONSHIPS: readonly SpiralTrajectoryRelationship[] = 
       note: "The stand. Population persistence through serotiny is the mechanism under strain.",
     },
     conceptId: "lp-cmp-reburn-timing",
-    note: "A second fire arrives before young trees bear many serotinous cones, so the stand cannot regenerate the way it has after historical fire. What resembles Disruption is the fire's timing against the stand's state, not fire itself.",
+    note: "A second fire arrives before young trees bear many serotinous cones, so the stand cannot regenerate the way it has after historical fire. What resembles Disruption is the fire's timing against the stand's state, not fire itself. Fire at historical intervals is a separate case, where the comparison breaks.",
   },
   {
     id: "lp-break-disruption-historical-fire",
@@ -52,6 +52,6 @@ export const LODGEPOLE_RELATIONSHIPS: readonly SpiralTrajectoryRelationship[] = 
     epistemicKinds: ["empirical-observation", "conceptual-framework"],
     scale: { id: "ecological-community", note: "The stand." },
     conceptId: "lp-cmp-return-not-renewal",
-    note: "A young stand growing back into a mature one can look like Renewal. But no Transformation has occurred on this path and no altered capacity is established. This is persistence and recurrence, not Renewal.",
+    note: "A young stand growing back into a mature one can look like Renewal. But no altered capacity is established on this path: the stand returns toward the kind of stand that burned. This is persistence and recurrence, not Renewal.",
   },
 ];

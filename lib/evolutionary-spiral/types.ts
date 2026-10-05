@@ -81,7 +81,7 @@ export const SPIRAL_LENS_ORDER: readonly SpiralDomainId[] = [
 export type SpiralExploreViewId = SpiralDomainId | "across";
 
 /**
- * One stop in the visitor-facing developmental sequence.
+ * One stop in the visitor-facing reference trajectory.
  * Emergence may appear at cycleIndex 0 (Emergence¹) and again at later turns
  * (Emergence²…) — same stageId, different cycleIndex.
  */

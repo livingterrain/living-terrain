@@ -67,6 +67,7 @@ import {
 } from "../components/evolutionary-spiral/spiral-arc-endpoints";
 import { SpiralTrajectoryFigure } from "../components/evolutionary-spiral/SpiralTrajectoryFigure";
 import { SpiralLocalCard } from "../components/evolutionary-spiral/SpiralLocalCard";
+import { SpiralAcrossScaffold } from "../components/evolutionary-spiral/SpiralAcrossScaffold";
 
 // Components compile with the classic JSX runtime here.
 (globalThis as { React?: typeof React }).React = React;
@@ -1732,6 +1733,108 @@ check("2H figure: breaks are muted marks, never gold lines", () => {
   const css = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral/evolutionary-spiral.css"), "utf8");
   assert.match(css, /\.spiral-topology__rel\.spiral-rel--comparison-break,\s*\.spiral-topology__ring\.spiral-rel--comparison-break\s*\{[^}]*stroke: var\(--color-charcoal-muted\)/);
   assert.match(stepButton(html, "crown-fire"), /Part of 1 comparison break at Disruption\./);
+});
+
+/* ------------------------------------------------------------------ */
+/* Phase 2I — consolidation and canon alignment                        */
+/* ------------------------------------------------------------------ */
+
+check("2I.1–4 Ecology: 4 records, 2 arcs, 2 breaks, breaks draw nothing", () => {
+  assert.equal(LP_RELS.length, 4);
+  assert.equal(arcEndpointsForTrajectory(LP.id).length, 2);
+  const breaks = LP_RELS.filter((r) => !isDrawableCorrespondence(r));
+  assert.equal(breaks.length, 2);
+  assert.equal(arcEndpointsFromRelationships(breaks).length, 0);
+});
+
+check("2I.5 Emergence Again remains zero globally", () => {
+  assert.equal(EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS.length, 0);
+  assert.ok(!arcEndpointsFromRelationships(SPIRAL_TRAJECTORY_RELATIONSHIPS).some((e) => e.occurrenceId === EMERGENCE_AGAIN));
+});
+
+check("2I.6 a Renewal record needs no Transformation record", () => {
+  for (const status of ["candidate", "comparison-break"] as const) {
+    const renewal = rel({ operations: [{ stageId: "renewal" }], status });
+    assert.deepEqual(codes([renewal]), [], status);
+  }
+  const alone = lpRel(LP_RENEWAL_BREAK);
+  assert.deepEqual(validateSpiralComparisons([alone], [LP]), []);
+  const drawable = rel({ operations: [{ stageId: "renewal" }] });
+  assert.deepEqual(arcEndpointsFromRelationships([drawable]).map((e) => e.occurrenceId), ["renewal@0"]);
+});
+
+check("2I.7 no relationship is inferred from another", () => {
+  const all = arcEndpointsFromRelationships(SPIRAL_TRAJECTORY_RELATIONSHIPS);
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    const without = SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((x) => x.id !== r.id);
+    assert.deepEqual(
+      arcEndpointsFromRelationships(without),
+      all.filter((e) => e.relationshipId !== r.id),
+      r.id,
+    );
+    assert.deepEqual(validateSpiralComparisons([r], authoredTrajectories()), [], r.id);
+  }
+});
+
+check("2I.8 no relationship is inferred from stage order", () => {
+  const key = (ends: ReturnType<typeof arcEndpointsFromRelationships>) =>
+    ends.map((e) => `${e.relationshipId}>${e.occurrenceId}`).sort();
+  const reversed = [...SPIRAL_TRAJECTORY_RELATIONSHIPS].reverse();
+  assert.deepEqual(key(arcEndpointsFromRelationships(reversed)), key(arcEndpointsFromRelationships(SPIRAL_TRAJECTORY_RELATIONSHIPS)));
+  // Each record names its own operations; none expands to neighbours in the sequence.
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    assert.equal(occurrencesForRelationship(r).length, r.operations.length, r.id);
+  }
+});
+
+check("2I.9 all four Ecology scales remain valid", () => {
+  for (const r of LP_RELS) assert.ok((SPIRAL_SCALE_IDS as readonly string[]).includes(r.scale!.id), r.id);
+});
+
+check("2I.10 Across counts breaks separately and never as operations met", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(SpiralAcrossScaffold, {
+      onSelectLens: noop,
+      showInvestigate: false,
+      researchOpen: false,
+      onResearchToggle: noop,
+      researchId: "r",
+    }),
+  );
+  const item = html.match(/data-trajectory="lodgepole-fire-regeneration"[\s\S]*?<\/li>/)?.[0] ?? "";
+  assert.match(item, /2 researched relationships with Transformation, Disruption\. 2 comparison breaks\./);
+  assert.match(item, /↔ Transformation, Disruption · 2 breaks/);
+  assert.ok(!/Renewal/.test(item));
+  assert.match(html, /Where do these trajectories meet the Spiral\?/);
+});
+
+const CANON = readFileSync(path.resolve(__dirname, "../docs/evolutionary-spiral-phase-0.md"), "utf8");
+
+check("2I.11 canon no longer calls the reference sequence a developmental sequence", () => {
+  assert.ok(!/developmental sequence/i.test(CANON));
+  assert.ok(!/follows a recurring developmental/i.test(CANON));
+});
+
+check("2I.12 canon distinguishes the grammar from the reference trajectory", () => {
+  const section = CANON.slice(CANON.indexOf("## 7."), CANON.indexOf("## 8."));
+  assert.match(section, /operations form the grammar/i);
+  assert.match(section, /one reference trajectory through that grammar/i);
+  assert.match(section, /repeat, skip, overlap, branch, converge, loop, stall, or remain open/);
+  assert.match(section, /relative to a stated system and scale/);
+  const copy = readFileSync(path.resolve(__dirname, "../lib/evolutionary-spiral/copy.ts"), "utf8");
+  assert.match(copy, /reference trajectory through that grammar/);
+});
+
+check("2I.16–20 arc counts by lens", () => {
+  const expected: Record<string, number> = {
+    "symbolic-zodiac": 4,
+    "biblical-textual": 1,
+    "living-systems": 1,
+    ecology: 2,
+  };
+  for (const lensId of ["systems", "psychology", "living-systems", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
+    assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
+  }
 });
 
 if (failed > 0) {
