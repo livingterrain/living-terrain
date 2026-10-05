@@ -50,6 +50,8 @@ type Props = {
   researchId: string;
 };
 
+const isBreak = (r: SpiralTrajectoryRelationship) => r.status === "comparison-break";
+
 function operationNames(rels: readonly SpiralTrajectoryRelationship[]): string[] {
   return Array.from(
     new Set(
@@ -241,7 +243,8 @@ function AcrossTable({
               ]
             : lens.trajectories.map((t) => {
                 const rels = relationshipsForTrajectory(t.id);
-                const ops = operationNames(rels);
+                const ops = operationNames(rels.filter((r) => !isBreak(r)));
+                const breaks = rels.filter(isBreak).length;
                 return (
                   <tr key={t.id}>
                     <th scope="row">
@@ -263,6 +266,11 @@ function AcrossTable({
                       {rels.length}
                       {ops.length > 0 && (
                         <span className="spiral-across__meta">at {ops.join(", ")}</span>
+                      )}
+                      {breaks > 0 && (
+                        <span className="spiral-across__meta">
+                          including {breaks} comparison break{breaks === 1 ? "" : "s"}
+                        </span>
                       )}
                     </td>
                   </tr>
@@ -294,19 +302,15 @@ export function SpiralAcrossScaffold({
       relationships: relationshipsForTrajectory(t.id),
     })),
   );
-  const ops = operationNames(mapped.flatMap((m) => m.relationships));
-  const sentence =
-    ops.length === 1
-      ? `Different trajectories touch ${ops[0]} in different ways.`
-      : "Different trajectories touch the Spiral in different ways.";
-
   return (
     <div className="spiral-across">
-      <p className="spiral-across__lede">{sentence}</p>
+      <p className="spiral-across__lede">Where do these trajectories meet the Spiral?</p>
 
       <ul className="spiral-mini">
         {mapped.map(({ lens, trajectory, relationships }) => {
-          const touched = operationNames(relationships);
+          const drawn = relationships.filter((r) => !isBreak(r));
+          const breaks = relationships.length - drawn.length;
+          const touched = operationNames(drawn);
           return (
             <li key={trajectory.id} className="spiral-mini__item" data-trajectory={trajectory.id}>
               <button
@@ -314,10 +318,14 @@ export function SpiralAcrossScaffold({
                 className="spiral-mini__btn"
                 onClick={() => onSelectLens(lens.id)}
                 aria-label={`${lens.label}: ${trajectory.title}, ${SHAPE_LABEL[trajectory.shape]}. ${
-                  relationships.length
-                } researched relationship${relationships.length === 1 ? "" : "s"}${
+                  drawn.length
+                } researched relationship${drawn.length === 1 ? "" : "s"}${
                   touched.length ? ` with ${touched.join(", ")}` : ""
-                }. Open this comparison.`}
+                }.${
+                  breaks > 0
+                    ? ` ${breaks} comparison break${breaks === 1 ? "" : "s"}.`
+                    : ""
+                } Open this comparison.`}
               >
                 {trajectoryFigureKind(trajectory) === "topology" ? (
                   <MiniTopology trajectory={trajectory} />
@@ -330,6 +338,7 @@ export function SpiralAcrossScaffold({
                 <span className="spiral-mini__meta">
                   {SHAPE_LABEL[trajectory.shape]}
                   {touched.length > 0 && ` · ↔ ${touched.join(", ")}`}
+                  {breaks > 0 && ` · ${breaks} break${breaks === 1 ? "" : "s"}`}
                 </span>
               </button>
             </li>

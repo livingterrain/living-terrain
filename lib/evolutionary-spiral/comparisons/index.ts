@@ -8,13 +8,19 @@ import type {
   SpiralTrajectoryRelationship,
 } from "../types";
 import { JESUS_RELATIONSHIPS } from "./jesus";
+import { LODGEPOLE_RELATIONSHIPS } from "./lodgepole";
 import { METAMORPHOSIS_RELATIONSHIPS } from "./metamorphosis";
 import { multiOccurrenceStageIds } from "./validate";
 import { ZODIAC_RELATIONSHIPS } from "./zodiac";
 
 /** Every authored trajectory ↔ Spiral relationship. Nothing here is inferred. */
 export const SPIRAL_TRAJECTORY_RELATIONSHIPS: readonly SpiralTrajectoryRelationship[] =
-  [...ZODIAC_RELATIONSHIPS, ...JESUS_RELATIONSHIPS, ...METAMORPHOSIS_RELATIONSHIPS];
+  [
+    ...ZODIAC_RELATIONSHIPS,
+    ...JESUS_RELATIONSHIPS,
+    ...METAMORPHOSIS_RELATIONSHIPS,
+    ...LODGEPOLE_RELATIONSHIPS,
+  ];
 
 export const SPIRAL_RELATIONSHIP_STATUS: Record<
   SpiralRelationshipStatus,
@@ -135,7 +141,12 @@ export function anchorLabel(
   return `${label(anchor.from)} … ${label(anchor.to)}`;
 }
 
-export { JESUS_RELATIONSHIPS, METAMORPHOSIS_RELATIONSHIPS, ZODIAC_RELATIONSHIPS };
+export {
+  JESUS_RELATIONSHIPS,
+  LODGEPOLE_RELATIONSHIPS,
+  METAMORPHOSIS_RELATIONSHIPS,
+  ZODIAC_RELATIONSHIPS,
+};
 
 export {
   EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,

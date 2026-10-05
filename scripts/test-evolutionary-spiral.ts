@@ -13,6 +13,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import {
   anchorStepIds,
   authoredTrajectories,
+  conceptMatches,
   defaultTrajectoryId,
   edgeAssertsEvidence,
   EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
@@ -22,11 +23,14 @@ import {
   getSpiralLens,
   incomingEdges,
   isCitableSource,
+  isDrawableCorrespondence,
   LODGEPOLE_FIRE_TRAJECTORY,
+  LODGEPOLE_RELATIONSHIPS,
   getTrajectory,
   occurrencesForRelationship,
   orderedEdges,
   outgoingEdges,
+  relationshipsForStep,
   relationshipsForTrajectory,
   resolveRelationshipConcept,
   resolveSpan,
@@ -92,9 +96,9 @@ function legacyTrajectories() {
   return authoredTrajectories().filter((t) => t.id !== LODGEPOLE_FIRE_TRAJECTORY.id);
 }
 
-check("lines equal authored relationship occurrences, per trajectory", () => {
+check("lines equal authored drawable relationship occurrences, per trajectory", () => {
   for (const t of authoredTrajectories()) {
-    const expected = relationshipsForTrajectory(t.id).reduce(
+    const expected = relationshipsForTrajectory(t.id).filter(isDrawableCorrespondence).reduce(
       (n, r) => n + occurrencesForRelationship(r).length,
       0,
     );
@@ -153,7 +157,7 @@ check("no authored relationship connects Jesus and Zodiac", () => {
 });
 
 check("unfinished lenses and Across draw no lines", () => {
-  for (const lensId of ["systems", "psychology", "ecology", "across"] as const) {
+  for (const lensId of ["systems", "psychology", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, 0, lensId);
   }
 });
@@ -266,7 +270,7 @@ check("H. Biology = 1", () => {
 });
 
 check("I. unfinished lenses = 0", () => {
-  for (const lensId of ["systems", "psychology", "ecology"] as const) {
+  for (const lensId of ["systems", "psychology"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, 0, lensId);
   }
 });
@@ -655,10 +659,11 @@ check("2B trajectory-owned research resolves exactly once, never by guess", () =
   );
 });
 
-check("2B current relationship concepts resolve to stage research", () => {
+check("2B current relationship concepts resolve: legacy to stage research, Ecology to its trajectory", () => {
   for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((x) => x.conceptId)) {
     const t = authoredTrajectories().find((x) => x.id === r.trajectoryId)!;
-    assert.equal(resolveRelationshipConcept(r, t)?.scope, "stage", r.id);
+    const scope = r.trajectoryId === LODGEPOLE_FIRE_TRAJECTORY.id ? "trajectory" : "stage";
+    assert.equal(resolveRelationshipConcept(r, t)?.scope, scope, r.id);
   }
 });
 
@@ -671,7 +676,10 @@ check("2B scale is a controlled, flat vocabulary", () => {
   for (const id of SPIRAL_SCALE_IDS) {
     assert.ok(!SPIRAL_SEQUENCE.some((s) => (s.stageId as string) === id), id);
   }
-  assert.ok(SPIRAL_TRAJECTORY_RELATIONSHIPS.every((r) => r.scale === undefined));
+  // Only Ecology records carry scale; Zodiac, Jesus and Biology are not backfilled.
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    assert.equal(r.scale !== undefined, r.trajectoryId === LODGEPOLE_FIRE_TRAJECTORY.id, r.id);
+  }
 });
 
 check("2B topology module reads no relationships, operations, or geometry", () => {
@@ -865,11 +873,12 @@ check("2C.1.H existing Jesus, Zodiac and Metamorphosis data validate unchanged",
   assert.ok(!JSON.stringify(SPIRAL_TRAJECTORY_RELATIONSHIPS).includes("model-projection"));
 });
 
-check("2C.1.I arc counts: Zodiac 4, Jesus 1, Biology 1, all others 0", () => {
+check("2C.1.I arc counts: Zodiac 4, Jesus 1, Biology 1, Ecology 2, all others 0", () => {
   const expected: Record<string, number> = {
     "symbolic-zodiac": 4,
     "biblical-textual": 1,
     "living-systems": 1,
+    ecology: 2,
   };
   for (const lensId of ["systems", "living-systems", "psychology", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
@@ -1056,10 +1065,13 @@ check("2D.O no Douglas-fir step or claim is merged in", () => {
   assert.ok(!/douglas/i.test(JSON.stringify(LP)));
 });
 
-check("2D.P/Q zero Spiral relationships and zero arcs", () => {
-  assert.equal(relationshipsForTrajectory(LP.id).length, 0);
-  assert.ok(!SPIRAL_TRAJECTORY_RELATIONSHIPS.some((r) => r.trajectoryId === LP.id));
-  assert.equal(arcEndpointsForTrajectory(LP.id).length, 0);
+check("2D.P/Q (2H) exactly the four authored Spiral records, two arcs", () => {
+  assert.equal(relationshipsForTrajectory(LP.id).length, 4);
+  assert.deepEqual(
+    SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((r) => r.trajectoryId === LP.id),
+    [...LODGEPOLE_RELATIONSHIPS],
+  );
+  assert.equal(arcEndpointsForTrajectory(LP.id).length, 2);
 });
 
 check("2D.R no operation-name collision acknowledgement is needed", () => {
@@ -1100,16 +1112,17 @@ check("2D.T existing trajectories and relationships are byte-identical", () => {
     expected,
   );
   assert.equal(
-    hash(SPIRAL_TRAJECTORY_RELATIONSHIPS),
+    hash(SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((r) => r.trajectoryId !== LP.id)),
     "b40977364b3b29415fc262e6110941274d91aabefae3625aaf03e003ba697773",
   );
 });
 
-check("2D snapshot: arc counts unchanged with the lodgepole trajectory live", () => {
+check("2D snapshot: arc counts with the lodgepole trajectory live", () => {
   const expected: Record<string, number> = {
     "symbolic-zodiac": 4,
     "biblical-textual": 1,
     "living-systems": 1,
+    ecology: 2,
   };
   for (const lensId of ["systems", "living-systems", "psychology", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
@@ -1315,11 +1328,11 @@ check("2E.7 model projections never become an edge, a dash, or the general legen
   assert.ok(!SPIRAL_EPISTEMIC_LEGEND.some((c) => c.id === "model-projection"));
 });
 
-check("2E.8 Ecology has zero relationships and zero arcs", () => {
+check("2E.8 (2H) Ecology anchors appear only where records are authored", () => {
   assert.equal(trajectoryFor("ecology")?.id, LP.id);
-  assert.equal(relationshipsForTrajectory(LP.id).length, 0);
-  assert.equal(arcEndpointsForTrajectory(LP.id).length, 0);
-  assert.ok(!/data-rel-anchor/.test(renderFigure(LP)));
+  const html = renderFigure(LP);
+  const anchors = [...html.matchAll(/data-rel-anchor="([^"]+)"/g)].map((m) => m[1]).sort();
+  assert.deepEqual(anchors, [...LODGEPOLE_RELATIONSHIPS.map((r) => r.id)].sort());
 });
 
 check("2E.9 a comparison break on the trajectory never becomes an arc", () => {
@@ -1330,7 +1343,8 @@ check("2E.9 a comparison break on the trajectory never becomes an arc", () => {
   });
   assert.equal(arcEndpointsFromRelationships([breakRel]).length, 0);
   assert.ok(LP.concepts?.some((c) => c.comparisonBreaks));
-  assert.equal(arcEndpointsForTrajectory(LP.id).length, 0);
+  const breaks = relationshipsForTrajectory(LP.id).filter((r) => r.status === "comparison-break");
+  assert.equal(arcEndpointsFromRelationships(breaks).length, 0);
 });
 
 check("2E.10 legacy trajectories render through their existing figures, unchanged", () => {
@@ -1368,18 +1382,31 @@ check("2E.12 no Spiral operation is inferred from an outcome", () => {
   );
   const figure = renderFigure(LP);
   for (const outcome of SPIRAL_TRAJECTORY_OUTCOMES) assert.ok(!figure.includes(outcome), outcome);
+  // Only edges an authored record is anchored to name an operation.
+  const anchoredEdges: Record<string, string> = {
+    "young-to-reburn": "Disruption",
+    "reburn-to-sparse": "Transformation",
+    "young-to-mature": "Renewal",
+  };
   for (const e of trajectoryEdges(LP)) {
     const card = renderCard({ kind: "transition", edge: e });
-    for (const name of operationNames) assert.ok(!new RegExp(`\\b${name}\\b`).test(card), `${e.id}: ${name}`);
-    assert.ok(!card.includes("spiral-card__anchor-op"), e.id);
+    const named = anchoredEdges[e.id];
+    for (const name of operationNames) {
+      assert.equal(new RegExp(`\\b${name}\\b`).test(card), name === named, `${e.id}: ${name}`);
+    }
+    assert.equal(card.includes("spiral-card__anchor-op"), Boolean(named), e.id);
     assert.ok(!card.includes(", defined:"), e.id);
     if (e.outcome === "failure") assert.match(card, /failure within the observed window/, e.id);
   }
-  assert.equal(relationshipsForTrajectory(LP.id).length, 0);
 });
 
-check("2E.13 Zodiac 4, Jesus 1, Biology 1 arcs; Ecology, Systems, Psychology 0", () => {
-  const expected: Record<string, number> = { "symbolic-zodiac": 4, "biblical-textual": 1, "living-systems": 1 };
+check("2E.13 Zodiac 4, Jesus 1, Biology 1, Ecology 2 arcs; Systems, Psychology 0", () => {
+  const expected: Record<string, number> = {
+    "symbolic-zodiac": 4,
+    "biblical-textual": 1,
+    "living-systems": 1,
+    ecology: 2,
+  };
   for (const lens of SPIRAL_LENSES) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lens.id)?.id).length, expected[lens.id] ?? 0, lens.id);
   }
@@ -1447,6 +1474,264 @@ check("2E zero-relationship copy never claims no relationship exists", () => {
   for (const file of readdirSync(dir).filter((f) => f.endsWith(".tsx"))) {
     assert.ok(!/No relationship exists/i.test(readFileSync(path.join(dir, file), "utf8")), file);
   }
+});
+
+/* ------------------------------------------------------------------ */
+/* Phase 2H — the first Ecology × Spiral comparisons                   */
+/* ------------------------------------------------------------------ */
+
+const LP_RELS = relationshipsForTrajectory(LP.id);
+const lpRel = (id: string) => {
+  const r = LP_RELS.find((x) => x.id === id);
+  assert.ok(r, id);
+  return r;
+};
+const LP_TRANSFORMATION = "lp-cand-transformation-reburn-restructuring";
+const LP_DISRUPTION = "lp-cand-disruption-short-interval-reburn";
+const LP_FIRE_BREAK = "lp-break-disruption-historical-fire";
+const LP_RENEWAL_BREAK = "lp-break-renewal-long-interval-return";
+
+/** The relationship overlay's path, and the authored route it should sit on. */
+function overlayOn(relId: string, edgeId: string) {
+  const html = renderFigure(LP);
+  const overlay = html.match(
+    new RegExp(`<path d="([^"]+)" class="spiral-topology__rel[^"]*" data-rel-anchor="${relId}"`),
+  )?.[1];
+  const route = fitTopologyLayout(LP, Infinity).routes.find((r) => r.edge.id === edgeId)?.d;
+  return { overlay, route };
+}
+
+check("2H.1 Ecology has exactly four records", () => {
+  assert.equal(LP_RELS.length, 4);
+  assert.deepEqual(
+    LP_RELS.map((r) => r.id).sort(),
+    [LP_TRANSFORMATION, LP_DISRUPTION, LP_FIRE_BREAK, LP_RENEWAL_BREAK].sort(),
+  );
+});
+
+check("2H.2 Ecology draws two ordinary arcs, from the two candidates", () => {
+  const ends = arcEndpointsForTrajectory(LP.id);
+  assert.equal(ends.length, 2);
+  assert.deepEqual(ends.map((e) => e.relationshipId).sort(), [LP_DISRUPTION, LP_TRANSFORMATION].sort());
+});
+
+check("2H.3 Ecology has two comparison breaks", () => {
+  const breaks = LP_RELS.filter((r) => r.status === "comparison-break").map((r) => r.id).sort();
+  assert.deepEqual(breaks, [LP_FIRE_BREAK, LP_RENEWAL_BREAK].sort());
+  assert.deepEqual(
+    LP_RELS.filter((r) => r.status === "candidate").map((r) => r.id).sort(),
+    [LP_DISRUPTION, LP_TRANSFORMATION].sort(),
+  );
+});
+
+check("2H.4 breaks produce zero arcs, alone or among the rest", () => {
+  for (const id of [LP_FIRE_BREAK, LP_RENEWAL_BREAK]) {
+    assert.equal(arcEndpointsFromRelationships([lpRel(id)]).length, 0, id);
+    assert.ok(!arcEndpointsForTrajectory(LP.id).some((e) => e.relationshipId === id), id);
+  }
+});
+
+check("2H.5 the Transformation candidate targets Transformation only", () => {
+  const r = lpRel(LP_TRANSFORMATION);
+  assert.deepEqual(r.operations, [{ stageId: "transformation" }]);
+  assert.deepEqual(occurrencesForRelationship(r).map((s) => s.occurrenceId), [TRANSFORMATION]);
+});
+
+check("2H.6 the Transformation anchor is reburn → sparse, not the naturally sparse branch", () => {
+  const r = lpRel(LP_TRANSFORMATION);
+  assert.deepEqual(r.anchor, { kind: "transition", from: "reburn", to: "sparse-cohort" });
+  assert.equal(findEdge(LP, "reburn", "sparse-cohort")?.id, "reburn-to-sparse");
+  // No record is anchored on the 1988 sparse branch, the sparse step, or the whole graph.
+  for (const other of LP_RELS) {
+    assert.notEqual(other.anchor.kind, "span", other.id);
+    if (other.anchor.kind === "step") {
+      assert.ok(!["sparse-cohort", "sparse-woodland", "establishment"].includes(other.anchor.stepId), other.id);
+    } else {
+      assert.ok(!(other.anchor.from === "establishment" && other.anchor.to === "sparse-cohort"), other.id);
+      assert.ok(!(other.anchor.from === "sparse-cohort"), other.id);
+    }
+  }
+  const { overlay, route } = overlayOn(LP_TRANSFORMATION, "reburn-to-sparse");
+  assert.ok(overlay && route);
+  assert.equal(overlay, route);
+});
+
+check("2H.7 the Disruption candidate targets Disruption only", () => {
+  const r = lpRel(LP_DISRUPTION);
+  assert.deepEqual(r.operations, [{ stageId: "disruption" }]);
+  const stops = occurrencesForRelationship(r);
+  assert.equal(stops.length, 1);
+  assert.equal(stops[0]!.stageId, "disruption");
+});
+
+check("2H.8 the Disruption anchor is young stand → reburn, not fire in general", () => {
+  const r = lpRel(LP_DISRUPTION);
+  assert.deepEqual(r.anchor, { kind: "transition", from: "young-stand", to: "reburn" });
+  assert.ok(!anchorStepIds(LP, r.anchor).some((id) => ["crown-fire", "burned-stand", "mature-stand"].includes(id)));
+  const drawnFromFire = arcEndpointsForTrajectory(LP.id).filter((e) => {
+    const rel = lpRel(e.relationshipId);
+    return anchorStepIds(LP, rel.anchor).some((id) => id === "crown-fire" || id === "burned-stand");
+  });
+  assert.equal(drawnFromFire.length, 0);
+  const { overlay, route } = overlayOn(LP_DISRUPTION, "young-to-reburn");
+  assert.ok(overlay && route);
+  assert.equal(overlay, route);
+});
+
+check("2H.9 the historical-fire break targets Disruption at landscape scale", () => {
+  const r = lpRel(LP_FIRE_BREAK);
+  assert.equal(r.status, "comparison-break");
+  assert.deepEqual(r.operations, [{ stageId: "disruption" }]);
+  assert.deepEqual(r.anchor, { kind: "step", stepId: "crown-fire" });
+  assert.equal(r.scale?.id, "landscape");
+  assert.match(
+    r.note ?? "",
+    /At landscape\/regime scale, historical-interval stand-replacing fire does not satisfy the Disruption comparison merely by being destructive at smaller scales\./,
+  );
+  assert.ok(!/fire is not Disruption/i.test(JSON.stringify(r)));
+});
+
+check("2H.10 the Renewal break targets Renewal at ecological-community scale", () => {
+  const r = lpRel(LP_RENEWAL_BREAK);
+  assert.equal(r.status, "comparison-break");
+  assert.deepEqual(r.operations, [{ stageId: "renewal" }]);
+  assert.deepEqual(r.anchor, { kind: "transition", from: "young-stand", to: "mature-stand" });
+  assert.equal(r.scale?.id, "ecological-community");
+  assert.ok(!/improve/i.test(r.note ?? ""));
+});
+
+check("2H.11 all four records carry a valid scale; nothing else is backfilled", () => {
+  for (const r of LP_RELS) {
+    assert.ok(r.scale && (SPIRAL_SCALE_IDS as readonly string[]).includes(r.scale.id), r.id);
+  }
+  assert.ok(SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((r) => r.trajectoryId !== LP.id).every((r) => !r.scale));
+});
+
+check("2H.12 every relationship concept resolves exactly once", () => {
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    if (!r.conceptId) continue;
+    const t = authoredTrajectories().find((x) => x.id === r.trajectoryId)!;
+    assert.equal(conceptMatches(r, t).length, 1, r.id);
+  }
+  for (const r of LP_RELS) {
+    assert.ok(r.conceptId, r.id);
+    assert.equal(resolveRelationshipConcept(r, LP)?.scope, "trajectory", r.id);
+  }
+  const ids = (LP.concepts ?? []).map((c) => c.id);
+  assert.equal(new Set(ids).size, ids.length);
+});
+
+check("2H.13 no Ecology relationship targets Emergence or Emergence Again", () => {
+  for (const r of LP_RELS) {
+    assert.ok(!r.operations.some((ref) => ref.stageId === "emergence"), r.id);
+    assert.ok(!occurrencesForRelationship(r).some((s) => s.stageId === "emergence"), r.id);
+  }
+});
+
+check("2H.14 Emergence Again is zero globally", () => {
+  assert.equal(EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS.length, 0);
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    assert.ok(!occurrencesForRelationship(r).some((s) => s.occurrenceId === EMERGENCE_AGAIN), r.id);
+  }
+  assert.ok(!arcEndpointsFromRelationships(SPIRAL_TRAJECTORY_RELATIONSHIPS).some((e) => e.occurrenceId === EMERGENCE_AGAIN));
+});
+
+check("2H.15 no relationship is inferred from outcome labels", () => {
+  for (const e of trajectoryEdges(LP)) {
+    if (!e.outcome) continue;
+    const onEdge = LP_RELS.filter(
+      (r) => r.anchor.kind === "transition" && r.anchor.from === e.from && r.anchor.to === e.to,
+    );
+    // Recovery carries only a break; failure, reorganization and continuation carry nothing.
+    if (e.id === "young-to-mature") assert.deepEqual(onEdge.map((r) => r.id), [LP_RENEWAL_BREAK]);
+    else assert.equal(onEdge.length, 0, e.id);
+  }
+  assert.equal(relationshipsForStep(LP, "minimal-recruitment").length, 0);
+  assert.equal(relationshipsForStep(LP, "sparse-woodland").length, 0);
+});
+
+check("2H.16 no relationship is inferred from topology", () => {
+  // Reordering steps or relabelling them changes no relationship and no arc.
+  const ends = arcEndpointsForTrajectory(LP.id);
+  assert.deepEqual(arcEndpointsFromRelationships(LP_RELS), ends);
+  const relabelled = { ...LP, steps: [...LP.steps].reverse().map((s) => ({ ...s, label: "Transformation" })) };
+  assert.deepEqual(validateSpiralComparisons(LP_RELS, [relabelled]).filter((i) => i.code !== "unacknowledged-name-collision"), []);
+  assert.deepEqual(relationshipsForTrajectory(relabelled.id), LP_RELS);
+  // Returns, sinks and branch points do not create records.
+  const anchoredSteps = new Set(LP_RELS.flatMap((r) => anchorStepIds(LP, r.anchor)));
+  for (const sink of sinkStepIds(LP)) assert.ok(!anchoredSteps.has(sink), sink);
+  assert.ok(!anchoredSteps.has("establishment"));
+});
+
+check("2H.17 no model-projection edge or concept becomes a relationship", () => {
+  for (const r of LP_RELS) {
+    assert.ok(!r.epistemicKinds?.includes("model-projection"), r.id);
+    assert.notEqual(r.conceptId, "lp-projections", r.id);
+  }
+  for (const e of trajectoryEdges(LP)) assert.ok(!e.epistemicKinds?.includes("model-projection"), e.id);
+});
+
+check("2H.18–20 Zodiac 4, Jesus 1, Biology 1 arcs", () => {
+  assert.equal(arcEndpointsForTrajectory(trajectoryFor("symbolic-zodiac")?.id).length, 4);
+  assert.equal(arcEndpointsForTrajectory(trajectoryFor("biblical-textual")?.id).length, 1);
+  assert.equal(arcEndpointsForTrajectory(trajectoryFor("living-systems")?.id).length, 1);
+});
+
+check("2H.21 break suppression holds globally", () => {
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((x) => !isDrawableCorrespondence(x))) {
+    assert.equal(arcEndpointsFromRelationships([r]).length, 0, r.id);
+  }
+  const drawable = new Set(SPIRAL_TRAJECTORY_RELATIONSHIPS.filter(isDrawableCorrespondence).map((r) => r.id));
+  for (const t of authoredTrajectories()) {
+    for (const e of arcEndpointsForTrajectory(t.id)) assert.ok(drawable.has(e.relationshipId), e.relationshipId);
+  }
+});
+
+check("2H.22 comparison records stay apart from canonical data", () => {
+  const source = readFileSync(
+    path.resolve(__dirname, "../lib/evolutionary-spiral/comparisons/lodgepole.ts"),
+    "utf8",
+  );
+  const specs = [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
+  assert.deepEqual(specs, ["../types"]);
+  assert.ok(!/canonical/.test(source));
+});
+
+check("2H LOCAL: candidate and break disclosure, scale before Explore", () => {
+  for (const r of LP_RELS) {
+    const card = renderCard({ kind: "relationship", relationship: r });
+    const beforeExplore = card.slice(0, card.indexOf("spiral-op__explore"));
+    assert.ok(beforeExplore.includes(r.note!.slice(0, 40)), r.id);
+    assert.match(beforeExplore, /Scale: <\/span>/, r.id);
+    if (r.status === "comparison-break") {
+      assert.match(beforeExplore, /Comparison breaks at/, r.id);
+      assert.ok(!beforeExplore.includes("↔"), r.id);
+      assert.ok(!beforeExplore.includes("spiral-card__question"), r.id);
+    } else {
+      assert.match(beforeExplore, /Researched relationship with/, r.id);
+    }
+    // Investigate opens the record's own research.
+    const concept = LP.concepts!.find((c) => c.id === r.conceptId)!;
+    assert.ok(card.includes(concept.title), r.id);
+  }
+});
+
+check("2H LOCAL: breaks are found from their step and their transition", () => {
+  const fire = renderCard({ kind: "step", stepId: "crown-fire" });
+  assert.match(fire, /comparison breaks at Disruption/);
+  const ret = renderCard({ kind: "transition", edge: findEdge(LP, "young-stand", "mature-stand")! });
+  assert.match(ret, /comparison breaks at Renewal/);
+  const reburn = renderCard({ kind: "transition", edge: findEdge(LP, "young-stand", "reburn")! });
+  assert.match(reburn, /↔ Disruption/);
+});
+
+check("2H figure: breaks are muted marks, never gold lines", () => {
+  const html = renderFigure(LP);
+  assert.match(html, new RegExp(`class="spiral-topology__rel spiral-rel--comparison-break[^"]*" data-rel-anchor="${LP_RENEWAL_BREAK}"`));
+  assert.match(html, new RegExp(`class="spiral-wheel__ring spiral-topology__ring spiral-rel--comparison-break" data-rel-anchor="${LP_FIRE_BREAK}"`));
+  const css = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral/evolutionary-spiral.css"), "utf8");
+  assert.match(css, /\.spiral-topology__rel\.spiral-rel--comparison-break,\s*\.spiral-topology__ring\.spiral-rel--comparison-break\s*\{[^}]*stroke: var\(--color-charcoal-muted\)/);
+  assert.match(stepButton(html, "crown-fire"), /Part of 1 comparison break at Disruption\./);
 });
 
 if (failed > 0) {

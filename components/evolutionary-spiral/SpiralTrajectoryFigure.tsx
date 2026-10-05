@@ -329,11 +329,20 @@ function topologyStepLabel(
       ? `Leads to ${list(to)}.`
       : "Evidence stops here; the observed future remains uncertain.",
   );
-  if (related.length > 0) {
+  const drawn = related.filter((r) => r.status !== "comparison-break");
+  const breaks = related.filter((r) => r.status === "comparison-break");
+  if (drawn.length > 0) {
     parts.push(
-      `Part of ${related.length} researched relationship${
-        related.length === 1 ? "" : "s"
-      } with ${Array.from(new Set(related.map(operationNames))).join(", ")}.`,
+      `Part of ${drawn.length} researched relationship${
+        drawn.length === 1 ? "" : "s"
+      } with ${Array.from(new Set(drawn.map(operationNames))).join(", ")}.`,
+    );
+  }
+  if (breaks.length > 0) {
+    parts.push(
+      `Part of ${breaks.length} comparison break${
+        breaks.length === 1 ? "" : "s"
+      } at ${Array.from(new Set(breaks.map(operationNames))).join(", ")}.`,
     );
   }
   return parts.join(" ");
@@ -482,9 +491,11 @@ function Topology({
             {layout.nodes.map((n) => {
               const selected = n.step.id === selectedStepId;
               const related = byStep.get(n.step.id);
-              const stepAnchored = relationships.some(
+              const anchoredHere = relationships.filter(
                 (r) => r.anchor.kind === "step" && r.anchor.stepId === n.step.id,
               );
+              const stepAnchored = anchoredHere.length > 0;
+              const onlyBreaks = anchoredHere.every((r) => r.status === "comparison-break");
               return (
                 <g
                   key={n.step.id}
@@ -503,7 +514,10 @@ function Topology({
                       cx={n.x}
                       cy={n.y}
                       r={6}
-                      className="spiral-wheel__ring"
+                      className={cn(
+                        "spiral-wheel__ring spiral-topology__ring",
+                        onlyBreaks && "spiral-rel--comparison-break",
+                      )}
                       data-rel-anchor={anchorAttr(related)}
                     />
                   )}

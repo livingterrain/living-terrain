@@ -9,6 +9,7 @@ import {
   getSpiralLens,
   getSpiralStage,
   getTrajectory,
+  isDrawableCorrespondence,
   microcopyForStop,
   occurrencesForRelationship,
   relationshipsForStep,
@@ -138,7 +139,10 @@ export function SpiralHelixExperience() {
     () => new Set(focusedRelationships.map((r) => r.id)),
     [focusedRelationships],
   );
-  const relatedIds = useMemo(() => occurrenceIdsFor(relationships), [relationships]);
+  const relatedIds = useMemo(
+    () => occurrenceIdsFor(relationships.filter(isDrawableCorrespondence)),
+    [relationships],
+  );
   const emphasizedIds = useMemo(
     () =>
       selectedStepId || selectedEdge || selectedRelationship
@@ -266,6 +270,7 @@ export function SpiralHelixExperience() {
     });
   }, [activeLensId]);
 
+  const breakCount = relationships.filter((r) => !isDrawableCorrespondence(r)).length;
   let announcement = "";
   if (focus?.kind === "operation") {
     announcement = `${stopName(focus.stop.occurrenceId)}: ${microcopyForStop(focus.stop)}`;
@@ -279,11 +284,16 @@ export function SpiralHelixExperience() {
       }`;
   } else if (focus?.kind === "step" && trajectory) {
     const step = trajectory.steps.find((s) => s.id === focus.stepId);
+    const drawn = focusedRelationships.filter(isDrawableCorrespondence).length;
+    const breaks = focusedRelationships.length - drawn;
     announcement = `${step?.label ?? ""}: ${
       focusedRelationships.length > 0
-        ? `${focusedRelationships.length} researched relationship${
-            focusedRelationships.length === 1 ? "" : "s"
-          }.`
+        ? [
+            drawn > 0 && `${drawn} researched relationship${drawn === 1 ? "" : "s"}.`,
+            breaks > 0 && `${breaks} comparison break${breaks === 1 ? "" : "s"}.`,
+          ]
+            .filter(Boolean)
+            .join(" ")
         : relationships.length === 0
           ? "no Spiral relationships have been authored for this trajectory yet."
           : "no researched relationship with the Spiral."
@@ -292,7 +302,11 @@ export function SpiralHelixExperience() {
     const name = (id: string) => trajectory.steps.find((s) => s.id === id)?.label ?? id;
     announcement = `Transition from ${name(focus.edge.from)} to ${name(focus.edge.to)}.`;
   } else if (focus?.kind === "relationship" && trajectory) {
-    announcement = `${anchorLabel(trajectory, focus.relationship.anchor)}, researched relationship with ${occurrencesForRelationship(
+    announcement = `${anchorLabel(trajectory, focus.relationship.anchor)}, ${
+      isDrawableCorrespondence(focus.relationship)
+        ? "researched relationship with"
+        : "comparison break with"
+    } ${occurrencesForRelationship(
       focus.relationship,
     )
       .map((s) => stopName(s.occurrenceId))
@@ -302,8 +316,14 @@ export function SpiralHelixExperience() {
       ? relationships.length === 0
         ? `${lens.label}: ${trajectory.title}, charted independently. No Spiral relationships have been authored yet.`
         : `${lens.label}: ${trajectory.title} laid against the Spiral. ${
-            relationships.length
-          } line${relationships.length === 1 ? "" : "s"} mark researched relationships.`
+            arcs.length
+          } line${arcs.length === 1 ? "" : "s"} mark researched relationships.${
+            breakCount > 0
+              ? ` ${breakCount} comparison break${
+                  breakCount === 1 ? "" : "s"
+                } drawn without a line.`
+              : ""
+          }`
       : lens.status === "scaffold"
         ? `${lens.label}: mapped trajectories side by side.`
         : `${lens.label}: not yet charted.`;

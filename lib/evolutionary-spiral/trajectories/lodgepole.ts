@@ -4,7 +4,8 @@ import type { SpiralSourceRef, SpiralTrajectory } from "../types";
  * Lodgepole pine regeneration after stand-replacing fire — Greater Yellowstone.
  * An empirical, branching trajectory. Steps are ecological conditions of a
  * stand, not Spiral stages; edges are domain topology, not comparisons.
- * No relationships exist for this trajectory.
+ * Relationships are authored separately (`comparisons/lodgepole.ts`); the
+ * `lp-cmp-*` concepts below carry their research.
  *
  * Every source below was verified in the Phase 2C research dossier.
  * Edge citations add only `supports`; bibliographic fields never vary.
@@ -17,6 +18,15 @@ const TURNER_1997: SpiralSourceRef = {
   year: 1997,
   publication: "Ecological Monographs 67(4): 411–433",
   doi: "10.1890/0012-9615(1997)067[0411:EOFSAP]2.0.CO;2",
+};
+
+const TURNER_1993: SpiralSourceRef = {
+  id: "turner-1993",
+  title: "A revised concept of landscape equilibrium: Disturbance and stability on scaled landscapes",
+  authors: "Turner MG, Romme WH, Gardner RH, O'Neill RV, Kratz TK",
+  year: 1993,
+  publication: "Landscape Ecology 8(3): 213–227",
+  doi: "10.1007/BF00125352",
 };
 
 const TURNER_ROMME_TINKER_2003: SpiralSourceRef = {
@@ -624,6 +634,229 @@ export const LODGEPOLE_FIRE_TRAJECTORY: SpiralTrajectory = {
         cite(RATAJCZAK_2018, "Only some abrupt changes are transitions between alternative states."),
       ],
     },
+    {
+      id: "lp-cmp-reburn-restructuring",
+      title: "Restructuring after a short-interval reburn",
+      summary:
+        "A dense stand reburned within about 30 years can persist as a much sparser lodgepole forest: the same species, maintained differently.",
+      epistemicKinds: ["empirical-observation", "empirical-mechanism", "conceptual-framework"],
+      sections: [
+        {
+          id: "lp-cmp-rr-compared",
+          kind: "summary",
+          title: "What is compared",
+          items: [
+            "Variable: stand structure, together with the conditions that maintain it: future canopy seed supply and fuel.",
+            "Reference: the stand's prior maintenance mode, dense regeneration from a canopy seed bank built over a long fire-free interval.",
+            "Window: the observed post-reburn period, up to about 30 years.",
+            "Scale: the ecological community — the stand.",
+          ],
+        },
+        {
+          id: "lp-cmp-rr-evidence",
+          kind: "pattern",
+          title: "Evidence",
+          items: [
+            "Seedling density was about sixfold lower after reburn; stands above 40,000 stems/ha became stands below 1,000 (Turner et al. 2019).",
+            "Nearly 30 years on, short-interval stands held 3,240 stems/ha against 28,741 after long-interval fire, with low biomass and fuels (Braziunas et al. 2023).",
+            "Seidl & Turner (2022) call this pathway restructuring: structure changes while species composition stays the same.",
+          ],
+        },
+        {
+          id: "lp-cmp-rr-why",
+          kind: "what-changes",
+          title: "Why it may resemble Transformation",
+          body: "Transformation changes the means by which a system maintains itself, not merely its visible state. After reburn the stand is still lodgepole pine, but fewer trees mean fewer serotinous cones for the next fire, less fuel to carry it, and a different relation to it. The candidate rests on those maintenance conditions, not on the stand looking different.",
+        },
+        {
+          id: "lp-cmp-rr-limits",
+          kind: "epistemic-status",
+          title: "Why it stays a candidate",
+          items: [
+            "The observation window is short: about 30 years, against recovery times of centuries.",
+            "Sparse stands have historically filled in over decades; infilling remains possible (Kashian et al. 2005).",
+            "Composition is still largely lodgepole pine; aspen increased but remained a minority (Braziunas et al. 2023).",
+            "Naturally sparse stands after 1988 are not evidence for this claim. They share a step, not a history.",
+            "Similar structure does not imply a similar trajectory.",
+            "The claim concerns process and history, not appearance.",
+          ],
+        },
+      ],
+      comparisonBreaks: {
+        title: "Shared ancestry",
+        body: "Seidl & Turner's “reorganization” vocabulary comes from Holling's adaptive cycle, which also shapes the language the Spiral is read in. A resemblance in words is not evidence. The candidate must stand on seed supply, structure and fuels measured in this system.",
+      },
+      sources: [
+        cite(TURNER_2019, "Seedling density sixfold lower after reburn; dense stands became sparse."),
+        cite(BRAZIUNAS_2023, "Short-interval stands still sparse, with low biomass and fuels, nearly 30 years after fire."),
+        cite(SEIDL_TURNER_2022, "Restructuring: structure changes while composition stays the same. Adaptive-cycle vocabulary."),
+        cite(KASHIAN_2005, "Counter-evidence: initially sparse stands historically filled in over decades."),
+      ],
+    },
+    {
+      id: "lp-cmp-reburn-timing",
+      title: "Fire that arrives before the seed bank returns",
+      summary:
+        "A reburn within about 30 years meets a stand that cannot yet regenerate the way it has after historical fire.",
+      epistemicKinds: ["empirical-observation", "empirical-mechanism", "conceptual-framework"],
+      sections: [
+        {
+          id: "lp-cmp-rt-compared",
+          kind: "summary",
+          title: "What is compared",
+          items: [
+            "Variable: regenerative capacity — seedling establishment from the canopy seed bank.",
+            "Reference: how this system assimilates historical-interval fire, through a canopy seed bank rebuilt over a long fire-free interval.",
+            "Window: a reburn within about 30 years, before young trees bear many serotinous cones.",
+            "Scale: the ecological community — the stand. Population persistence through serotiny is the mechanism under strain, but what was measured is establishment in stands, so the claim is made there.",
+          ],
+        },
+        {
+          id: "lp-cmp-rt-evidence",
+          kind: "pattern",
+          title: "Evidence",
+          items: [
+            "Young trees are rarely serotinous; serotiny rises with age (Schoennagel et al. 2003).",
+            "The 2016 fires reburned young forests regenerating after 1988 and 2000; seedling density was about sixfold lower (Turner et al. 2019).",
+            "Across 27 short-interval reburns, effects on density grew with distance to a live forest edge (Braziunas et al. 2023).",
+            "On warm south-facing slopes, under 1% of planted seed established; short-interval burn soils ran hotter (Hoecker et al. 2020).",
+          ],
+        },
+        {
+          id: "lp-cmp-rt-why",
+          kind: "what-changes",
+          title: "Why it may resemble Disruption",
+          body: "Disruption names pressure that the existing organization cannot assimilate unchanged. Historically, lodgepole stands assimilate stand-replacing fire through their canopy seed bank. A reburn within about 30 years arrives before that mechanism has rebuilt. The resemblance is relational — the event, its timing, the stand's state, and the continuity mechanisms available — not a property of fire.",
+        },
+        {
+          id: "lp-cmp-rt-limits",
+          kind: "epistemic-status",
+          title: "Limits",
+          items: [
+            "Not all fire is Disruption. Historical-interval fire is part of how this system persists (see the comparison break at stand-replacing fire).",
+            "Timing is central: the same fire after a long interval would not support this candidate.",
+            "The evidence comes from a limited set of recent reburns and short observation windows.",
+            "Nothing external or novel is required. The fire belongs to the regime; its timing is what the stand cannot yet assimilate.",
+          ],
+        },
+      ],
+      comparisonBreaks: {
+        title: "What would weaken it",
+        body: "If reburned young stands proved able to regenerate densely — from nearby seed, other species, or later infilling — the timing would not have exceeded what the system can assimilate, and the candidate would weaken.",
+      },
+      sources: [
+        cite(TURNER_2019, "Reburns of young forests in 2016; sixfold lower seedling density."),
+        cite(BRAZIUNAS_2023, "Paired plots across 27 short-interval reburns; effects amplified with distance to live edge."),
+        cite(HOECKER_2020, "Very low establishment on warm aspects after short-interval fire."),
+        cite(SCHOENNAGEL_2003, "Young trees are rarely serotinous; serotiny rises with age."),
+      ],
+    },
+    {
+      id: "lp-cmp-historical-fire",
+      title: "Historical fire is part of how the system continues",
+      summary:
+        "At landscape and regime scale, stand-replacing fire at historical intervals is how lodgepole forest persists, not pressure it cannot absorb.",
+      epistemicKinds: ["empirical-observation", "conceptual-framework"],
+      sections: [
+        {
+          id: "lp-cmp-hf-compared",
+          kind: "summary",
+          title: "What is compared",
+          items: [
+            "Variable: persistence of lodgepole forest and its fire regime across the landscape.",
+            "Reference: Disruption — pressure the existing organization cannot assimilate unchanged.",
+            "Window: historical fire intervals, about 135–310 years across the plateau and 300–400 years in one watershed.",
+            "Scale: the landscape, read through its fire regime. At the scale of one stand the same fire is replacement.",
+          ],
+        },
+        {
+          id: "lp-cmp-hf-evidence",
+          kind: "pattern",
+          title: "Evidence",
+          items: [
+            "Fire opens serotinous cones; pre-fire serotiny was the best predictor of post-fire seedling density (Tinker et al. 1994).",
+            "Post-fire density tracks serotiny and fire interval; the population persists through the canopy seed bank (Schoennagel et al. 2003).",
+            "Stand-replacing fire maintains a shifting, cyclic mosaic of stand ages — a nonsteady-state landscape (Romme 1982).",
+            "After 1988, fire size and pattern shaped heterogeneity, and succession moved toward communities like those that burned (Turner et al. 1997).",
+            "Whether a disturbed landscape appears stable depends on disturbance size and frequency relative to landscape extent and recovery time (Turner et al. 1993).",
+          ],
+        },
+        {
+          id: "lp-cmp-hf-why",
+          kind: "what-persists",
+          title: "Why the comparison breaks",
+          body: "Disruption needs pressure that the existing organization cannot take in unchanged. At this scale, the organization includes the fire: it releases seed, carries the population forward, and maintains the age mosaic and the landscape's heterogeneity. At landscape/regime scale, historical-interval stand-replacing fire does not satisfy the Disruption comparison merely by being destructive at smaller scales.",
+        },
+        {
+          id: "lp-cmp-hf-limits",
+          kind: "epistemic-status",
+          title: "What this does not say",
+          items: [
+            "It does not say fire is never Disruption. A reburn before the seed bank has rebuilt is held separately, as a candidate.",
+            "It does not deny that the fire kills every canopy tree in a stand.",
+            "It does not claim the landscape is in equilibrium (Romme 1982; Turner et al. 1993).",
+          ],
+        },
+      ],
+      sources: [
+        cite(ROMME_1982, "Stand-replacing fire maintains a nonsteady-state, cyclic landscape mosaic."),
+        cite(SCHOENNAGEL_2003, "Population persistence through serotiny; historical fire intervals by elevation."),
+        cite(TURNER_1997, "Fire size and pattern; succession toward communities like those that burned."),
+        cite(TURNER_1993, "Landscape stability depends on disturbance and recovery relative to spatial and temporal scale."),
+        cite(TINKER_1994, "Serotinous seed release predicts post-fire seedling density."),
+      ],
+    },
+    {
+      id: "lp-cmp-return-not-renewal",
+      title: "Return is not Renewal",
+      summary:
+        "A young stand growing back into a mature one shows persistence and recurrence — not, on its own, Renewal.",
+      epistemicKinds: ["empirical-observation", "conceptual-framework"],
+      sections: [
+        {
+          id: "lp-cmp-rn-compared",
+          kind: "summary",
+          title: "What is compared",
+          items: [
+            "Variable: capacity — the means by which the stand maintains itself.",
+            "Reference: the stand that burned, and the mature stands of the historical regime.",
+            "Window: a long fire-free interval, about 125–200+ years, over which structure converges.",
+            "Scale: the ecological community — the stand.",
+          ],
+        },
+        {
+          id: "lp-cmp-rn-evidence",
+          kind: "pattern",
+          title: "Evidence",
+          items: [
+            "Structural variability narrows by about 125 years and stabilizes beyond about 200 (Kashian et al. 2005).",
+            "Function converges sooner than structure (Turner et al. 2016).",
+            "Seidl & Turner (2022) describe a forest that “renews itself” — return toward a prior configuration.",
+          ],
+        },
+        {
+          id: "lp-cmp-rn-why",
+          kind: "what-persists",
+          title: "Why the comparison breaks",
+          body: "In the Spiral, Renewal is continuation after Transformation: a reorganized system stabilizes and goes on with altered capacity. On this path no Transformation has taken place, and no altered capacity is established; the stand returns toward the kind of stand that burned. Regeneration, recovery and recurrence are each real here. None of them is Renewal by itself.",
+        },
+        {
+          id: "lp-cmp-rn-terms",
+          kind: "epistemic-status",
+          title: "Two meanings of “renews”",
+          items: [
+            "Seidl & Turner use “renews itself” for return toward a prior configuration, in the adaptive-cycle tradition. The Spiral's Renewal names continuation with altered capacity. The word is shared; the meaning is not.",
+            "Renewal is not improvement, and recovery is not a failure to renew.",
+            "Recurrence does not restore the same stand: the loop returns a forest type, not the trees that burned.",
+          ],
+        },
+      ],
+      sources: [
+        cite(SEIDL_TURNER_2022, "A forest that “renews itself”: return toward a prior configuration."),
+        cite(KASHIAN_2005, "Structural convergence over about 125–200 years."),
+        cite(TURNER_2016, "Function converges before structure."),
+      ],
+    },
   ],
   framing:
     "An empirical trajectory from long-term research in Greater Yellowstone, much of it begun after the 1988 fires. It follows a stand — the ecological community on one patch of ground — through stand-replacing fire and what grows back.\n\nSteps are ecological conditions of a stand, not Spiral operations. Each edge carries its own conditions and sources. Conditions describe associations and likelihoods, not deterministic causes.\n\nEvery edge rests on field observation, field experiment, or chronosequence evidence from this system. Model projections of future fire and climate are kept in research, never drawn as steps or edges.\n\nThe graph ends at two steps — little or no tree recruitment, and stands still sparse at about 24–30 years — because the authored evidence ends there. They are not terminal ecological states.",
@@ -685,6 +918,7 @@ export const LODGEPOLE_FIRE_TRAJECTORY: SpiralTrajectory = {
     body: "Succession here is contingent — on serotiny, location, seed distance, fire interval and climate — not a fixed universal sequence (Turner et al. 1997; Romme et al. 2011).\n\nStand-replacing fire is historically part of this system's regime, not an interruption of it (Romme 1982; Turner, Romme & Tinker 2003).\n\nLow resistance coexists with high resilience: every canopy tree can die while the forest regenerates.\n\nRecovery depends on the attribute measured. Composition returns early, function sooner than structure, and structure over centuries.\n\nRecurrence does not restore the same stand. The loop returns a forest type, not the trees that burned.\n\nLocal replacement coexists with landscape persistence, and the landscape itself is not in equilibrium.\n\nEcological states are not healthy or damaged. Post-fire rehabilitation proved unnecessary and possibly counterproductive (Turner, Romme & Tinker 2003).\n\nSome ecological vocabulary comes from the adaptive cycle — the “reorganization phase,” a system that “renews itself” (Seidl & Turner 2022). Resemblance to the Spiral may reflect shared conceptual ancestry rather than independent correspondence.\n\nScale can reverse the interpretation: what is replacement for a stand is persistence for a landscape.",
   },
   sources: [
+    TURNER_1993,
     TURNER_1997,
     TURNER_ROMME_TINKER_2003,
     ROMME_2011,

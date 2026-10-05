@@ -98,31 +98,50 @@ function RelationshipSummary({
       </p>
     );
   }
-  const counts = new Map<string, { stop: SpiralSequenceStop; n: number }>();
-  for (const r of relationships) {
-    for (const stop of occurrencesForRelationship(r)) {
-      const prev = counts.get(stop.occurrenceId);
-      counts.set(stop.occurrenceId, { stop, n: (prev?.n ?? 0) + 1 });
+  const tally = (rels: readonly SpiralTrajectoryRelationship[]) => {
+    const counts = new Map<string, { stop: SpiralSequenceStop; n: number }>();
+    for (const r of rels) {
+      for (const stop of occurrencesForRelationship(r)) {
+        const prev = counts.get(stop.occurrenceId);
+        counts.set(stop.occurrenceId, { stop, n: (prev?.n ?? 0) + 1 });
+      }
     }
-  }
+    return Array.from(counts.values());
+  };
+  const jumps = (entries: ReturnType<typeof tally>) =>
+    entries.map(({ stop, n }, i) => (
+      <span key={stop.occurrenceId}>
+        {i > 0 && ", "}
+        <button
+          type="button"
+          className="spiral-lens-context__jump"
+          onClick={() => onSelectOccurrence(stop.occurrenceId)}
+        >
+          {stopName(stop)}
+        </button>{" "}
+        ({n})
+      </span>
+    ));
+  const drawn = tally(relationships.filter((r) => r.status !== "comparison-break"));
+  const breaks = tally(relationships.filter((r) => r.status === "comparison-break"));
   return (
     <p className="spiral-trajectory__summary">
-      <span>Authored relationships with the Spiral: </span>
-      {Array.from(counts.values()).map(({ stop, n }, i) => (
-        <span key={stop.occurrenceId}>
-          {i > 0 && ", "}
-          <button
-            type="button"
-            className="spiral-lens-context__jump"
-            onClick={() => onSelectOccurrence(stop.occurrenceId)}
-          >
-            {stopName(stop)}
-          </button>{" "}
-          ({n})
-        </span>
-      ))}
+      {drawn.length > 0 && (
+        <>
+          <span>Authored relationships with the Spiral: </span>
+          {jumps(drawn)}
+          <span>. </span>
+        </>
+      )}
+      {breaks.length > 0 && (
+        <>
+          <span>Comparison breaks, drawn without a line: </span>
+          {jumps(breaks)}
+          <span>. </span>
+        </>
+      )}
       <span>
-        . Everything else is unresearched. No correspondence is assumed, and
+        Everything else is unresearched. No correspondence is assumed, and
         there may be none.
       </span>
     </p>
@@ -378,10 +397,19 @@ export function SpiralLensContext({
         onSelectRelationship={onSelectRelationship}
       />
 
-      {relationships.length > 0 && (
+      {relationships.some((r) => r.status !== "comparison-break") && (
         <p className="spiral-trajectory__key">
           <span className="spiral-trajectory__key-line" aria-hidden="true" />
           Lines mark researched relationships.
+        </p>
+      )}
+      {relationships.some((r) => r.status === "comparison-break") && (
+        <p className="spiral-trajectory__key">
+          <span
+            className="spiral-trajectory__key-line spiral-trajectory__key-line--break"
+            aria-hidden="true"
+          />
+          Dotted marks show where a comparison breaks. They draw no line.
         </p>
       )}
 

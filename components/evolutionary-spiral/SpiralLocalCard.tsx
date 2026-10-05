@@ -4,6 +4,7 @@ import { forwardRef, type ReactNode } from "react";
 import {
   SPIRAL_RELATIONSHIP_STATUS,
   anchorLabel,
+  anchorStepIds,
   epistemicLabel,
   getIntersection,
   getSpiralStage,
@@ -14,11 +15,15 @@ import {
   outgoingEdges,
   relationshipStatusLabel,
   relationshipsForStep,
+  relationshipsForTrajectory,
+  resolveRelationshipConcept,
   returningEdgeIds,
   topologySource,
   transitionForResonance,
   type SpiralIntersection,
   type SpiralLens,
+  type SpiralLensExploration,
+  type SpiralScaleRef,
   type SpiralSequenceStop,
   type SpiralTrajectory,
   type SpiralTrajectoryEdge,
@@ -80,6 +85,19 @@ function firstParagraph(text: string | undefined): string | undefined {
 
 function stopName(stop: SpiralSequenceStop): string {
   return stop.labelOverride ?? getSpiralStage(stop.stageId)?.name ?? stop.stageId;
+}
+
+function isBreak(r: SpiralTrajectoryRelationship): boolean {
+  return r.status === "comparison-break";
+}
+
+function ScaleLine({ scale }: { scale: SpiralScaleRef }) {
+  return (
+    <p className="spiral-card__scale">
+      <span className="spiral-op__def-label">Scale: </span>
+      {scale.id.replace(/-/g, " ")}.{scale.note ? ` ${scale.note}` : null}
+    </p>
+  );
 }
 
 function relationshipLine(
@@ -230,8 +248,8 @@ function AnchorList({
             {anchorLabel(trajectory, r.anchor)}
             {withOperations && (
               <span className="spiral-card__anchor-op">
-                {" "}
-                ↔ {occurrencesForRelationship(r).map(stopName).join(", ")}
+                {isBreak(r) ? " · comparison breaks at " : " ↔ "}
+                {occurrencesForRelationship(r).map(stopName).join(", ")}
               </span>
             )}
           </button>
@@ -536,6 +554,11 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
     const name = (id: string) => trajectory.steps.find((s) => s.id === id)?.label ?? id;
     const returns = returningEdgeIds(trajectory).has(edge.id);
     const sources = edge.sources ?? [];
+    const onEdge = relationshipsForTrajectory(trajectory.id).filter((r) => {
+      if (r.anchor.kind === "step") return false;
+      const ids = anchorStepIds(trajectory, r.anchor);
+      return ids.some((id, i) => id === edge.from && ids[i + 1] === edge.to);
+    });
     label = `${name(edge.from)} to ${name(edge.to)}, transition in ${trajectory.title}`;
     body = (
       <>
@@ -578,6 +601,17 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
             {edge.epistemicKinds.map(epistemicLabel).join(" · ")}
           </p>
         )}
+        {onEdge.length > 0 && (
+          <div className="spiral-card__with">
+            <p className="spiral-card__with-label">With the Spiral</p>
+            <AnchorList
+              relationships={onEdge}
+              trajectory={trajectory}
+              onSelectRelationship={onSelectRelationship}
+              withOperations
+            />
+          </div>
+        )}
         {sources.length > 0 && (
           <Investigate
             open={investigateOpen}
@@ -609,26 +643,39 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
     const exploration = local?.exploration;
     const opName = first ? stopName(first) : "";
     const stage = first ? getSpiralStage(first.stageId) : undefined;
-    const question =
-      exploration?.title ??
-      (first ? `Where does ${opName} appear within ${trajectory.inPhrase}?` : undefined);
+    const broken = isBreak(r);
+    const question = broken
+      ? undefined
+      : (exploration?.title ??
+        (first ? `Where does ${opName} appear within ${trajectory.inPhrase}?` : undefined));
     const line = relationshipLine(r, lens);
     const status = SPIRAL_RELATIONSHIP_STATUS[r.status];
+    const owned = resolveRelationshipConcept(r, trajectory);
+    const research: SpiralLensExploration | undefined =
+      owned?.scope === "trajectory"
+        ? {
+            lensId: trajectory.lensId,
+            conceptsCue: "Research behind this comparison",
+            concepts: [owned.concept],
+          }
+        : exploration;
     const conceptHint =
-      r.conceptId && exploration?.concepts.some((c) => c.id === r.conceptId)
+      r.conceptId && research?.concepts.some((c) => c.id === r.conceptId)
         ? r.conceptId
         : undefined;
     const anchor = anchorLabel(trajectory, r.anchor);
-    label = `${anchor}, researched relationship`;
+    label = `${anchor}, ${broken ? "comparison break" : "researched relationship"}`;
     body = (
       <>
         <header className="spiral-op__head">
           <p className="spiral-op__folio type-folio">{trajectory.title}</p>
           <h3 className="spiral-op__title">{anchor}</h3>
         </header>
-        <p className="spiral-card__bridge">
-          <span aria-hidden="true">↔ </span>
-          <span className="sr-only">Researched relationship with </span>
+        <p className={cn("spiral-card__bridge", broken && "spiral-card__bridge--break")}>
+          <span aria-hidden="true">{broken ? "Comparison breaks at " : "↔ "}</span>
+          <span className="sr-only">
+            {broken ? "Comparison break with " : "Researched relationship with "}
+          </span>
           {stops.map((stop, i) => (
             <span key={stop.occurrenceId}>
               {i > 0 && ", "}
@@ -642,9 +689,13 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
             </span>
           ))}
         </p>
+        {r.note && <p className="spiral-card__note">{r.note}</p>}
+        {r.scale && <ScaleLine scale={r.scale} />}
         {question && <p className="spiral-card__question">{question}</p>}
         <Explore open={exploreOpen} onToggle={onExploreToggle} id={exploreId}>
-          {line && <p className="spiral-op__rel-line spiral-card__note">{line}</p>}
+          {line && !r.note && (
+            <p className="spiral-op__rel-line spiral-card__note">{line}</p>
+          )}
           <p className="spiral-op__rel-meta">
             {status.label} — {status.definition}
             {r.epistemicKinds && r.epistemicKinds.length > 0
@@ -677,15 +728,19 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
             </details>
           ))}
           <p className="spiral-op__guardrail">{GUARDRAIL}</p>
-          {exploration && (
+          {research && (
             <Investigate
               open={investigateOpen}
               onToggle={() => onInvestigateToggle(conceptHint)}
               id={investigateId}
-              lead={investigateLead(exploration.concepts.length)}
+              lead={
+                owned?.scope === "trajectory"
+                  ? "what is compared · evidence · limits · sources"
+                  : investigateLead(research.concepts.length)
+              }
             >
               <SpiralInvestigate
-                exploration={exploration}
+                exploration={research}
                 conceptId={conceptId}
                 onConceptChange={onConceptChange}
               />
