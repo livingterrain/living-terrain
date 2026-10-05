@@ -447,7 +447,7 @@
 @media (min-width: 960px) {
   .spiral-experience__stage {
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     grid-template-areas:
       "figure rail"
       "figure side";
@@ -626,11 +626,23 @@
 }
 
 @media (min-width: 960px) {
-  /* The whole helix fits the first desktop screen beneath the title. */
+  /* Larger instrument; the second bound keeps the sticky figure and its
+     legend within one screen. */
   .spiral-helix__canvas {
     max-width: none;
-    width: min(100%, calc((100vh - 21.5rem) * 100 / 168));
-    min-width: 17rem;
+    width: min(
+      100%,
+      calc((100vh - 21.5rem) * 122 / 168),
+      calc((100vh - 13rem) * 100 / 168)
+    );
+    min-width: 20.5rem;
+  }
+
+  .spiral-helix__hit {
+    width: 3rem;
+    height: 3rem;
+    margin-left: -1.5rem;
+    margin-top: -1.5rem;
   }
 }
 
@@ -892,6 +904,28 @@
 
 .spiral-helix__hit--selected {
   background: color-mix(in srgb, var(--color-gold) 8%, transparent);
+}
+
+/* The target reaches across the operation's label. A pseudo-element keeps the
+   button's own box on the node, where relationship lines are anchored. */
+.spiral-helix__hits {
+  container-type: size;
+}
+
+.spiral-helix__hit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 42cqw;
+}
+
+.spiral-helix__hit--right::before {
+  left: 50%;
+}
+
+.spiral-helix__hit--left::before {
+  right: 50%;
 }
 
 .spiral-helix__legend {

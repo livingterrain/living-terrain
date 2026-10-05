@@ -441,6 +441,7 @@ export function SpiralHelix({
                 data-occurrence-hit={id}
                 className={cn(
                   "spiral-helix__hit",
+                  `spiral-helix__hit--${node.labelSide}`,
                   selected && "spiral-helix__hit--selected",
                 )}
                 style={style}
