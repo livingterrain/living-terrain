@@ -68,8 +68,7 @@ export const SPIRAL_LENSES: readonly SpiralLens[] = [
     evidence:
       "Empirical ecology: recovery is observed, never guaranteed.",
     inPhrase: "ecosystems",
-    trajectories: [],
-    heldTrajectories: [LODGEPOLE_FIRE_TRAJECTORY],
+    trajectories: [LODGEPOLE_FIRE_TRAJECTORY],
     forthcoming: ["Disturbance & succession", "Regime shift", "Recovery"],
     status: "available",
   },
@@ -133,11 +132,6 @@ export function getTrajectory(
 /** Every authored trajectory, in lens order. */
 export function authoredTrajectories(): SpiralTrajectory[] {
   return SPIRAL_LENSES.flatMap((l) => l.trajectories);
-}
-
-/** Trajectories held back until the figure can draw their topology. */
-export function heldTrajectories(): SpiralTrajectory[] {
-  return SPIRAL_LENSES.flatMap((l) => l.heldTrajectories ?? []);
 }
 
 /** @deprecated Prefer relationshipsForStop. */

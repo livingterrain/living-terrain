@@ -58,6 +58,13 @@ export function outgoingEdges(
   return trajectoryEdges(trajectory).filter((e) => e.from === stepId);
 }
 
+export function incomingEdges(
+  trajectory: SpiralTrajectory,
+  stepId: string,
+): SpiralTrajectoryEdge[] {
+  return trajectoryEdges(trajectory).filter((e) => e.to === stepId);
+}
+
 /**
  * Steps with no outgoing edge. Structural only: whether the process ends
  * there or research simply stops there is said by the incoming edge's

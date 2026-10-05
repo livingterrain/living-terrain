@@ -8,6 +8,8 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
+import * as React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import {
   anchorStepIds,
   authoredTrajectories,
@@ -16,8 +18,9 @@ import {
   EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
   epistemicLabel,
   findEdge,
+  fitTopologyLayout,
   getSpiralLens,
-  heldTrajectories,
+  incomingEdges,
   isCitableSource,
   LODGEPOLE_FIRE_TRAJECTORY,
   getTrajectory,
@@ -27,7 +30,9 @@ import {
   relationshipsForTrajectory,
   resolveRelationshipConcept,
   resolveSpan,
+  returningEdgeIds,
   sinkStepIds,
+  SPIRAL_LENSES,
   SPIRAL_EPISTEMIC_CATEGORIES,
   SPIRAL_EPISTEMIC_LEGEND,
   SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS,
@@ -35,8 +40,10 @@ import {
   SPIRAL_SEQUENCE,
   SPIRAL_TRAJECTORY_OUTCOMES,
   SPIRAL_TRAJECTORY_RELATIONSHIPS,
+  topologyLayout,
   topologySource,
   trajectoryEdges,
+  trajectoryFigureKind,
   validateSpiralComparisons,
   validateTrajectorySources,
   validateTrajectoryTopology,
@@ -54,6 +61,11 @@ import {
   arcEndpointsForTrajectory,
   arcEndpointsFromRelationships,
 } from "../components/evolutionary-spiral/spiral-arc-endpoints";
+import { SpiralTrajectoryFigure } from "../components/evolutionary-spiral/SpiralTrajectoryFigure";
+import { SpiralLocalCard } from "../components/evolutionary-spiral/SpiralLocalCard";
+
+// Components compile with the classic JSX runtime here.
+(globalThis as { React?: typeof React }).React = React;
 
 let failed = 0;
 
@@ -73,6 +85,11 @@ const TRANSFORMATION = "transformation@0";
 
 function trajectoryFor(lensId: SpiralLensId) {
   return getTrajectory(lensId, defaultTrajectoryId(lensId));
+}
+
+/** Trajectories authored before explicit topology: read in step order. */
+function legacyTrajectories() {
+  return authoredTrajectories().filter((t) => t.id !== LODGEPOLE_FIRE_TRAJECTORY.id);
 }
 
 check("lines equal authored relationship occurrences, per trajectory", () => {
@@ -409,8 +426,12 @@ check("2B.K current trajectories validate their topology", () => {
   for (const t of authoredTrajectories()) assert.deepEqual(topo(t), [], t.id);
 });
 
-check("2B.K current trajectories keep ordered topology (no explicit transitions yet)", () => {
-  for (const t of authoredTrajectories()) {
+check("2B.K legacy trajectories keep ordered topology", () => {
+  assert.deepEqual(
+    legacyTrajectories().map((t) => t.id).sort(),
+    ["jesus-narrative", "metamorphosis", "zodiac-cycle"],
+  );
+  for (const t of legacyTrajectories()) {
     assert.equal(topologySource(t), "ordered", t.id);
     assert.deepEqual(
       trajectoryEdges(t).map((e) => [e.from, e.to]),
@@ -439,10 +460,19 @@ check("2B.L current relationship anchors resolve exactly as before", () => {
   assert.deepEqual(covered("zod-res-transformation-pisces-aries"), ["pisces", "aries-again"]);
 });
 
-check("2B rendered lenses hold only topology the current figure draws", () => {
-  // The figure reads steps in order. A branching, recurrent, or re-ordered
-  // trajectory needs a topology-aware figure before it can join a lens.
+check("2B rendered lenses hold only topology their figure draws", () => {
+  // Wheel and path figures read steps in order; explicit transitions need
+  // the topology figure, which draws exactly the authored edges.
   for (const t of authoredTrajectories()) {
+    if (trajectoryFigureKind(t) === "topology") {
+      assert.equal(topologySource(t), "explicit", t.id);
+      assert.deepEqual(
+        topologyLayout(t).routes.map((r) => r.edge.id),
+        trajectoryEdges(t).map((e) => e.id),
+        t.id,
+      );
+      continue;
+    }
     assert.ok(["cyclical", "directional", "process"].includes(t.shape), t.id);
     assert.deepEqual(
       trajectoryEdges(t).map((e) => `${e.from}>${e.to}`),
@@ -825,8 +855,8 @@ check("2C.1 a source counts as support only when a reader could find it", () => 
 
 check("2C.1.H existing Jesus, Zodiac and Metamorphosis data validate unchanged", () => {
   const ids = authoredTrajectories().map((t) => t.id).sort();
-  assert.deepEqual(ids, ["jesus-narrative", "metamorphosis", "zodiac-cycle"].sort());
-  for (const t of authoredTrajectories()) {
+  assert.deepEqual(ids, ["jesus-narrative", "lodgepole-fire-regeneration", "metamorphosis", "zodiac-cycle"]);
+  for (const t of legacyTrajectories()) {
     assert.deepEqual(validateTrajectorySources(t), [], t.id);
     assert.equal(t.evidenceStandard, undefined, t.id);
     assert.equal(t.transitions, undefined, t.id);
@@ -867,7 +897,7 @@ check("2C.1.L provenance module reads no canonical data, relationships, or geome
 });
 
 /* ------------------------------------------------------------------ */
-/* Phase 2D — Greater Yellowstone lodgepole trajectory (held, not live) */
+/* Phase 2D — Greater Yellowstone lodgepole trajectory                 */
 /* ------------------------------------------------------------------ */
 
 const LP = LODGEPOLE_FIRE_TRAJECTORY;
@@ -899,12 +929,10 @@ const LP_EDGES: [string, string, SpiralTrajectoryOutcome | undefined][] = [
   ["reburn", "minimal-recruitment", "failure"],
 ];
 
-check("2D held trajectories validate with the build-gate validator, alongside live data", () => {
+check("2D lodgepole validates with the build-gate validator, alongside the other live data", () => {
+  assert.ok(authoredTrajectories().some((t) => t.id === LP.id));
   assert.deepEqual(
-    validateSpiralComparisons(SPIRAL_TRAJECTORY_RELATIONSHIPS, [
-      ...authoredTrajectories(),
-      ...heldTrajectories(),
-    ]),
+    validateSpiralComparisons(SPIRAL_TRAJECTORY_RELATIONSHIPS, authoredTrajectories()),
     [],
   );
 });
@@ -1046,12 +1074,18 @@ check("2D.S Emergence Again remains untouched", () => {
   assert.ok(!arcEndpointsForTrajectory(LP.id).some((e) => e.occurrenceId === EMERGENCE_AGAIN));
 });
 
-check("2D held, not live: never selectable, never rendered by the current figure", () => {
-  assert.ok(!authoredTrajectories().some((t) => t.id === LP.id));
-  assert.equal(getTrajectory("ecology", LP.id), undefined);
-  assert.equal(defaultTrajectoryId("ecology"), null);
-  assert.equal(getSpiralLens("ecology")?.trajectories.length, 0);
-  assert.deepEqual(heldTrajectories().map((t) => t.id), [LP.id]);
+check("2E live in Ecology only; Systems and Psychology stay uncharted", () => {
+  assert.equal(getTrajectory("ecology", LP.id), LP);
+  assert.equal(defaultTrajectoryId("ecology"), LP.id);
+  assert.deepEqual(getSpiralLens("ecology")?.trajectories.map((t) => t.id), [LP.id]);
+  for (const lensId of ["systems", "psychology"] as const) {
+    assert.equal(getSpiralLens(lensId)?.trajectories.length, 0, lensId);
+    assert.equal(defaultTrajectoryId(lensId), null, lensId);
+  }
+  for (const lens of SPIRAL_LENSES) {
+    assert.ok(!("heldTrajectories" in lens), lens.id);
+    if (lens.id !== "ecology") assert.ok(!lens.trajectories.some((t) => t.id === LP.id), lens.id);
+  }
 });
 
 check("2D.T existing trajectories and relationships are byte-identical", () => {
@@ -1062,7 +1096,7 @@ check("2D.T existing trajectories and relationships are byte-identical", () => {
     "zodiac-cycle": "a7ef82d16d2f701d9f4751894ce30092e6f162bb989a827b17647a464e024c9d",
   };
   assert.deepEqual(
-    Object.fromEntries(authoredTrajectories().map((t) => [t.id, hash(t)])),
+    Object.fromEntries(legacyTrajectories().map((t) => [t.id, hash(t)])),
     expected,
   );
   assert.equal(
@@ -1071,7 +1105,7 @@ check("2D.T existing trajectories and relationships are byte-identical", () => {
   );
 });
 
-check("2D snapshot: arc counts unchanged with the held trajectory present", () => {
+check("2D snapshot: arc counts unchanged with the lodgepole trajectory live", () => {
   const expected: Record<string, number> = {
     "symbolic-zodiac": 4,
     "biblical-textual": 1,
@@ -1079,6 +1113,339 @@ check("2D snapshot: arc counts unchanged with the held trajectory present", () =
   };
   for (const lensId of ["systems", "living-systems", "psychology", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
+  }
+});
+
+/* ------------------------------------------------------------------ */
+/* Phase 2E — topology-aware trajectory figure                         */
+/* ------------------------------------------------------------------ */
+
+const noop = () => {};
+
+function renderFigure(
+  t: SpiralTrajectory,
+  extra: Partial<React.ComponentProps<typeof SpiralTrajectoryFigure>> = {},
+): string {
+  return renderToStaticMarkup(
+    React.createElement(SpiralTrajectoryFigure, {
+      trajectory: t,
+      relationships: relationshipsForTrajectory(t.id),
+      activeIds: new Set<string>(),
+      selectedStepId: null,
+      onSelectStep: noop,
+      onSelectRelationship: noop,
+      ...extra,
+    }),
+  );
+}
+
+function renderCard(focus: React.ComponentProps<typeof SpiralLocalCard>["focus"]): string {
+  return renderToStaticMarkup(
+    React.createElement(SpiralLocalCard, {
+      focus,
+      lens: getSpiralLens("ecology"),
+      trajectory: LP,
+      intersection: undefined,
+      onSelectOccurrence: noop,
+      onSelectRelationship: noop,
+      onSelectStep: noop,
+      onSelectEdge: noop,
+      relationshipCount: 0,
+      onClose: noop,
+      exploreOpen: true,
+      onExploreToggle: noop,
+      investigateOpen: true,
+      onInvestigateToggle: noop,
+      conceptId: null,
+      onConceptChange: noop,
+      onOpenConcept: noop,
+      cardId: "card",
+      exploreId: "explore",
+      investigateId: "investigate",
+    }),
+  );
+}
+
+/** Drawn edges: [id, from, to] from the figure's markup. */
+function drawnEdges(html: string): [string, string, string][] {
+  return [
+    ...html.matchAll(
+      /<path[^>]*class="spiral-topology__edge(?: [^"]*)?"[^>]*data-edge-id="([^"]+)" data-from="([^"]+)" data-to="([^"]+)"/g,
+    ),
+  ].map((m) => [m[1]!, m[2]!, m[3]!]);
+}
+
+function stepButton(html: string, stepId: string): string {
+  const m = html.match(new RegExp(`<button[^>]*data-step-id="${stepId}"[^>]*>`));
+  assert.ok(m, stepId);
+  return m[0];
+}
+
+/**
+ * Converges (b, c → d), loops on itself (d → d), returns (e → b), and
+ * stops in two places (f, g). Array order is deliberately misleading.
+ */
+const TANGLED: SpiralTrajectory = {
+  ...FIXTURE,
+  id: "tangled-fixture",
+  shape: "branching",
+  steps: ["g", "e", "a", "f", "d", "c", "b"].map(step),
+  transitions: [
+    edge("a", "b"),
+    edge("a", "c"),
+    edge("b", "d"),
+    edge("c", "d"),
+    edge("d", "d"),
+    edge("d", "e"),
+    edge("e", "b", { outcome: "recovery" }),
+    edge("e", "f"),
+    edge("c", "g", { outcome: "failure", conditions: "Neutral, within the observed window." }),
+  ],
+};
+
+check("2E.1 the topology figure draws exactly the authored edges, in authored order", () => {
+  for (const t of [LP, BRANCHING, LOOP, TANGLED]) {
+    assert.deepEqual(
+      drawnEdges(renderFigure(t)),
+      trajectoryEdges(t).map((e) => [e.id, e.from, e.to]),
+      t.id,
+    );
+  }
+});
+
+check("2E.2 no edge is derived from array order or position", () => {
+  for (const t of [LP, BRANCHING, TANGLED]) {
+    const authored = new Set(trajectoryEdges(t).map((e) => `${e.from}>${e.to}`));
+    const drawn = new Set(drawnEdges(renderFigure(t)).map(([, f, to]) => `${f}>${to}`));
+    for (const e of orderedEdges(t)) {
+      if (!authored.has(`${e.from}>${e.to}`)) assert.ok(!drawn.has(`${e.from}>${e.to}`), `${t.id}: ${e.from} → ${e.to}`);
+    }
+    // Reordering steps changes no edge.
+    const reversed = { ...t, steps: [...t.steps].reverse() };
+    assert.deepEqual(
+      topologyLayout(reversed).routes.map((r) => [r.edge.from, r.edge.to]),
+      topologyLayout(t).routes.map((r) => [r.edge.from, r.edge.to]),
+      t.id,
+    );
+  }
+});
+
+check("2E.3 all thirteen lodgepole edges are drawn, at every width", () => {
+  assert.equal(drawnEdges(renderFigure(LP)).length, 13);
+  for (const width of [Infinity, 1280, 516, 447, 343, 300]) {
+    const layout = fitTopologyLayout(LP, width);
+    assert.equal(layout.routes.length, 13, String(width));
+    assert.equal(layout.nodes.length, LP.steps.length, String(width));
+    for (const r of layout.routes) assert.ok(!/NaN|Infinity/.test(r.d), `${width}: ${r.edge.id}`);
+  }
+  // The narrow phone column (390 px less padding) still fits, labels included.
+  const phone = fitTopologyLayout(LP, 343);
+  assert.ok(phone.width + phone.gutter.left + phone.gutter.right <= 343);
+});
+
+check("2E.4 both lodgepole loops are drawn, closing against the flow", () => {
+  assert.deepEqual([...returningEdgeIds(LP)].sort(), ["reburn-to-sparse", "young-to-mature"]);
+  const html = renderFigure(LP);
+  for (const id of ["young-to-mature", "reburn-to-sparse"]) {
+    assert.match(html, new RegExp(`class="spiral-topology__edge spiral-topology__edge--return"[^>]*data-edge-id="${id}"`), id);
+  }
+  const layout = topologyLayout(LP);
+  const nodeAt = new Map(layout.nodes.map((n) => [n.step.id, n]));
+  for (const r of layout.routes) {
+    const from = nodeAt.get(r.edge.from)!;
+    const to = nodeAt.get(r.edge.to)!;
+    assert.equal(r.returns, to.layer <= from.layer, r.edge.id);
+  }
+  // Self-loops and returns in a general fixture.
+  const tangled = topologyLayout(TANGLED);
+  assert.deepEqual(
+    tangled.routes.filter((r) => r.returns).map((r) => r.edge.id),
+    ["d-d", "e-b"],
+  );
+  assert.ok(tangled.routes.find((r) => r.edge.id === "d-d")!.self);
+});
+
+check("2E.5 both sinks are drawn as open futures, sharing the last row", () => {
+  const layout = topologyLayout(LP);
+  const sinks = layout.nodes.filter((n) => n.sink).map((n) => n.step.id).sort();
+  assert.deepEqual(sinks, ["minimal-recruitment", "sparse-woodland"]);
+  const last = layout.layers - 1;
+  for (const n of layout.nodes) assert.equal(n.layer === last, n.sink, n.step.id);
+  const html = renderFigure(LP);
+  for (const id of sinks) assert.match(stepButton(html, id), /spiral-topology__step--open/, id);
+  const tangled = topologyLayout(TANGLED);
+  assert.deepEqual(tangled.nodes.filter((n) => n.sink).map((n) => n.step.id).sort(), ["f", "g"]);
+});
+
+check("2E.6 sinks carry no terminal semantics", () => {
+  const html = renderFigure(LP);
+  for (const id of sinkStepIds(LP)) {
+    const button = stepButton(html, id);
+    assert.match(button, /observed future remains uncertain/, id);
+    assert.ok(!/\b(end|ends|ended|terminal|dead|final)\b/i.test(button), id);
+    const card = renderCard({ kind: "step", stepId: id });
+    assert.match(card, /The observed future remains uncertain\./, id);
+    assert.ok(!/\b(terminal|dead end|final state)\b/i.test(card), id);
+  }
+  assert.match(html, /Paths show sequence, not proportional time\./);
+  assert.match(html, /the observed future remains uncertain/);
+  assert.ok(!/[✕✗×✖⊗]/.test(html));
+  const css = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral/evolutionary-spiral.css"), "utf8");
+  const topologyCss = css.slice(css.indexOf(".spiral-topology"), css.indexOf("/*", css.lastIndexOf(".spiral-topology")));
+  assert.ok(topologyCss.length > 0);
+  assert.ok(!/\bred\b|crimson|#f00|danger|error/i.test(topologyCss));
+});
+
+check("2E.7 model projections never become an edge, a dash, or the general legend", () => {
+  const withProjection: SpiralTrajectory = {
+    ...LP,
+    concepts: [...(LP.concepts ?? []), { id: "extra", title: "Extra", epistemicKinds: ["model-projection"] } as never],
+  };
+  assert.deepEqual(
+    topologyLayout(withProjection).routes.map((r) => r.edge.id),
+    topologyLayout(LP).routes.map((r) => r.edge.id),
+  );
+  const html = renderFigure(LP);
+  assert.ok(!/projection/i.test(html));
+  assert.ok(!/<path[^>]*class="spiral-topology__edge[^>]*stroke-dasharray/.test(html));
+  const css = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral/evolutionary-spiral.css"), "utf8");
+  for (const [, rule] of css.matchAll(/\.spiral-topology__edge[^{]*\{([^}]*)\}/g)) {
+    assert.ok(!/dasharray/.test(rule!), rule);
+  }
+  assert.ok(!SPIRAL_EPISTEMIC_LEGEND.some((c) => c.id === "model-projection"));
+});
+
+check("2E.8 Ecology has zero relationships and zero arcs", () => {
+  assert.equal(trajectoryFor("ecology")?.id, LP.id);
+  assert.equal(relationshipsForTrajectory(LP.id).length, 0);
+  assert.equal(arcEndpointsForTrajectory(LP.id).length, 0);
+  assert.ok(!/data-rel-anchor/.test(renderFigure(LP)));
+});
+
+check("2E.9 a comparison break on the trajectory never becomes an arc", () => {
+  const breakRel = rel({
+    trajectoryId: LP.id,
+    anchor: { kind: "transition", from: "young-stand", to: "mature-stand" },
+    status: "comparison-break",
+  });
+  assert.equal(arcEndpointsFromRelationships([breakRel]).length, 0);
+  assert.ok(LP.concepts?.some((c) => c.comparisonBreaks));
+  assert.equal(arcEndpointsForTrajectory(LP.id).length, 0);
+});
+
+check("2E.10 legacy trajectories render through their existing figures, unchanged", () => {
+  // Hashes of the pre-2E figure's markup for the same props.
+  const expected: Record<string, [string, string]> = {
+    metamorphosis: ["path", "0854de1a3370eb772e8a913bbd2650770b2a304f8e7dab837d5b348fd24835e6"],
+    "jesus-narrative": ["path", "69aa818b74d43c51e0fbfab24018bf4b59d8856ab13c9e78571eaa1022edea65"],
+    "zodiac-cycle": ["wheel", "9e6d86521b3e2d564155330653642d47b014d9c01ca7ec7bea86ded92dcd3bad"],
+  };
+  const hash = (v: string) => createHash("sha256").update(v).digest("hex");
+  for (const t of legacyTrajectories()) {
+    const [kind, digest] = expected[t.id]!;
+    assert.equal(trajectoryFigureKind(t), kind, t.id);
+    const html = renderFigure(t);
+    assert.ok(!html.includes("spiral-topology"), t.id);
+    assert.equal(hash(html), digest, t.id);
+  }
+  assert.equal(trajectoryFigureKind(LP), "topology");
+});
+
+check("2E.11 the topology layout reads only steps and authored transitions", () => {
+  const source = readFileSync(path.resolve(__dirname, "../lib/evolutionary-spiral/topology-layout.ts"), "utf8");
+  const specs = [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
+  assert.deepEqual(specs, ["./types", "./topology"]);
+  // Labels, relationships, and Spiral geometry change nothing.
+  const relabelled = { ...LP, steps: LP.steps.map((s) => ({ ...s, label: "Transformation" })) };
+  const strip = (l: ReturnType<typeof topologyLayout>) =>
+    JSON.stringify({ n: l.nodes.map((n) => [n.step.id, n.x, n.y, n.layer]), r: l.routes.map((r) => r.d) });
+  assert.equal(strip(topologyLayout(relabelled)), strip(topologyLayout(LP)));
+});
+
+check("2E.12 no Spiral operation is inferred from an outcome", () => {
+  const operationNames = [...new Set(SPIRAL_SEQUENCE.map((s) => s.stageId))].map(
+    (id) => id[0]!.toUpperCase() + id.slice(1),
+  );
+  const figure = renderFigure(LP);
+  for (const outcome of SPIRAL_TRAJECTORY_OUTCOMES) assert.ok(!figure.includes(outcome), outcome);
+  for (const e of trajectoryEdges(LP)) {
+    const card = renderCard({ kind: "transition", edge: e });
+    for (const name of operationNames) assert.ok(!new RegExp(`\\b${name}\\b`).test(card), `${e.id}: ${name}`);
+    assert.ok(!card.includes("spiral-card__anchor-op"), e.id);
+    assert.ok(!card.includes(", defined:"), e.id);
+    if (e.outcome === "failure") assert.match(card, /failure within the observed window/, e.id);
+  }
+  assert.equal(relationshipsForTrajectory(LP.id).length, 0);
+});
+
+check("2E.13 Zodiac 4, Jesus 1, Biology 1 arcs; Ecology, Systems, Psychology 0", () => {
+  const expected: Record<string, number> = { "symbolic-zodiac": 4, "biblical-textual": 1, "living-systems": 1 };
+  for (const lens of SPIRAL_LENSES) {
+    assert.equal(arcEndpointsForTrajectory(trajectoryFor(lens.id)?.id).length, expected[lens.id] ?? 0, lens.id);
+  }
+});
+
+check("2E.14 Emergence Again receives nothing", () => {
+  assert.equal(EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS.length, 0);
+  for (const t of authoredTrajectories()) {
+    assert.equal(arcEndpointsForTrajectory(t.id).filter((e) => e.occurrenceId === EMERGENCE_AGAIN).length, 0, t.id);
+  }
+});
+
+check("2E.15 Spiral data stays apart from canonical data", () => {
+  const dir = path.resolve(__dirname, "../lib/evolutionary-spiral");
+  for (const file of ["topology-layout.ts", "topology.ts", "lenses.ts"]) {
+    const source = readFileSync(path.join(dir, file), "utf8");
+    assert.ok(!/canonical/.test(source), file);
+  }
+});
+
+check("2E.16 accessibility: named, pressable steps; decorative drawing", () => {
+  const html = renderFigure(LP, { selectedStepId: "establishment", onSelectEdge: noop });
+  assert.match(html, /<ol class="spiral-topology__steps" aria-label="Lodgepole pine regeneration after stand-replacing fire — steps">/);
+  assert.match(html, /<svg[^>]*aria-hidden="true"/);
+  for (const s of LP.steps) {
+    const button = stepButton(html, s.id);
+    assert.match(button, /type="button"/, s.id);
+    assert.match(button, new RegExp(`aria-pressed="${s.id === "establishment"}"`), s.id);
+    const label = button.match(/aria-label="([^"]+)"/)?.[1] ?? "";
+    assert.ok(label.startsWith(s.label), s.id);
+    const into = incomingEdges(LP, s.id);
+    if (into.length === 0) assert.match(label, /Where this trajectory begins/, s.id);
+    for (const e of outgoingEdges(LP, s.id)) {
+      const to = LP.steps.find((x) => x.id === e.to)!.label;
+      assert.ok(label.includes(to), `${s.id} → ${e.to}`);
+    }
+  }
+  // Pointer targets for edges sit inside the hidden drawing; keyboard reaches
+  // transitions through the local card's lists instead.
+  assert.ok(!/<path[^>]*tabindex/i.test(html));
+  const card = renderCard({ kind: "step", stepId: "establishment" });
+  assert.match(card, /Arrives from/);
+  assert.match(card, /Leads to/);
+  assert.equal((card.match(/<button/g) ?? []).length >= 4, true);
+});
+
+check("2E.17 a trajectory goes live only where its figure can draw it", () => {
+  for (const lens of SPIRAL_LENSES) {
+    for (const t of lens.trajectories) {
+      const kind = trajectoryFigureKind(t);
+      if (topologySource(t) === "explicit") {
+        assert.equal(kind, "topology", t.id);
+        assert.equal(topologyLayout(t).routes.length, trajectoryEdges(t).length, t.id);
+      } else {
+        assert.notEqual(kind, "topology", t.id);
+      }
+    }
+  }
+});
+
+check("2E zero-relationship copy never claims no relationship exists", () => {
+  const dir = path.resolve(__dirname, "../components/evolutionary-spiral");
+  const context = readFileSync(path.join(dir, "SpiralLensContext.tsx"), "utf8").replace(/\s+/g, " ");
+  assert.ok(context.includes("This trajectory has been charted independently. No Spiral relationships have been authored yet."));
+  for (const file of readdirSync(dir).filter((f) => f.endsWith(".tsx"))) {
+    assert.ok(!/No relationship exists/i.test(readFileSync(path.join(dir, file), "utf8")), file);
   }
 });
 

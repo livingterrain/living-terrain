@@ -5,6 +5,7 @@ import {
   getSpiralStage,
   occurrencesForRelationship,
   type SpiralLens,
+  type SpiralLensExploration,
   type SpiralLensId,
   type SpiralSequenceStop,
   type SpiralSourceRef,
@@ -32,6 +33,8 @@ type Props = {
   activeRelationshipIds: ReadonlySet<string>;
   selectedStepId: string | null;
   onSelectStep: (stepId: string) => void;
+  selectedEdgeId: string | null;
+  onSelectEdge: (edgeId: string) => void;
   onSelectRelationship: (relationshipId: string) => void;
   researchedStops: readonly SpiralSequenceStop[];
   onSelectOccurrence: (occurrenceId: string) => void;
@@ -90,7 +93,8 @@ function RelationshipSummary({
   if (relationships.length === 0) {
     return (
       <p className="spiral-trajectory__summary">
-        No authored relationships with the Spiral yet.
+        This trajectory has been charted independently. No Spiral
+        relationships have been authored yet.
       </p>
     );
   }
@@ -217,6 +221,8 @@ export function SpiralLensContext({
   activeRelationshipIds,
   selectedStepId,
   onSelectStep,
+  selectedEdgeId,
+  onSelectEdge,
   onSelectRelationship,
   researchedStops,
   onSelectOccurrence,
@@ -310,7 +316,15 @@ export function SpiralLensContext({
     );
   }
 
-  const research = lens.research;
+  const research: SpiralLensExploration | undefined =
+    lens.research ??
+    (trajectory.concepts?.length
+      ? {
+          lensId: trajectory.lensId,
+          conceptsCue: "Research beneath this trajectory",
+          concepts: trajectory.concepts,
+        }
+      : undefined);
   const conceptCount = research?.concepts.length ?? 0;
   const researchLead = [
     conceptCount > 0 &&
@@ -359,6 +373,8 @@ export function SpiralLensContext({
         activeIds={activeRelationshipIds}
         selectedStepId={selectedStepId}
         onSelectStep={onSelectStep}
+        selectedEdgeId={selectedEdgeId}
+        onSelectEdge={onSelectEdge}
         onSelectRelationship={onSelectRelationship}
       />
 

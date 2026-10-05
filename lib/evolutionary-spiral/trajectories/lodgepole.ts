@@ -269,7 +269,7 @@ export const LODGEPOLE_FIRE_TRAJECTORY: SpiralTrajectory = {
     { id: "sparse-cohort", label: "Sparse lodgepole cohort" },
     { id: "minimal-recruitment", label: "Little or no tree recruitment" },
     { id: "young-stand", label: "Young developing stand" },
-    { id: "sparse-woodland", label: "Persistent sparse woodland" },
+    { id: "sparse-woodland", label: "Still sparse at ~24–30 years" },
     { id: "reburn", label: "Short-interval reburn" },
   ],
   transitions: [
@@ -626,7 +626,7 @@ export const LODGEPOLE_FIRE_TRAJECTORY: SpiralTrajectory = {
     },
   ],
   framing:
-    "An empirical trajectory from long-term research in Greater Yellowstone, much of it begun after the 1988 fires. It follows a stand — the ecological community on one patch of ground — through stand-replacing fire and what grows back.\n\nSteps are ecological conditions of a stand, not Spiral operations. Each edge carries its own conditions and sources. Conditions describe associations and likelihoods, not deterministic causes.\n\nEvery edge rests on field observation, field experiment, or chronosequence evidence from this system. Model projections of future fire and climate are kept in research, never drawn as steps or edges.\n\nThe graph ends at two steps — little or no tree recruitment, and persistent sparse woodland — because the authored evidence ends there. They are not terminal ecological states.",
+    "An empirical trajectory from long-term research in Greater Yellowstone, much of it begun after the 1988 fires. It follows a stand — the ecological community on one patch of ground — through stand-replacing fire and what grows back.\n\nSteps are ecological conditions of a stand, not Spiral operations. Each edge carries its own conditions and sources. Conditions describe associations and likelihoods, not deterministic causes.\n\nEvery edge rests on field observation, field experiment, or chronosequence evidence from this system. Model projections of future fire and climate are kept in research, never drawn as steps or edges.\n\nThe graph ends at two steps — little or no tree recruitment, and stands still sparse at about 24–30 years — because the authored evidence ends there. They are not terminal ecological states.",
   provenanceNote:
     "Greater Yellowstone research on subalpine lodgepole pine forests, reviewed in the Phase 2C research dossier. Lodgepole pine only; other forest types in the region are separate systems and are not part of this trajectory.",
   researchIssues: [
@@ -636,7 +636,7 @@ export const LODGEPOLE_FIRE_TRAJECTORY: SpiralTrajectory = {
       body: "The graph ends here because the observed future remains uncertain. A sink marks where authored evidence stops, not a terminal ecological state.",
       items: [
         "Little or no tree recruitment: observed in some plots up to 24 years after the 1988 fires, and after short-interval reburns. Whether these stands later fill in, stay sparse, or lose tree cover has not been observed.",
-        "Persistent sparse woodland: sparse structure observed up to about 30 years after fire. Chronosequence evidence shows sparse stands historically filled in over decades; whether today's sparse stands will, under a warmer climate and shorter fire intervals, is unknown.",
+        "Still sparse at ~24–30 years: sparse structure observed up to about 30 years after fire. Chronosequence evidence shows sparse stands historically filled in over decades; whether today's sparse stands will, under a warmer climate and shorter fire intervals, is unknown.",
         "Neither step is connected onward, because no edge out of it is supported by observation in this system.",
       ],
     },

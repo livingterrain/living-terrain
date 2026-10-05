@@ -3,6 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   anchorLabel,
+  anchorStepIds,
   defaultTrajectoryId,
   getIntersection,
   getSpiralLens,
@@ -43,13 +44,14 @@ function stopName(occurrenceId: string): string {
 type LocalSelection =
   | { kind: "operation"; id: string }
   | { kind: "step"; id: string }
+  | { kind: "transition"; id: string }
   | { kind: "relationship"; id: string }
   | null;
 
 /**
  * Client island. SEE: helix + lens control. DISCOVER: a lens lays its whole
  * trajectory against the Spiral; authored relationships alone draw lines.
- * LOCAL: one selection (operation, step, or relationship) opens a small card.
+ * LOCAL: one selection (operation, step, transition, or relationship) opens a small card.
  * INVESTIGATE: research, on request, one entry per context.
  *
  * - selection — nothing is selected on arrival
@@ -92,6 +94,10 @@ export function SpiralHelixExperience() {
       ? SPIRAL_SEQUENCE.find((s) => s.occurrenceId === selection.id)
       : undefined;
   const selectedStepId = selection?.kind === "step" ? selection.id : null;
+  const selectedEdge =
+    selection?.kind === "transition"
+      ? trajectory?.transitions?.find((e) => e.id === selection.id)
+      : undefined;
   const selectedRelationship =
     selection?.kind === "relationship"
       ? relationships.find((r) => r.id === selection.id)
@@ -107,6 +113,11 @@ export function SpiralHelixExperience() {
     if (!trajectory) return [];
     if (selectedRelationship) return [selectedRelationship];
     if (selectedStepId) return relationshipsForStep(trajectory, selectedStepId);
+    if (selectedEdge)
+      return relationships.filter((r) => {
+        const ids = anchorStepIds(trajectory, r.anchor);
+        return ids.some((id, i) => id === selectedEdge.from && ids[i + 1] === selectedEdge.to);
+      });
     if (selectedStop)
       return relationships.filter((r) =>
         occurrencesForRelationship(r).some(
@@ -114,7 +125,14 @@ export function SpiralHelixExperience() {
         ),
       );
     return relationships;
-  }, [trajectory, relationships, selectedRelationship, selectedStepId, selectedStop]);
+  }, [
+    trajectory,
+    relationships,
+    selectedRelationship,
+    selectedStepId,
+    selectedEdge,
+    selectedStop,
+  ]);
 
   const activeRelationshipIds = useMemo(
     () => new Set(focusedRelationships.map((r) => r.id)),
@@ -123,10 +141,10 @@ export function SpiralHelixExperience() {
   const relatedIds = useMemo(() => occurrenceIdsFor(relationships), [relationships]);
   const emphasizedIds = useMemo(
     () =>
-      selectedStepId || selectedRelationship
+      selectedStepId || selectedEdge || selectedRelationship
         ? occurrenceIdsFor(focusedRelationships)
         : new Set<string>(),
-    [selectedStepId, selectedRelationship, focusedRelationships],
+    [selectedStepId, selectedEdge, selectedRelationship, focusedRelationships],
   );
   const researchedStops = useMemo(
     () => (activeLensId ? researchedStopsForLens(activeLensId) : []),
@@ -148,6 +166,7 @@ export function SpiralHelixExperience() {
   let focus: SpiralFocus | null = null;
   if (selectedStop) focus = { kind: "operation", stop: selectedStop };
   else if (selectedStepId && trajectory) focus = { kind: "step", stepId: selectedStepId };
+  else if (selectedEdge) focus = { kind: "transition", edge: selectedEdge };
   else if (selectedRelationship)
     focus = { kind: "relationship", relationship: selectedRelationship };
 
@@ -225,6 +244,10 @@ export function SpiralHelixExperience() {
   const selectionKey = selection ? `${selection.kind}:${selection.id}` : "";
   useEffect(() => {
     if (!selectionKey) return;
+    // Moving within the card can remove the control that held focus.
+    if (document.activeElement === document.body) {
+      cardRef.current?.focus({ preventScroll: true });
+    }
     if (!window.matchMedia("(min-width: 640px)").matches) return;
     cardRef.current?.scrollIntoView({
       block: "nearest",
@@ -261,8 +284,13 @@ export function SpiralHelixExperience() {
         ? `${focusedRelationships.length} researched relationship${
             focusedRelationships.length === 1 ? "" : "s"
           }.`
-        : "no researched relationship with the Spiral."
+        : relationships.length === 0
+          ? "no Spiral relationships have been authored for this trajectory yet."
+          : "no researched relationship with the Spiral."
     }`;
+  } else if (focus?.kind === "transition" && trajectory) {
+    const name = (id: string) => trajectory.steps.find((s) => s.id === id)?.label ?? id;
+    announcement = `Transition from ${name(focus.edge.from)} to ${name(focus.edge.to)}.`;
   } else if (focus?.kind === "relationship" && trajectory) {
     announcement = `${anchorLabel(trajectory, focus.relationship.anchor)}, researched relationship with ${occurrencesForRelationship(
       focus.relationship,
@@ -271,9 +299,11 @@ export function SpiralHelixExperience() {
       .join(", ")}.`;
   } else if (lens) {
     announcement = trajectory
-      ? `${lens.label}: ${trajectory.title} laid against the Spiral. ${
-          relationships.length
-        } line${relationships.length === 1 ? "" : "s"} mark researched relationships.`
+      ? relationships.length === 0
+        ? `${lens.label}: ${trajectory.title}, charted independently. No Spiral relationships have been authored yet.`
+        : `${lens.label}: ${trajectory.title} laid against the Spiral. ${
+            relationships.length
+          } line${relationships.length === 1 ? "" : "s"} mark researched relationships.`
       : lens.status === "scaffold"
         ? `${lens.label}: mapped trajectories side by side.`
         : `${lens.label}: not yet charted.`;
@@ -296,6 +326,7 @@ export function SpiralHelixExperience() {
       data-lens={activeLensId ?? undefined}
       data-trajectory={trajectory?.id}
       data-step={selectedStepId ?? undefined}
+      data-transition={selectedEdge?.id}
       data-relationship={selectedRelationship?.id}
       data-concept={conceptId ?? undefined}
       data-lens-concept={lensConceptId ?? undefined}
@@ -343,6 +374,8 @@ export function SpiralHelixExperience() {
               activeRelationshipIds={activeRelationshipIds}
               selectedStepId={selectedStepId}
               onSelectStep={(id) => select({ kind: "step", id })}
+              selectedEdgeId={selectedEdge?.id ?? null}
+              onSelectEdge={(id) => select({ kind: "transition", id })}
               onSelectRelationship={(id) => select({ kind: "relationship", id })}
               researchedStops={researchedStops}
               onSelectOccurrence={(id) => select({ kind: "operation", id })}
@@ -368,6 +401,9 @@ export function SpiralHelixExperience() {
               intersection={intersection}
               onSelectOccurrence={(id) => select({ kind: "operation", id })}
               onSelectRelationship={(id) => select({ kind: "relationship", id })}
+              onSelectStep={(id) => select({ kind: "step", id })}
+              onSelectEdge={(id) => select({ kind: "transition", id })}
+              relationshipCount={relationships.length}
               onClose={closeCard}
               exploreOpen={exploreOpen}
               onExploreToggle={() => {

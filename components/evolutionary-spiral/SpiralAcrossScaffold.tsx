@@ -5,10 +5,13 @@ import {
   SPIRAL_LENSES,
   SPIRAL_SEQUENCE,
   SPIRAL_STAGES,
+  TRAJECTORY_TOPOLOGY,
   TRAJECTORY_WHEEL,
   anchorStepIds,
   getSpiralStage,
   relationshipsForTrajectory,
+  topologyLayout,
+  trajectoryFigureKind,
   wheelNodes,
   wheelSegments,
   type SpiralLens,
@@ -162,6 +165,34 @@ function MiniPath({
   );
 }
 
+/** Explicit topology in miniature — authored transitions only, no labels. */
+function MiniTopology({ trajectory }: { trajectory: SpiralTrajectory }) {
+  const layout = useMemo(
+    () => topologyLayout(trajectory, TRAJECTORY_TOPOLOGY.compact),
+    [trajectory],
+  );
+  return (
+    <svg
+      className="spiral-mini__svg spiral-mini__svg--topology"
+      viewBox={`0 0 ${layout.width} ${layout.height}`}
+      aria-hidden
+    >
+      {layout.routes.map((r) => (
+        <path key={r.edge.id} d={r.d} className="spiral-mini__seg spiral-mini__seg--topology" />
+      ))}
+      {layout.nodes.map((n) => (
+        <circle
+          key={n.step.id}
+          cx={n.x}
+          cy={n.y}
+          r={n.sink ? 4 : 4.5}
+          className={cn("spiral-mini__dot", n.sink && "spiral-mini__dot--open")}
+        />
+      ))}
+    </svg>
+  );
+}
+
 function AcrossTable({
   lenses,
   onSelectLens,
@@ -288,7 +319,9 @@ export function SpiralAcrossScaffold({
                   touched.length ? ` with ${touched.join(", ")}` : ""
                 }. Open this comparison.`}
               >
-                {trajectory.shape === "cyclical" ? (
+                {trajectoryFigureKind(trajectory) === "topology" ? (
+                  <MiniTopology trajectory={trajectory} />
+                ) : trajectoryFigureKind(trajectory) === "wheel" ? (
                   <MiniWheel trajectory={trajectory} relationships={relationships} />
                 ) : (
                   <MiniPath trajectory={trajectory} relationships={relationships} />

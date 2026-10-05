@@ -59,6 +59,7 @@ export {
 export {
   EXPLICIT_TOPOLOGY_SHAPES,
   findEdge,
+  incomingEdges,
   orderedEdges,
   outgoingEdges,
   resolveSpan,
@@ -68,6 +69,22 @@ export {
 } from "./topology";
 
 export type { SpiralSpanResolution, SpiralTopologySource } from "./topology";
+
+export {
+  TRAJECTORY_TOPOLOGY,
+  fitTopologyLayout,
+  returningEdgeIds,
+  topologyLayout,
+  trajectoryFigureKind,
+} from "./topology-layout";
+
+export type {
+  SpiralTrajectoryFigureKind,
+  TopologyDensity,
+  TopologyLayout,
+  TopologyNode,
+  TopologyRoute,
+} from "./topology-layout";
 
 export {
   SPIRAL_SEQUENCE,
@@ -116,7 +133,6 @@ export {
   getIntersection,
   getSpiralLens,
   getTrajectory,
-  heldTrajectories,
   intersectionHasMaterial,
   researchedStopsForLens,
   resonancesForStop,
