@@ -44,6 +44,19 @@ export const SPIRAL_COPY: SpiralFrameworkCopy = {
   ],
 };
 
+/** Spiral-only orientation: what a first-time visitor is looking at. */
+export const SPIRAL_ORIENTATION = {
+  title: "The grammar",
+  lede: "The Spiral proposes a set of recurrent operations through which systems form, differentiate, organize, change, and sometimes begin again.",
+  ideas: [
+    { term: "Operations", question: "What is happening?" },
+    { term: "Currents", question: "What persists? What changes?" },
+    { term: "Trajectories", question: "What actually happened in this system?" },
+  ],
+  invitation:
+    "Choose a domain above to see where an independently studied trajectory meets the model.",
+} as const;
+
 /**
  * One plain reading per trajectory, restating its authored comparison records.
  * Absent where nothing has been compared; never a new finding.

@@ -16,6 +16,7 @@ import {
   relationshipsForStep,
   relationshipsForTrajectory,
   researchedStopsForLens,
+  SPIRAL_ORIENTATION,
   SPIRAL_SEQUENCE,
   type SpiralLensId,
   type SpiralTrajectoryRelationship,
@@ -66,6 +67,7 @@ export function SpiralHelixExperience() {
   const exploreId = useId();
   const investigateId = useId();
   const lensResearchId = useId();
+  const orientationId = useId();
   const stageRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
@@ -387,6 +389,24 @@ export function SpiralHelixExperience() {
         </div>
 
         <div className="spiral-experience__side">
+          {!lens && !focus && (
+            <section className="spiral-orientation" aria-labelledby={orientationId}>
+              <h3 id={orientationId} className="spiral-orientation__title">
+                {SPIRAL_ORIENTATION.title}
+              </h3>
+              <p className="spiral-orientation__lede">{SPIRAL_ORIENTATION.lede}</p>
+              <dl className="spiral-orientation__ideas">
+                {SPIRAL_ORIENTATION.ideas.map((idea) => (
+                  <div key={idea.term} className="spiral-orientation__idea">
+                    <dt>{idea.term}</dt>
+                    <dd>{idea.question}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="spiral-orientation__invite">{SPIRAL_ORIENTATION.invitation}</p>
+            </section>
+          )}
+
           {lens && (
             <SpiralLensContext
               lens={lens}

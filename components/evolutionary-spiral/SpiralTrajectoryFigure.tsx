@@ -419,22 +419,26 @@ function Topology({
     const steps = new Set<string>();
     const edges = new Set<string>();
     const branch = new Set<string>();
+    const futures = new Set<string>();
+    let fork: string | null = null;
     let current = trajectory.steps[0]?.id;
     while (current && !steps.has(current)) {
       steps.add(current);
       const outs = layout.routes.filter((r) => r.edge.from === current && !r.returns);
       if (outs.length !== 1) {
+        if (outs.length > 1) fork = current;
         for (const r of outs) {
           edges.add(r.edge.id);
           branch.add(r.edge.id);
           steps.add(r.edge.to);
+          futures.add(r.edge.to);
         }
         break;
       }
       edges.add(outs[0]!.edge.id);
       current = outs[0]!.edge.to;
     }
-    return { steps, edges, branch };
+    return { steps, edges, branch, futures, fork };
   }, [trajectory.steps, layout.routes]);
   /** Until the visitor reaches into the figure, later passages stay in the background. */
   const staged =
@@ -546,6 +550,8 @@ function Topology({
                     "spiral-topology__node",
                     n.sink && "spiral-topology__node--open",
                     !lead.steps.has(n.step.id) && "spiral-topology__node--later",
+                    n.step.id === lead.fork && "spiral-topology__node--fork",
+                    lead.futures.has(n.step.id) && "spiral-topology__node--future",
                     nearSteps.has(n.step.id) && "spiral-topology__node--near",
                     selected && "spiral-topology__node--selected",
                   )}
@@ -587,6 +593,8 @@ function Topology({
                       `spiral-topology__step--${n.labelSide}`,
                       n.sink && "spiral-topology__step--open",
                       !lead.steps.has(n.step.id) && "spiral-topology__step--later",
+                      n.step.id === lead.fork && "spiral-topology__step--fork",
+                      lead.futures.has(n.step.id) && "spiral-topology__step--future",
                       nearSteps.has(n.step.id) && "spiral-topology__step--near",
                       selected && "spiral-topology__step--selected",
                     )}

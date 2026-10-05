@@ -535,6 +535,75 @@
   display: none;
 }
 
+/* Spiral-only: a quiet reading of what the helix is, balancing it on wide screens. */
+.spiral-orientation {
+  display: none;
+}
+
+@media (max-width: 959px) {
+  .spiral-experience__side:has(> .spiral-orientation:only-child) {
+    display: none;
+  }
+}
+
+@media (min-width: 960px) {
+  .spiral-orientation {
+    display: block;
+    max-width: 26rem;
+    padding-top: 1.5rem;
+  }
+}
+
+.spiral-orientation__title {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold-muted);
+}
+
+.spiral-orientation__lede {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: var(--color-charcoal);
+}
+
+.spiral-orientation__ideas {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1.75rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid color-mix(in srgb, var(--color-gold-muted) 35%, transparent);
+}
+
+.spiral-orientation__idea dt {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-faint);
+}
+
+.spiral-orientation__idea dd {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--color-ivory);
+}
+
+.spiral-orientation__invite {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-charcoal-muted);
+}
+
 /* ── Helix figure ── */
 
 .spiral-helix {
@@ -1620,9 +1689,25 @@
   stroke: color-mix(in srgb, var(--color-charcoal) 70%, transparent);
 }
 
+/* Common history reads plainly; the fork and its futures read a step brighter.
+   Neutral tones only — gold belongs to authored relationships. */
 .spiral-topology[data-staged] .spiral-topology__edge--branch {
-  stroke: color-mix(in srgb, var(--color-ivory) 70%, transparent);
-  stroke-width: 1.25;
+  stroke: color-mix(in srgb, var(--color-ivory) 82%, transparent);
+  stroke-width: 1.4;
+}
+
+.spiral-topology[data-staged] .spiral-topology__node--fork .spiral-topology__dot,
+.spiral-topology[data-staged] .spiral-topology__node--future:not(.spiral-topology__node--open) .spiral-topology__dot {
+  fill: var(--color-ivory);
+}
+
+.spiral-topology[data-staged] .spiral-topology__node--open.spiral-topology__node--future .spiral-topology__dot {
+  stroke: var(--color-ivory);
+}
+
+.spiral-topology[data-staged] .spiral-topology__step--fork,
+.spiral-topology[data-staged] .spiral-topology__step--future {
+  color: var(--color-ivory);
 }
 
 .spiral-topology[data-staged] .spiral-topology__edge--later {

@@ -56,6 +56,7 @@ import {
   SPIRAL_SEQUENCE,
   SPIRAL_TRAJECTORY_OUTCOMES,
   SPIRAL_TRAJECTORY_RELATIONSHIPS,
+  SPIRAL_ORIENTATION,
   TRAJECTORY_TAKEAWAYS,
   topologyLayout,
   topologySource,
@@ -2249,6 +2250,24 @@ check("2N-C.4 staging lifts once the visitor reaches into the figure", () => {
   const one = LODGEPOLE_RELATIONSHIPS[0]!.id;
   assert.ok(!/data-staged/.test(renderFigure(LP, { activeIds: new Set([one]) })));
   for (const t of legacyTrajectories()) assert.ok(!/data-staged/.test(renderArrival(t)), t.id);
+});
+
+check("2N-C.5 Ecology fork and futures are marked neutrally, never as relationships", () => {
+  const html = renderArrival(LP);
+  assert.match(html, /spiral-topology__step--fork[^"]*" [^>]*data-step-id="establishment"/);
+  for (const id of ["dense-cohort", "sparse-cohort", "minimal-recruitment"]) {
+    assert.match(html, new RegExp(`spiral-topology__step--future[^"]*" [^>]*data-step-id="${id}"`), id);
+  }
+  assert.equal((html.match(/spiral-topology__step--future/g) ?? []).length, 3);
+  assert.equal((html.match(/spiral-topology__rel /g) ?? []).length, LODGEPOLE_RELATIONSHIPS.length - 1);
+});
+
+check("2N-C.6 Spiral-only orientation names the three readings", () => {
+  assert.deepEqual(
+    SPIRAL_ORIENTATION.ideas.map((i) => i.term),
+    ["Operations", "Currents", "Trajectories"],
+  );
+  assert.match(SPIRAL_ORIENTATION.invitation, /^Choose a domain above/);
 });
 
 if (failed > 0) {
