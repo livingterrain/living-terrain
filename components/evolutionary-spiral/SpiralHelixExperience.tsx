@@ -9,7 +9,8 @@ import {
   getSpiralLens,
   getSpiralStage,
   getTrajectory,
-  isDrawableCorrespondence,
+  isComparisonBreak,
+  isDrawableRelationship,
   microcopyForStop,
   occurrencesForRelationship,
   relationshipsForStep,
@@ -140,7 +141,7 @@ export function SpiralHelixExperience() {
     [focusedRelationships],
   );
   const relatedIds = useMemo(
-    () => occurrenceIdsFor(relationships.filter(isDrawableCorrespondence)),
+    () => occurrenceIdsFor(relationships.filter(isDrawableRelationship)),
     [relationships],
   );
   const emphasizedIds = useMemo(
@@ -270,24 +271,25 @@ export function SpiralHelixExperience() {
     });
   }, [activeLensId]);
 
-  const breakCount = relationships.filter((r) => !isDrawableCorrespondence(r)).length;
+  const breakCount = relationships.filter(isComparisonBreak).length;
   let announcement = "";
   if (focus?.kind === "operation") {
     announcement = `${stopName(focus.stop.occurrenceId)}: ${microcopyForStop(focus.stop)}`;
-    if (trajectory)
+    if (trajectory) {
+      const drawn = focusedRelationships.filter(isDrawableRelationship).length;
+      const breaks = focusedRelationships.filter(isComparisonBreak).length;
       announcement += ` ${
-        focusedRelationships.length > 0
-          ? `${focusedRelationships.length} researched relationship${
-              focusedRelationships.length === 1 ? "" : "s"
-            } with ${trajectory.title}.`
+        drawn > 0
+          ? `${drawn} researched relationship${drawn === 1 ? "" : "s"} with ${trajectory.title}.`
           : `No researched relationship with ${trajectory.title}.`
-      }`;
+      }${breaks > 0 ? ` ${breaks} comparison break${breaks === 1 ? "" : "s"}.` : ""}`;
+    }
   } else if (focus?.kind === "step" && trajectory) {
     const step = trajectory.steps.find((s) => s.id === focus.stepId);
-    const drawn = focusedRelationships.filter(isDrawableCorrespondence).length;
-    const breaks = focusedRelationships.length - drawn;
+    const drawn = focusedRelationships.filter(isDrawableRelationship).length;
+    const breaks = focusedRelationships.filter(isComparisonBreak).length;
     announcement = `${step?.label ?? ""}: ${
-      focusedRelationships.length > 0
+      drawn + breaks > 0
         ? [
             drawn > 0 && `${drawn} researched relationship${drawn === 1 ? "" : "s"}.`,
             breaks > 0 && `${breaks} comparison break${breaks === 1 ? "" : "s"}.`,
@@ -303,7 +305,7 @@ export function SpiralHelixExperience() {
     announcement = `Transition from ${name(focus.edge.from)} to ${name(focus.edge.to)}.`;
   } else if (focus?.kind === "relationship" && trajectory) {
     announcement = `${anchorLabel(trajectory, focus.relationship.anchor)}, ${
-      isDrawableCorrespondence(focus.relationship)
+      isDrawableRelationship(focus.relationship)
         ? "researched relationship with"
         : "comparison break with"
     } ${occurrencesForRelationship(

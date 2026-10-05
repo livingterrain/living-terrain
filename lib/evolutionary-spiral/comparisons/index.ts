@@ -7,6 +7,7 @@ import type {
   SpiralTrajectoryAnchor,
   SpiralTrajectoryRelationship,
 } from "../types";
+import { isComparisonFinding } from "./findings";
 import { JESUS_RELATIONSHIPS } from "./jesus";
 import { LODGEPOLE_RELATIONSHIPS } from "./lodgepole";
 import { METAMORPHOSIS_RELATIONSHIPS } from "./metamorphosis";
@@ -64,12 +65,16 @@ export function relationshipStatusLabel(status: SpiralRelationshipStatus): strin
   return SPIRAL_RELATIONSHIP_STATUS[status].label;
 }
 
+/**
+ * Authored comparison records for a trajectory — the source every presentation
+ * reads from. Records without an explicit classification are withheld.
+ */
 export function relationshipsForTrajectory(
   trajectoryId: string | null | undefined,
 ): SpiralTrajectoryRelationship[] {
   if (!trajectoryId) return [];
   return SPIRAL_TRAJECTORY_RELATIONSHIPS.filter(
-    (r) => r.trajectoryId === trajectoryId,
+    (r) => r.trajectoryId === trajectoryId && isComparisonFinding(r),
   );
 }
 
@@ -152,11 +157,19 @@ export {
   EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
   EMERGENCE_AGAIN_OCCURRENCE_ID,
   SPIRAL_NAME_COLLISION_ACKNOWLEDGEMENTS,
-  isDrawableCorrespondence,
   multiOccurrenceStageIds,
   validateSpiralComparisons,
   validateTrajectoryTopology,
 } from "./validate";
+export {
+  COMPARISON_BREAK_STATUSES,
+  DRAWABLE_RELATIONSHIP_STATUSES,
+  comparisonFindingKind,
+  isComparisonBreak,
+  isComparisonFinding,
+  isDrawableRelationship,
+} from "./findings";
+export type { SpiralComparisonFindingKind } from "./findings";
 export { conceptMatches, resolveRelationshipConcept } from "./research";
 export {
   edgeAssertsEvidence,

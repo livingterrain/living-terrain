@@ -23,7 +23,16 @@ import {
   getSpiralLens,
   incomingEdges,
   isCitableSource,
-  isDrawableCorrespondence,
+  isDrawableRelationship,
+  isComparisonBreak,
+  isComparisonFinding,
+  comparisonFindingKind,
+  COMPARISON_BREAK_STATUSES,
+  DRAWABLE_RELATIONSHIP_STATUSES,
+  JESUS_RELATIONSHIPS,
+  METAMORPHOSIS_RELATIONSHIPS,
+  ZODIAC_RELATIONSHIPS,
+  SPIRAL_RELATIONSHIP_STATUS,
   LODGEPOLE_FIRE_TRAJECTORY,
   LODGEPOLE_RELATIONSHIPS,
   getTrajectory,
@@ -99,7 +108,7 @@ function legacyTrajectories() {
 
 check("lines equal authored drawable relationship occurrences, per trajectory", () => {
   for (const t of authoredTrajectories()) {
-    const expected = relationshipsForTrajectory(t.id).filter(isDrawableCorrespondence).reduce(
+    const expected = relationshipsForTrajectory(t.id).filter(isDrawableRelationship).reduce(
       (n, r) => n + occurrencesForRelationship(r).length,
       0,
     );
@@ -1679,10 +1688,10 @@ check("2H.18–20 Zodiac 4, Jesus 1, Biology 1 arcs", () => {
 });
 
 check("2H.21 break suppression holds globally", () => {
-  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((x) => !isDrawableCorrespondence(x))) {
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((x) => !isDrawableRelationship(x))) {
     assert.equal(arcEndpointsFromRelationships([r]).length, 0, r.id);
   }
-  const drawable = new Set(SPIRAL_TRAJECTORY_RELATIONSHIPS.filter(isDrawableCorrespondence).map((r) => r.id));
+  const drawable = new Set(SPIRAL_TRAJECTORY_RELATIONSHIPS.filter(isDrawableRelationship).map((r) => r.id));
   for (const t of authoredTrajectories()) {
     for (const e of arcEndpointsForTrajectory(t.id)) assert.ok(drawable.has(e.relationshipId), e.relationshipId);
   }
@@ -1742,7 +1751,7 @@ check("2H figure: breaks are muted marks, never gold lines", () => {
 check("2I.1–4 Ecology: 4 records, 2 arcs, 2 breaks, breaks draw nothing", () => {
   assert.equal(LP_RELS.length, 4);
   assert.equal(arcEndpointsForTrajectory(LP.id).length, 2);
-  const breaks = LP_RELS.filter((r) => !isDrawableCorrespondence(r));
+  const breaks = LP_RELS.filter((r) => !isDrawableRelationship(r));
   assert.equal(breaks.length, 2);
   assert.equal(arcEndpointsFromRelationships(breaks).length, 0);
 });
@@ -1835,6 +1844,195 @@ check("2I.16–20 arc counts by lens", () => {
   for (const lensId of ["systems", "psychology", "living-systems", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
   }
+});
+
+/* ------------------------------------------------------------------ */
+/* Phase 2K — fail-closed drawing and comparison-finding canon         */
+/* ------------------------------------------------------------------ */
+
+/** A status no production type knows — built only here, never in the union. */
+function unclassified(status: string): SpiralTrajectoryRelationship {
+  return { ...rel({}), id: `unclassified-${status}`, status } as unknown as SpiralTrajectoryRelationship;
+}
+
+check("2K.1 every approved drawable status draws its authored arc", () => {
+  for (const status of DRAWABLE_RELATIONSHIP_STATUSES) {
+    const r = rel({ status });
+    assert.ok(isDrawableRelationship(r), status);
+    assert.equal(comparisonFindingKind(r), "relationship", status);
+    assert.equal(arcEndpointsFromRelationships([r]).length, 1, status);
+  }
+});
+
+check("2K.2 comparison-break never draws and is the only break status", () => {
+  assert.deepEqual([...COMPARISON_BREAK_STATUSES], ["comparison-break"]);
+  const r = rel({ status: "comparison-break" });
+  assert.ok(isComparisonBreak(r));
+  assert.ok(!isDrawableRelationship(r));
+  assert.equal(arcEndpointsFromRelationships([r]).length, 0);
+});
+
+check("2K.3 drawable membership is an explicit list; every status classified exactly once", () => {
+  assert.deepEqual(
+    [...DRAWABLE_RELATIONSHIP_STATUSES].sort(),
+    ["ambiguous", "candidate", "context", "strong-empirical", "structural", "symbolic-analogy", "textual-theological"],
+  );
+  const drawable = new Set<string>(DRAWABLE_RELATIONSHIP_STATUSES);
+  const breaks = new Set<string>(COMPARISON_BREAK_STATUSES);
+  for (const status of Object.keys(SPIRAL_RELATIONSHIP_STATUS)) {
+    assert.equal(Number(drawable.has(status)) + Number(breaks.has(status)), 1, status);
+  }
+  // `ambiguous` is a drawing relationship, not an unresolved inquiry.
+  const pisces = ZODIAC_RELATIONSHIPS.find((r) => r.status === "ambiguous");
+  assert.ok(pisces && isDrawableRelationship(pisces));
+  assert.equal(arcEndpointsFromRelationships([pisces]).length, 1);
+});
+
+check("2K.4 a status not explicitly approved fails closed", () => {
+  for (const status of ["researched-negative", "unresolved", "bounded-negative", ""]) {
+    const r = unclassified(status);
+    assert.equal(comparisonFindingKind(r), undefined, status);
+    assert.ok(!isDrawableRelationship(r), status);
+    assert.ok(!isComparisonBreak(r), status);
+    assert.ok(!isComparisonFinding(r), status);
+    assert.equal(arcEndpointsFromRelationships([r]).length, 0, status);
+    assert.equal(arcEndpointsFromRelationships([rel({}), r]).length, 1, status);
+  }
+});
+
+const SPIRAL_SOURCE_DIRS = [
+  path.resolve(__dirname, "../components/evolutionary-spiral"),
+  path.resolve(__dirname, "../lib/evolutionary-spiral"),
+  path.resolve(__dirname, "../lib/evolutionary-spiral/comparisons"),
+];
+
+function spiralSources(): { file: string; source: string }[] {
+  return SPIRAL_SOURCE_DIRS.flatMap((dir) =>
+    readdirSync(dir)
+      .filter((f) => /\.tsx?$/.test(f))
+      .map((f) => ({ file: path.join(dir, f), source: readFileSync(path.join(dir, f), "utf8") })),
+  );
+}
+
+check("2K.5–6 arcs, counts, and break marks go through the shared rule only", () => {
+  const statuses = Object.keys(SPIRAL_RELATIONSHIP_STATUS).join("|");
+  const compare = new RegExp(`status\\s*[!=]==?\\s*["'](${statuses})["']`);
+  for (const { file, source } of spiralSources()) {
+    assert.ok(!compare.test(source), `${path.basename(file)} compares a relationship status directly`);
+    assert.ok(!/isDrawableCorrespondence/.test(source), path.basename(file));
+  }
+  const arcs = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral/spiral-arc-endpoints.ts"), "utf8");
+  assert.match(arcs, /relationships\.filter\(isDrawableRelationship\)/);
+  for (const file of ["SpiralLensContext.tsx", "SpiralTrajectoryFigure.tsx", "SpiralAcrossScaffold.tsx", "SpiralHelixExperience.tsx"]) {
+    const source = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral", file), "utf8");
+    assert.match(source, /isDrawableRelationship/, file);
+    assert.match(source, /isComparisonBreak/, file);
+  }
+  const card = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral/SpiralLocalCard.tsx"), "utf8");
+  assert.match(card, /isComparisonBreak/);
+});
+
+check("2K.6 break counts are never derived as total minus drawable", () => {
+  for (const { file, source } of spiralSources()) {
+    assert.ok(!/\.length\s*-\s*drawn/.test(source), path.basename(file));
+    assert.ok(!/!isDrawable\w*\(/.test(source), path.basename(file));
+  }
+});
+
+check("2K.7 Across names operations met from relationships only; breaks counted apart", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(SpiralAcrossScaffold, {
+      onSelectLens: noop,
+      showInvestigate: true,
+      researchOpen: true,
+      onResearchToggle: noop,
+      researchId: "r",
+    }),
+  );
+  const item = html.match(/data-trajectory="lodgepole-fire-regeneration"[\s\S]*?<\/li>/)?.[0] ?? "";
+  assert.match(item, /↔ Transformation, Disruption · 2 breaks/);
+  for (const op of ["Emergence", "Embodiment", "Differentiation", "Organization", "Integration", "Renewal"]) {
+    assert.ok(!item.includes(op), op);
+  }
+  assert.ok(!/unresolved|bounded negative|investigated absence|unresearched/i.test(item));
+});
+
+check("2K.8–13 counts preserved: arcs by lens, Ecology breaks, Emergence Again", () => {
+  const expected: Record<string, number> = { "symbolic-zodiac": 4, "biblical-textual": 1, "living-systems": 1, ecology: 2 };
+  for (const lensId of ["systems", "psychology", "living-systems", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
+    assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
+  }
+  assert.equal(LP_RELS.filter(isComparisonBreak).length, 2);
+  assert.equal(LP_RELS.filter(isDrawableRelationship).length, 2);
+  assert.equal(EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS.length, 0);
+  assert.ok(!arcEndpointsFromRelationships(SPIRAL_TRAJECTORY_RELATIONSHIPS).some((e) => e.occurrenceId === EMERGENCE_AGAIN));
+});
+
+check("2K silence: no record gives no arc, no break mark, and no negative", () => {
+  assert.equal(arcEndpointsFromRelationships([]).length, 0);
+  const html = renderFigure(LP, { relationships: [] });
+  assert.ok(!/spiral-rel--/.test(html));
+  assert.ok(!/spiral-topology__ring/.test(html));
+  assert.ok(!/comparison break/i.test(html));
+  for (const r of LP_RELS) {
+    const card = renderCard({ kind: "relationship", relationship: r });
+    assert.ok(!/bounded negative|researched absence|investigated absence|does not occur/i.test(card), r.id);
+  }
+});
+
+check("2K silence: records exist only as authored, never generated", () => {
+  const authored = [
+    ...ZODIAC_RELATIONSHIPS,
+    ...JESUS_RELATIONSHIPS,
+    ...METAMORPHOSIS_RELATIONSHIPS,
+    ...LODGEPOLE_RELATIONSHIPS,
+  ];
+  assert.deepEqual(SPIRAL_TRAJECTORY_RELATIONSHIPS.map((r) => r.id), authored.map((r) => r.id));
+  assert.equal(SPIRAL_TRAJECTORY_RELATIONSHIPS.length, 10);
+  for (const t of authoredTrajectories()) {
+    assert.deepEqual(
+      relationshipsForTrajectory(t.id).map((r) => r.id),
+      authored.filter((r) => r.trajectoryId === t.id).map((r) => r.id),
+      t.id,
+    );
+  }
+});
+
+check("2K silence: outcomes and topology never produce a relationship", () => {
+  const recovery = trajectoryEdges(LP).filter((e) => e.outcome === "recovery");
+  assert.ok(recovery.length > 0);
+  for (const edge of trajectoryEdges(LP).filter((e) => e.outcome)) {
+    const anchored = LODGEPOLE_RELATIONSHIPS.filter(
+      (r) => r.anchor.kind === "transition" && r.anchor.from === edge.from && r.anchor.to === edge.to,
+    );
+    const arcs = arcEndpointsFromRelationships(anchored);
+    assert.equal(arcs.length, anchored.filter(isDrawableRelationship).length, edge.id);
+  }
+  // A recovery outcome is not Renewal: its only record is the authored break.
+  for (const edge of recovery) {
+    const anchored = LODGEPOLE_RELATIONSHIPS.filter(
+      (r) => r.anchor.kind === "transition" && r.anchor.from === edge.from && r.anchor.to === edge.to,
+    );
+    assert.ok(anchored.every(isComparisonBreak), edge.id);
+    assert.equal(arcEndpointsFromRelationships(anchored).length, 0, edge.id);
+  }
+  const arcs = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral/spiral-arc-endpoints.ts"), "utf8");
+  assert.ok(!/topology|outcome|steps|transitions/.test(arcs.replace(/\/\*[\s\S]*?\*\//g, "")));
+});
+
+check("2K canon: comparison findings and silence", () => {
+  const start = CANON.indexOf("## 11A.");
+  assert.ok(start > 0);
+  const section = CANON.slice(start, CANON.indexOf("## 12."));
+  assert.match(section, /Silence is not a claim/i);
+  assert.match(section, /\*\*Relationship\*\*[^\n]*affirmative/i);
+  assert.match(section, /\*\*Comparison break\*\*[^\n]*resemblance[^\n]*(fails|misleads)/i);
+  assert.match(section, /\*\*Bounded negative\*\*[^\n]*Not implemented/i);
+  assert.match(section, /Unresolved is not `ambiguous`/);
+  assert.match(section, /not epistemic categories/i);
+  assert.match(section, /Comparison records are not canonical relationships/);
+  assert.match(section, /One finding per inquiry/i);
+  assert.match(section, /not a measure of research completeness/i);
 });
 
 if (failed > 0) {

@@ -1,7 +1,7 @@
 import {
   EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
   EMERGENCE_AGAIN_OCCURRENCE_ID,
-  isDrawableCorrespondence,
+  isDrawableRelationship,
   occurrencesForRelationship,
   relationshipsForTrajectory,
 } from "@/lib/evolutionary-spiral/comparisons";
@@ -20,14 +20,15 @@ export type SpiralArcEndpoint = {
  * Every connecting line on the composite figure comes from here: one per
  * Spiral occurrence explicitly named by an authored relationship record.
  * Takes records only — no geometry, step order, labels, or positions — so
- * nothing else can produce a line. Comparison breaks are not drawn as
- * correspondence, and Emergence again is drawn only for approved records.
+ * nothing else can produce a line. Callers pass every record; the filter lives
+ * here, so only explicitly drawable statuses become lines whatever the caller
+ * forgets. Emergence again is drawn only for approved records.
  */
 export function arcEndpointsFromRelationships(
   relationships: readonly SpiralTrajectoryRelationship[],
   approvedEmergenceAgain: readonly string[] = EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS,
 ): SpiralArcEndpoint[] {
-  return relationships.filter(isDrawableCorrespondence).flatMap((r) =>
+  return relationships.filter(isDrawableRelationship).flatMap((r) =>
     occurrencesForRelationship(r)
       .filter(
         (stop) =>

@@ -10,6 +10,7 @@ import {
   getSpiralStage,
   getStageExploration,
   incomingEdges,
+  isComparisonBreak,
   microcopyForStop,
   occurrencesForRelationship,
   outgoingEdges,
@@ -85,10 +86,6 @@ function firstParagraph(text: string | undefined): string | undefined {
 
 function stopName(stop: SpiralSequenceStop): string {
   return stop.labelOverride ?? getSpiralStage(stop.stageId)?.name ?? stop.stageId;
-}
-
-function isBreak(r: SpiralTrajectoryRelationship): boolean {
-  return r.status === "comparison-break";
 }
 
 function ScaleLine({ scale }: { scale: SpiralScaleRef }) {
@@ -248,7 +245,7 @@ function AnchorList({
             {anchorLabel(trajectory, r.anchor)}
             {withOperations && (
               <span className="spiral-card__anchor-op">
-                {isBreak(r) ? " · comparison breaks at " : " ↔ "}
+                {isComparisonBreak(r) ? " · comparison breaks at " : " ↔ "}
                 {occurrencesForRelationship(r).map(stopName).join(", ")}
               </span>
             )}
@@ -643,7 +640,7 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
     const exploration = local?.exploration;
     const opName = first ? stopName(first) : "";
     const stage = first ? getSpiralStage(first.stageId) : undefined;
-    const broken = isBreak(r);
+    const broken = isComparisonBreak(r);
     const question = broken
       ? undefined
       : (exploration?.title ??

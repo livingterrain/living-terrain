@@ -309,6 +309,68 @@ Do **not** create a standalone Mythology domain in the initial model. Individual
 
 ---
 
+## 11A. Comparison findings and silence
+
+What a comparison between a trajectory and the Spiral can conclude. These are results of inquiry, not epistemic categories (§10): a comparison break or a bounded negative is never an epistemic kind.
+
+### Silence is not a claim
+
+No comparison record means only: *no comparison finding has been authored here.* It does not mean the operation is absent, that it was investigated, that a comparison failed, that evidence contradicts it, or that it cannot occur. No relationship and no negative may be inferred from silence. Silence is the default: most operation–trajectory pairs have no record, and a record exists only where research produced a finding worth preserving.
+
+### Vocabulary
+
+| Term | Meaning | Represented |
+|---|---|---|
+| **Relationship** | An affirmative authored comparison finding. The only finding that may produce an ordinary arc. | Comparison record with an approved drawing status |
+| **Comparison break** | A plausible resemblance was investigated and fails, or misleads, because an important structural difference matters. Produces no ordinary arc. | Comparison record, status `comparison-break` |
+| **Unresolved inquiry** | Research occurred, but evidence, definitions, or scope do not support a conclusion. | Research material only (research issues, trajectory concepts, dossiers) |
+| **Bounded negative** | Evidence supports non-occurrence of an operation within a stated, researchable scope. | Not implemented; no authored case qualifies |
+| **Rejected candidate** | A proposed mapping failed and does not need visitor-facing correction. | Research notes only |
+
+**Comparison records** are relationships and breaks together. Do not call them all relationships. Comparison records are not canonical relationships.
+
+### A comparison break concerns the comparison
+
+A break says a proposed resemblance fails at a stated scale or reference. It does not claim the operation is absent from the system. Historical-interval crown fire breaks as Disruption at landscape/regime scale; that does not mean Disruption is absent from lodgepole ecology — the short-interval reburn supports a Disruption comparison elsewhere in the same trajectory.
+
+### Unresolved is not `ambiguous`
+
+The relationship status `ambiguous` is an authored comparison that still draws, with its reading kept open (the Zodiac's Pisces → Aries passage). An unresolved inquiry is research that cannot yet author any comparison. The two must never be merged, and unresolved material stays in research until a real need justifies structure.
+
+### Rejected candidates
+
+A rejected mapping does not establish absence: rejecting establishment → Emergence shows only that this anchor does not support Emergence. A rejected candidate becomes a comparison break only when the resemblance is plausible enough that showing why it fails teaches the visitor or prevents a likely misreading. Otherwise it remains research material.
+
+### Bounded negatives (concept only)
+
+A bounded negative is bounded by its anchor or segment, scale, variable, reference, observation window, and evidence base. It is not impossibility, silence, a failure to find a source, an unresolved inquiry, a comparison break, or a rejected analogy. Before one is authored it should meet all of:
+
+1. the operation is defined well enough to be detected;
+2. the anchor or context is defined;
+3. scale is stated;
+4. the variable is stated;
+5. a reference is stated where "new" or "altered" depends on one;
+6. an observation window is stated where time matters;
+7. the relevant evidence base was searched;
+8. the evidence could have detected the operation had it occurred;
+9. an explicit argument shows the evidence supports non-occurrence rather than uncertainty.
+
+"Not within the observed window" is never "does not occur." A bounded negative will not be a relationship status; if a real case requires it, it gets its own type, which cannot reach arc geometry.
+
+### One finding per inquiry
+
+Do not record the same inquiry twice. When a break already carries the negative implication — long-interval return × Renewal establishes no altered capacity on that path — that implication belongs inside the break, not in a second negative record.
+
+### Domain standards
+
+Negative standards may differ by domain, and must be defined for a domain before any bounded negative is authored there. Provisionally: empirical domains may sometimes support bounded negatives where variables and windows are measurable; psychology needs special caution, because heterogeneous evidence and individual variation make negative claims difficult; textual absence is not automatically operation absence; symbolic systems do not support empirical-style absence merely because no resemblance is authored. These are not final rules.
+
+### Drawing
+
+Only explicitly approved affirmative relationship statuses draw ordinary arcs. Everything else fails closed: comparison breaks, unresolved inquiry, bounded negatives, silence, and any status not yet approved draw nothing. Across names the operations a trajectory meets from relationships only, counts breaks separately, and never counts silence or unresolved research; it is not a measure of research completeness.
+
+---
+
 ## 12. Distinction from the Adaptation Loop
 
 Preserve the existing **Adaptation Loop** unchanged.

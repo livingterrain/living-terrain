@@ -619,6 +619,9 @@ export type SpiralScaleRef = {
 /**
  * Status of a comparison — how much weight the relationship can bear.
  * Statuses are not equivalent; presentation must name them in text.
+ * Whether a status draws is decided only in `comparisons/findings.ts`; a new
+ * status draws nothing until it is listed there. `ambiguous` is an authored,
+ * drawing relationship whose reading is kept open — not an unresolved inquiry.
  */
 export type SpiralRelationshipStatus =
   | "strong-empirical"

@@ -15,6 +15,8 @@ import {
   fitTopologyLayout,
   getSpiralStage,
   incomingEdges,
+  isComparisonBreak,
+  isDrawableRelationship,
   outgoingEdges,
   trajectoryFigureKind,
   wheelHitStyle,
@@ -59,10 +61,23 @@ function stepAriaLabel(
 ): string {
   const step = trajectory.steps[index]!;
   const base = `${step.label}, ${index + 1} of ${trajectory.steps.length}`;
-  if (related.length === 0) return `${base}. No researched relationship.`;
-  return `${base}. Part of ${related.length} researched relationship${
-    related.length === 1 ? "" : "s"
-  } with ${Array.from(new Set(related.map(operationNames))).join(", ")}.`;
+  const drawn = related.filter(isDrawableRelationship);
+  const breaks = related.filter(isComparisonBreak);
+  const parts = [
+    drawn.length === 0
+      ? `${base}. No researched relationship.`
+      : `${base}. Part of ${drawn.length} researched relationship${
+          drawn.length === 1 ? "" : "s"
+        } with ${Array.from(new Set(drawn.map(operationNames))).join(", ")}.`,
+  ];
+  if (breaks.length > 0) {
+    parts.push(
+      `Part of ${breaks.length} comparison break${
+        breaks.length === 1 ? "" : "s"
+      } at ${Array.from(new Set(breaks.map(operationNames))).join(", ")}.`,
+    );
+  }
+  return parts.join(" ");
 }
 
 function useStepRelationships(
@@ -329,8 +344,8 @@ function topologyStepLabel(
       ? `Leads to ${list(to)}.`
       : "Evidence stops here; the observed future remains uncertain.",
   );
-  const drawn = related.filter((r) => r.status !== "comparison-break");
-  const breaks = related.filter((r) => r.status === "comparison-break");
+  const drawn = related.filter(isDrawableRelationship);
+  const breaks = related.filter(isComparisonBreak);
   if (drawn.length > 0) {
     parts.push(
       `Part of ${drawn.length} researched relationship${
@@ -495,7 +510,7 @@ function Topology({
                 (r) => r.anchor.kind === "step" && r.anchor.stepId === n.step.id,
               );
               const stepAnchored = anchoredHere.length > 0;
-              const onlyBreaks = anchoredHere.every((r) => r.status === "comparison-break");
+              const onlyBreaks = anchoredHere.every(isComparisonBreak);
               return (
                 <g
                   key={n.step.id}

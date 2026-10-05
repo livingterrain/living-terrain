@@ -423,13 +423,3 @@ export function validateSpiralComparisons(
 
   return issues;
 }
-
-/**
- * Whether a relationship may be drawn as a correspondence line.
- * Comparison breaks are evidence of where analogy fails, not correspondence.
- */
-export function isDrawableCorrespondence(
-  r: SpiralTrajectoryRelationship,
-): boolean {
-  return r.status !== "comparison-break";
-}

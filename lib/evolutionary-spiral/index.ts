@@ -161,7 +161,12 @@ export {
   conceptMatches,
   edgeAssertsEvidence,
   isCitableSource,
-  isDrawableCorrespondence,
+  COMPARISON_BREAK_STATUSES,
+  DRAWABLE_RELATIONSHIP_STATUSES,
+  comparisonFindingKind,
+  isComparisonBreak,
+  isComparisonFinding,
+  isDrawableRelationship,
   multiOccurrenceStageIds,
   occurrencesForRelationship,
   relationshipStatusLabel,
@@ -175,6 +180,7 @@ export {
 } from "./comparisons";
 
 export type {
+  SpiralComparisonFindingKind,
   SpiralComparisonIssue,
   SpiralComparisonIssueCode,
   SpiralComparisonValidationOptions,

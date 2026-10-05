@@ -9,6 +9,8 @@ import {
   TRAJECTORY_WHEEL,
   anchorStepIds,
   getSpiralStage,
+  isComparisonBreak,
+  isDrawableRelationship,
   relationshipsForTrajectory,
   topologyLayout,
   trajectoryFigureKind,
@@ -49,8 +51,6 @@ type Props = {
   onResearchToggle: () => void;
   researchId: string;
 };
-
-const isBreak = (r: SpiralTrajectoryRelationship) => r.status === "comparison-break";
 
 function operationNames(rels: readonly SpiralTrajectoryRelationship[]): string[] {
   return Array.from(
@@ -243,8 +243,8 @@ function AcrossTable({
               ]
             : lens.trajectories.map((t) => {
                 const rels = relationshipsForTrajectory(t.id);
-                const ops = operationNames(rels.filter((r) => !isBreak(r)));
-                const breaks = rels.filter(isBreak).length;
+                const ops = operationNames(rels.filter(isDrawableRelationship));
+                const breaks = rels.filter(isComparisonBreak).length;
                 return (
                   <tr key={t.id}>
                     <th scope="row">
@@ -308,8 +308,8 @@ export function SpiralAcrossScaffold({
 
       <ul className="spiral-mini">
         {mapped.map(({ lens, trajectory, relationships }) => {
-          const drawn = relationships.filter((r) => !isBreak(r));
-          const breaks = relationships.length - drawn.length;
+          const drawn = relationships.filter(isDrawableRelationship);
+          const breaks = relationships.filter(isComparisonBreak).length;
           const touched = operationNames(drawn);
           return (
             <li key={trajectory.id} className="spiral-mini__item" data-trajectory={trajectory.id}>

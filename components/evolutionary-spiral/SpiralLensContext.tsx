@@ -3,6 +3,8 @@
 import { useRef, type KeyboardEvent } from "react";
 import {
   getSpiralStage,
+  isComparisonBreak,
+  isDrawableRelationship,
   occurrencesForRelationship,
   type SpiralLens,
   type SpiralLensExploration,
@@ -122,8 +124,8 @@ function RelationshipSummary({
         ({n})
       </span>
     ));
-  const drawn = tally(relationships.filter((r) => r.status !== "comparison-break"));
-  const breaks = tally(relationships.filter((r) => r.status === "comparison-break"));
+  const drawn = tally(relationships.filter(isDrawableRelationship));
+  const breaks = tally(relationships.filter(isComparisonBreak));
   return (
     <p className="spiral-trajectory__summary">
       {drawn.length > 0 && (
@@ -400,13 +402,13 @@ export function SpiralLensContext({
         onSelectRelationship={onSelectRelationship}
       />
 
-      {relationships.some((r) => r.status !== "comparison-break") && (
+      {relationships.some(isDrawableRelationship) && (
         <p className="spiral-trajectory__key">
           <span className="spiral-trajectory__key-line" aria-hidden="true" />
           Lines mark researched relationships.
         </p>
       )}
-      {relationships.some((r) => r.status === "comparison-break") && (
+      {relationships.some(isComparisonBreak) && (
         <p className="spiral-trajectory__key">
           <span
             className="spiral-trajectory__key-line spiral-trajectory__key-line--break"
