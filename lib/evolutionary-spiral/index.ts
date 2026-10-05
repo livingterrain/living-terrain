@@ -111,7 +111,7 @@ export {
 
 export type { SpiralProvenanceCategory } from "./provenance";
 
-export { SPIRAL_COPY } from "./copy";
+export { SPIRAL_COPY, TRAJECTORY_TAKEAWAYS } from "./copy";
 
 export { SPIRAL_EXAMPLES, examplesForStage } from "./examples";
 

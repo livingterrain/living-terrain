@@ -415,6 +415,31 @@ function Topology({
   }
   const focused = nearSteps.size > 0;
 
+  const lead = useMemo(() => {
+    const steps = new Set<string>();
+    const edges = new Set<string>();
+    const branch = new Set<string>();
+    let current = trajectory.steps[0]?.id;
+    while (current && !steps.has(current)) {
+      steps.add(current);
+      const outs = layout.routes.filter((r) => r.edge.from === current && !r.returns);
+      if (outs.length !== 1) {
+        for (const r of outs) {
+          edges.add(r.edge.id);
+          branch.add(r.edge.id);
+          steps.add(r.edge.to);
+        }
+        break;
+      }
+      edges.add(outs[0]!.edge.id);
+      current = outs[0]!.edge.to;
+    }
+    return { steps, edges, branch };
+  }, [trajectory.steps, layout.routes]);
+  /** Until the visitor reaches into the figure, later passages stay in the background. */
+  const staged =
+    !focused && activeIds.size === relationships.length && lead.branch.size > 1;
+
   const routeBetween = (from: string, to: string) =>
     layout.routes.find((r) => r.edge.from === from && r.edge.to === to);
   const overlays = relationships.flatMap((r) => {
@@ -433,6 +458,7 @@ function Topology({
       ref={figureRef}
       className="spiral-topology"
       data-focused={focused ? "" : undefined}
+      data-staged={staged ? "" : undefined}
       data-compact={layout.density.label < 132 ? "" : undefined}
       onMouseLeave={() => setHover(null)}
     >
@@ -468,6 +494,8 @@ function Topology({
                 className={cn(
                   "spiral-topology__edge",
                   r.returns && "spiral-topology__edge--return",
+                  !lead.edges.has(r.edge.id) && "spiral-topology__edge--later",
+                  lead.branch.has(r.edge.id) && "spiral-topology__edge--branch",
                   nearEdges.has(r.edge.id) && "spiral-topology__edge--near",
                   r.edge.id === selectedEdgeId && "spiral-topology__edge--selected",
                 )}
@@ -517,6 +545,7 @@ function Topology({
                   className={cn(
                     "spiral-topology__node",
                     n.sink && "spiral-topology__node--open",
+                    !lead.steps.has(n.step.id) && "spiral-topology__node--later",
                     nearSteps.has(n.step.id) && "spiral-topology__node--near",
                     selected && "spiral-topology__node--selected",
                   )}
@@ -557,6 +586,7 @@ function Topology({
                       "spiral-topology__step",
                       `spiral-topology__step--${n.labelSide}`,
                       n.sink && "spiral-topology__step--open",
+                      !lead.steps.has(n.step.id) && "spiral-topology__step--later",
                       nearSteps.has(n.step.id) && "spiral-topology__step--near",
                       selected && "spiral-topology__step--selected",
                     )}

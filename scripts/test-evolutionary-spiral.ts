@@ -56,6 +56,7 @@ import {
   SPIRAL_SEQUENCE,
   SPIRAL_TRAJECTORY_OUTCOMES,
   SPIRAL_TRAJECTORY_RELATIONSHIPS,
+  TRAJECTORY_TAKEAWAYS,
   topologyLayout,
   topologySource,
   trajectoryEdges,
@@ -1274,7 +1275,7 @@ check("2E.4 both lodgepole loops are drawn, closing against the flow", () => {
   assert.deepEqual([...returningEdgeIds(LP)].sort(), ["reburn-to-sparse", "young-to-mature"]);
   const html = renderFigure(LP);
   for (const id of ["young-to-mature", "reburn-to-sparse"]) {
-    assert.match(html, new RegExp(`class="spiral-topology__edge spiral-topology__edge--return"[^>]*data-edge-id="${id}"`), id);
+    assert.match(html, new RegExp(`class="spiral-topology__edge spiral-topology__edge--return[^"]*"[^>]*data-edge-id="${id}"`), id);
   }
   const layout = topologyLayout(LP);
   const nodeAt = new Map(layout.nodes.map((n) => [n.step.id, n]));
@@ -2198,6 +2199,56 @@ check("2N.13 seed examples no longer contradict the refined canon", () => {
   assert.match(succession.body, /persistence and recurrence/);
   assert.match(succession.body, /begins only where the community stabilizes with altered capacity/);
   assert.ok(!/altered capacity and history remain/.test(succession.body));
+});
+
+check("2N-C.1 takeaways exist only for trajectories with drawable relationships", () => {
+  const withLines = authoredTrajectories()
+    .filter((t) => relationshipsForTrajectory(t.id).some(isDrawableRelationship))
+    .map((t) => t.id)
+    .sort();
+  assert.deepEqual(Object.keys(TRAJECTORY_TAKEAWAYS).sort(), withLines);
+  assert.match(TRAJECTORY_TAKEAWAYS[LP.id]!, /not fire itself/);
+  assert.match(TRAJECTORY_TAKEAWAYS.metamorphosis!, /Transformation/);
+});
+
+function renderArrival(t: SpiralTrajectory): string {
+  const rels = relationshipsForTrajectory(t.id);
+  return renderFigure(t, { activeIds: new Set(rels.map((r) => r.id)) });
+}
+
+check("2N-C.2 Ecology arrival stages the opening run and its first branching", () => {
+  const html = renderArrival(LP);
+  assert.match(html, /data-staged=""/);
+  const later = (id: string) =>
+    new RegExp(`spiral-topology__step--later[^"]*" [^>]*data-step-id="${id}"`).test(html);
+  for (const id of [
+    "mature-stand",
+    "crown-fire",
+    "burned-stand",
+    "establishment",
+    "dense-cohort",
+    "sparse-cohort",
+    "minimal-recruitment",
+  ]) {
+    assert.ok(!later(id), id);
+  }
+  for (const id of ["young-stand", "sparse-woodland", "reburn"]) assert.ok(later(id), id);
+  const branch = (html.match(/spiral-topology__edge--branch/g) ?? []).length;
+  assert.equal(branch, 3);
+});
+
+check("2N-C.3 staging is presentation only: every edge, relationship, and break still renders", () => {
+  const html = renderArrival(LP);
+  assert.equal((html.match(/data-edge-id=/g) ?? []).length, trajectoryEdges(LP).length);
+  assert.equal((html.match(/data-step-id=/g) ?? []).length, LP.steps.length);
+  for (const r of LODGEPOLE_RELATIONSHIPS) assert.ok(html.includes(r.id), r.id);
+});
+
+check("2N-C.4 staging lifts once the visitor reaches into the figure", () => {
+  assert.ok(!/data-staged/.test(renderFigure(LP, { selectedStepId: "establishment" })));
+  const one = LODGEPOLE_RELATIONSHIPS[0]!.id;
+  assert.ok(!/data-staged/.test(renderFigure(LP, { activeIds: new Set([one]) })));
+  for (const t of legacyTrajectories()) assert.ok(!/data-staged/.test(renderArrival(t)), t.id);
 });
 
 if (failed > 0) {

@@ -43,3 +43,18 @@ export const SPIRAL_COPY: SpiralFrameworkCopy = {
     "When the same operation appears at cell, organism, and collective scales, what travels across scales—and what does not?",
   ],
 };
+
+/**
+ * One plain reading per trajectory, restating its authored comparison records.
+ * Absent where nothing has been compared; never a new finding.
+ */
+export const TRAJECTORY_TAKEAWAYS: Readonly<Record<string, string>> = {
+  "zodiac-cycle":
+    "The researched resemblances cluster around Transformation, while the zodiac remains a cyclical symbolic sequence.",
+  "jesus-narrative":
+    "The researched comparison spans death through resurrection, while the narrative itself remains directional rather than cyclical.",
+  metamorphosis:
+    "The researched comparison is with Transformation: development continues through metamorphosis while the organization carrying it changes. At which scale remains open.",
+  "lodgepole-fire-regeneration":
+    "The strongest comparison is not fire itself, but what happens when another fire arrives before the stand has rebuilt its capacity to regenerate.",
+};

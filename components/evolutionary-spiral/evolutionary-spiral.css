@@ -573,8 +573,8 @@
 }
 
 .spiral-helix__axis {
-  stroke: color-mix(in srgb, var(--color-charcoal-muted) 70%, #9aa3b2);
-  stroke-width: 0.55;
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 64%, #9aa3b2);
+  stroke-width: 0.6;
   stroke-linecap: round;
 }
 
@@ -720,7 +720,7 @@
 }
 
 .spiral-helix__label {
-  fill: color-mix(in srgb, var(--color-charcoal-faint) 90%, transparent);
+  fill: var(--color-charcoal-faint);
   font-family: var(--font-heading), Georgia, serif;
   font-size: 3.1px;
   letter-spacing: 0.02em;
@@ -870,14 +870,43 @@
 
 /* Reference grammar recedes slightly while a trajectory is laid against it. */
 .spiral-helix--quiet .spiral-helix__space {
-  opacity: 0.72;
+  opacity: 0.82;
   transition: opacity 0.5s var(--ease-breath, ease-out);
+}
+
+/* Operations the active trajectory has drawable relationships with lead;
+   the rest stay readable, a step back. */
+.spiral-helix__label {
+  transition:
+    fill 0.4s var(--ease-breath, ease-out),
+    opacity 0.4s var(--ease-breath, ease-out);
+}
+
+.spiral-helix--has-related .spiral-helix__label {
+  opacity: 0.78;
+}
+
+.spiral-helix--has-related .spiral-helix__label--related,
+.spiral-helix--has-related .spiral-helix__label--selected {
+  opacity: 1;
+}
+
+.spiral-helix__label--related {
+  fill: color-mix(in srgb, var(--color-gold) 55%, var(--color-ivory));
+}
+
+.spiral-helix__label--related .spiral-helix__label-n {
+  fill: color-mix(in srgb, var(--color-gold-muted) 80%, transparent);
+}
+
+.spiral-helix__node-dot--related:not(.spiral-helix__node-dot--selected) {
+  fill: color-mix(in srgb, var(--color-gold) 70%, var(--color-ivory));
 }
 
 .spiral-helix__node-related {
   fill: none;
-  stroke: color-mix(in srgb, var(--color-gold) 60%, transparent);
-  stroke-width: 0.35;
+  stroke: color-mix(in srgb, var(--color-gold) 72%, transparent);
+  stroke-width: 0.45;
 }
 
 .spiral-helix__node-related--emphasized {
@@ -1147,6 +1176,27 @@
   font-size: 0.875rem;
   line-height: 1.55;
   color: var(--color-charcoal-muted);
+}
+
+.spiral-trajectory__takeaway {
+  display: grid;
+  gap: 0.2rem;
+  padding-left: 0.85rem;
+  border-left: 1px solid color-mix(in srgb, var(--color-gold-muted) 50%, transparent);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-charcoal);
+}
+
+.spiral-trajectory__takeaway-label {
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-style: normal;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-muted);
 }
 
 .spiral-trajectory__summary {
@@ -1562,6 +1612,36 @@
 
 .spiral-topology[data-focused] .spiral-topology__edge {
   opacity: 0.34;
+}
+
+/* Arrival: disturbance → establishment → the first branching read first;
+   later passages wait in the background until the visitor reaches for them. */
+.spiral-topology[data-staged] .spiral-topology__edge {
+  stroke: color-mix(in srgb, var(--color-charcoal) 70%, transparent);
+}
+
+.spiral-topology[data-staged] .spiral-topology__edge--branch {
+  stroke: color-mix(in srgb, var(--color-ivory) 70%, transparent);
+  stroke-width: 1.25;
+}
+
+.spiral-topology[data-staged] .spiral-topology__edge--later {
+  stroke: color-mix(in srgb, var(--color-charcoal-muted) 62%, transparent);
+  opacity: 0.32;
+}
+
+.spiral-topology[data-staged] .spiral-topology__node--later .spiral-topology__dot,
+.spiral-topology[data-staged] .spiral-topology__node--later .spiral-topology__halo {
+  opacity: 0.45;
+}
+
+.spiral-topology[data-staged] .spiral-topology__step--later {
+  opacity: 0.5;
+}
+
+.spiral-topology[data-staged] .spiral-topology__step--later:hover,
+.spiral-topology[data-staged] .spiral-topology__step--later:focus-visible {
+  opacity: 1;
 }
 
 .spiral-topology[data-focused] .spiral-topology__edge--near {

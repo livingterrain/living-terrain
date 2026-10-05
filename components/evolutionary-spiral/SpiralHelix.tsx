@@ -209,7 +209,13 @@ export function SpiralHelix({
   };
 
   return (
-    <div className={cn("spiral-helix", quiet && "spiral-helix--quiet")}>
+    <div
+      className={cn(
+        "spiral-helix",
+        quiet && "spiral-helix--quiet",
+        quiet && relatedIds && relatedIds.size > 0 && "spiral-helix--has-related",
+      )}
+    >
       <div className="spiral-helix__canvas">
         <svg
           className="spiral-helix__svg"
@@ -385,6 +391,7 @@ export function SpiralHelix({
                   r={selected ? 2.1 : node.stop.cycleIndex > 0 ? 1.85 : 1.55}
                   className={cn(
                     "spiral-helix__node-dot",
+                    related && "spiral-helix__node-dot--related",
                     selected && "spiral-helix__node-dot--selected",
                     node.stop.cycleIndex > 0 && "spiral-helix__node-dot--again",
                   )}
@@ -395,6 +402,7 @@ export function SpiralHelix({
                   textAnchor={anchor}
                   className={cn(
                     "spiral-helix__label",
+                    related && "spiral-helix__label--related",
                     (selected || previewed || emphasized) &&
                       "spiral-helix__label--selected",
                   )}

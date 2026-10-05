@@ -6,6 +6,7 @@ import {
   isComparisonBreak,
   isDrawableRelationship,
   occurrencesForRelationship,
+  TRAJECTORY_TAKEAWAYS,
   type SpiralLens,
   type SpiralLensExploration,
   type SpiralLensId,
@@ -361,6 +362,9 @@ export function SpiralLensContext({
       "open questions",
     (trajectory.sources?.length || research) && "sources",
   ].filter(Boolean);
+  const takeaway = relationships.some(isDrawableRelationship)
+    ? TRAJECTORY_TAKEAWAYS[trajectory.id]
+    : undefined;
 
   return (
     <section
@@ -415,6 +419,13 @@ export function SpiralLensContext({
             aria-hidden="true"
           />
           Dotted marks: a comparison was investigated here and does not hold.
+        </p>
+      )}
+
+      {takeaway && (
+        <p className="spiral-trajectory__takeaway">
+          <span className="spiral-trajectory__takeaway-label">What this shows</span>
+          {takeaway}
         </p>
       )}
 
