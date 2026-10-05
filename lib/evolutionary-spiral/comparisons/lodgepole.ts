@@ -1,23 +1,12 @@
 import type { SpiralTrajectoryRelationship } from "../types";
 
 /**
- * Lodgepole pine after fire × Spiral — two candidates and two comparison
+ * Lodgepole pine after fire × Spiral — one candidate and two comparison
  * breaks. Each is anchored to one occurrence on the authored topology; none is
  * inferred from an outcome label, a shared step, or the shape of the graph.
  * Variable, reference, and window live in the concept each record names.
  */
 export const LODGEPOLE_RELATIONSHIPS: readonly SpiralTrajectoryRelationship[] = [
-  {
-    id: "lp-cand-transformation-reburn-restructuring",
-    trajectoryId: "lodgepole-fire-regeneration",
-    anchor: { kind: "transition", from: "reburn", to: "sparse-cohort" },
-    operations: [{ stageId: "transformation" }],
-    status: "candidate",
-    epistemicKinds: ["empirical-observation", "empirical-mechanism"],
-    scale: { id: "ecological-community", note: "The stand." },
-    conceptId: "lp-cmp-reburn-restructuring",
-    note: "After a second fire within about 30 years, a dense stand can persist as a much sparser lodgepole forest. The species stays the same, but fewer trees mean less future seed and less fuel: a change in how the stand maintains itself. Sparseness alone is not the claim; stands that grew sparse naturally after 1988 are not part of it.",
-  },
   {
     id: "lp-cand-disruption-short-interval-reburn",
     trajectoryId: "lodgepole-fire-regeneration",

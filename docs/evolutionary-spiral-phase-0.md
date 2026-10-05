@@ -101,7 +101,7 @@ Emergence → Embodiment → Differentiation → Relationship → Organization
 → Disruption → Transformation → Integration → Renewal → Emergence again
 ```
 
-The reference trajectory is ordered partly because later definitions presuppose earlier ones: Embodiment refers to an emerging pattern, Relationship to differentiated elements, Organization to relations, Disruption to an existing organization, Integration to reorganized elements, Renewal to the reorganized system, and Emergence again to conditions produced by a prior cycle.
+The reference trajectory is ordered partly because some definitions presuppose a state that earlier operations can produce: Relationship requires distinct elements, Organization requires relations, and Disruption requires an existing organization. Presupposing a state is not presupposing an operation—those elements, relations, or organization may already be present, however they arose, without Differentiation, Relationship, or Organization occurring just before. Embodiment, Integration, Renewal, and Emergence again are defined by reference to earlier operations (an emerging pattern, reorganized elements, the reorganized system, a prior cycle); that is a feature of their current definitions, not a sequence any real system must follow.
 
 That conceptual order is not a developmental law, a mandatory sequence, or a guaranteed pathway. Real trajectories may repeat, skip, overlap, branch, converge, loop, stall, or remain open; an operation may appear more than once or not at all.
 
@@ -149,7 +149,13 @@ Short visitor-facing whispers for future visualization appear in §8A. Whispers 
 
 ### 1. Emergence
 
-A new pattern of organization becomes discernible as a system—something begins to hold as an identifiable process or form where it was not previously available as such.
+Relations among a system's components begin to sustain a capacity the system did not have at that scale—new against what the system, and any lineage or program that reliably reproduces it, already makes possible—and that capacity holds rather than flickers.
+
+**Reading Emergence.** A *capacity* is something the system can now do, resist, sustain, or produce at the stated scale. Novelty is always judged against a stated reference. By default the reference is the system's repertoire: what it already has, together with what any lineage, developmental program, or institutional template reliably reproduces. An individual's first instance of a capacity its kind reliably produces is maturation or recurrence, not Emergence.
+
+The capacity arises through relations among components at the stated scale. Weak emergence qualifies: the capacity need only be absent from the components taken separately or merely added together. No metaphysical irreducibility is claimed. "Holds" excludes momentary fluctuations.
+
+A different reference (for example, cells rather than the lineage) may be used only when stated explicitly, and the claim then holds only against that reference.
 
 ### 2. Embodiment
 
@@ -175,7 +181,11 @@ Stress, novelty, failure, or intrusion challenges the existing organization. Con
 
 ### 7. Transformation
 
-The system reorganizes under pressure. Variation, learning, breakdown, or structural change alters the means by which the system maintains itself.
+The processes by which a system generates or maintains its organization are themselves altered—not only their products, rate, setting, or appearance, and not merely their ordinary operation. It may follow Disruption or arise without it, through variation, learning, breakdown, development, or structural change.
+
+**Reading Transformation.** Not every change is Transformation. Growth, shape change, turnover, ordinary repair, and routine variation alter what a system produces, how fast, under which settings, or how it looks, while the processes that keep it organized continue as before. Transformation claims that those processes themselves have changed, at a stated scale. It can be visually dramatic or nearly invisible.
+
+Transformation is defined by what changes, not by what causes it. Disruption—pressure an organization cannot absorb unchanged—may set it in motion, may be absorbed without it, and is not required for it: scheduled developmental reorganization alters the means of maintenance without any Disruption.
 
 ### 8. Integration
 
@@ -203,13 +213,13 @@ Evocative but precise. Approximately 12–20 words. For interactive node labels 
 
 | Stage | Whisper |
 |---|---|
-| **Emergence** | Something begins to hold as a pattern—a form not available in the same way before. |
+| **Emergence** | Relations among parts begin to hold a capacity not already available in the system's repertoire. |
 | **Embodiment** | The pattern takes body or medium—conditions through which it can persist and act. |
 | **Differentiation** | Distinctions appear: parts, roles, and boundaries form within what had been more whole. |
 | **Relationship** | What is differentiated begins to matter through contact; relation itself becomes constitutive. |
 | **Organization** | Relations settle into structure that can regulate itself and hold under ordinary change. |
 | **Disruption** | Pressure arrives that the existing organization cannot take in or absorb unchanged. |
-| **Transformation** | Under pressure, the means by which the system stays organized themselves begin to change. |
+| **Transformation** | More than its form changes: the very ways the system keeps itself organized are altered. |
 | **Integration** | What was reorganized becomes coherent enough to function again as one system. |
 | **Renewal** | The reorganized system stabilizes enough to continue forward now with altered capacity. |
 

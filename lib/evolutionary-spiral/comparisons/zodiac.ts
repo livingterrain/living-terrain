@@ -27,7 +27,7 @@ export const ZODIAC_RELATIONSHIPS: readonly SpiralTrajectoryRelationship[] = [
     trajectoryId: "zodiac-cycle",
     anchor: { kind: "transition", from: "capricorn", to: "aquarius" },
     operations: [{ stageId: "transformation" }],
-    status: "candidate",
+    status: "ambiguous",
     transitionId: "zod-tr-capricorn-aquarius",
   },
   {

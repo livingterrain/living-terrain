@@ -35,7 +35,7 @@ export const SPIRAL_COPY: SpiralFrameworkCopy = {
     "A lens compares trajectories in a domain with the grammar. An operation may appear more than once—or not at all. Mismatch is useful evidence.",
   ],
   referenceTrajectoryNote:
-    "The helix shows a reference trajectory, not a guaranteed path. Real systems may repeat, overlap, skip, branch, stabilize differently, or fail to renew. Disruption need not lead to Transformation; Transformation need not lead to Integration or Renewal.",
+    "The helix shows a reference trajectory, not a guaranteed path. Real systems may repeat, overlap, skip, branch, stabilize differently, or fail to renew. Disruption need not lead to Transformation, and Transformation need not begin with Disruption. Neither leads necessarily to Integration or Renewal.",
   recurrenceNote:
     "Emergence again makes recurrence visible, but any operation may recur under changed conditions. A later Disruption is not the same state as an earlier one—history has already accumulated.",
   openQuestions: [

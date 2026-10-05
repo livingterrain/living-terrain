@@ -5,12 +5,12 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "emergence",
     name: "Emergence",
-    microcopy: "Something becomes possible.",
+    microcopy: "Something new becomes possible.",
     order: 1,
     definition:
-      "A new pattern of organization becomes discernible as a system—something begins to hold as an identifiable process or form where it was not previously available as such.",
+      "Relations among a system's components begin to sustain a capacity the system did not have at that scale—new against what the system, and any lineage or program that reliably reproduces it, already makes possible—and that capacity holds rather than flickers.",
     whisper:
-      "Something begins to hold as a pattern—a form not available in the same way before.",
+      "Relations among parts begin to hold a capacity not already available in the system's repertoire.",
   },
   {
     id: "embodiment",
@@ -65,12 +65,12 @@ export const SPIRAL_STAGES: readonly SpiralStage[] = [
   {
     id: "transformation",
     name: "Transformation",
-    microcopy: "The old organization can no longer continue unchanged.",
+    microcopy: "The ways it stays organized change.",
     order: 7,
     definition:
-      "The system reorganizes under pressure. Variation, learning, breakdown, or structural change alters the means by which the system maintains itself.",
+      "The processes by which a system generates or maintains its organization are themselves altered—not only their products, rate, setting, or appearance, and not merely their ordinary operation. It may follow Disruption or arise without it, through variation, learning, breakdown, development, or structural change.",
     whisper:
-      "Under pressure, the means by which the system stays organized themselves begin to change.",
+      "More than its form changes: the very ways the system keeps itself organized are altered.",
   },
   {
     id: "integration",
