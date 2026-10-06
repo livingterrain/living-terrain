@@ -11,6 +11,7 @@ import { isComparisonFinding } from "./findings";
 import { JESUS_RELATIONSHIPS } from "./jesus";
 import { LODGEPOLE_RELATIONSHIPS } from "./lodgepole";
 import { METAMORPHOSIS_RELATIONSHIPS } from "./metamorphosis";
+import { PSYCHOLOGY_RELATIONSHIPS } from "./psychology";
 import { multiOccurrenceStageIds } from "./validate";
 import { ZODIAC_RELATIONSHIPS } from "./zodiac";
 
@@ -21,6 +22,7 @@ export const SPIRAL_TRAJECTORY_RELATIONSHIPS: readonly SpiralTrajectoryRelations
     ...JESUS_RELATIONSHIPS,
     ...METAMORPHOSIS_RELATIONSHIPS,
     ...LODGEPOLE_RELATIONSHIPS,
+    ...PSYCHOLOGY_RELATIONSHIPS,
   ];
 
 export const SPIRAL_RELATIONSHIP_STATUS: Record<
@@ -150,6 +152,7 @@ export {
   JESUS_RELATIONSHIPS,
   LODGEPOLE_RELATIONSHIPS,
   METAMORPHOSIS_RELATIONSHIPS,
+  PSYCHOLOGY_RELATIONSHIPS,
   ZODIAC_RELATIONSHIPS,
 };
 
