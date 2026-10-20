@@ -41,8 +41,7 @@ export function SearchPageClient() {
 
           {!query.trim() && (
             <p className="font-body text-sm text-ink-faint">
-              Begin typing to search. You can also press ⌘K from anywhere on the
-              site.
+              Begin typing to search.
             </p>
           )}
 

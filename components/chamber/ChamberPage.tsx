@@ -13,11 +13,12 @@ import {
 import { Room } from "@/components/environment";
 import { Thread } from "@/components/thread";
 import {
+  getCurrentEdition,
   getProjectBooks,
   getProjectEssays,
   getProjectQuestions,
 } from "@/lib/content";
-import type { Project } from "@/lib/content/types";
+import type { Book, Project } from "@/lib/content/types";
 import { refFromProject } from "@/lib/relationships";
 
 interface ChamberPageProps {
@@ -29,9 +30,14 @@ interface ChamberPageProps {
 export function ChamberPage({ project, lead = "A book chamber." }: ChamberPageProps) {
   const relatedEssays = getProjectEssays(project);
   const questions = getProjectQuestions(project);
-  const relatedBooks = getProjectBooks(project).filter(
-    (b) => b.id !== project.bookId,
-  );
+  const relatedBooks = getProjectBooks(project)
+    .map(getCurrentEdition)
+    .filter(
+      (b, i, all): b is Book =>
+        b !== undefined &&
+        b.id !== project.bookId &&
+        all.findIndex((x) => x?.id === b.id) === i,
+    );
   const chamberRoute = `/chambers/${project.slug}`;
 
   return (

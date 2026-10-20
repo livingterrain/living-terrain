@@ -12,6 +12,7 @@ import {
   getLegacyProject,
 } from "../atlas";
 import {
+  BIOLOGY_REVISED_EXPANDED,
   MAP_TERRITORY_ALIASES,
   SUPERSEDED_PUBLIC_MAP_SLUGS,
 } from "../atlas/imports/books/series-catalog";
@@ -139,6 +140,14 @@ export function getTerritoryForMap(slug: string): Project | undefined {
   if (direct) return direct;
   const territorySlug = MAP_TERRITORY_ALIASES[slug];
   return territorySlug ? getProjectBySlug(territorySlug) : undefined;
+}
+
+/** Superseded editions resolve to the edition that replaced them on public shelves. */
+export function getCurrentEdition(book: Book): Book | undefined {
+  if (!SUPERSEDED_PUBLIC_MAP_SLUGS.has(book.slug)) return book;
+  return book.id === BIOLOGY_REVISED_EXPANDED.supersedesId
+    ? getBookById(BIOLOGY_REVISED_EXPANDED.id)
+    : undefined;
 }
 
 export { resolveMapCoverDimensions, resolveMapCoverSrc } from "./maps";
