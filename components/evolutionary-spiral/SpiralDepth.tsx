@@ -113,7 +113,7 @@ function RelationshipSummary({
     <p className="spiral-trajectory__summary">
       {drawn.length > 0 && (
         <>
-          <span>Authored relationships with the Spiral: </span>
+          <span>Comparisons with the Spiral: </span>
           {jumps(tally(drawn))}
           <span>. </span>
         </>
