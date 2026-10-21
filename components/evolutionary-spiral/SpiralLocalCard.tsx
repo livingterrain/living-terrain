@@ -17,6 +17,7 @@ import {
   relationshipsForStep,
   relationshipDiscovery,
   relationshipLine,
+  relationshipLineLabel,
   relationshipsForTrajectory,
   returningEdgeIds,
   topologySource,
@@ -165,6 +166,7 @@ function RelationshipList({
     <ul className="spiral-op__rels">
       {relationships.map((r) => {
         const line = relationshipLine(r, lens);
+        const lineLabel = relationshipLineLabel(r, lens);
         return (
           <li key={r.id} className={`spiral-op__rel spiral-rel--${r.status}`}>
             <p className="spiral-op__rel-head">
@@ -179,7 +181,12 @@ function RelationshipList({
                 {relationshipStatusLabel(r.status)}
               </span>
             </p>
-            {line && <p className="spiral-op__rel-line">{line}</p>}
+            {line && (
+              <p className="spiral-op__rel-line">
+                {lineLabel && <span className="spiral-op__def-label">{lineLabel}: </span>}
+                {line}
+              </p>
+            )}
             {r.epistemicKinds && r.epistemicKinds.length > 0 && (
               <p className="spiral-op__rel-meta">
                 {r.epistemicKinds.map(epistemicLabel).join(" · ")}
@@ -392,7 +399,7 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
                 <p className="spiral-card__status">
                   {relationshipCount === 0
                     ? "No Spiral relationships have been authored for this trajectory yet."
-                    : "No researched relationship with this trajectory."}
+                    : "No researched comparison with this trajectory."}
                 </p>
               )
             ) : (
@@ -520,7 +527,7 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
           <p className="spiral-card__status">
             {relationshipCount === 0
               ? UNRELATED_TRAJECTORY
-              : "No researched relationship with the Spiral here."}
+              : "No researched comparison with the Spiral here."}
           </p>
         )}
       </>
@@ -616,7 +623,7 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
     const stops = occurrencesForRelationship(r);
     const broken = isComparisonBreak(r);
     const anchor = anchorLabel(trajectory, r.anchor);
-    label = `${anchor}, ${broken ? "comparison break" : "researched relationship"}`;
+    label = `${anchor}, ${broken ? "comparison break" : "researched comparison"}`;
     body = (
       <SpiralDepth
         discovery={relationshipDiscovery(r, trajectory, lens)}
@@ -641,7 +648,7 @@ export const SpiralLocalCard = forwardRef<HTMLElement, Props>(function SpiralLoc
             <p className={cn("spiral-card__bridge", broken && "spiral-card__bridge--break")}>
               <span aria-hidden="true">{broken ? "Comparison breaks at " : "↔ "}</span>
               <span className="sr-only">
-                {broken ? "Comparison break with " : "Researched relationship with "}
+                {broken ? "Comparison break with " : "Researched comparison with "}
               </span>
               {stops.map((stop, i) => (
                 <span key={stop.occurrenceId}>

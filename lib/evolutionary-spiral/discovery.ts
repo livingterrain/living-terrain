@@ -77,7 +77,7 @@ export type SpiralDiscoverySlot =
       definition: string;
     }
   | { kind: "knowing"; families: readonly SpiralKnowingFamily[] }
-  | { kind: "note"; text: string }
+  | { kind: "note"; text: string; label?: string }
   | { kind: "scale"; scale: SpiralScaleRef }
   | { kind: "question"; text: string }
   | { kind: "epistemic"; kinds: readonly SpiralEpistemicKind[] }
@@ -98,7 +98,9 @@ export type SpiralDiscoverySlot =
   | { kind: "sources"; sources: readonly SpiralSourceRef[] }
   | { kind: "research"; exploration: SpiralLensExploration; conceptHint?: string }
   | { kind: "researched-stops"; stops: readonly SpiralSequenceStop[] }
-  | { kind: "readings"; readings: readonly SpiralAcrossReading[]; boundary: string };
+  | { kind: "readings"; readings: readonly SpiralAcrossReading[] }
+  /** What side-by-side placement does not establish — before anything is compared. */
+  | { kind: "boundary"; text: string };
 
 export type SpiralDiscovery = {
   understand: readonly SpiralDiscoverySlot[];
@@ -127,6 +129,20 @@ export function relationshipLine(
   lens: SpiralLens,
 ): string | undefined {
   return r.note ?? firstParagraph(transitionForResonance(r, lens.id)?.body);
+}
+
+export const SYMBOLIC_READING_LABEL = "Symbolic interpretation";
+
+/**
+ * A line taken from a lens's symbolic cycle context, not from the record's own
+ * note — labelled so it never reads as a plain statement of fact.
+ */
+export function relationshipLineLabel(
+  r: SpiralTrajectoryRelationship,
+  lens: SpiralLens,
+): string | undefined {
+  if (r.note) return undefined;
+  return transitionForResonance(r, lens.id) ? SYMBOLIC_READING_LABEL : undefined;
 }
 
 /** Lens-level research: the lens's own, else the research owned by its trajectory. */
@@ -166,14 +182,12 @@ export function lensDiscovery(
   if (lens.status === "scaffold") {
     const readings = acrossReadings();
     return {
-      understand: slots(...opening, { kind: "place", place: "minis" }),
-      explore: slots(
-        readings.length > 0 && {
-          kind: "readings",
-          readings,
-          boundary: ACROSS_SYNTHESIS_BOUNDARY,
-        },
+      understand: slots(
+        ...opening,
+        { kind: "boundary", text: ACROSS_SYNTHESIS_BOUNDARY },
+        { kind: "place", place: "minis" },
       ),
+      explore: slots(readings.length > 0 && { kind: "readings", readings }),
       investigate: slots({ kind: "place", place: "across-index" }),
       investigateLead: "every lens · what Across will compare",
     };
@@ -213,8 +227,8 @@ export function lensDiscovery(
         breaks: breaks.length > 0,
       },
       relationships.length === 0 && { kind: "summary", drawn, breaks },
-      takeaway && { kind: "takeaway", text: takeaway },
       caution && { kind: "caution", title: breaksTitle, text: caution },
+      takeaway && { kind: "takeaway", text: takeaway },
     ),
     explore: slots(
       relationships.length > 0 && { kind: "summary", drawn, breaks },
@@ -295,7 +309,7 @@ export function relationshipDiscovery(
       families.length > 0
         ? { kind: "knowing", families }
         : { kind: "evidence", text: lens.evidence, lensLabel: lens.label },
-      line && { kind: "note", text: line },
+      line && { kind: "note", text: line, label: relationshipLineLabel(r, lens) },
       r.scale && { kind: "scale", scale: r.scale },
       question && { kind: "question", text: question },
     ),

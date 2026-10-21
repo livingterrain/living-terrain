@@ -450,7 +450,7 @@ export function SpiralHelix({
                 aria-describedby={`${reactId}-micro-${id}`}
                 aria-label={`${String(node.stop.order).padStart(2, "0")} ${name}${
                   related && trajectoryLabel
-                    ? `, researched relationship with ${trajectoryLabel}`
+                    ? `, researched comparison with ${trajectoryLabel}`
                     : ""
                 }`}
                 onClick={() => onSelect(id)}

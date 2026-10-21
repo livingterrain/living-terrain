@@ -114,6 +114,8 @@ export {
   lensDiscovery,
   relationshipDiscovery,
   relationshipLine,
+  relationshipLineLabel,
+  SYMBOLIC_READING_LABEL,
 } from "./discovery";
 
 export type {

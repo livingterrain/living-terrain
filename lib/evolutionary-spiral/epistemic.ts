@@ -123,17 +123,17 @@ export type SpiralKnowingFamily = {
 export const SPIRAL_KNOWING_FAMILIES: readonly SpiralKnowingFamily[] = [
   {
     id: "evidence",
-    label: "Research evidence",
+    label: "Empirical research",
     kinds: ["empirical", "empirical-mechanism", "empirical-observation"],
   },
   {
     id: "framework",
-    label: "Theoretical framework",
+    label: "Conceptual framework",
     kinds: ["conceptual-framework", "systems-principle"],
   },
   {
     id: "textual",
-    label: "Historical, textual, or theological reading",
+    label: "Texts and traditions",
     kinds: [
       "historical-observation",
       "historical-textual",
@@ -150,7 +150,7 @@ export const SPIRAL_KNOWING_FAMILIES: readonly SpiralKnowingFamily[] = [
   { id: "model", label: "Model projection", kinds: ["model-projection"] },
   {
     id: "open",
-    label: "Debated or unresolved",
+    label: "Provisional or debated",
     kinds: ["hypothesis", "contested-interpretation"],
   },
 ];

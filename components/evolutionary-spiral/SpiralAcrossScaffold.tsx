@@ -309,7 +309,7 @@ export function AcrossMinis({ onSelectLens }: Props) {
                 onClick={() => onSelectLens(lens.id)}
                 aria-label={`${lens.label}: ${trajectory.title}, ${SHAPE_LABEL[trajectory.shape]}. ${
                   drawn.length
-                } researched relationship${drawn.length === 1 ? "" : "s"}${
+                } researched comparison${drawn.length === 1 ? "" : "s"}${
                   touched.length ? ` with ${touched.join(", ")}` : ""
                 }.${
                   breaks > 0

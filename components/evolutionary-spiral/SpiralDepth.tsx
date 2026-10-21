@@ -205,7 +205,7 @@ export function SpiralDepth({
             {slot.lines && (
               <p className="spiral-trajectory__key">
                 <span className="spiral-trajectory__key-line" aria-hidden="true" />
-                Lines mark researched relationships.
+                Lines mark researched comparisons.
               </p>
             )}
             {slot.breaks && (
@@ -249,13 +249,14 @@ export function SpiralDepth({
       case "knowing":
         return (
           <p key={key} className="spiral-card__scale spiral-depth__knowing">
-            <span className="spiral-op__def-label">Ways of knowing: </span>
+            <span className="spiral-op__def-label">Grounded in: </span>
             {slot.families.map((f) => f.label).join(" · ")}
           </p>
         );
       case "note":
         return (
           <p key={key} className="spiral-card__note">
+            {slot.label && <span className="spiral-op__def-label">{slot.label}: </span>}
             {slot.text}
           </p>
         );
@@ -394,8 +395,13 @@ export function SpiralDepth({
                 </li>
               ))}
             </ul>
-            <p className="spiral-across__note">{slot.boundary}</p>
           </div>
+        );
+      case "boundary":
+        return (
+          <p key={key} className="spiral-across__note spiral-depth__boundary">
+            {slot.text}
+          </p>
         );
     }
   };

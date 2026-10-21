@@ -64,11 +64,13 @@ function stepAriaLabel(
   const drawn = related.filter(isDrawableRelationship);
   const breaks = related.filter(isComparisonBreak);
   const parts = [
-    drawn.length === 0
-      ? `${base}. No researched relationship.`
-      : `${base}. Part of ${drawn.length} researched relationship${
+    drawn.length > 0
+      ? `${base}. Part of ${drawn.length} researched comparison${
           drawn.length === 1 ? "" : "s"
-        } with ${Array.from(new Set(drawn.map(operationNames))).join(", ")}.`,
+        } with ${Array.from(new Set(drawn.map(operationNames))).join(", ")}.`
+      : breaks.length > 0
+        ? `${base}.`
+        : `${base}. No researched comparison.`,
   ];
   if (breaks.length > 0) {
     parts.push(
@@ -348,7 +350,7 @@ function topologyStepLabel(
   const breaks = related.filter(isComparisonBreak);
   if (drawn.length > 0) {
     parts.push(
-      `Part of ${drawn.length} researched relationship${
+      `Part of ${drawn.length} researched comparison${
         drawn.length === 1 ? "" : "s"
       } with ${Array.from(new Set(drawn.map(operationNames))).join(", ")}.`,
     );

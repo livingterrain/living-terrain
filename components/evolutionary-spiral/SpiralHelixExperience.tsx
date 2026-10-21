@@ -317,11 +317,13 @@ export function SpiralHelixExperience() {
     if (trajectory) {
       const drawn = focusedRelationships.filter(isDrawableRelationship).length;
       const breaks = focusedRelationships.filter(isComparisonBreak).length;
-      announcement += ` ${
-        drawn > 0
-          ? `${drawn} researched relationship${drawn === 1 ? "" : "s"} with ${trajectory.title}.`
-          : `No researched relationship with ${trajectory.title}.`
-      }${breaks > 0 ? ` ${breaks} comparison break${breaks === 1 ? "" : "s"}.` : ""}`;
+      announcement += [
+        drawn > 0 && ` ${drawn} researched comparison${drawn === 1 ? "" : "s"} with ${trajectory.title}.`,
+        breaks > 0 && ` ${breaks} comparison break${breaks === 1 ? "" : "s"} with ${trajectory.title}.`,
+        drawn + breaks === 0 && ` No researched comparison with ${trajectory.title}.`,
+      ]
+        .filter(Boolean)
+        .join("");
     }
   } else if (focus?.kind === "step" && trajectory) {
     const step = trajectory.steps.find((s) => s.id === focus.stepId);
@@ -330,14 +332,14 @@ export function SpiralHelixExperience() {
     announcement = `${step?.label ?? ""}: ${
       drawn + breaks > 0
         ? [
-            drawn > 0 && `${drawn} researched relationship${drawn === 1 ? "" : "s"}.`,
+            drawn > 0 && `${drawn} researched comparison${drawn === 1 ? "" : "s"}.`,
             breaks > 0 && `${breaks} comparison break${breaks === 1 ? "" : "s"}.`,
           ]
             .filter(Boolean)
             .join(" ")
         : relationships.length === 0
           ? "no Spiral relationships have been authored for this trajectory yet."
-          : "no researched relationship with the Spiral."
+          : "no researched comparison with the Spiral."
     }`;
   } else if (focus?.kind === "transition" && trajectory) {
     const name = (id: string) => trajectory.steps.find((s) => s.id === id)?.label ?? id;
@@ -345,7 +347,7 @@ export function SpiralHelixExperience() {
   } else if (focus?.kind === "relationship" && trajectory) {
     announcement = `${anchorLabel(trajectory, focus.relationship.anchor)}, ${
       isDrawableRelationship(focus.relationship)
-        ? "researched relationship with"
+        ? "researched comparison with"
         : "comparison break with"
     } ${occurrencesForRelationship(
       focus.relationship,
@@ -358,7 +360,7 @@ export function SpiralHelixExperience() {
         ? `${lens.label}: ${trajectory.title}, charted independently. No Spiral relationships have been authored yet.`
         : `${lens.label}: ${trajectory.title} laid against the Spiral. ${
             arcs.length
-          } line${arcs.length === 1 ? "" : "s"} mark researched relationships.${
+          } line${arcs.length === 1 ? "" : "s"} mark researched comparisons.${
             breakCount > 0
               ? ` ${breakCount} comparison break${
                   breakCount === 1 ? "" : "s"

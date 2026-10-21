@@ -85,7 +85,9 @@ import {
   lensDiscovery,
   relationshipDiscovery,
   relationshipLine,
+  relationshipLineLabel,
   researchedStopsForLens,
+  SYMBOLIC_READING_LABEL,
   type SpiralDiscovery,
   type SpiralDiscoverySlot,
 } from "../lib/evolutionary-spiral";
@@ -1424,12 +1426,13 @@ check("2E.9 a comparison break on the trajectory never becomes an arc", () => {
 });
 
 check("2E.10 legacy trajectories render through their existing figures, unchanged", () => {
-  // Hashes of the pre-2E figure's markup for the same props.
+  // Hashes of the pre-2E figure's markup for the same props. Progressive discovery:
+  // only accessible labels change, "researched relationship" → "researched comparison".
   const expected: Record<string, [string, string]> = {
-    metamorphosis: ["path", "0854de1a3370eb772e8a913bbd2650770b2a304f8e7dab837d5b348fd24835e6"],
-    "jesus-narrative": ["path", "69aa818b74d43c51e0fbfab24018bf4b59d8856ab13c9e78571eaa1022edea65"],
+    metamorphosis: ["path", "b7f217d8f4493c73de148dad38d8c1497ef9e54776c596648776557b17980e36"],
+    "jesus-narrative": ["path", "4580a08a266a339b34c6cb77d93ed0ae104762310ff5176be7da9b616dc70ca1"],
     // Phase 2N: only the Capricorn → Aquarius arc class changes (candidate → ambiguous).
-    "zodiac-cycle": ["wheel", "d7e220e91b92fa98b2cba48bbf6a10d44589c5e13630820f78b3c20f8eee59a4"],
+    "zodiac-cycle": ["wheel", "d5c944ff8373e53b6584e8e38f3f4d9dbcdb3550ec0d7e762381d965d838ab70"],
   };
   const hash = (v: string) => createHash("sha256").update(v).digest("hex");
   for (const t of legacyTrajectories()) {
@@ -1790,7 +1793,7 @@ check("2H LOCAL: candidate and break disclosure, scale before Explore", () => {
       assert.ok(!beforeExplore.includes("↔"), r.id);
       assert.ok(!beforeExplore.includes("spiral-card__question"), r.id);
     } else {
-      assert.match(beforeExplore, /Researched relationship with/, r.id);
+      assert.match(beforeExplore, /Researched comparison with/, r.id);
     }
     // Investigate opens the record's own research.
     const concept = LP.concepts!.find((c) => c.id === r.conceptId)!;
@@ -1875,7 +1878,7 @@ check("2I.9 every Ecology scale remains valid", () => {
 check("2I.10 Across counts breaks separately and never as operations met", () => {
   const html = renderLensPanel("across", { open: true });
   const item = html.match(/data-trajectory="lodgepole-fire-regeneration"[\s\S]*?<\/li>/)?.[0] ?? "";
-  assert.match(item, /1 researched relationship with Disruption\. 2 comparison breaks\./);
+  assert.match(item, /1 researched comparison with Disruption\. 2 comparison breaks\./);
   assert.match(item, /↔ Disruption · 2 breaks/);
   assert.ok(!/Renewal|Transformation/.test(item));
   assert.match(html, /Where do these trajectories meet the Spiral\?/);
@@ -2686,7 +2689,9 @@ check("PD.4 every visitor-facing sentence the resolver places is authored", () =
         break;
       case "readings":
         for (const reading of s.readings) assertAuthored(reading.text, `${where} reading`);
-        assertAuthored(s.boundary, `${where} boundary`);
+        break;
+      case "boundary":
+        assertAuthored(s.text, `${where} boundary`);
         break;
     }
   }
@@ -2879,8 +2884,15 @@ check("PD.11 Across restates trajectory takeaways and states that no synthesis e
   const d = lensPanelDiscovery("across");
   const readings = ofKind(d.explore, "readings")[0];
   assert.ok(readings, "Across has readings");
-  assert.equal(readings.boundary, ACROSS_SYNTHESIS_BOUNDARY);
   assert.match(ACROSS_SYNTHESIS_BOUNDARY, /no cross-lens synthesis has been established/);
+  // The boundary opens the first view, before any trajectory diagram.
+  const boundaryAt = d.understand.findIndex((s) => s.kind === "boundary");
+  const minisAt = d.understand.findIndex((s) => s.kind === "place" && s.place === "minis");
+  assert.ok(boundaryAt >= 0 && boundaryAt < minisAt, "boundary before the diagrams");
+  assert.equal(ofKind(d.understand, "boundary")[0]?.text, ACROSS_SYNTHESIS_BOUNDARY);
+  const closed = renderLensPanel("across");
+  const shown = closed.indexOf(esc(ACROSS_SYNTHESIS_BOUNDARY));
+  assert.ok(shown >= 0 && shown < closed.indexOf("spiral-mini__item"), "boundary rendered before the diagrams");
   for (const reading of readings.readings) {
     const t = authoredTrajectories().find((x) => x.title === reading.trajectoryTitle)!;
     assert.equal(reading.text, TRAJECTORY_TAKEAWAYS[t.id], t.id);
@@ -2906,6 +2918,84 @@ check("PD.12 Understand never hides the lens's evidence line or break key behind
       const key = html.indexOf("spiral-trajectory__key-line--break");
       assert.ok(key >= 0 && (firstControl < 0 || key < firstControl), `${id} break key before controls`);
     }
+  }
+});
+
+check("PD.13 an authored caution precedes What this shows", () => {
+  for (const lens of SPIRAL_LENSES) {
+    for (const t of lens.trajectories) {
+      const d = lensDiscovery(lens, t);
+      const caution = d.understand.findIndex((s) => s.kind === "caution");
+      const takeaway = d.understand.findIndex((s) => s.kind === "takeaway");
+      if (caution >= 0 && takeaway >= 0) assert.ok(caution < takeaway, t.id);
+      if (!t.comparisonBreaks || takeaway < 0) continue;
+      const html = renderLensPanel(lens.id, { trajectoryId: t.id });
+      assert.ok(html.indexOf("spiral-depth__caution") < html.indexOf("What this shows"), `${t.id} rendered order`);
+    }
+  }
+});
+
+check("PD.14 symbolic-cycle lines are labelled as interpretation; authored notes are not", () => {
+  let labelled = 0;
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    const { lens, trajectory } = relationshipContext(r);
+    const note = ofKind(relationshipDiscovery(r, trajectory, lens).understand, "note")[0];
+    if (!note) continue;
+    if (r.note) {
+      assert.equal(note.label, undefined, r.id);
+    } else {
+      assert.equal(note.label, SYMBOLIC_READING_LABEL, r.id);
+      labelled += 1;
+    }
+    assert.equal(note.text, relationshipLine(r, lens), `${r.id} authored text unchanged`);
+  }
+  assert.ok(labelled >= ZODIAC_RELATIONSHIPS.filter((r) => !r.note).length);
+  const zodiac = getSpiralLens("symbolic-zodiac")!;
+  for (const r of ZODIAC_RELATIONSHIPS.filter((x) => !x.note)) {
+    assert.equal(relationshipLineLabel(r, zodiac), SYMBOLIC_READING_LABEL, r.id);
+  }
+});
+
+check("PD.15 plain cue reads Grounded in, apart from the precise Ways of knowing legend", () => {
+  assert.deepEqual(
+    SPIRAL_KNOWING_FAMILIES.map((f) => f.label),
+    ["Empirical research", "Conceptual framework", "Texts and traditions", "Symbolic comparison", "Model projection", "Provisional or debated"],
+  );
+  const r = PSYCHOLOGY_RELATIONSHIPS[0]!;
+  const { lens, trajectory } = relationshipContext(r);
+  const html = renderToStaticMarkup(
+    React.createElement(SpiralLocalCard, {
+      focus: { kind: "relationship", relationship: r },
+      lens,
+      trajectory,
+      intersection: undefined,
+      onSelectOccurrence: noop,
+      onSelectRelationship: noop,
+      onSelectStep: noop,
+      onSelectEdge: noop,
+      relationshipCount: 0,
+      onClose: noop,
+      exploreOpen: false,
+      onExploreToggle: noop,
+      investigateOpen: false,
+      onInvestigateToggle: noop,
+      conceptId: null,
+      onConceptChange: noop,
+      onOpenConcept: noop,
+      cardId: "card",
+      exploreId: "explore",
+      investigateId: "investigate",
+    }),
+  );
+  assert.match(html, /Grounded in: <\/span>/);
+  assert.ok(!html.includes("Ways of knowing"));
+  // Precise categories keep their own labels.
+  assert.equal(epistemicLabel("empirical-mechanism"), "Empirical mechanism");
+});
+
+check("PD.16 display copy calls drawn records researched comparisons", () => {
+  for (const { file, source } of spiralSources()) {
+    assert.ok(!/researched relationship/i.test(source), path.basename(file));
   }
 });
 
