@@ -68,6 +68,8 @@ export const TRAJECTORY_TAKEAWAYS: Readonly<Record<string, string>> = {
     "The researched comparison spans death through resurrection, while the narrative itself remains directional rather than cyclical.",
   metamorphosis:
     "The researched comparison is with Transformation: development continues through metamorphosis while the organization carrying it changes. At which scale remains open.",
+  "memory-updating-prediction-error":
+    "The comparison centres on a memory becoming labile, not on surprise itself, and whether new information truly joins the old memory remains open.",
   "lodgepole-fire-regeneration":
     "The strongest comparison is not fire itself, but what happens when another fire arrives before the stand has rebuilt its capacity to regenerate.",
 };

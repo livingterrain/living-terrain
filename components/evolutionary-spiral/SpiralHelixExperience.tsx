@@ -71,6 +71,7 @@ export function SpiralHelixExperience() {
   const stageRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
+  const pendingReturnRef = useRef<{ className: string; text: string } | null>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const lensScrollPendingRef = useRef(false);
   const [selection, setSelection] = useState<LocalSelection>(null);
@@ -197,7 +198,10 @@ export function SpiralHelixExperience() {
     resetLocal();
     const target = returnFocusRef.current;
     returnFocusRef.current = null;
-    if (target && target.isConnected) target.focus();
+    if (!target) return;
+    if (target.isConnected) target.focus();
+    // Research jumps unmount while a card is open and return as new elements.
+    else pendingReturnRef.current = { className: target.className, text: target.textContent ?? "" };
   };
 
   const handleLensSelect = (next: SpiralLensId | null) => {
@@ -247,15 +251,50 @@ export function SpiralHelixExperience() {
     scrollResearchIntoView(".spiral-lens-context__research-body");
   };
 
-  /** Desktop: bring the card into view beside the figure. Mobile: it is a sheet. */
   const selectionKey = selection ? `${selection.kind}:${selection.id}` : "";
+  useEffect(() => {
+    const pending = pendingReturnRef.current;
+    if (selectionKey || !pending) return;
+    pendingReturnRef.current = null;
+    const buttons = stageRef.current?.querySelectorAll<HTMLElement>("button") ?? [];
+    Array.from(buttons)
+      .find((el) => el.className === pending.className && el.textContent === pending.text)
+      ?.focus();
+  }, [selectionKey]);
+
+  /**
+   * Desktop: bring the card into view beside the figure. Mobile: it is a sheet;
+   * lift the trajectory's last row clear of it, never past the selected step.
+   */
   useEffect(() => {
     if (!selectionKey) return;
     // Moving within the card can remove the control that held focus.
     if (document.activeElement === document.body) {
       cardRef.current?.focus({ preventScroll: true });
     }
-    if (!window.matchMedia("(min-width: 640px)").matches) return;
+    if (!window.matchMedia("(min-width: 640px)").matches) {
+      const card = cardRef.current;
+      const plot = stageRef.current?.querySelector<HTMLElement>(".spiral-topology__plot");
+      // A transition marks both its steps near; the first in reading order is the upper.
+      const kept =
+        plot?.querySelector(".spiral-topology__step--selected") ??
+        plot?.querySelector(".spiral-topology__step--near");
+      if (!card || !plot || !kept) return;
+      // offsetHeight, not the rect: the sheet is still rising into place.
+      const sheetTop = window.innerHeight - card.offsetHeight;
+      const labelsBottom = Math.max(
+        plot.getBoundingClientRect().bottom,
+        ...Array.from(
+          plot.querySelectorAll(".spiral-topology__step"),
+          (el) => el.getBoundingClientRect().bottom,
+        ),
+      );
+      const lift = Math.min(labelsBottom + 12 - sheetTop, kept.getBoundingClientRect().top - 12);
+      if (lift > 0) {
+        window.scrollBy({ top: lift, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+      }
+      return;
+    }
     cardRef.current?.scrollIntoView({
       block: "nearest",
       behavior: prefersReducedMotion() ? "auto" : "smooth",

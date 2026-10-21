@@ -27,11 +27,15 @@ export type TopologyDensity = {
   row: number;
   /** Widest a label may run beside its dot. */
   label: number;
+  /** Minimum lane separation where an open endpoint's label faces a neighbouring endpoint. */
+  open: number;
 };
 
 export const TRAJECTORY_TOPOLOGY = {
-  regular: { lane: 132, row: 60, label: 176 },
-  compact: { lane: 66, row: 60, label: 98 },
+  regular: { lane: 132, row: 60, label: 176, open: 2 },
+  compact: { lane: 66, row: 60, label: 98, open: 2 },
+  /** Last resort for wide topologies on phones; reached only when compact overflows. */
+  narrow: { lane: 66, row: 60, label: 80, open: 1 },
   padX: 12,
   padY: 14,
   nodeR: 3,
@@ -244,6 +248,25 @@ export function topologyLayout(
   trajectory: SpiralTrajectory,
   density: TopologyDensity = TRAJECTORY_TOPOLOGY.regular,
 ): TopologyLayout {
+  const first = placeTopology(trajectory, density, new Set());
+  // An open endpoint's label that faces a neighbouring endpoint gets a wider gap.
+  const lastRow = first.nodes.filter((n) => n.sink && n.layer === first.layers - 1);
+  const widen = new Set<string>();
+  for (let i = 1; i < lastRow.length; i++) {
+    const a = lastRow[i - 1]!;
+    const b = lastRow[i]!;
+    if (a.labelSide === "right" || b.labelSide === "left") widen.add(`${a.step.id}|${b.step.id}`);
+  }
+  return widen.size > 0 && density.open > TRAJECTORY_TOPOLOGY.sepStep
+    ? placeTopology(trajectory, density, widen)
+    : first;
+}
+
+function placeTopology(
+  trajectory: SpiralTrajectory,
+  density: TopologyDensity,
+  widen: ReadonlySet<string>,
+): TopologyLayout {
   const T = TRAJECTORY_TOPOLOGY;
   const steps = trajectory.steps;
   const ids = steps.map((s) => s.id);
@@ -337,7 +360,13 @@ export function topologyLayout(
 
   // Lanes: pull each vertex toward its neighbours, keeping order and spacing.
   const sep = (a: Vertex, b: Vertex) =>
-    a.step && b.step ? T.sepStep : a.step || b.step ? T.sepMixed : T.sepRoute;
+    a.step && b.step
+      ? widen.has(`${a.key}|${b.key}`)
+        ? Math.max(T.sepStep, density.open)
+        : T.sepStep
+      : a.step || b.step
+        ? T.sepMixed
+        : T.sepRoute;
   for (const row of rows) {
     let x = 0;
     row.forEach((v, i) => {
@@ -486,15 +515,18 @@ export function fitTopologyLayout(
   trajectory: SpiralTrajectory,
   available: number,
 ): TopologyLayout {
-  const { regular, compact } = TRAJECTORY_TOPOLOGY;
+  const { regular, compact, narrow } = TRAJECTORY_TOPOLOGY;
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
   // Narrow the lanes first; shorten labels only once lanes are compact.
   const candidates: TopologyDensity[] = [];
   for (let i = 0; i <= 6; i++) {
-    candidates.push({ lane: lerp(regular.lane, compact.lane, i / 6), row: regular.row, label: regular.label });
+    candidates.push({ lane: lerp(regular.lane, compact.lane, i / 6), row: regular.row, label: regular.label, open: regular.open });
   }
   for (let i = 1; i <= 6; i++) {
-    candidates.push({ lane: compact.lane, row: compact.row, label: lerp(regular.label, compact.label, i / 6) });
+    candidates.push({ lane: compact.lane, row: compact.row, label: lerp(regular.label, compact.label, i / 6), open: compact.open });
+  }
+  for (let i = 1; i <= 3; i++) {
+    candidates.push({ lane: narrow.lane, row: narrow.row, label: lerp(compact.label, narrow.label, i / 3), open: narrow.open });
   }
   let last = topologyLayout(trajectory, candidates[0]);
   for (const density of candidates) {

@@ -36,6 +36,8 @@ import {
   SPIRAL_RELATIONSHIP_STATUS,
   LODGEPOLE_FIRE_TRAJECTORY,
   LODGEPOLE_RELATIONSHIPS,
+  MEMORY_UPDATING_TRAJECTORY,
+  PSYCHOLOGY_RELATIONSHIPS,
   getTrajectory,
   occurrencesForRelationship,
   orderedEdges,
@@ -106,9 +108,15 @@ function trajectoryFor(lensId: SpiralLensId) {
   return getTrajectory(lensId, defaultTrajectoryId(lensId));
 }
 
+/** Empirical trajectories authored with explicit topology and their own concepts. */
+const EXPLICIT_TRAJECTORY_IDS: ReadonlySet<string> = new Set([
+  LODGEPOLE_FIRE_TRAJECTORY.id,
+  MEMORY_UPDATING_TRAJECTORY.id,
+]);
+
 /** Trajectories authored before explicit topology: read in step order. */
 function legacyTrajectories() {
-  return authoredTrajectories().filter((t) => t.id !== LODGEPOLE_FIRE_TRAJECTORY.id);
+  return authoredTrajectories().filter((t) => topologySource(t) === "ordered");
 }
 
 check("lines equal authored drawable relationship occurrences, per trajectory", () => {
@@ -172,7 +180,7 @@ check("no authored relationship connects Jesus and Zodiac", () => {
 });
 
 check("unfinished lenses and Across draw no lines", () => {
-  for (const lensId of ["systems", "psychology", "across"] as const) {
+  for (const lensId of ["systems", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, 0, lensId);
   }
 });
@@ -284,10 +292,9 @@ check("H. Biology = 1", () => {
   assert.equal(arcEndpointsForTrajectory(trajectoryFor("living-systems")?.id).length, 1);
 });
 
-check("I. unfinished lenses = 0", () => {
-  for (const lensId of ["systems", "psychology"] as const) {
-    assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, 0, lensId);
-  }
+check("I. unfinished lenses = 0; Psychology = 2", () => {
+  assert.equal(arcEndpointsForTrajectory(trajectoryFor("systems")?.id).length, 0);
+  assert.equal(arcEndpointsForTrajectory(trajectoryFor("psychology")?.id).length, 2);
 });
 
 check("J. no current line or relationship targets Emergence Again", () => {
@@ -677,7 +684,7 @@ check("2B trajectory-owned research resolves exactly once, never by guess", () =
 check("2B current relationship concepts resolve: legacy to stage research, Ecology to its trajectory", () => {
   for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((x) => x.conceptId)) {
     const t = authoredTrajectories().find((x) => x.id === r.trajectoryId)!;
-    const scope = r.trajectoryId === LODGEPOLE_FIRE_TRAJECTORY.id ? "trajectory" : "stage";
+    const scope = EXPLICIT_TRAJECTORY_IDS.has(r.trajectoryId) ? "trajectory" : "stage";
     assert.equal(resolveRelationshipConcept(r, t)?.scope, scope, r.id);
   }
 });
@@ -691,9 +698,9 @@ check("2B scale is a controlled, flat vocabulary", () => {
   for (const id of SPIRAL_SCALE_IDS) {
     assert.ok(!SPIRAL_SEQUENCE.some((s) => (s.stageId as string) === id), id);
   }
-  // Only Ecology records carry scale; Zodiac, Jesus and Biology are not backfilled.
+  // Only Ecology and Psychology records carry scale; Zodiac, Jesus and Biology are not backfilled.
   for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
-    assert.equal(r.scale !== undefined, r.trajectoryId === LODGEPOLE_FIRE_TRAJECTORY.id, r.id);
+    assert.equal(r.scale !== undefined, EXPLICIT_TRAJECTORY_IDS.has(r.trajectoryId), r.id);
   }
 });
 
@@ -878,7 +885,13 @@ check("2C.1 a source counts as support only when a reader could find it", () => 
 
 check("2C.1.H existing Jesus, Zodiac and Metamorphosis data validate unchanged", () => {
   const ids = authoredTrajectories().map((t) => t.id).sort();
-  assert.deepEqual(ids, ["jesus-narrative", "lodgepole-fire-regeneration", "metamorphosis", "zodiac-cycle"]);
+  assert.deepEqual(ids, [
+    "jesus-narrative",
+    "lodgepole-fire-regeneration",
+    "memory-updating-prediction-error",
+    "metamorphosis",
+    "zodiac-cycle",
+  ]);
   for (const t of legacyTrajectories()) {
     assert.deepEqual(validateTrajectorySources(t), [], t.id);
     assert.equal(t.evidenceStandard, undefined, t.id);
@@ -894,6 +907,7 @@ check("2C.1.I arc counts: Zodiac 4, Jesus 1, Biology 1, Ecology 1, all others 0"
     "biblical-textual": 1,
     "living-systems": 1,
     ecology: 1,
+    psychology: 2,
   };
   for (const lensId of ["systems", "living-systems", "psychology", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
@@ -1101,14 +1115,12 @@ check("2D.S Emergence Again remains untouched", () => {
   assert.ok(!arcEndpointsForTrajectory(LP.id).some((e) => e.occurrenceId === EMERGENCE_AGAIN));
 });
 
-check("2E live in Ecology only; Systems and Psychology stay uncharted", () => {
+check("2E live in Ecology only; Systems stays uncharted", () => {
   assert.equal(getTrajectory("ecology", LP.id), LP);
   assert.equal(defaultTrajectoryId("ecology"), LP.id);
   assert.deepEqual(getSpiralLens("ecology")?.trajectories.map((t) => t.id), [LP.id]);
-  for (const lensId of ["systems", "psychology"] as const) {
-    assert.equal(getSpiralLens(lensId)?.trajectories.length, 0, lensId);
-    assert.equal(defaultTrajectoryId(lensId), null, lensId);
-  }
+  assert.equal(getSpiralLens("systems")?.trajectories.length, 0);
+  assert.equal(defaultTrajectoryId("systems"), null);
   for (const lens of SPIRAL_LENSES) {
     assert.ok(!("heldTrajectories" in lens), lens.id);
     if (lens.id !== "ecology") assert.ok(!lens.trajectories.some((t) => t.id === LP.id), lens.id);
@@ -1127,7 +1139,7 @@ check("2D.T existing trajectories and relationships are byte-identical", () => {
     expected,
   );
   assert.equal(
-    hash(SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((r) => r.trajectoryId !== LP.id)),
+    hash(SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((r) => !EXPLICIT_TRAJECTORY_IDS.has(r.trajectoryId))),
     // Phase 2N: Capricorn → Aquarius candidate → ambiguous is the only change.
     "f69796d7fdf1e809c0dcd5898ba65722fa892b0d05ae940bbada51bb0510b054",
   );
@@ -1139,6 +1151,7 @@ check("2D snapshot: arc counts with the lodgepole trajectory live", () => {
     "biblical-textual": 1,
     "living-systems": 1,
     ecology: 1,
+    psychology: 2,
   };
   for (const lensId of ["systems", "living-systems", "psychology", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
@@ -1422,6 +1435,7 @@ check("2E.13 Zodiac 4, Jesus 1, Biology 1, Ecology 1 arcs; Systems, Psychology 0
     "biblical-textual": 1,
     "living-systems": 1,
     ecology: 1,
+    psychology: 2,
   };
   for (const lens of SPIRAL_LENSES) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lens.id)?.id).length, expected[lens.id] ?? 0, lens.id);
@@ -1621,7 +1635,11 @@ check("2H.11 every Ecology record carries a valid scale; nothing else is backfil
   for (const r of LP_RELS) {
     assert.ok(r.scale && (SPIRAL_SCALE_IDS as readonly string[]).includes(r.scale.id), r.id);
   }
-  assert.ok(SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((r) => r.trajectoryId !== LP.id).every((r) => !r.scale));
+  assert.ok(
+    SPIRAL_TRAJECTORY_RELATIONSHIPS.filter((r) => !EXPLICIT_TRAJECTORY_IDS.has(r.trajectoryId)).every(
+      (r) => !r.scale,
+    ),
+  );
 });
 
 check("2H.12 every relationship concept resolves exactly once", () => {
@@ -1847,6 +1865,7 @@ check("2I.16–20 arc counts by lens", () => {
     "biblical-textual": 1,
     "living-systems": 1,
     ecology: 1,
+    psychology: 2,
   };
   for (const lensId of ["systems", "psychology", "living-systems", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
@@ -1966,7 +1985,7 @@ check("2K.7 Across names operations met from relationships only; breaks counted 
 });
 
 check("2K.8–13 counts preserved: arcs by lens, Ecology breaks, Emergence Again", () => {
-  const expected: Record<string, number> = { "symbolic-zodiac": 4, "biblical-textual": 1, "living-systems": 1, ecology: 1 };
+  const expected: Record<string, number> = { "symbolic-zodiac": 4, "biblical-textual": 1, "living-systems": 1, ecology: 1, psychology: 2 };
   for (const lensId of ["systems", "psychology", "living-systems", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
   }
@@ -1994,9 +2013,10 @@ check("2K silence: records exist only as authored, never generated", () => {
     ...JESUS_RELATIONSHIPS,
     ...METAMORPHOSIS_RELATIONSHIPS,
     ...LODGEPOLE_RELATIONSHIPS,
+    ...PSYCHOLOGY_RELATIONSHIPS,
   ];
   assert.deepEqual(SPIRAL_TRAJECTORY_RELATIONSHIPS.map((r) => r.id), authored.map((r) => r.id));
-  assert.equal(SPIRAL_TRAJECTORY_RELATIONSHIPS.length, 9);
+  assert.equal(SPIRAL_TRAJECTORY_RELATIONSHIPS.length, 12);
   for (const t of authoredTrajectories()) {
     assert.deepEqual(
       relationshipsForTrajectory(t.id).map((r) => r.id),
@@ -2156,7 +2176,7 @@ check("2N.9 lodgepole restructuring research is kept as research, not as a findi
 });
 
 check("2N.10 lens counts: Zodiac 4, Jesus 1, Biology 1, Ecology 1 + 2 breaks, others 0", () => {
-  const expected: Record<string, number> = { "symbolic-zodiac": 4, "biblical-textual": 1, "living-systems": 1, ecology: 1 };
+  const expected: Record<string, number> = { "symbolic-zodiac": 4, "biblical-textual": 1, "living-systems": 1, ecology: 1, psychology: 2 };
   for (const lensId of ["systems", "psychology", "living-systems", "ecology", "biblical-textual", "symbolic-zodiac", "across"] as const) {
     assert.equal(arcEndpointsForTrajectory(trajectoryFor(lensId)?.id).length, expected[lensId] ?? 0, lensId);
   }
@@ -2268,6 +2288,237 @@ check("2N-C.6 Spiral-only orientation names the three readings", () => {
     ["Operations", "Currents", "Trajectories"],
   );
   assert.match(SPIRAL_ORIENTATION.invitation, /^Choose a domain above/);
+});
+
+/* ------------------------------------------------------------------ */
+/* Phase 3B — Psychology: memory updating under prediction error      */
+/* ------------------------------------------------------------------ */
+
+const MU = MEMORY_UPDATING_TRAJECTORY;
+const MU_RELS = relationshipsForTrajectory(MU.id);
+const PSY_DISRUPTION = "psy-cand-disruption-destabilization";
+const PSY_INTEGRATION = "psy-res-integration-incorporation";
+const PSY_RENEWAL_BREAK = "psy-break-renewal-restabilization";
+
+function renderPsyCard(
+  focus: React.ComponentProps<typeof SpiralLocalCard>["focus"],
+  conceptId: string | null = null,
+): string {
+  return renderToStaticMarkup(
+    React.createElement(SpiralLocalCard, {
+      focus,
+      lens: getSpiralLens("psychology"),
+      trajectory: MU,
+      intersection: undefined,
+      onSelectOccurrence: noop,
+      onSelectRelationship: noop,
+      onSelectStep: noop,
+      onSelectEdge: noop,
+      relationshipCount: MU_RELS.length,
+      onClose: noop,
+      exploreOpen: true,
+      onExploreToggle: noop,
+      investigateOpen: true,
+      onInvestigateToggle: noop,
+      conceptId,
+      onConceptChange: noop,
+      onOpenConcept: noop,
+      cardId: "card",
+      exploreId: "explore",
+      investigateId: "investigate",
+    }),
+  );
+}
+
+check("3B.1 Psychology has one authored trajectory, no longer forthcoming", () => {
+  const lens = getSpiralLens("psychology")!;
+  assert.deepEqual(lens.trajectories.map((t) => t.id), [MU.id]);
+  assert.equal(defaultTrajectoryId("psychology"), MU.id);
+  assert.ok(!(lens.forthcoming ?? []).some((f) => /memory/i.test(f)));
+  assert.equal(MU.lensId, "psychology");
+  assert.equal(MU.shape, "branching");
+  assert.equal(MU.evidenceStandard, "empirical");
+});
+
+check("3B.2 topology is explicit: 12 steps, 14 edges, four forks, no loop", () => {
+  assert.equal(topologySource(MU), "explicit");
+  assert.equal(MU.steps.length, 12);
+  assert.equal(trajectoryEdges(MU).length, 14);
+  assert.deepEqual(validateTrajectoryTopology(MU), []);
+  const forks = MU.steps.filter((s) => outgoingEdges(MU, s.id).length > 1).map((s) => s.id);
+  assert.deepEqual(forks, ["assessment", "prediction-error", "destabilized", "new-information"]);
+  assert.deepEqual([...returningEdgeIds(MU)], []);
+  assert.deepEqual(incomingEdges(MU, "established"), []);
+  assert.deepEqual(sinkStepIds(MU).sort(), ["later-expression", "separate", "stable"]);
+});
+
+check("3B.3 all three broad possibilities remain reachable", () => {
+  for (const [from, to] of [
+    ["assessment", "stable"],
+    ["prediction-error", "stable"],
+    ["prediction-error", "destabilized"],
+    ["prediction-error", "separate"],
+    ["destabilized", "restabilized"],
+    ["new-information", "modified"],
+    ["new-information", "separate"],
+  ] as const) {
+    assert.ok(findEdge(MU, from, to), `${from} → ${to}`);
+  }
+});
+
+check("3B.4 every assertive empirical transition is sourced", () => {
+  assert.deepEqual(validateTrajectorySources(MU), []);
+  for (const e of trajectoryEdges(MU)) {
+    if (edgeAssertsEvidence(e)) assert.ok((e.sources ?? []).some(isCitableSource), e.id);
+  }
+});
+
+check("3B.5 exactly 2 drawable relationships and 1 comparison break", () => {
+  assert.deepEqual(MU_RELS.map((r) => r.id).sort(), [PSY_DISRUPTION, PSY_RENEWAL_BREAK, PSY_INTEGRATION].sort());
+  assert.equal(MU_RELS.filter(isDrawableRelationship).length, 2);
+  assert.equal(MU_RELS.filter(isComparisonBreak).length, 1);
+  assert.equal(arcEndpointsForTrajectory(MU.id).length, 2);
+});
+
+check("3B.6 Disruption is a candidate on prediction-error → destabilized", () => {
+  const r = MU_RELS.find((x) => x.id === PSY_DISRUPTION)!;
+  assert.deepEqual(r.anchor, { kind: "transition", from: "prediction-error", to: "destabilized" });
+  assert.deepEqual(r.operations, [{ stageId: "disruption" }]);
+  assert.equal(r.status, "candidate");
+  assert.equal(r.scale?.id, "person");
+  assert.match(r.scale?.note ?? "", /single memory representation/);
+  const concept = resolveRelationshipConcept(r, MU)!;
+  assert.equal(concept.scope, "trajectory");
+  const text = JSON.stringify(concept.concept);
+  assert.match(text, /condition/i);
+  assert.match(text, /ordinary, regulated/);
+  assert.match(text, /inferred/);
+});
+
+check("3B.7 prediction error itself carries no comparison record or mark", () => {
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    assert.ok(!(r.anchor.kind === "step" && r.anchor.stepId === "prediction-error"), r.id);
+    assert.ok(!(r.anchor.kind === "transition" && r.anchor.to === "prediction-error"), r.id);
+  }
+  assert.deepEqual(relationshipsForStep(MU, "prediction-error").map((r) => r.id), [PSY_DISRUPTION]);
+  const html = renderFigure(MU);
+  const ringAnchors = [...html.matchAll(/spiral-topology__ring[^"]*" data-rel-anchor="([^"]*)"/g)].map((m) => m[1]);
+  assert.deepEqual(ringAnchors, [PSY_RENEWAL_BREAK]);
+});
+
+check("3B.8 Integration is ambiguous, not candidate, and its reading stays open", () => {
+  const r = MU_RELS.find((x) => x.id === PSY_INTEGRATION)!;
+  assert.equal(r.status, "ambiguous");
+  assert.notEqual(r.status, "candidate");
+  assert.ok(isDrawableRelationship(r));
+  assert.deepEqual(r.anchor, { kind: "transition", from: "new-information", to: "modified" });
+  assert.deepEqual(r.operations, [{ stageId: "integration" }]);
+  assert.match(r.note ?? "", /held open/);
+  const card = renderPsyCard({ kind: "relationship", relationship: r });
+  assert.match(card, /Ambiguous/);
+  assert.match(card, /held open/);
+  const investigated = renderPsyCard({ kind: "relationship", relationship: r }, "psy-cmp-incorporation");
+  assert.match(investigated, /Why the reading stays open/);
+  assert.match(investigated, /Sederberg et al\. 2011/);
+});
+
+check("3B.9 Renewal is a comparison break: never drawn, never activates Renewal", () => {
+  const r = MU_RELS.find((x) => x.id === PSY_RENEWAL_BREAK)!;
+  assert.equal(r.status, "comparison-break");
+  assert.deepEqual(r.anchor, { kind: "step", stepId: "restabilized" });
+  assert.ok(!isDrawableRelationship(r));
+  assert.equal(arcEndpointsFromRelationships([r]).length, 0);
+  const active = new Set(
+    MU_RELS.filter(isDrawableRelationship).flatMap((x) => occurrencesForRelationship(x).map((s) => s.occurrenceId)),
+  );
+  assert.deepEqual([...active].sort(), ["disruption@0", "integration@0"]);
+  assert.ok(!arcEndpointsForTrajectory(MU.id).some((e) => e.occurrenceId.startsWith("renewal")));
+  assert.match(JSON.stringify(resolveRelationshipConcept(r, MU)?.concept), /renewal effect/);
+});
+
+check("3B.10 intentional silence: no Transformation, Emergence Again, Organization, or Embodiment record", () => {
+  const stages = MU_RELS.flatMap((r) => r.operations.map((o) => o.stageId));
+  for (const silent of ["transformation", "organization", "embodiment", "emergence"] as const) {
+    assert.ok(!stages.includes(silent), silent);
+  }
+  assert.ok(!MU_RELS.some((r) => occurrencesForRelationship(r).some((s) => s.occurrenceId === EMERGENCE_AGAIN)));
+  assert.equal(EMERGENCE_AGAIN_APPROVED_RELATIONSHIP_IDS.length, 0);
+});
+
+check("3B.11 research concepts exist and resolve; recursion is research, not topology", () => {
+  assert.deepEqual(MU.concepts?.map((c) => c.id), [
+    "psy-cmp-destabilization",
+    "psy-cmp-incorporation",
+    "psy-cmp-restabilization",
+    "psy-boundary-conditions",
+    "psy-inference-limits",
+    "psy-scale",
+    "psy-terms",
+    "psy-history",
+  ]);
+  const history = JSON.stringify(MU.concepts?.find((c) => c.id === "psy-history"));
+  assert.match(history, /conditions for subsequent states/);
+  assert.match(history, /History changes how the system receives what comes next/);
+  assert.match(history, /not drawn as a loop/);
+  const text = JSON.stringify(MU);
+  for (const banned of [/successful update/i, /corrected memory/i, /failure to integrate/i, /erased memory/i]) {
+    assert.ok(!banned.test(text), String(banned));
+  }
+  assert.ok(!/creation operation/i.test(text));
+});
+
+check("3B.12 animal evidence is labelled cross-species", () => {
+  const animal = ["nader-2000", "milekic-alberini-2002", "eisenberg-2003", "pedreira-2004", "suzuki-2004", "merlo-2014", "tse-2007"];
+  const cites = [
+    ...trajectoryEdges(MU).flatMap((e) => e.sources ?? []),
+    ...(MU.concepts ?? []).flatMap((c) => c.sources ?? []),
+  ];
+  for (const s of cites.filter((x) => animal.includes(x.id))) {
+    assert.match(s.supports ?? "", /Cross-species/, s.id);
+  }
+});
+
+check("3B.13 Across reflects Psychology from records only, breaks apart", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(SpiralAcrossScaffold, {
+      onSelectLens: noop,
+      showInvestigate: false,
+      researchOpen: false,
+      onResearchToggle: noop,
+      researchId: "r",
+    }),
+  );
+  const item = html.match(/data-trajectory="memory-updating-prediction-error"[\s\S]*?<\/li>/)?.[0] ?? "";
+  assert.match(item, /Disruption/);
+  assert.match(item, /Integration/);
+  assert.match(item, /1 break/);
+  for (const op of ["Emergence", "Embodiment", "Differentiation", "Organization", "Transformation", "Renewal"]) {
+    assert.ok(!item.includes(op), op);
+  }
+  assert.ok(!/complete|unresearched|bounded negative/i.test(item));
+});
+
+check("3B.14 Psychology arrival stages the first fork and leaves every branch drawn", () => {
+  const html = renderArrival(MU);
+  assert.match(html, /data-staged=""/);
+  assert.match(html, /spiral-topology__step--fork[^"]*" [^>]*data-step-id="assessment"/);
+  for (const id of ["stable", "prediction-error"]) {
+    assert.match(html, new RegExp(`spiral-topology__step--future[^"]*" [^>]*data-step-id="${id}"`), id);
+  }
+  assert.equal((html.match(/data-edge-id=/g) ?? []).length, 14);
+  assert.equal((html.match(/data-step-id=/g) ?? []).length, 12);
+  const phone = fitTopologyLayout(MU, 343);
+  assert.ok(phone.width + phone.gutter.left + phone.gutter.right <= 343);
+});
+
+check("3B.15 other lens counts are unchanged", () => {
+  assert.equal(arcEndpointsForTrajectory(trajectoryFor("symbolic-zodiac")?.id).length, 4);
+  assert.equal(arcEndpointsForTrajectory(trajectoryFor("biblical-textual")?.id).length, 1);
+  assert.equal(arcEndpointsForTrajectory(trajectoryFor("living-systems")?.id).length, 1);
+  assert.equal(arcEndpointsForTrajectory(LP.id).length, 1);
+  assert.equal(LP_RELS.filter(isComparisonBreak).length, 2);
+  assert.equal(arcEndpointsForTrajectory(trajectoryFor("systems")?.id).length, 0);
+  assert.equal(TRAJECTORY_TAKEAWAYS[MU.id], "The comparison centres on a memory becoming labile, not on surprise itself, and whether new information truly joins the old memory remains open.");
 });
 
 if (failed > 0) {

@@ -5,6 +5,7 @@ import { relationshipsForStop } from "./comparisons";
 import { ZODIAC_LENS_RESEARCH } from "./research/zodiac";
 import { JESUS_NARRATIVE_TRAJECTORY } from "./trajectories/jesus";
 import { LODGEPOLE_FIRE_TRAJECTORY } from "./trajectories/lodgepole";
+import { MEMORY_UPDATING_TRAJECTORY } from "./trajectories/memory-updating";
 import { METAMORPHOSIS_TRAJECTORY } from "./trajectories/metamorphosis";
 import { ZODIAC_CYCLE_TRAJECTORY } from "./trajectories/zodiac";
 import type {
@@ -56,8 +57,8 @@ export const SPIRAL_LENSES: readonly SpiralLens[] = [
     evidence:
       "Empirical and clinical research of varying strength—each concept is marked.",
     inPhrase: "psychological life",
-    trajectories: [],
-    forthcoming: ["Grief", "Memory updating", "Developmental transition"],
+    trajectories: [MEMORY_UPDATING_TRAJECTORY],
+    forthcoming: ["Grief", "Developmental transition"],
     status: "available",
   },
   {
