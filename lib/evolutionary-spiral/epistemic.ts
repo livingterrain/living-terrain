@@ -101,6 +101,68 @@ const NOT_YET_IN_LEGEND: ReadonlySet<SpiralEpistemicKind> = new Set([
 export const SPIRAL_EPISTEMIC_LEGEND: readonly SpiralEpistemicCategory[] =
   SPIRAL_EPISTEMIC_CATEGORIES.filter((c) => !NOT_YET_IN_LEGEND.has(c.id));
 
+export type SpiralKnowingFamilyId =
+  | "evidence"
+  | "framework"
+  | "textual"
+  | "symbolic"
+  | "model"
+  | "open";
+
+export type SpiralKnowingFamily = {
+  id: SpiralKnowingFamilyId;
+  label: string;
+  kinds: readonly SpiralEpistemicKind[];
+};
+
+/**
+ * Plain families for the first glance. Every epistemic kind belongs to exactly
+ * one family; the precise kinds remain one step deeper. Evidence, frameworks,
+ * readings of texts, symbolic comparison, and open claims never share a family.
+ */
+export const SPIRAL_KNOWING_FAMILIES: readonly SpiralKnowingFamily[] = [
+  {
+    id: "evidence",
+    label: "Research evidence",
+    kinds: ["empirical", "empirical-mechanism", "empirical-observation"],
+  },
+  {
+    id: "framework",
+    label: "Theoretical framework",
+    kinds: ["conceptual-framework", "systems-principle"],
+  },
+  {
+    id: "textual",
+    label: "Historical, textual, or theological reading",
+    kinds: [
+      "historical-observation",
+      "historical-textual",
+      "textual-observation",
+      "textual-interpretation",
+      "theological-interpretation",
+    ],
+  },
+  {
+    id: "symbolic",
+    label: "Symbolic comparison",
+    kinds: ["symbolic-comparative", "symbolic-analogy"],
+  },
+  { id: "model", label: "Model projection", kinds: ["model-projection"] },
+  {
+    id: "open",
+    label: "Debated or unresolved",
+    kinds: ["hypothesis", "contested-interpretation"],
+  },
+];
+
+/** Families present among the given kinds, in family order. */
+export function knowingFamilies(
+  kinds: readonly SpiralEpistemicKind[] | undefined,
+): SpiralKnowingFamily[] {
+  if (!kinds?.length) return [];
+  return SPIRAL_KNOWING_FAMILIES.filter((f) => f.kinds.some((k) => kinds.includes(k)));
+}
+
 export function epistemicLabel(kind: SpiralEpistemicKind): string {
   return (
     SPIRAL_EPISTEMIC_CATEGORIES.find((c) => c.id === kind)?.label ?? kind

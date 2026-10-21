@@ -46,10 +46,6 @@ const FUTURE_COMPARISONS = [
 
 type Props = {
   onSelectLens: (lensId: SpiralLensId) => void;
-  showInvestigate: boolean;
-  researchOpen: boolean;
-  onResearchToggle: () => void;
-  researchId: string;
 };
 
 function operationNames(rels: readonly SpiralTrajectoryRelationship[]): string[] {
@@ -282,20 +278,14 @@ function AcrossTable({
   );
 }
 
+const mappedLenses = () => SPIRAL_LENSES.filter((l) => l.status !== "scaffold");
+
 /**
- * Across at discovery depth: each mapped trajectory in its own shape, with only
- * its authored relationships marked. Nothing is synthesized; the table and the
- * future comparisons wait behind Investigate.
+ * Across at first glance: each mapped trajectory in its own shape, with only
+ * its authored relationships marked. Nothing is synthesized.
  */
-export function SpiralAcrossScaffold({
-  onSelectLens,
-  showInvestigate,
-  researchOpen,
-  onResearchToggle,
-  researchId,
-}: Props) {
-  const lenses = SPIRAL_LENSES.filter((l) => l.status !== "scaffold");
-  const mapped = lenses.flatMap((lens) =>
+export function AcrossMinis({ onSelectLens }: Props) {
+  const mapped = mappedLenses().flatMap((lens) =>
     lens.trajectories.map((t) => ({
       lens,
       trajectory: t,
@@ -303,7 +293,7 @@ export function SpiralAcrossScaffold({
     })),
   );
   return (
-    <div className="spiral-across">
+    <>
       <p className="spiral-across__lede">Where do these trajectories meet the Spiral?</p>
 
       <ul className="spiral-mini">
@@ -345,52 +335,29 @@ export function SpiralAcrossScaffold({
           );
         })}
       </ul>
+    </>
+  );
+}
 
-      {showInvestigate && (
-        <div className="spiral-lens-context__research">
-          <button
-            type="button"
-            className="spiral-op__investigate-toggle"
-            aria-expanded={researchOpen}
-            aria-controls={researchId}
-            onClick={onResearchToggle}
-          >
-            <span className="spiral-op__investigate-title">Investigate</span>
-            <span className="spiral-op__investigate-lead">
-              every lens · what Across will compare
-            </span>
-          </button>
-          <div
-            id={researchId}
-            className="spiral-lens-context__research-body"
-            hidden={!researchOpen}
-          >
-            {researchOpen && (
-              <div className="spiral-trajectory__research">
-                <p className="spiral-trajectory__research-body">
-                  Across compares authored trajectories—not lens names—against
-                  the same reference Spiral. It becomes meaningful as
-                  trajectories are researched and authored.
-                </p>
-                <AcrossTable lenses={lenses} onSelectLens={onSelectLens} />
-                <div className="spiral-across__future">
-                  <p className="spiral-across__future-label">
-                    What Across will eventually compare
-                  </p>
-                  <p className="spiral-across__future-list">
-                    {FUTURE_COMPARISONS.join(" · ")}
-                  </p>
-                </div>
-                <p className="spiral-across__note">
-                  Nothing here is synthesized yet. Unfinished trajectories are
-                  not treated as evidence, and an operation with no authored
-                  relationship is not counted as agreement.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
+/** Across at Investigate depth: every lens, and what Across will compare. */
+export function AcrossIndex({ onSelectLens }: Props) {
+  return (
+    <>
+      <p className="spiral-trajectory__research-body">
+        Across compares authored trajectories—not lens names—against the same
+        reference Spiral. It becomes meaningful as trajectories are researched
+        and authored.
+      </p>
+      <AcrossTable lenses={mappedLenses()} onSelectLens={onSelectLens} />
+      <div className="spiral-across__future">
+        <p className="spiral-across__future-label">What Across will eventually compare</p>
+        <p className="spiral-across__future-list">{FUTURE_COMPARISONS.join(" · ")}</p>
+      </div>
+      <p className="spiral-across__note">
+        Nothing here is synthesized yet. Unfinished trajectories are not treated
+        as evidence, and an operation with no authored relationship is not
+        counted as agreement.
+      </p>
+    </>
   );
 }

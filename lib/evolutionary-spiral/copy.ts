@@ -57,6 +57,13 @@ export const SPIRAL_ORIENTATION = {
     "Choose a domain above to see where an independently studied trajectory meets the model.",
 } as const;
 
+export const SPIRAL_GUARDRAIL =
+  "Structural resemblance is a reason to investigate—not evidence that the structures share a cause.";
+
+/** Shown wherever trajectory readings sit side by side in Across. */
+export const ACROSS_SYNTHESIS_BOUNDARY =
+  "Each line restates one trajectory’s own comparison records, read on its own terms. Set side by side, they are not a finding: no cross-lens synthesis has been established.";
+
 /**
  * One plain reading per trajectory, restating its authored comparison records.
  * Absent where nothing has been compared; never a new finding.
