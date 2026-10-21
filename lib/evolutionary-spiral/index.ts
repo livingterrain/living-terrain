@@ -100,8 +100,30 @@ export { SPIRAL_DOMAINS, getSpiralDomain } from "./domains";
 export {
   SPIRAL_EPISTEMIC_CATEGORIES,
   SPIRAL_EPISTEMIC_LEGEND,
+  SPIRAL_KNOWING_FAMILIES,
   epistemicLabel,
+  knowingFamilies,
 } from "./epistemic";
+
+export type {
+  SpiralKnowingFamily,
+  SpiralKnowingFamilyId,
+} from "./epistemic";
+
+export {
+  lensDiscovery,
+  relationshipDiscovery,
+  relationshipLine,
+  relationshipLineLabel,
+  SYMBOLIC_READING_LABEL,
+} from "./discovery";
+
+export type {
+  SpiralAcrossReading,
+  SpiralDiscovery,
+  SpiralDiscoveryPlace,
+  SpiralDiscoverySlot,
+} from "./discovery";
 
 export {
   SPIRAL_PROVENANCE_CATEGORIES,
@@ -111,7 +133,13 @@ export {
 
 export type { SpiralProvenanceCategory } from "./provenance";
 
-export { SPIRAL_COPY, SPIRAL_ORIENTATION, TRAJECTORY_TAKEAWAYS } from "./copy";
+export {
+  ACROSS_SYNTHESIS_BOUNDARY,
+  SPIRAL_COPY,
+  SPIRAL_GUARDRAIL,
+  SPIRAL_ORIENTATION,
+  TRAJECTORY_TAKEAWAYS,
+} from "./copy";
 
 export { SPIRAL_EXAMPLES, examplesForStage } from "./examples";
 

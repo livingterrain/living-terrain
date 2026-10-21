@@ -78,12 +78,27 @@ import {
   type SpiralTrajectoryRelationship,
 } from "../lib/evolutionary-spiral";
 import {
+  ACROSS_SYNTHESIS_BOUNDARY,
+  SPIRAL_GUARDRAIL,
+  SPIRAL_KNOWING_FAMILIES,
+  getStageExploration,
+  lensDiscovery,
+  relationshipDiscovery,
+  relationshipLine,
+  relationshipLineLabel,
+  researchedStopsForLens,
+  SYMBOLIC_READING_LABEL,
+  type SpiralDiscovery,
+  type SpiralDiscoverySlot,
+} from "../lib/evolutionary-spiral";
+import * as SpiralModule from "../lib/evolutionary-spiral";
+import {
   arcEndpointsForTrajectory,
   arcEndpointsFromRelationships,
 } from "../components/evolutionary-spiral/spiral-arc-endpoints";
 import { SpiralTrajectoryFigure } from "../components/evolutionary-spiral/SpiralTrajectoryFigure";
 import { SpiralLocalCard } from "../components/evolutionary-spiral/SpiralLocalCard";
-import { SpiralAcrossScaffold } from "../components/evolutionary-spiral/SpiralAcrossScaffold";
+import { SpiralLensContext } from "../components/evolutionary-spiral/SpiralLensContext";
 
 // Components compile with the classic JSX runtime here.
 (globalThis as { React?: typeof React }).React = React;
@@ -1208,6 +1223,40 @@ function renderCard(focus: React.ComponentProps<typeof SpiralLocalCard>["focus"]
   );
 }
 
+/** A lens panel as the page renders it, with both deeper levels open or closed. */
+function renderLensPanel(
+  lensId: SpiralLensId,
+  { open = false, trajectoryId }: { open?: boolean; trajectoryId?: string } = {},
+): string {
+  const lens = getSpiralLens(lensId)!;
+  const trajectory = getTrajectory(lensId, trajectoryId ?? defaultTrajectoryId(lensId));
+  return renderToStaticMarkup(
+    React.createElement(SpiralLensContext, {
+      lens,
+      trajectory,
+      onSelectTrajectory: noop,
+      relationships: trajectory ? relationshipsForTrajectory(trajectory.id) : [],
+      activeRelationshipIds: new Set<string>(),
+      selectedStepId: null,
+      onSelectStep: noop,
+      selectedEdgeId: null,
+      onSelectEdge: noop,
+      onSelectRelationship: noop,
+      onSelectOccurrence: noop,
+      onSelectLens: noop,
+      showInvestigate: true,
+      exploreOpen: open,
+      onExploreToggle: noop,
+      exploreId: "explore",
+      researchOpen: open,
+      onResearchToggle: noop,
+      researchConceptId: null,
+      onResearchConceptChange: noop,
+      researchId: "research",
+    }),
+  );
+}
+
 /** Drawn edges: [id, from, to] from the figure's markup. */
 function drawnEdges(html: string): [string, string, string][] {
   return [
@@ -1377,12 +1426,13 @@ check("2E.9 a comparison break on the trajectory never becomes an arc", () => {
 });
 
 check("2E.10 legacy trajectories render through their existing figures, unchanged", () => {
-  // Hashes of the pre-2E figure's markup for the same props.
+  // Hashes of the pre-2E figure's markup for the same props. Progressive discovery:
+  // only accessible labels change, "researched relationship" → "researched comparison".
   const expected: Record<string, [string, string]> = {
-    metamorphosis: ["path", "0854de1a3370eb772e8a913bbd2650770b2a304f8e7dab837d5b348fd24835e6"],
-    "jesus-narrative": ["path", "69aa818b74d43c51e0fbfab24018bf4b59d8856ab13c9e78571eaa1022edea65"],
+    metamorphosis: ["path", "b7f217d8f4493c73de148dad38d8c1497ef9e54776c596648776557b17980e36"],
+    "jesus-narrative": ["path", "4580a08a266a339b34c6cb77d93ed0ae104762310ff5176be7da9b616dc70ca1"],
     // Phase 2N: only the Capricorn → Aquarius arc class changes (candidate → ambiguous).
-    "zodiac-cycle": ["wheel", "d7e220e91b92fa98b2cba48bbf6a10d44589c5e13630820f78b3c20f8eee59a4"],
+    "zodiac-cycle": ["wheel", "d5c944ff8373e53b6584e8e38f3f4d9dbcdb3550ec0d7e762381d965d838ab70"],
   };
   const hash = (v: string) => createHash("sha256").update(v).digest("hex");
   for (const t of legacyTrajectories()) {
@@ -1499,7 +1549,7 @@ check("2E.17 a trajectory goes live only where its figure can draw it", () => {
 
 check("2E zero-relationship copy never claims no relationship exists", () => {
   const dir = path.resolve(__dirname, "../components/evolutionary-spiral");
-  const context = readFileSync(path.join(dir, "SpiralLensContext.tsx"), "utf8").replace(/\s+/g, " ");
+  const context = readFileSync(path.join(dir, "SpiralDepth.tsx"), "utf8").replace(/\s+/g, " ");
   assert.ok(context.includes("This trajectory has been charted independently. No Spiral relationships have been authored yet."));
   for (const file of readdirSync(dir).filter((f) => f.endsWith(".tsx"))) {
     assert.ok(!/No relationship exists/i.test(readFileSync(path.join(dir, file), "utf8")), file);
@@ -1743,7 +1793,7 @@ check("2H LOCAL: candidate and break disclosure, scale before Explore", () => {
       assert.ok(!beforeExplore.includes("↔"), r.id);
       assert.ok(!beforeExplore.includes("spiral-card__question"), r.id);
     } else {
-      assert.match(beforeExplore, /Researched relationship with/, r.id);
+      assert.match(beforeExplore, /Researched comparison with/, r.id);
     }
     // Investigate opens the record's own research.
     const concept = LP.concepts!.find((c) => c.id === r.conceptId)!;
@@ -1826,17 +1876,9 @@ check("2I.9 every Ecology scale remains valid", () => {
 });
 
 check("2I.10 Across counts breaks separately and never as operations met", () => {
-  const html = renderToStaticMarkup(
-    React.createElement(SpiralAcrossScaffold, {
-      onSelectLens: noop,
-      showInvestigate: false,
-      researchOpen: false,
-      onResearchToggle: noop,
-      researchId: "r",
-    }),
-  );
+  const html = renderLensPanel("across", { open: true });
   const item = html.match(/data-trajectory="lodgepole-fire-regeneration"[\s\S]*?<\/li>/)?.[0] ?? "";
-  assert.match(item, /1 researched relationship with Disruption\. 2 comparison breaks\./);
+  assert.match(item, /1 researched comparison with Disruption\. 2 comparison breaks\./);
   assert.match(item, /↔ Disruption · 2 breaks/);
   assert.ok(!/Renewal|Transformation/.test(item));
   assert.match(html, /Where do these trajectories meet the Spiral\?/);
@@ -1950,7 +1992,12 @@ check("2K.5–6 arcs, counts, and break marks go through the shared rule only", 
   }
   const arcs = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral/spiral-arc-endpoints.ts"), "utf8");
   assert.match(arcs, /relationships\.filter\(isDrawableRelationship\)/);
-  for (const file of ["SpiralLensContext.tsx", "SpiralTrajectoryFigure.tsx", "SpiralAcrossScaffold.tsx", "SpiralHelixExperience.tsx"]) {
+  for (const file of [
+    "../../lib/evolutionary-spiral/discovery.ts",
+    "SpiralTrajectoryFigure.tsx",
+    "SpiralAcrossScaffold.tsx",
+    "SpiralHelixExperience.tsx",
+  ]) {
     const source = readFileSync(path.resolve(__dirname, "../components/evolutionary-spiral", file), "utf8");
     assert.match(source, /isDrawableRelationship/, file);
     assert.match(source, /isComparisonBreak/, file);
@@ -1967,15 +2014,7 @@ check("2K.6 break counts are never derived as total minus drawable", () => {
 });
 
 check("2K.7 Across names operations met from relationships only; breaks counted apart", () => {
-  const html = renderToStaticMarkup(
-    React.createElement(SpiralAcrossScaffold, {
-      onSelectLens: noop,
-      showInvestigate: true,
-      researchOpen: true,
-      onResearchToggle: noop,
-      researchId: "r",
-    }),
-  );
+  const html = renderLensPanel("across", { open: true });
   const item = html.match(/data-trajectory="lodgepole-fire-regeneration"[\s\S]*?<\/li>/)?.[0] ?? "";
   assert.match(item, /↔ Disruption · 2 breaks/);
   for (const op of ["Emergence", "Embodiment", "Differentiation", "Organization", "Transformation", "Integration", "Renewal"]) {
@@ -2479,15 +2518,7 @@ check("3B.12 animal evidence is labelled cross-species", () => {
 });
 
 check("3B.13 Across reflects Psychology from records only, breaks apart", () => {
-  const html = renderToStaticMarkup(
-    React.createElement(SpiralAcrossScaffold, {
-      onSelectLens: noop,
-      showInvestigate: false,
-      researchOpen: false,
-      onResearchToggle: noop,
-      researchId: "r",
-    }),
-  );
+  const html = renderLensPanel("across", { open: true });
   const item = html.match(/data-trajectory="memory-updating-prediction-error"[\s\S]*?<\/li>/)?.[0] ?? "";
   assert.match(item, /Disruption/);
   assert.match(item, /Integration/);
@@ -2519,6 +2550,453 @@ check("3B.15 other lens counts are unchanged", () => {
   assert.equal(LP_RELS.filter(isComparisonBreak).length, 2);
   assert.equal(arcEndpointsForTrajectory(trajectoryFor("systems")?.id).length, 0);
   assert.equal(TRAJECTORY_TAKEAWAYS[MU.id], "The comparison centres on a memory becoming labile, not on surprise itself, and whether new information truly joins the old memory remains open.");
+});
+
+/* ------------------------------------------------------------------ */
+/* Progressive discovery — Understand · Explore · Investigate          */
+/* ------------------------------------------------------------------ */
+
+const ALL_LENS_IDS = SPIRAL_LENSES.map((l) => l.id);
+
+function levels(d: SpiralDiscovery): SpiralDiscoverySlot[] {
+  return [...d.understand, ...d.explore, ...d.investigate];
+}
+
+function ofKind<K extends SpiralDiscoverySlot["kind"]>(
+  list: readonly SpiralDiscoverySlot[],
+  kind: K,
+): Extract<SpiralDiscoverySlot, { kind: K }>[] {
+  return list.filter((s): s is Extract<SpiralDiscoverySlot, { kind: K }> => s.kind === kind);
+}
+
+function lensPanelDiscovery(lensId: SpiralLensId): SpiralDiscovery {
+  return lensDiscovery(getSpiralLens(lensId)!, trajectoryFor(lensId));
+}
+
+function relationshipContext(r: SpiralTrajectoryRelationship) {
+  const lens = SPIRAL_LENSES.find((l) => l.trajectories.some((t) => t.id === r.trajectoryId))!;
+  const trajectory = lens.trajectories.find((t) => t.id === r.trajectoryId)!;
+  return { lens, trajectory };
+}
+
+/** Escape text as React's static markup does, for presence checks. */
+function esc(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
+/** Every string the Spiral data layer exports or authors in stage research. */
+const AUTHORED_CORPUS = [
+  ...Object.values(SpiralModule).filter((v) => typeof v !== "function"),
+  ...SPIRAL_SEQUENCE.map((s) => getStageExploration(s.stageId)),
+]
+  .map((v) => JSON.stringify(v) ?? "")
+  .join("\n");
+
+function assertAuthored(text: string, where: string) {
+  const encoded = JSON.stringify(text).slice(1, -1);
+  assert.ok(AUTHORED_CORPUS.includes(encoded), `${where}: not authored — ${text.slice(0, 80)}`);
+}
+
+check("PD.1 every epistemic kind belongs to exactly one way-of-knowing family", () => {
+  for (const c of SPIRAL_EPISTEMIC_CATEGORIES) {
+    const homes = SPIRAL_KNOWING_FAMILIES.filter((f) => f.kinds.includes(c.id));
+    assert.equal(homes.length, 1, c.id);
+  }
+  const listed = SPIRAL_KNOWING_FAMILIES.flatMap((f) => f.kinds);
+  assert.equal(listed.length, new Set(listed).size);
+  assert.equal(listed.length, SPIRAL_EPISTEMIC_CATEGORIES.length);
+  const family = (kind: SpiralEpistemicKind) => SPIRAL_KNOWING_FAMILIES.find((f) => f.kinds.includes(kind))!.id;
+  // The distinctions the approval named never collapse into one family.
+  const distinct = ["empirical", "conceptual-framework", "textual-interpretation", "symbolic-analogy", "contested-interpretation"] as const;
+  assert.equal(new Set(distinct.map(family)).size, distinct.length);
+  assert.equal(family("hypothesis"), family("contested-interpretation"));
+  assert.notEqual(family("model-projection"), family("empirical-observation"));
+});
+
+check("PD.2 every lens panel opens with its own introduction and evidence line at Understand", () => {
+  for (const id of ALL_LENS_IDS) {
+    const lens = getSpiralLens(id)!;
+    const d = lensPanelDiscovery(id);
+    assert.deepEqual(d.understand.slice(0, 2), [
+      { kind: "intro", text: lens.intro },
+      { kind: "evidence", text: lens.evidence },
+    ], id);
+    const html = renderLensPanel(id);
+    assert.ok(html.includes(esc(lens.intro)), `${id} intro rendered`);
+    assert.ok(html.includes(esc(lens.evidence)), `${id} evidence rendered`);
+  }
+});
+
+check("PD.3 an empty level renders no control and no filler", () => {
+  for (const id of ALL_LENS_IDS) {
+    const d = lensPanelDiscovery(id);
+    const html = renderLensPanel(id);
+    assert.equal(html.includes("spiral-op__explore-toggle"), d.explore.length > 0, `${id} explore control`);
+    assert.equal(html.includes("spiral-op__investigate-toggle"), d.investigate.length > 0, `${id} investigate control`);
+    if (d.investigate.length > 0) assert.ok(d.investigateLead.length > 0, `${id} lead`);
+  }
+  const systems = lensPanelDiscovery("systems");
+  assert.equal(systems.explore.length, 0);
+  // An uncharted lens says only what it has: its forthcoming list, verbatim.
+  const uncharted = ofKind(systems.understand, "uncharted")[0]!;
+  assert.deepEqual(uncharted.forthcoming, getSpiralLens("systems")!.forthcoming ?? []);
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    const { lens, trajectory } = relationshipContext(r);
+    const d = relationshipDiscovery(r, trajectory, lens);
+    for (const slot of levels(d)) {
+      for (const v of Object.values(slot)) {
+        if (typeof v === "string") assert.ok(v.trim().length > 0, `${r.id} ${slot.kind}`);
+      }
+    }
+  }
+});
+
+check("PD.4 every visitor-facing sentence the resolver places is authored", () => {
+  const all = [
+    ...ALL_LENS_IDS.flatMap((id) => levels(lensPanelDiscovery(id)).map((s) => [id, s] as const)),
+    ...SPIRAL_TRAJECTORY_RELATIONSHIPS.flatMap((r) => {
+      const { lens, trajectory } = relationshipContext(r);
+      return levels(relationshipDiscovery(r, trajectory, lens)).map((s) => [r.id, s] as const);
+    }),
+  ];
+  for (const [where, s] of all) {
+    switch (s.kind) {
+      case "intro":
+      case "evidence":
+      case "description":
+      case "takeaway":
+      case "note":
+      case "framing":
+      case "provenance":
+      case "guardrail":
+        assertAuthored(s.text, `${where} ${s.kind}`);
+        break;
+      case "caution":
+        assertAuthored(s.title, `${where} caution title`);
+        assertAuthored(s.text, `${where} caution`);
+        break;
+      case "breaks":
+        assertAuthored(s.body, `${where} breaks`);
+        break;
+      case "finding":
+        assertAuthored(s.label, `${where} finding label`);
+        assertAuthored(s.definition, `${where} finding definition`);
+        break;
+      case "readings":
+        for (const reading of s.readings) assertAuthored(reading.text, `${where} reading`);
+        break;
+      case "boundary":
+        assertAuthored(s.text, `${where} boundary`);
+        break;
+    }
+  }
+});
+
+check("PD.5 research reachable before stays reachable through a lens panel", () => {
+  for (const lens of SPIRAL_LENSES) {
+    if (lens.status === "scaffold") continue;
+    if (lens.trajectories.length === 0) {
+      const stops = researchedStopsForLens(lens.id);
+      const d = lensDiscovery(lens, undefined);
+      const reached = ofKind(d.investigate, "researched-stops").flatMap((s) => s.stops);
+      assert.deepEqual(reached.map((s) => s.occurrenceId), stops.map((s) => s.occurrenceId), lens.id);
+      continue;
+    }
+    for (const t of lens.trajectories) {
+      const d = lensDiscovery(lens, t);
+      const all = levels(d);
+      const concepts = ofKind(all, "research").flatMap((s) => s.exploration.concepts.map((c) => c.id));
+      for (const c of lens.research?.concepts ?? t.concepts ?? []) assert.ok(concepts.includes(c.id), `${t.id} concept ${c.id}`);
+      const sources = ofKind(all, "sources").flatMap((s) => s.sources.map((x) => x.id));
+      for (const s of t.sources ?? []) assert.ok(sources.includes(s.id), `${t.id} source ${s.id}`);
+      const issues = ofKind(all, "issues").flatMap((s) => s.issues.map((i) => i.id));
+      for (const i of t.researchIssues ?? []) assert.ok(issues.includes(i.id), `${t.id} issue ${i.id}`);
+      const questions = ofKind(all, "open-questions").flatMap((s) => s.items);
+      for (const q of t.openQuestions ?? []) assert.ok(questions.includes(q), `${t.id} open question`);
+      if (t.comparisonBreaks) {
+        assert.equal(ofKind(d.investigate, "breaks")[0]?.body, t.comparisonBreaks.body, `${t.id} breaks section intact`);
+      }
+      if (t.provenanceNote) assert.equal(ofKind(all, "provenance")[0]?.text, t.provenanceNote, t.id);
+      if (t.framing) assert.equal(ofKind(all, "framing")[0]?.text, t.framing, t.id);
+      const html = renderLensPanel(lens.id, { open: true, trajectoryId: t.id });
+      for (const q of t.openQuestions ?? []) assert.ok(html.includes(esc(q)), `${t.id} open question rendered`);
+      for (const i of t.researchIssues ?? []) assert.ok(html.includes(esc(i.question)), `${t.id} issue rendered`);
+      if (t.provenanceNote) assert.ok(html.includes(esc(t.provenanceNote)), `${t.id} provenance rendered`);
+    }
+  }
+});
+
+check("PD.6 Investigate is one step from the surface, never inside Explore", () => {
+  for (const id of ALL_LENS_IDS) {
+    const d = lensPanelDiscovery(id);
+    if (d.investigate.length === 0) continue;
+    const html = renderLensPanel(id);
+    const explore = html.indexOf('class="spiral-op__explore');
+    const investigate = html.indexOf('class="spiral-lens-context__research"');
+    assert.ok(investigate > 0, `${id} investigate control on the surface`);
+    if (explore >= 0) {
+      const exploreBody = html.slice(explore, html.indexOf("</div></div>", explore));
+      assert.ok(!exploreBody.includes("spiral-op__investigate-toggle"), `${id} investigate not nested`);
+    }
+  }
+  const r = PSYCHOLOGY_RELATIONSHIPS[0]!;
+  const html = renderToStaticMarkup(
+    React.createElement(SpiralLocalCard, {
+      focus: { kind: "relationship", relationship: r },
+      lens: getSpiralLens("psychology"),
+      trajectory: MEMORY_UPDATING_TRAJECTORY,
+      intersection: undefined,
+      onSelectOccurrence: noop,
+      onSelectRelationship: noop,
+      onSelectStep: noop,
+      onSelectEdge: noop,
+      relationshipCount: 0,
+      onClose: noop,
+      exploreOpen: false,
+      onExploreToggle: noop,
+      investigateOpen: false,
+      onInvestigateToggle: noop,
+      conceptId: null,
+      onConceptChange: noop,
+      onOpenConcept: noop,
+      cardId: "card",
+      exploreId: "explore",
+      investigateId: "investigate",
+    }),
+  );
+  assert.match(html, /spiral-op__explore-toggle/);
+  assert.match(html, /spiral-op__investigate-toggle/);
+});
+
+check("PD.7 every comparison card states its finding and way of knowing at Understand", () => {
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    const { lens, trajectory } = relationshipContext(r);
+    const d = relationshipDiscovery(r, trajectory, lens);
+    const finding = ofKind(d.understand, "finding")[0];
+    assert.equal(finding?.finding, comparisonFindingKind(r), r.id);
+    assert.equal(finding?.label, SPIRAL_RELATIONSHIP_STATUS[r.status].label, r.id);
+    const knowing = ofKind(d.understand, "knowing")[0];
+    const evidence = ofKind(d.understand, "evidence")[0];
+    assert.ok(knowing || evidence, `${r.id} has a way of knowing at Understand`);
+    if (r.epistemicKinds?.length) {
+      assert.ok(knowing, r.id);
+      // Explore keeps the precise kinds the families summarise.
+      assert.deepEqual(ofKind(d.explore, "epistemic")[0]?.kinds, r.epistemicKinds, r.id);
+    } else {
+      assert.equal(evidence?.text, lens.evidence, r.id);
+    }
+    const line = relationshipLine(r, lens);
+    if (line) assert.equal(ofKind(d.understand, "note")[0]?.text, line, r.id);
+    if (r.scale) assert.ok(ofKind(d.understand, "scale").length === 1, r.id);
+    assert.equal(ofKind(d.explore, "guardrail")[0]?.text, SPIRAL_GUARDRAIL, r.id);
+    const owned = resolveRelationshipConcept(r, trajectory);
+    if (owned) {
+      const reached = ofKind(d.investigate, "research").flatMap((s) => s.exploration.concepts.map((c) => c.id));
+      assert.ok(reached.includes(owned.concept.id), `${r.id} research reachable`);
+    }
+  }
+});
+
+check("PD.8 a comparison break is never presented as an affirmative relationship", () => {
+  const breaks = SPIRAL_TRAJECTORY_RELATIONSHIPS.filter(isComparisonBreak);
+  assert.ok(breaks.length >= 3);
+  for (const r of breaks) {
+    const { lens, trajectory } = relationshipContext(r);
+    const d = relationshipDiscovery(r, trajectory, lens);
+    assert.equal(ofKind(d.understand, "finding")[0]?.finding, "comparison-break", r.id);
+    assert.equal(ofKind(levels(d), "question").length, 0, `${r.id} asks no "where does it appear" question`);
+    const html = renderToStaticMarkup(
+      React.createElement(SpiralLocalCard, {
+        focus: { kind: "relationship", relationship: r },
+        lens,
+        trajectory,
+        intersection: undefined,
+        onSelectOccurrence: noop,
+        onSelectRelationship: noop,
+        onSelectStep: noop,
+        onSelectEdge: noop,
+        relationshipCount: 0,
+        onClose: noop,
+        exploreOpen: true,
+        onExploreToggle: noop,
+        investigateOpen: true,
+        onInvestigateToggle: noop,
+        conceptId: null,
+        onConceptChange: noop,
+        onOpenConcept: noop,
+        cardId: "card",
+        exploreId: "explore",
+        investigateId: "investigate",
+      }),
+    );
+    assert.match(html, /data-finding="comparison-break"/, r.id);
+    assert.ok(!/data-finding="relationship"/.test(html), r.id);
+    assert.ok(!html.includes("spiral-card__question"), r.id);
+    assert.ok(!/<span class="spiral-op__def-label">Status: <\/span>/.test(html), r.id);
+  }
+  for (const lens of SPIRAL_LENSES) {
+    for (const t of lens.trajectories) {
+      const d = lensDiscovery(lens, t);
+      for (const s of ofKind(levels(d), "summary")) {
+        assert.ok(s.drawn.every(isDrawableRelationship), `${t.id} drawn holds only relationships`);
+        assert.ok(s.breaks.every(isComparisonBreak), `${t.id} breaks held apart`);
+      }
+      // A trajectory with breaks shows the break key at Understand.
+      if (relationshipsForTrajectory(t.id).some(isComparisonBreak)) {
+        assert.equal(ofKind(d.understand, "key")[0]?.breaks, true, t.id);
+      }
+    }
+  }
+});
+
+check("PD.9 an unclassified status asserts nothing at any depth", () => {
+  const lens = getSpiralLens("ecology")!;
+  for (const status of ["researched-negative", "unresolved", ""]) {
+    const r = { ...unclassified(status), trajectoryId: LP.id };
+    const d = relationshipDiscovery(r, LP, lens);
+    assert.equal(ofKind(levels(d), "finding").length, 0, status);
+    assert.equal(ofKind(levels(d), "question").length, 0, status);
+  }
+});
+
+check("PD.10 authored cautions surface at Understand; the full section stays under Investigate", () => {
+  for (const lens of SPIRAL_LENSES) {
+    for (const t of lens.trajectories) {
+      const d = lensDiscovery(lens, t);
+      const caution = ofKind(d.understand, "caution")[0];
+      if (!t.comparisonBreaks) {
+        assert.equal(caution, undefined, t.id);
+        continue;
+      }
+      assert.ok(caution, `${t.id} caution at Understand`);
+      assert.ok(t.comparisonBreaks.body.startsWith(caution.text), `${t.id} caution is the authored opening`);
+      assert.ok(renderLensPanel(lens.id, { trajectoryId: t.id }).includes(esc(caution.text)), `${t.id} caution rendered closed`);
+    }
+  }
+});
+
+check("PD.11 Across restates trajectory takeaways and states that no synthesis exists", () => {
+  const d = lensPanelDiscovery("across");
+  const readings = ofKind(d.explore, "readings")[0];
+  assert.ok(readings, "Across has readings");
+  assert.match(ACROSS_SYNTHESIS_BOUNDARY, /no cross-lens synthesis has been established/);
+  // The boundary opens the first view, before any trajectory diagram.
+  const boundaryAt = d.understand.findIndex((s) => s.kind === "boundary");
+  const minisAt = d.understand.findIndex((s) => s.kind === "place" && s.place === "minis");
+  assert.ok(boundaryAt >= 0 && boundaryAt < minisAt, "boundary before the diagrams");
+  assert.equal(ofKind(d.understand, "boundary")[0]?.text, ACROSS_SYNTHESIS_BOUNDARY);
+  const closed = renderLensPanel("across");
+  const shown = closed.indexOf(esc(ACROSS_SYNTHESIS_BOUNDARY));
+  assert.ok(shown >= 0 && shown < closed.indexOf("spiral-mini__item"), "boundary rendered before the diagrams");
+  for (const reading of readings.readings) {
+    const t = authoredTrajectories().find((x) => x.title === reading.trajectoryTitle)!;
+    assert.equal(reading.text, TRAJECTORY_TAKEAWAYS[t.id], t.id);
+    assert.ok(relationshipsForTrajectory(t.id).some(isDrawableRelationship), `${t.id} reading backed by a drawn relationship`);
+  }
+  // Across adds no comparison claims of its own at any depth.
+  for (const kind of ["takeaway", "note", "finding", "question", "caution"] as const) {
+    assert.equal(ofKind(levels(d), kind).length, 0, kind);
+  }
+  const html = renderLensPanel("across", { open: true });
+  assert.ok(html.includes(esc(ACROSS_SYNTHESIS_BOUNDARY)));
+});
+
+check("PD.12 Understand never hides the lens's evidence line or break key behind a control", () => {
+  for (const id of ALL_LENS_IDS) {
+    const html = renderLensPanel(id);
+    const lens = getSpiralLens(id)!;
+    const firstControl = html.search(/spiral-op__(explore|investigate)-toggle/);
+    const evidence = html.indexOf(esc(lens.evidence));
+    assert.ok(evidence >= 0 && (firstControl < 0 || evidence < firstControl), id);
+    const t = trajectoryFor(id);
+    if (t && relationshipsForTrajectory(t.id).some(isComparisonBreak)) {
+      const key = html.indexOf("spiral-trajectory__key-line--break");
+      assert.ok(key >= 0 && (firstControl < 0 || key < firstControl), `${id} break key before controls`);
+    }
+  }
+});
+
+check("PD.13 an authored caution precedes What this shows", () => {
+  for (const lens of SPIRAL_LENSES) {
+    for (const t of lens.trajectories) {
+      const d = lensDiscovery(lens, t);
+      const caution = d.understand.findIndex((s) => s.kind === "caution");
+      const takeaway = d.understand.findIndex((s) => s.kind === "takeaway");
+      if (caution >= 0 && takeaway >= 0) assert.ok(caution < takeaway, t.id);
+      if (!t.comparisonBreaks || takeaway < 0) continue;
+      const html = renderLensPanel(lens.id, { trajectoryId: t.id });
+      assert.ok(html.indexOf("spiral-depth__caution") < html.indexOf("What this shows"), `${t.id} rendered order`);
+    }
+  }
+});
+
+check("PD.14 symbolic-cycle lines are labelled as interpretation; authored notes are not", () => {
+  let labelled = 0;
+  for (const r of SPIRAL_TRAJECTORY_RELATIONSHIPS) {
+    const { lens, trajectory } = relationshipContext(r);
+    const note = ofKind(relationshipDiscovery(r, trajectory, lens).understand, "note")[0];
+    if (!note) continue;
+    if (r.note) {
+      assert.equal(note.label, undefined, r.id);
+    } else {
+      assert.equal(note.label, SYMBOLIC_READING_LABEL, r.id);
+      labelled += 1;
+    }
+    assert.equal(note.text, relationshipLine(r, lens), `${r.id} authored text unchanged`);
+  }
+  assert.ok(labelled >= ZODIAC_RELATIONSHIPS.filter((r) => !r.note).length);
+  const zodiac = getSpiralLens("symbolic-zodiac")!;
+  for (const r of ZODIAC_RELATIONSHIPS.filter((x) => !x.note)) {
+    assert.equal(relationshipLineLabel(r, zodiac), SYMBOLIC_READING_LABEL, r.id);
+  }
+});
+
+check("PD.15 plain cue reads Grounded in, apart from the precise Ways of knowing legend", () => {
+  assert.deepEqual(
+    SPIRAL_KNOWING_FAMILIES.map((f) => f.label),
+    ["Empirical research", "Conceptual framework", "Texts and traditions", "Symbolic comparison", "Model projection", "Provisional or debated"],
+  );
+  const r = PSYCHOLOGY_RELATIONSHIPS[0]!;
+  const { lens, trajectory } = relationshipContext(r);
+  const html = renderToStaticMarkup(
+    React.createElement(SpiralLocalCard, {
+      focus: { kind: "relationship", relationship: r },
+      lens,
+      trajectory,
+      intersection: undefined,
+      onSelectOccurrence: noop,
+      onSelectRelationship: noop,
+      onSelectStep: noop,
+      onSelectEdge: noop,
+      relationshipCount: 0,
+      onClose: noop,
+      exploreOpen: false,
+      onExploreToggle: noop,
+      investigateOpen: false,
+      onInvestigateToggle: noop,
+      conceptId: null,
+      onConceptChange: noop,
+      onOpenConcept: noop,
+      cardId: "card",
+      exploreId: "explore",
+      investigateId: "investigate",
+    }),
+  );
+  assert.match(html, /Grounded in: <\/span>/);
+  assert.ok(!html.includes("Ways of knowing"));
+  // Precise categories keep their own labels.
+  assert.equal(epistemicLabel("empirical-mechanism"), "Empirical mechanism");
+});
+
+check("PD.16 display copy calls drawn records researched comparisons", () => {
+  for (const { file, source } of spiralSources()) {
+    assert.ok(!/researched relationship/i.test(source), path.basename(file));
+  }
 });
 
 if (failed > 0) {
