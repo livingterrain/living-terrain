@@ -4,8 +4,7 @@ export const SPIRAL_EPISTEMIC_CATEGORIES: readonly SpiralEpistemicCategory[] = [
   {
     id: "empirical",
     label: "Empirical",
-    definition:
-      "Observable or testable phenomena—legacy Phase 1 umbrella for seeded examples.",
+    definition: "Observable or testable phenomena.",
   },
   {
     id: "empirical-mechanism",
@@ -41,7 +40,7 @@ export const SPIRAL_EPISTEMIC_CATEGORIES: readonly SpiralEpistemicCategory[] = [
     id: "historical-textual",
     label: "Historical / Textual",
     definition:
-      "Claims grounded in historical sources, texts, traditions, or documented observation — legacy Phase 1 label.",
+      "Claims grounded in historical sources, texts, traditions, or documented observation.",
   },
   {
     id: "textual-observation",
@@ -65,7 +64,7 @@ export const SPIRAL_EPISTEMIC_CATEGORIES: readonly SpiralEpistemicCategory[] = [
     id: "symbolic-comparative",
     label: "Symbolic / Comparative",
     definition:
-      "Interpretive correspondences across symbolic languages — legacy Phase 1 label.",
+      "Interpretive correspondences across symbolic languages.",
   },
   {
     id: "symbolic-analogy",
