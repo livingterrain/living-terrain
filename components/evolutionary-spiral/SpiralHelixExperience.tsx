@@ -15,7 +15,6 @@ import {
   occurrencesForRelationship,
   relationshipsForStep,
   relationshipsForTrajectory,
-  researchedStopsForLens,
   SPIRAL_ORIENTATION,
   SPIRAL_SEQUENCE,
   type SpiralLensId,
@@ -60,13 +59,14 @@ type LocalSelection =
  * - selection — nothing is selected on arrival
  * - activeLensId / activeTrajectoryId — survive operation changes
  * - exploreOpen / investigateOpen / conceptId — local to the selection
- * - lensResearchOpen / lensConceptId — trajectory research, when nothing local is open
+ * - lensExploreOpen / lensResearchOpen / lensConceptId — lens depth, when nothing local is open
  */
 export function SpiralHelixExperience() {
   const cardId = useId();
   const exploreId = useId();
   const investigateId = useId();
   const lensResearchId = useId();
+  const lensExploreId = useId();
   const orientationId = useId();
   const stageRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLElement>(null);
@@ -83,6 +83,7 @@ export function SpiralHelixExperience() {
   const [investigateOpen, setInvestigateOpen] = useState(false);
   const [conceptId, setConceptId] = useState<string | null>(null);
   const [lensResearchOpen, setLensResearchOpen] = useState(false);
+  const [lensExploreOpen, setLensExploreOpen] = useState(false);
   const [lensConceptId, setLensConceptId] = useState<string | null>(null);
 
   const lens = activeLensId ? getSpiralLens(activeLensId) : undefined;
@@ -154,11 +155,6 @@ export function SpiralHelixExperience() {
         : new Set<string>(),
     [selectedStepId, selectedEdge, selectedRelationship, focusedRelationships],
   );
-  const researchedStops = useMemo(
-    () => (activeLensId ? researchedStopsForLens(activeLensId) : []),
-    [activeLensId],
-  );
-
   const arcs: SpiralArcSpec[] = useMemo(() => {
     if (!trajectory) return [];
     return arcEndpointsForTrajectory(trajectory.id).map((end) => {
@@ -209,6 +205,7 @@ export function SpiralHelixExperience() {
     setActiveLensId(next);
     setActiveTrajectoryId(next ? defaultTrajectoryId(next) : null);
     setSelection((current) => (current?.kind === "operation" ? current : null));
+    setLensExploreOpen(false);
     setLensResearchOpen(false);
     setLensConceptId(null);
     resetLocal();
@@ -217,6 +214,7 @@ export function SpiralHelixExperience() {
   const handleTrajectorySelect = (trajectoryId: string) => {
     setActiveTrajectoryId(trajectoryId);
     setSelection((current) => (current?.kind === "operation" ? current : null));
+    setLensExploreOpen(false);
     setLensResearchOpen(false);
     setLensConceptId(null);
     resetLocal();
@@ -319,11 +317,13 @@ export function SpiralHelixExperience() {
     if (trajectory) {
       const drawn = focusedRelationships.filter(isDrawableRelationship).length;
       const breaks = focusedRelationships.filter(isComparisonBreak).length;
-      announcement += ` ${
-        drawn > 0
-          ? `${drawn} researched relationship${drawn === 1 ? "" : "s"} with ${trajectory.title}.`
-          : `No researched relationship with ${trajectory.title}.`
-      }${breaks > 0 ? ` ${breaks} comparison break${breaks === 1 ? "" : "s"}.` : ""}`;
+      announcement += [
+        drawn > 0 && ` ${drawn} researched comparison${drawn === 1 ? "" : "s"} with ${trajectory.title}.`,
+        breaks > 0 && ` ${breaks} comparison break${breaks === 1 ? "" : "s"} with ${trajectory.title}.`,
+        drawn + breaks === 0 && ` No researched comparison with ${trajectory.title}.`,
+      ]
+        .filter(Boolean)
+        .join("");
     }
   } else if (focus?.kind === "step" && trajectory) {
     const step = trajectory.steps.find((s) => s.id === focus.stepId);
@@ -332,14 +332,14 @@ export function SpiralHelixExperience() {
     announcement = `${step?.label ?? ""}: ${
       drawn + breaks > 0
         ? [
-            drawn > 0 && `${drawn} researched relationship${drawn === 1 ? "" : "s"}.`,
+            drawn > 0 && `${drawn} researched comparison${drawn === 1 ? "" : "s"}.`,
             breaks > 0 && `${breaks} comparison break${breaks === 1 ? "" : "s"}.`,
           ]
             .filter(Boolean)
             .join(" ")
         : relationships.length === 0
           ? "no Spiral relationships have been authored for this trajectory yet."
-          : "no researched relationship with the Spiral."
+          : "no researched comparison with the Spiral."
     }`;
   } else if (focus?.kind === "transition" && trajectory) {
     const name = (id: string) => trajectory.steps.find((s) => s.id === id)?.label ?? id;
@@ -347,7 +347,7 @@ export function SpiralHelixExperience() {
   } else if (focus?.kind === "relationship" && trajectory) {
     announcement = `${anchorLabel(trajectory, focus.relationship.anchor)}, ${
       isDrawableRelationship(focus.relationship)
-        ? "researched relationship with"
+        ? "researched comparison with"
         : "comparison break with"
     } ${occurrencesForRelationship(
       focus.relationship,
@@ -360,7 +360,7 @@ export function SpiralHelixExperience() {
         ? `${lens.label}: ${trajectory.title}, charted independently. No Spiral relationships have been authored yet.`
         : `${lens.label}: ${trajectory.title} laid against the Spiral. ${
             arcs.length
-          } line${arcs.length === 1 ? "" : "s"} mark researched relationships.${
+          } line${arcs.length === 1 ? "" : "s"} mark researched comparisons.${
             breakCount > 0
               ? ` ${breakCount} comparison break${
                   breakCount === 1 ? "" : "s"
@@ -378,6 +378,7 @@ export function SpiralHelixExperience() {
     selectionKey,
     exploreOpen,
     investigateOpen,
+    lensExploreOpen,
     lensResearchOpen,
   ].join("|");
 
@@ -458,10 +459,12 @@ export function SpiralHelixExperience() {
               selectedEdgeId={selectedEdge?.id ?? null}
               onSelectEdge={(id) => select({ kind: "transition", id })}
               onSelectRelationship={(id) => select({ kind: "relationship", id })}
-              researchedStops={researchedStops}
               onSelectOccurrence={(id) => select({ kind: "operation", id })}
               onSelectLens={handleLensSelect}
               showInvestigate={!focus}
+              exploreOpen={lensExploreOpen}
+              onExploreToggle={() => setLensExploreOpen((open) => !open)}
+              exploreId={lensExploreId}
               researchOpen={lensResearchOpen}
               onResearchToggle={() => {
                 setLensResearchOpen((open) => !open);
@@ -489,6 +492,8 @@ export function SpiralHelixExperience() {
               exploreOpen={exploreOpen}
               onExploreToggle={() => {
                 setExploreOpen((open) => !open);
+                // Comparison cards keep Investigate beside Explore, not inside it.
+                if (focus?.kind === "relationship") return;
                 setInvestigateOpen(false);
                 setConceptId(null);
               }}

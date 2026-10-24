@@ -1210,6 +1210,24 @@
   scroll-margin-top: 6rem;
 }
 
+/* Progressive discovery: Explore inside a lens panel already sits in its grid gap. */
+.spiral-depth__explore {
+  margin-top: 0;
+}
+
+.spiral-depth__reading-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.spiral-depth__readings {
+  display: grid;
+  gap: 0.75rem;
+}
+
 .spiral-lens-context__progress {
   font-family: var(--font-heading);
   font-size: 1rem;
