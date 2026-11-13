@@ -1,7 +1,41 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-01T18:56:41.832Z",
+  "generatedAt": "2026-11-13T23:34:00.900Z",
   "posts": [
+    {
+      "guid": "https://livingterrain.substack.com/p/the-body-is-telling-a-story",
+      "canonicalUrl": "https://livingterrain.substack.com/p/the-body-is-telling-a-story",
+      "slug": "the-body-is-telling-a-story",
+      "title": "The Body Is Telling a Story",
+      "subtitle": "On adaptation, biological regulation, and the difference between understanding a condition and understanding how it came to be.",
+      "description": "On adaptation, biological regulation, and the difference between understanding a condition and understanding how it came to be.",
+      "excerpt": "On adaptation, biological regulation, and the difference between understanding a condition and understanding how it came to be.",
+      "publishedAt": "2026-11-11",
+      "publishedTimestamp": "Wed, 11 Nov 2026 21:52:00 GMT",
+      "author": "Chelsea Thacker",
+      "coverImage": "https://substackcdn.com/image/fetch/$s_!xeOl!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F833a0aaf-b2ec-457b-b1a5-b7e4c498f4aa_1456x816.png",
+      "tags": [],
+      "publicationStatus": "published",
+      "essayId": "substack-rss-00bbe3220eaa",
+      "essaySlug": "the-body-is-telling-a-story"
+    },
+    {
+      "guid": "https://livingterrain.substack.com/p/the-conditions-of-capacity",
+      "canonicalUrl": "https://livingterrain.substack.com/p/the-conditions-of-capacity",
+      "slug": "the-conditions-of-capacity",
+      "title": "The Conditions of Capacity",
+      "subtitle": "On the invisible cost of adaptation, the limits of judgment, and what makes us capable of becoming.",
+      "description": "On the invisible cost of adaptation, the limits of judgment, and what makes us capable of becoming.",
+      "excerpt": "On the invisible cost of adaptation, the limits of judgment, and what makes us capable of becoming.",
+      "publishedAt": "2026-11-10",
+      "publishedTimestamp": "Tue, 10 Nov 2026 13:01:41 GMT",
+      "author": "Chelsea Thacker",
+      "coverImage": "https://substackcdn.com/image/fetch/$s_!h1D4!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff84671d0-db91-4b1f-bd36-3b5ab35724ff_1456x816.png",
+      "tags": [],
+      "publicationStatus": "published",
+      "essayId": "substack-rss-7c05f2359961",
+      "essaySlug": "the-conditions-of-capacity"
+    },
     {
       "guid": "https://livingterrain.substack.com/p/the-resistance-that-makes-us",
       "canonicalUrl": "https://livingterrain.substack.com/p/the-resistance-that-makes-us",
