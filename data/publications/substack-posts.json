@@ -1,7 +1,24 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-13T23:34:00.900Z",
+  "generatedAt": "2026-11-20T21:49:34.833Z",
   "posts": [
+    {
+      "guid": "https://livingterrain.substack.com/p/the-capacity-to-become",
+      "canonicalUrl": "https://livingterrain.substack.com/p/the-capacity-to-become",
+      "slug": "the-capacity-to-become",
+      "title": "The Capacity to Become",
+      "subtitle": "On digestion, resilience, and what it actually means to be well",
+      "description": "On digestion, resilience, and what it actually means to be well",
+      "excerpt": "On digestion, resilience, and what it actually means to be well",
+      "publishedAt": "2026-11-20",
+      "publishedTimestamp": "Fri, 20 Nov 2026 13:44:49 GMT",
+      "author": "Chelsea Thacker",
+      "coverImage": "https://substackcdn.com/image/fetch/$s_!oYwc!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe8663e7f-5508-4425-bad8-855a055bec4c_1456x816.png",
+      "tags": [],
+      "publicationStatus": "published",
+      "essayId": "substack-rss-cbdfd6b68e44",
+      "essaySlug": "the-capacity-to-become"
+    },
     {
       "guid": "https://livingterrain.substack.com/p/the-body-is-telling-a-story",
       "canonicalUrl": "https://livingterrain.substack.com/p/the-body-is-telling-a-story",
