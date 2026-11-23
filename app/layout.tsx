@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, Source_Serif_4 } from "next/font/google";
 import { TerrainSoundProvider } from "@/components/sound";
 import { TerrainNavigationProvider } from "@/components/navigation";
 import { ObservatoryProvider } from "@/components/observatory";
@@ -7,24 +6,12 @@ import { CircadianRoot } from "@/components/atmosphere/CircadianRoot";
 import { PersistentTerrainAtmosphere } from "@/components/atmosphere/PersistentTerrainAtmosphere";
 import { TerrainContentShell } from "@/components/atmosphere/TerrainContentShell";
 import { siteConfig } from "@/lib/content/data";
+import { inter, sourceSerif } from "./fonts/load";
 import "./globals.css";
 /* Revertible spectral/life layer — delete this import + app/v2-life.css to roll back */
 import "./v2-life.css";
 /* Architecture pass: Menu + location whisper + Atlas root territories */
 import "./orientation.css";
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  variable: "--font-source-serif",
-  display: "swap",
-  weight: ["400", "500", "600"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
