@@ -1,20 +1,26 @@
 /* ═══════════════════════════════════════════════════════════
-   Living Terrain — Visual System V2 (Home only)
-   Cinematic scientific mysticism.
-   Primitives: field · point · line · axis · orbit · layer ·
-               threshold · node · thread · pulse · material · light
+   Living Terrain — Visual System V2 / The Living Observatory
+   (Home only)
+   Dark botanical natural-history · cabinet of curiosities.
+   Palette (scoped): charcoal-green · forest · moss · brass · ivory
+   Primitives: field · point · line · axis · orbit · node · thread
    Isolated under .lt-v2 — do not propagate.
    ═══════════════════════════════════════════════════════════ */
 
 .lt-v2 {
-  /* Shared V2 foundation tokens — Home composition unchanged */
-  --lt-v2-void: var(--lt-void, #030405);
-  --lt-v2-bone: var(--lt-bone, #ebe6dc);
-  --lt-v2-bone-dim: var(--lt-bone-dim, color-mix(in srgb, #ebe6dc 42%, transparent));
-  --lt-v2-bone-faint: var(--lt-bone-faint, color-mix(in srgb, #ebe6dc 22%, transparent));
-  --lt-v2-mineral: var(--lt-mineral, #c4a86a);
-  --lt-v2-mineral-soft: var(--lt-mineral-soft, color-mix(in srgb, #c4a86a 55%, transparent));
-  --lt-v2-cool: var(--lt-cool, #7a8a9a);
+  /* The Living Observatory — homepage-scoped tokens only */
+  --lt-v2-void: #101715;
+  --lt-v2-forest: #24382e;
+  --lt-v2-moss: #687b62;
+  --lt-v2-brass: #ad9471;
+  --lt-v2-ivory: #e8e1d1;
+  --lt-v2-bone: var(--lt-v2-ivory);
+  /* Supporting copy ≥ ~4.5:1 on #101715 (WCAG AA normal text) */
+  --lt-v2-bone-dim: color-mix(in srgb, #e8e1d1 72%, transparent);
+  --lt-v2-bone-faint: color-mix(in srgb, #e8e1d1 60%, transparent);
+  --lt-v2-mineral: var(--lt-v2-brass);
+  --lt-v2-mineral-soft: color-mix(in srgb, #ad9471 55%, transparent);
+  --lt-v2-cool: var(--lt-v2-moss);
   --lt-v2-axis-x: 68%;
   --lt-v2-ease: var(--lt-ease, cubic-bezier(0.38, 0.02, 0.42, 1));
 
@@ -23,7 +29,7 @@
   min-height: 100dvh;
   width: 100%;
   overflow: clip;
-  color: var(--lt-v2-bone);
+  color: var(--lt-v2-ivory);
   background: var(--lt-v2-void);
   -webkit-font-smoothing: antialiased;
 }
@@ -43,27 +49,27 @@
   background: var(--lt-v2-void);
 }
 
-/* Barely perceptible atmospheric layer — cool depth, not taupe wash */
+/* Quiet depth — forest wash, not a decorative gradient panel */
 .lt-v2__depth {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(
-      ellipse 70% 50% at 72% 42%,
-      color-mix(in srgb, #0c1218 55%, transparent) 0%,
-      transparent 68%
+      ellipse 68% 52% at 74% 40%,
+      color-mix(in srgb, #24382e 48%, transparent) 0%,
+      transparent 70%
     ),
     linear-gradient(
       180deg,
-      #020304 0%,
-      transparent 28%,
-      transparent 72%,
-      color-mix(in srgb, #06080c 80%, transparent) 100%
+      color-mix(in srgb, #0a100e 90%, transparent) 0%,
+      transparent 30%,
+      transparent 70%,
+      color-mix(in srgb, #0c1411 85%, transparent) 100%
     );
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
-/* Orbit — cycles / astronomy / zodiac as incomplete ellipse, not a wheel */
+/* Orbit — incomplete ellipse; perceptible, not illustrative */
 .lt-v2__orbit {
   position: absolute;
   top: 50%;
@@ -72,15 +78,18 @@
   height: min(92vw, 52rem);
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, #ebe6dc 5.5%, transparent);
+  border: 1px solid color-mix(in srgb, #687b62 28%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #ad9471 8%, transparent),
+    0 0 0 1px color-mix(in srgb, #e8e1d1 3%, transparent);
   mask-image: linear-gradient(
     125deg,
-    transparent 18%,
-    black 38%,
-    black 58%,
-    transparent 82%
+    transparent 10%,
+    black 30%,
+    black 66%,
+    transparent 90%
   );
-  opacity: 0.85;
+  opacity: 1;
   animation: lt-v2-orbit-drift 120s linear infinite;
 }
 
@@ -93,20 +102,20 @@
   }
 }
 
-/* Axis — vertical centers / orientation / threshold spine */
+/* Axis — constellation spine */
 .lt-v2__axis {
   position: absolute;
-  top: 12%;
-  bottom: 14%;
+  top: 22%;
+  bottom: 26%;
   left: var(--lt-v2-axis-x);
   width: 1px;
   transform: translateX(-50%);
   background: linear-gradient(
     180deg,
     transparent 0%,
-    color-mix(in srgb, #ebe6dc 14%, transparent) 18%,
-    color-mix(in srgb, #ebe6dc 22%, transparent) 50%,
-    color-mix(in srgb, #ebe6dc 14%, transparent) 82%,
+    color-mix(in srgb, #687b62 35%, transparent) 10%,
+    color-mix(in srgb, #ad9471 32%, transparent) 50%,
+    color-mix(in srgb, #687b62 35%, transparent) 90%,
     transparent 100%
   );
   transition: opacity 0.8s var(--lt-v2-ease), filter 0.8s var(--lt-v2-ease);
@@ -115,10 +124,10 @@
 .lt-v2--attend-atlas .lt-v2__axis,
 .lt-v2--attend-observatory .lt-v2__axis,
 .lt-v2--attend-shelves .lt-v2__axis {
-  filter: brightness(1.35);
+  filter: brightness(1.25);
 }
 
-/* Horizon — earth/sky threshold, material boundary */
+/* Horizon — material threshold */
 .lt-v2__horizon {
   position: absolute;
   left: 8%;
@@ -128,9 +137,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    color-mix(in srgb, #ebe6dc 8%, transparent) 22%,
-    color-mix(in srgb, #ebe6dc 12%, transparent) 50%,
-    color-mix(in srgb, #ebe6dc 8%, transparent) 78%,
+    color-mix(in srgb, #687b62 18%, transparent) 22%,
+    color-mix(in srgb, #ad9471 16%, transparent) 50%,
+    color-mix(in srgb, #687b62 18%, transparent) 78%,
     transparent 100%
   );
 }
@@ -138,13 +147,13 @@
 .lt-v2__grain {
   position: absolute;
   inset: 0;
-  opacity: 0.028;
+  opacity: 0.022;
   mix-blend-mode: soft-light;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
   background-size: 160px 160px;
 }
 
-/* Nodes — points of light along the axis (biology: centers; astronomy: points) */
+/* Nodes — constellation points along the axis */
 .lt-v2__node {
   position: absolute;
   left: var(--lt-v2-axis-x);
@@ -152,7 +161,7 @@
   height: 5px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: color-mix(in srgb, #ebe6dc 45%, transparent);
+  background: color-mix(in srgb, #687b62 70%, #e8e1d1);
   box-shadow: 0 0 0 0 transparent;
   transition:
     background 0.7s var(--lt-v2-ease),
@@ -161,20 +170,20 @@
 }
 
 .lt-v2__node--observatory {
-  top: 28%;
+  top: 38%;
 }
 .lt-v2__node--atlas {
-  top: 48%;
+  top: 50%;
 }
 .lt-v2__node--shelves {
-  top: 68%;
+  top: 62%;
 }
 
 .lt-v2__node[data-active="true"] {
-  background: var(--lt-v2-mineral);
+  background: var(--lt-v2-brass);
   box-shadow:
-    0 0 10px color-mix(in srgb, #c4a86a 45%, transparent),
-    0 0 28px color-mix(in srgb, #c4a86a 18%, transparent);
+    0 0 10px color-mix(in srgb, #ad9471 40%, transparent),
+    0 0 24px color-mix(in srgb, #ad9471 16%, transparent);
   transform: translate(-50%, -50%) scale(1.35);
 }
 
@@ -188,9 +197,9 @@
   opacity: 0;
   background: linear-gradient(
     90deg,
-    color-mix(in srgb, #c4a86a 0%, transparent),
-    color-mix(in srgb, #c4a86a 35%, transparent),
-    color-mix(in srgb, #ebe6dc 18%, transparent)
+    color-mix(in srgb, #ad9471 0%, transparent),
+    color-mix(in srgb, #ad9471 42%, transparent),
+    color-mix(in srgb, #687b62 28%, transparent)
   );
   transform-origin: left center;
   transition:
@@ -205,13 +214,13 @@
 }
 
 .lt-v2--attend-observatory .lt-v2__thread {
-  top: 28%;
+  top: 38%;
 }
 .lt-v2--attend-atlas .lt-v2__thread {
-  top: 48%;
+  top: 50%;
 }
 .lt-v2--attend-shelves .lt-v2__thread {
-  top: 68%;
+  top: 62%;
 }
 
 /* ——— STAGE ——— */
@@ -237,16 +246,18 @@
 .lt-v2__identity {
   position: relative;
   z-index: 2;
-  max-width: 22rem;
+  max-width: 26rem;
   padding-top: 0.35rem;
 }
 
-/* Live research status — Observatory whisper, not a destination grid */
+/* Live research status — quiet editorial band below destinations */
 .lt-v2__investigating {
-  margin-top: 2.15rem;
-  max-width: 22.5rem;
-  padding-top: 1.35rem;
-  border-top: 1px solid color-mix(in srgb, #ebe6dc 6%, transparent);
+  position: relative;
+  z-index: 2;
+  margin-top: 2.35rem;
+  max-width: 26rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid color-mix(in srgb, #687b62 28%, transparent);
 }
 
 .lt-v2__investigating-head {
@@ -264,7 +275,7 @@
   letter-spacing: 0.22em;
   line-height: 1.35;
   text-transform: uppercase;
-  color: color-mix(in srgb, #ebe6dc 40%, transparent);
+  color: var(--lt-v2-bone-dim);
 }
 
 .lt-v2__investigating-status {
@@ -275,7 +286,7 @@
   letter-spacing: 0.2em;
   line-height: 1.35;
   text-transform: uppercase;
-  color: color-mix(in srgb, #c4a86a 52%, transparent);
+  color: color-mix(in srgb, #ad9471 88%, #e8e1d1);
 }
 
 .lt-v2__investigating-live::before {
@@ -286,20 +297,20 @@
   margin-right: 0.45rem;
   margin-bottom: 0.12rem;
   border-radius: 50%;
-  background: color-mix(in srgb, #c4a86a 58%, transparent);
+  background: var(--lt-v2-brass);
   vertical-align: middle;
 }
 
 .lt-v2__investigating-list {
   list-style: none;
-  margin: 1.05rem 0 0;
+  margin: 1.1rem 0 0;
   padding: 0;
 }
 
 .lt-v2__investigating-list li + li {
-  margin-top: 0.95rem;
-  padding-top: 0.95rem;
-  border-top: 1px solid color-mix(in srgb, #ebe6dc 5%, transparent);
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid color-mix(in srgb, #687b62 18%, transparent);
 }
 
 .lt-v2__investigating-entry {
@@ -326,7 +337,7 @@
   font-style: italic;
   font-weight: 400;
   line-height: 1.42;
-  color: color-mix(in srgb, #ebe6dc 64%, transparent);
+  color: color-mix(in srgb, #e8e1d1 86%, transparent);
   text-wrap: pretty;
   transition:
     color 0.55s var(--lt-v2-ease),
@@ -335,7 +346,7 @@
 
 .lt-v2__investigating-ctx {
   display: block;
-  margin: 0.32rem 0 0;
+  margin: 0.28rem 0 0;
   font-family: var(--font-heading), Georgia, serif;
   font-size: 0.75rem;
   font-style: italic;
@@ -346,13 +357,13 @@
 
 .lt-v2__investigating-follow {
   display: inline-block;
-  margin-top: 0.42rem;
+  margin-top: 0.35rem;
   font-family: var(--font-heading), Georgia, serif;
   font-size: 0.6875rem;
   font-style: italic;
   letter-spacing: 0.02em;
   line-height: 1.35;
-  color: color-mix(in srgb, #c4a86a 38%, transparent);
+  color: color-mix(in srgb, #ad9471 82%, #e8e1d1);
   transition:
     color 0.55s var(--lt-v2-ease),
     opacity 0.55s var(--lt-v2-ease);
@@ -360,8 +371,8 @@
 
 .lt-v2__investigating-entry:hover .lt-v2__investigating-q,
 .lt-v2__investigating-entry:focus-visible .lt-v2__investigating-q {
-  color: #f2ebe0;
-  text-shadow: 0 0 24px color-mix(in srgb, #c4a86a 12%, transparent);
+  color: #f0ebe2;
+  text-shadow: 0 0 20px color-mix(in srgb, #ad9471 12%, transparent);
 }
 
 .lt-v2__investigating-entry:hover .lt-v2__investigating-ctx,
@@ -371,12 +382,12 @@
 
 .lt-v2__investigating-entry:hover .lt-v2__investigating-follow,
 .lt-v2__investigating-entry:focus-visible .lt-v2__investigating-follow {
-  color: color-mix(in srgb, #c4a86a 68%, #ebe6dc);
+  color: color-mix(in srgb, #ad9471 70%, #e8e1d1);
 }
 
 .lt-v2__investigating-entry:focus-visible .lt-v2__investigating-q {
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, #c4a86a 28%, transparent);
+  text-decoration-color: color-mix(in srgb, #ad9471 40%, transparent);
   text-underline-offset: 0.22em;
 }
 
@@ -389,6 +400,34 @@
   white-space: nowrap;
 }
 
+.lt-v2__byline {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--lt-v2-bone-dim);
+}
+
+.lt-v2__byline a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.5s ease;
+}
+
+.lt-v2__byline a:hover,
+.lt-v2__byline a:focus-visible {
+  color: color-mix(in srgb, #e8e1d1 92%, transparent);
+}
+
+.lt-v2__byline a:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, #ad9471 45%, transparent);
+  text-underline-offset: 0.22em;
+}
+
 .lt-v2__title {
   margin: 0;
   font-family: var(--font-heading), Georgia, serif;
@@ -397,45 +436,46 @@
   letter-spacing: 0.2em;
   line-height: 1.15;
   text-transform: uppercase;
-  color: color-mix(in srgb, #ebe6dc 92%, transparent);
+  color: color-mix(in srgb, #e8e1d1 96%, transparent);
 }
 
-.lt-v2__orient {
-  margin: 0.85rem 0 0;
-  max-width: 16rem;
+.lt-v2__statement {
+  margin: 1.15rem 0 0;
+  max-width: 20rem;
   font-family: var(--font-heading), Georgia, serif;
-  font-size: 0.9375rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
   font-style: italic;
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.35;
+  color: color-mix(in srgb, #e8e1d1 88%, transparent);
+  text-wrap: pretty;
+}
+
+.lt-v2__description {
+  margin: 0.85rem 0 0;
+  max-width: 24rem;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.55;
   color: var(--lt-v2-bone-dim);
   text-wrap: pretty;
 }
 
-.lt-v2__author {
-  margin: 0.7rem 0 0;
-  font-family: var(--font-body), system-ui, sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  color: var(--lt-v2-bone-dim);
+.lt-v2__orient {
+  margin: 1.15rem 0 0;
+  max-width: 18rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 0.875rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.45;
+  color: color-mix(in srgb, #e8e1d1 78%, transparent);
+  text-wrap: pretty;
 }
 
-.lt-v2__author a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
-  text-underline-offset: 0.2em;
-  transition: color 0.5s ease, text-decoration-color 0.5s ease;
-}
-
-.lt-v2__author a:hover,
-.lt-v2__author a:focus-visible {
-  color: color-mix(in srgb, #ebe6dc 88%, transparent);
-  text-decoration-color: currentColor;
-}
-
-/* Loci — places/states along the axis, not cards */
+/* Loci — connected constellation points, not cards */
 .lt-v2__loci {
   position: relative;
   z-index: 2;
@@ -444,6 +484,25 @@
   gap: 0;
   margin-top: auto;
   padding-top: 3rem;
+}
+
+/* Quiet vertical bond between locus dots (mobile list) */
+.lt-v2__loci::before {
+  content: "";
+  position: absolute;
+  top: calc(3rem + 1.35rem);
+  bottom: 1.35rem;
+  left: calc(0.25rem + 0.375rem - 0.5px);
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, #687b62 0%, transparent),
+    color-mix(in srgb, #687b62 32%, transparent) 12%,
+    color-mix(in srgb, #ad9471 28%, transparent) 50%,
+    color-mix(in srgb, #687b62 32%, transparent) 88%,
+    color-mix(in srgb, #687b62 0%, transparent)
+  );
+  pointer-events: none;
 }
 
 .lt-v2__locus {
@@ -466,7 +525,7 @@
 }
 
 .lt-v2__locus + .lt-v2__locus {
-  border-top: 1px solid color-mix(in srgb, #ebe6dc 5%, transparent);
+  border-top: 1px solid color-mix(in srgb, #687b62 14%, transparent);
 }
 
 .lt-v2__locus:focus-visible {
@@ -479,7 +538,7 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: color-mix(in srgb, #ebe6dc 35%, transparent);
+  background: color-mix(in srgb, #687b62 75%, #e8e1d1);
   transition:
     background 0.55s var(--lt-v2-ease),
     box-shadow 0.55s var(--lt-v2-ease),
@@ -493,7 +552,7 @@
   letter-spacing: 0.16em;
   line-height: 1.2;
   text-transform: uppercase;
-  color: color-mix(in srgb, #ebe6dc 78%, transparent);
+  color: color-mix(in srgb, #e8e1d1 88%, transparent);
   transition:
     color 0.55s var(--lt-v2-ease),
     text-shadow 0.55s var(--lt-v2-ease);
@@ -505,25 +564,25 @@
   font-size: 0.8125rem;
   font-style: italic;
   line-height: 1.4;
-  color: var(--lt-v2-bone-faint);
+  color: var(--lt-v2-bone-dim);
   transition: color 0.55s var(--lt-v2-ease);
 }
 
 .lt-v2__locus:hover .lt-v2__locus-label,
 .lt-v2__locus:focus-visible .lt-v2__locus-label {
-  color: #f2ebe0;
-  text-shadow: 0 0 24px color-mix(in srgb, #c4a86a 14%, transparent);
+  color: #f0ebe2;
+  text-shadow: 0 0 22px color-mix(in srgb, #ad9471 14%, transparent);
 }
 
 .lt-v2__locus:hover .lt-v2__locus-hint,
 .lt-v2__locus:focus-visible .lt-v2__locus-hint {
-  color: var(--lt-v2-bone-dim);
+  color: color-mix(in srgb, #e8e1d1 86%, transparent);
 }
 
 .lt-v2__locus:hover .lt-v2__locus-dot,
 .lt-v2__locus:focus-visible .lt-v2__locus-dot {
-  background: var(--lt-v2-mineral);
-  box-shadow: 0 0 12px color-mix(in srgb, #c4a86a 40%, transparent);
+  background: var(--lt-v2-brass);
+  box-shadow: 0 0 12px color-mix(in srgb, #ad9471 38%, transparent);
   transform: scale(1.4);
 }
 
@@ -535,26 +594,27 @@
 .lt-v2--attend-atlas .lt-v2__locus:not([data-region="atlas"]),
 .lt-v2--attend-shelves .lt-v2__locus:not([data-region="shelves"]),
 .lt-v2--attend-observatory .lt-v2__locus:not([data-region="observatory"]) {
-  opacity: 0.38;
+  opacity: 0.55;
 }
 
 /* ——— Desktop: identity left, loci along the axis ——— */
 @media (min-width: 900px) {
   .lt-v2__stage {
     grid-template-columns: minmax(18rem, 1fr) minmax(16rem, 22rem);
+    grid-template-rows: minmax(0, 1fr) auto;
     align-items: stretch;
     padding:
       max(2.5rem, env(safe-area-inset-top))
       max(3rem, 5vw)
-      max(2.5rem, env(safe-area-inset-bottom))
+      max(2rem, env(safe-area-inset-bottom))
       max(2.5rem, 5vw);
   }
 
   .lt-v2__west {
     align-self: center;
-    max-width: 26rem;
+    max-width: 28rem;
     padding-top: 0;
-    padding-bottom: 6vh;
+    padding-bottom: 4vh;
   }
 
   .lt-v2__identity {
@@ -565,8 +625,10 @@
   }
 
   .lt-v2__investigating {
-    margin-top: 2.6rem;
-    max-width: 23rem;
+    grid-column: 1 / -1;
+    margin-top: 1.85rem;
+    max-width: 36rem;
+    padding-top: 1.95rem;
   }
 
   .lt-v2__title {
@@ -574,9 +636,21 @@
     letter-spacing: 0.22em;
   }
 
+  .lt-v2__statement {
+    margin-top: 1.35rem;
+    font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+    max-width: 22rem;
+  }
+
+  .lt-v2__description {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    max-width: 26rem;
+  }
+
   .lt-v2__orient {
-    margin-top: 1.15rem;
-    font-size: 1.0625rem;
+    margin-top: 1.35rem;
+    font-size: 0.9375rem;
     max-width: 18rem;
   }
 
@@ -588,8 +662,12 @@
     gap: 0.15rem;
   }
 
+  .lt-v2__loci::before {
+    display: none;
+  }
+
   .lt-v2__locus {
-    padding: 1.35rem 0.5rem 1.35rem 0;
+    padding: 1.25rem 0.5rem 1.25rem 0;
     border-top: 0 !important;
   }
 
@@ -605,7 +683,7 @@
   .lt-v2__locus--atlas .lt-v2__locus-label {
     font-size: 1.25rem;
     letter-spacing: 0.2em;
-    color: color-mix(in srgb, #ebe6dc 88%, transparent);
+    color: color-mix(in srgb, #e8e1d1 94%, transparent);
   }
 
   .lt-v2__locus-hint {
@@ -613,12 +691,14 @@
     max-width: 16rem;
   }
 
-  /* Position loci to align with axis nodes */
+  /* Tight living constellation along the axis */
   .lt-v2__loci {
     display: block;
     position: relative;
-    height: 100%;
-    min-height: 70vh;
+    width: 100%;
+    height: clamp(16.5rem, 36vh, 21rem);
+    min-height: 16.5rem;
+    align-self: center;
   }
 
   .lt-v2__locus {
@@ -629,16 +709,17 @@
   }
 
   .lt-v2__locus--observatory {
-    top: 22%;
+    top: 0;
   }
 
   .lt-v2__locus--atlas {
-    top: 46%;
+    top: 50%;
     transform: translateY(-50%);
   }
 
   .lt-v2__locus--shelves {
-    top: 70%;
+    bottom: 0;
+    top: auto;
   }
 }
 
@@ -649,37 +730,24 @@
     flex-direction: column;
   }
 
-  .lt-v2__west {
-    display: contents;
-  }
-
-  .lt-v2__identity {
-    order: 1;
-  }
-
-  .lt-v2__loci {
-    order: 2;
-  }
-
   .lt-v2__investigating {
-    order: 3;
     max-width: 22rem;
-    margin-top: 0.5rem;
+    margin-top: 1.85rem;
     margin-bottom: 0.75rem;
-    padding-top: 1.15rem;
+    padding-top: 1.5rem;
   }
 
   .lt-v2__orbit {
     width: 140vw;
     height: 140vw;
     left: 78%;
-    opacity: 0.55;
+    opacity: 0.78;
   }
 
   .lt-v2__axis {
     left: auto;
     right: max(1.25rem, env(safe-area-inset-right));
-    opacity: 0.55;
+    opacity: 0.75;
   }
 
   .lt-v2__node {
@@ -702,7 +770,12 @@
   }
 
   .lt-v2__identity {
-    max-width: 14rem;
+    max-width: 20rem;
+  }
+
+  .lt-v2__byline {
+    font-size: 0.625rem;
+    margin-bottom: 0.4rem;
   }
 
   .lt-v2__title {
@@ -710,10 +783,59 @@
     letter-spacing: 0.16em;
   }
 
+  .lt-v2__statement {
+    margin-top: 0.85rem;
+    font-size: 0.9375rem;
+    max-width: 18rem;
+  }
+
+  .lt-v2__description {
+    margin-top: 0.65rem;
+    font-size: 0.75rem;
+    max-width: 20rem;
+  }
+
   .lt-v2__orient {
-    margin-top: 0.55rem;
+    margin-top: 0.85rem;
     font-size: 0.8125rem;
   }
+}
+
+/* Substack whisper — secondary; scoped to Home only */
+.lt-v2 .newsletter-invitation--home {
+  position: relative;
+  z-index: 1;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding:
+    2.5rem max(1.25rem, env(safe-area-inset-right))
+    max(3.5rem, env(safe-area-inset-bottom))
+    max(1.25rem, env(safe-area-inset-left));
+  border-top: 1px solid color-mix(in srgb, #687b62 22%, transparent);
+}
+
+.lt-v2 .newsletter-invitation--home h2 {
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.75rem;
+  color: color-mix(in srgb, #e8e1d1 86%, transparent);
+}
+
+.lt-v2 .newsletter-invitation--home p {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--lt-v2-bone-dim);
+  max-width: 26rem;
+}
+
+.lt-v2 .newsletter-invitation--home .newsletter-small {
+  font-size: 0.75rem;
+  color: var(--lt-v2-bone-faint);
+}
+
+.lt-v2 .newsletter-invitation--home .newsletter-action {
+  color: color-mix(in srgb, #ad9471 88%, #e8e1d1);
+  text-decoration-color: color-mix(in srgb, #ad9471 40%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -727,7 +849,11 @@
   .lt-v2__locus-hint,
   .lt-v2__locus-dot,
   .lt-v2__thread,
-  .lt-v2__axis {
+  .lt-v2__axis,
+  .lt-v2__investigating-entry,
+  .lt-v2__investigating-q,
+  .lt-v2__investigating-ctx,
+  .lt-v2__investigating-follow {
     transition: none !important;
   }
 }

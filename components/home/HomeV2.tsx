@@ -5,6 +5,7 @@ import { TerrainLink } from "@/components/navigation";
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 import { CurrentlyInvestigating } from "@/components/home/CurrentlyInvestigating";
 import { siteConfig } from "@/lib/content/data";
+import { TERRAIN_MENU } from "@/lib/world/orientation";
 import { cn } from "@/lib/utils";
 import "./home-v2.css";
 
@@ -17,32 +18,38 @@ type Locus = {
   region: Region;
 };
 
-/** Destinations and meanings unchanged — encountered as states in one field. */
-const LOCI: Locus[] = [
-  {
-    href: "/observatory",
-    label: "Observatory",
-    hint: "Ideas and investigations still forming.",
-    region: "observatory",
-  },
-  {
-    href: "/atlas",
-    label: "Atlas",
-    hint: "Follow relationships across the work.",
-    region: "atlas",
-  },
-  {
-    href: "/inquiry",
-    label: "The Shelves",
-    hint: "Books, essays, and visual maps.",
-    region: "shelves",
-  },
-];
+/** Threshold invitation language — href/label from TERRAIN_MENU; order follows the field axis. */
+const HOME_LOCI_ORDER = ["/observatory", "/atlas", "/inquiry"] as const;
+
+const HOME_LOCI_HINTS: Record<(typeof HOME_LOCI_ORDER)[number], string> = {
+  "/observatory": "Begin with a question",
+  "/atlas": "Follow the connections",
+  "/inquiry": "Explore the body of work",
+};
+
+const HOME_LOCI_REGIONS: Record<(typeof HOME_LOCI_ORDER)[number], Region> = {
+  "/observatory": "observatory",
+  "/atlas": "atlas",
+  "/inquiry": "shelves",
+};
+
+const LOCI: Locus[] = HOME_LOCI_ORDER.map((href) => {
+  const destination = TERRAIN_MENU.find((entry) => entry.href === href);
+  if (!destination) {
+    throw new Error(`Home locus missing from TERRAIN_MENU: ${href}`);
+  }
+  return {
+    href: destination.href,
+    label: destination.label,
+    hint: HOME_LOCI_HINTS[href],
+    region: HOME_LOCI_REGIONS[href],
+  };
+});
 
 /**
- * Living Terrain — Visual System V2 (Home only).
- * Cinematic scientific mysticism: field, axis, orbit, node, thread, light.
- * Isolated from prior Home treatments; does not propagate site-wide.
+ * Living Terrain — Visual System V2 / The Living Observatory (Home only).
+ * Dark botanical natural-history atmosphere: field, axis, orbit, node, thread.
+ * Isolated under .lt-v2; does not propagate site-wide.
  */
 export function HomeV2() {
   const [attend, setAttend] = useState<Region | null>(null);
@@ -74,6 +81,7 @@ export function HomeV2() {
     <div
       className={cn("lt-v2", attend && `lt-v2--attend-${attend}`)}
       data-visual-system="v2"
+      data-atmosphere="living-observatory"
     >
       {/* Field grammar — not decoration */}
       <div className="lt-v2__field" aria-hidden>
@@ -99,14 +107,17 @@ export function HomeV2() {
       <div className="lt-v2__stage">
         <div className="lt-v2__west">
           <header className="lt-v2__identity">
-            <h1 className="lt-v2__title">Living Terrain</h1>
-            <p className="lt-v2__author">
-              The evolving body of work of{" "}
+            <p className="lt-v2__byline">
               <TerrainLink href="/about">{siteConfig.author}</TerrainLink>
             </p>
-            <p className="lt-v2__orient">What brought you here?</p>
+            <h1 className="lt-v2__title">Living Terrain</h1>
+            <p className="lt-v2__statement">Everything is in relationship.</p>
+            <p className="lt-v2__description">
+              An evolving exploration of life, intelligence, adaptation,
+              meaning, and the structures through which we understand reality.
+            </p>
+            <p className="lt-v2__orient">Choose where your curiosity begins.</p>
           </header>
-          <CurrentlyInvestigating />
         </div>
 
         <nav className="lt-v2__loci" aria-label="Destinations">
@@ -127,6 +138,8 @@ export function HomeV2() {
             </TerrainLink>
           ))}
         </nav>
+
+        <CurrentlyInvestigating />
       </div>
       <NewsletterSignup variant="home" />
     </div>
